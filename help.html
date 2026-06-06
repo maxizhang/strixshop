@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Strix Shop | Help Center</title>
+
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <canvas id="bgstar"></canvas>
+
+    <nav>
+        <a href="home.html">
+            <img src="logoh.png" alt="STRIX">
+        </a>
+        <div class="nav-title">
+            HELP CENTER
+        </div>
+    </nav>
+
+    <section class="help-hero">
+        <h1>How can we assist you?</h1>
+        <p class="help-subtext">
+            Access documentation, policies, frequently asked questions,
+            or contact a Strix Shop Customer Service Team Member.
+        </p>
+    </section>
+
+    <main class="container">
+
+        <section class="help-grid">
+
+            <a href="faqs.html" class="help-card">
+                <div class="help-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+
+                <div class="help-content">
+                    <div class="mini-label">SUPPORT</div>
+                    <h2>Frequently Asked Questions</h2>
+                    <p>
+                        Find answers regarding orders, payments,
+                        delivery timelines, and general operations.
+                    </p>
+                </div>
+
+                <div class="help-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="terms.html" class="help-card">
+                <div class="help-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
+
+                <div class="help-content">
+                    <div class="mini-label">LEGAL</div>
+                    <h2>Legal & Terms</h2>
+                    <p>
+                        Review operational policies, agreements,
+                        conditions, and customer responsibilities.
+                    </p>
+                </div>
+
+                <div class="help-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="ethicscode.html" class="help-card">
+                <div class="help-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        <polyline points="9 11 11 13 15 9"></polyline>
+                    </svg>
+                </div>
+
+                <div class="help-content">
+                    <div class="mini-label">ETHICS</div>
+                    <h2>Code of Ethics</h2>
+                    <p>
+                        Learn about our commitments regarding
+                        transparency, fairness, and accountability.
+                    </p>
+                </div>
+
+                <div class="help-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            </a>
+
+        </section>
+
+        <section class="support-panel">
+
+            <div class="support-left">
+                <div class="mini-label">LIVE SUPPORT</div>
+                <h2>Still need help?</h2>
+                <p>
+                    Our Customer Service Team Members are available
+                    to assist with account issues, delivery concerns,
+                    product questions, and operational support.
+                </p>
+            </div>
+
+            <div class="support-right">
+                <a href="cs.html" class="support-btn">
+                    Contact Customer Support
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const canvas = document.getElementById('bgstar');
+        const ctx = canvas.getContext('2d');
+
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5;
+                this.alpha = Math.random();
+                this.blink = Math.random() * 0.02;
+            }
+
+            draw() {
+                this.alpha += this.blink;
+
+                if (this.alpha > 1 || this.alpha < 0) {
+                    this.blink = -this.blink;
+                }
+
+                ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < 120; i++) {
+                stars.push(new Star());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => star.draw());
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            initStars();
+        });
+
+        resize();
+        initStars();
+        animate();
+    </script>
+
+</body>
+</html>

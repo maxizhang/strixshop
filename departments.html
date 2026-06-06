@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Departments</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7391c2;
+            --bg: #050508;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        #rain-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 150%;
+            z-index: 1;
+            pointer-events: none;
+            color: #ffffff;
+        }
+
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            padding: 20px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: linear-gradient(to bottom, rgba(5,5,8,0.8), transparent);
+            backdrop-filter: blur(10px);
+        }
+
+        .container {
+            position: relative; z-index: 10;
+            padding: 120px 10% 100px;
+        }
+
+        .dept-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 150px;
+        }
+
+
+        .dept-block {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 60px;
+            opacity: 0;
+            transform: translateY(100px);
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .dept-block.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dept-block:nth-child(even) {
+            direction: rtl;
+        }
+        .dept-block:nth-child(even) .dept-text {
+            direction: ltr;
+        }
+
+        .dept-image-wrap {
+            position: relative;
+            border-radius: 30px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            aspect-ratio: 16/9;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .dept-image-wrap img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .dept-block:hover .dept-image-wrap img {
+            transform: scale(1.1);
+        }
+
+        .dept-text h2 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dept-text p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.8;
+            margin-bottom: 50px;
+        }
+
+        .dept-btn {
+            display: inline-block;
+            padding: 15px 35px;
+            border: 1px solid var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .dept-btn:hover {
+            background: var(--primary);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .dept-tag {
+            font-family: 'JetBrains Mono';
+            color: var(--primary);
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        @media (max-width: 900px) {
+            .dept-block, .dept-block:nth-child(even) {
+                grid-template-columns: 1fr;
+                direction: ltr;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="rain-canvas"></canvas>
+
+    <nav>
+        <img src="logoh.png" style="height:30px; cursor:pointer;" onclick="window.location.href='home.html'">
+    </nav>
+
+    <div class="container">
+        <div class="dept-stack">
+            
+            <div class="dept-block">
+                <div class="dept-image-wrap">
+                    <img src="newsdisplay.png" alt="Strix News">
+                </div>
+                <div class="dept-text">
+                    <span class="dept-tag">Information</span>
+                    <h2>STRIX NEWS</h2>
+                    <p>Delivers Local, National, and International news to you instantly.<br>Launch January, 2027<br>Director: Maxi Zhang<br>Editor-in-Chief: Era Garg</p>
+                    <a href="strixnews.html" class="dept-btn">View our Newsletter</a>
+                </div>
+            </div>
+
+            <div class="dept-block">
+                <div class="dept-image-wrap">
+                    <img src="shopdisplay.png" alt="Strix Shop">
+                </div>
+                <div class="dept-text">
+                    <span class="dept-tag">Shop</span>
+                    <h2>STRIX SHOP</h2>
+                    <p>Provides students with the best materials at the most affordable costs. <br> Launch August, 2026 <br> Director: Maxi Zhang</p>
+                    <a href="home.html" class="dept-btn">View Shop</a>
+                </div>
+            </div>
+
+            <div class="dept-block">
+                <div class="dept-image-wrap">
+                    <img src="studiodisplay.png" alt="Strix Studio">
+                </div>
+                <div class="dept-text">
+                    <span class="dept-tag">Creative</span>
+                    <h2>STRIX STUDIO</h2>
+                    <p>Creates high-quality media and performances for the public and YouTube. <br> Launch January, 2027 <br> Director: Maxi Zhang</p>
+                    <a href="strixstudio.html" class="dept-btn">View Portfolio</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Rain
+        const canvas = document.getElementById('rain-canvas');
+        const ctx = canvas.getContext('2d');
+        let drops = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Drop {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * -canvas.height;
+                this.length = Math.random() * 20 + 10;
+                this.speed = Math.random() * 10 + 5;
+                this.opacity = Math.random() * 0.3;
+            }
+            draw() {
+                ctx.strokeStyle = `rgba(59, 130, 246, ${this.opacity})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x, this.y + this.length);
+                ctx.stroke();
+                
+                this.y += this.speed;
+                if (this.y > canvas.height) this.reset();
+            }
+        }
+
+        function initRain() {
+            drops = [];
+            for(let i = 0; i < 150; i++) drops.push(new Drop());
+        }
+
+        function animateRain() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            drops.forEach(d => d.draw());
+            requestAnimationFrame(animateRain);
+        }
+
+        // ScrollReveal
+        function revealBlocks() {
+            const blocks = document.querySelectorAll('.dept-block');
+            blocks.forEach(block => {
+                const blockTop = block.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                if (blockTop < windowHeight * 0.85) {
+                    block.classList.add('reveal');
+                }
+            });
+        }
+
+        window.addEventListener('resize', resize);
+        window.addEventListener('scroll', revealBlocks);
+        
+        resize();
+        initRain();
+        animateRain();
+        revealBlocks(); // Initial check
+    </script>
+</body>
+</html>

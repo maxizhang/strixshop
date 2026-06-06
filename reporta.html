@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop A | Reports</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #020205;
+            --panel: #0d1118;
+            --accent: #c1bee9;
+            --line: rgba(255, 255, 255, 0.08);
+            --text: #ffffff;
+            --dim: #9aa4b2;
+            --urgent: #ef4444;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #bgstar { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+
+        header {
+            position: relative; z-index: 10;
+            padding: 20px 5%;
+            background: rgba(13, 17, 24, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--line);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .feed-container {
+            position: relative; z-index: 10;
+            flex: 1;
+            overflow-y: auto;
+            padding: 40px 5%;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            scroll-behavior: smooth;
+        }
+
+        /* Timeline vertical line */
+        .feed-container::before {
+            content: '';
+            position: absolute;
+            left: calc(5% + 20px);
+            top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--line), transparent);
+        }
+
+        .report-packet {
+            position: relative;
+            margin-left: 50px;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            padding: 25px;
+            transition: 0.3s;
+            max-width: 800px;
+        }
+
+        .report-packet:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px rgba(193, 190, 233, 0.1);
+        }
+
+        /* Timeline Dot */
+        .packet-dot {
+            position: absolute;
+            left: -37px; top: 30px;
+            width: 12px; height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .packet-header {
+            display: flex; justify-content: space-between;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--line);
+            padding-bottom: 10px;
+        }
+
+        .category-tag {
+            font-family: 'JetBrains Mono';
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(193, 190, 233, 0.1);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .timestamp { font-size: 11px; color: var(--dim); font-family: 'JetBrains Mono'; }
+        
+        .subject { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+        .details { font-size: 14px; line-height: 1.6; color: #cbd5e1; }
+
+        .reporter-info {
+            margin-top: 15px;
+            font-size: 12px;
+            color: var(--dim);
+            font-family: 'JetBrains Mono';
+        }
+
+        .empty-state {
+            text-align: center; margin-top: 100px; color: var(--dim);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+<canvas id="bgstar"></canvas>
+
+<header>
+    <div style="display:flex; align-items:center; gap:15px;">
+        <a href="home.html"><img src="logoh.png" style="height:25px;"></a>
+        <span style="font-weight:700; letter-spacing:2px; font-size:0.8rem;">REPORTS FEED</span>
+    </div>
+    <div id="admin-id" style="font-family:'JetBrains Mono'; font-size:11px; color:var(--accent);">Reveiw Reports</div>
+</header>
+
+<div class="feed-container" id="reports-feed">
+    <div class="empty-state">SYNCING DATA...</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script>
+    const firebaseConfig = { 
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU", 
+        authDomain: "strix-shop.firebaseapp.com", 
+        projectId: "strix-shop" 
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    auth.onAuthStateChanged(async (user) => {
+        if (!user) { window.location.href = "index.html"; return; }
+
+        const userDoc = await db.collection("users").doc(user.uid).get();
+        const isAdmin = user.uid === "PNssYZn1wNUGjmzeAq1eHz2QHKf1";
+
+        if (userDoc.exists && (userDoc.data().acc === "admin" || isAdmin)) {
+            listenToReports();
+        } else {
+            alert("ACCESS DENIED");
+            window.location.href = "home.html";
+        }
+    });
+
+    // 2. LIVE FEED LISTENER
+    function listenToReports() {
+        db.collection("reports").orderBy("timestamp", "desc").onSnapshot(snap => {
+            const feed = document.getElementById('reports-feed');
+            feed.innerHTML = '';
+
+            if (snap.empty) {
+                feed.innerHTML = '<div class="empty-state">NO CURRENT REPORTS IN DATABASE.</div>';
+                return;
+            }
+
+            snap.forEach(doc => {
+                const data = doc.data();
+                const time = data.timestamp ? data.timestamp.toDate().toLocaleString() : 'Just now';
+                
+                const packet = document.createElement('div');
+                packet.className = 'report-packet';
+                packet.innerHTML = `
+                    <div class="packet-dot"></div>
+                    <div class="packet-header">
+                        <span class="category-tag">${data.category}</span>
+                        <span class="timestamp">${time}</span>
+                    </div>
+                    <div class="subject">${data.subject}</div>
+                    <div class="details">${data.details}</div>
+                    <div class="reporter-info">SOURCE: ${data.email} // ID: ${data.uid.substring(0,12)}</div>
+                `;
+                feed.appendChild(packet);
+            });
+        });
+    }
+
+    // Star Animation (Signature Strix Shop look)
+    const canvas = document.getElementById('bgstar');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    class Star { constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5; this.alpha = Math.random(); this.blink = Math.random() * 0.02; } draw() { this.alpha += this.blink; if (this.alpha > 1 || this.alpha < 0) this.blink = -this.blink; ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); } }
+    resize(); for(let i=0; i<100; i++) stars.push(new Star());
+    function animate() { ctx.clearRect(0,0,canvas.width, canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); }
+    window.onresize = resize; animate();
+</script>
+</body>
+</html>

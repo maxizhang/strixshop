@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop A | Project Management</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-deep: #010204;
+            --nav-dark: #0a0c12;
+            --ui-white: #ffffff;
+            --ui-text-dark: #1a1f2e;
+            --ui-text-muted: #64748b;
+            --accent: rgb(46, 46, 107);
+            --border-dark: rgba(255,255,255,0.12);
+            --border-light: #cbd5e1;
+            --danger: #ef4444;
+            --success: #10b981;
+            --panel-width: 620px;
+        }
+
+        * { box-sizing: border-box; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); outline: none; }
+        
+        body {
+            margin: 0;
+            background: var(--bg-deep);
+            background-image: radial-gradient(circle at 10% 10%, #1e1b4b 0%, transparent 35%);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            color: var(--ui-white);
+            overflow-x: hidden;
+        }
+
+ 
+        nav {
+            background: var(--nav-dark);
+            border-bottom: 2px solid var(--accent);
+            position: sticky; top: 0; z-index: 1000;
+            backdrop-filter: blur(15px);
+        }
+
+        .nav-main { display: flex; align-items: center; padding: 12px 4%; gap: 20px; }
+        .logo-box img { height: 30px; cursor: pointer; }
+        
+        .search-engine { 
+            flex-grow: 1; display: flex; background: #ffffff;
+            border-radius: 8px; border: 1px solid var(--border-dark); max-width: 1000px; 
+        }
+        
+        .search-engine input { 
+            flex-grow: 1; border: none; background: transparent; padding: 10px 18px; 
+            font-family: 'Montserrat'; font-size: 0.85rem; color: #302323;
+        }
+        .search-engine input::placeholder { color: #94a3b8; }
+
+        .btn-new { 
+            background: var(--accent); color: white; border: none; padding: 10px 24px; 
+            border-radius: 8px; font-weight: 800; font-size: 0.75rem; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+
+        .filter-bar { 
+            background: rgba(0,0,0,0.4); border-bottom: 1px solid var(--border-dark); 
+            padding: 10px 4%; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; 
+        }
+        .pill { 
+            background: rgba(255,255,255,0.05); border: 1px solid var(--border-dark); 
+            padding: 7px 18px; border-radius: 50px; font-size: 0.65rem; font-weight: 700; 
+            cursor: pointer; color: #94a3b8; text-transform: uppercase; white-space: nowrap; 
+        }
+        .pill.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+        /* Products Grid */
+
+        .workspace { max-width: 1600px; margin: 30px auto; padding: 0 40px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+
+        .item-card {
+            background: var(--ui-white); border-radius: 16px; overflow: hidden;
+            cursor: pointer; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .item-card:hover { transform: translateY(-8px); }
+
+        .img-preview { width: 100%; height: 200px; background: #000; overflow: hidden; }
+        .img-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+        .item-content { padding: 18px; color: var(--ui-text-dark); }
+        .item-cat { font-size: 0.6rem; font-weight: 800; color: var(--accent); text-transform: uppercase; margin-bottom: 5px; }
+        .item-name { font-weight: 800; font-size: 1rem; margin: 0 0 8px 0; color: #000; }
+        
+        .card-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .item-price { font-family: 'JetBrains Mono'; font-weight: 800; color: #000; font-size: 1.1rem; }
+
+        .stock-bar { 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding-top: 12px; border-top: 1px solid #e2e8f0; 
+        }
+        .stk-btn { 
+            width: 28px; height: 28px; border: 1px solid #cbd5e1; border-radius: 6px; 
+            background: #fff; cursor: pointer; font-weight: 800; color: #000;
+        }
+        .stk-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+        .stk-val { font-family: 'JetBrains Mono'; font-weight: 700; color: #1e293b; font-size: 0.8rem; }
+
+        /* Side Panel (Pop-Up) */
+
+        .overlay { 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); 
+            backdrop-filter: blur(10px); z-index: 2000; display: none; 
+            opacity: 0; transition: opacity 0.3s ease;
+        }
+        .overlay.visible { display: block; opacity: 1; }
+        
+        .panel {
+            position: fixed; top: 0; right: -700px; width: var(--panel-width); height: 100%;
+            background: var(--ui-white); border-left: 1px solid var(--border-light); z-index: 2001;
+            display: flex; flex-direction: column; transition: right 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .panel.active { right: 0; box-shadow: -30px 0 60px rgba(0,0,0,0.5); }
+
+        .panel-head { padding: 25px 35px; border-bottom: 1px solid var(--border-light); display: flex; justify-content: space-between; align-items: center; background: #f8fafc; color: #000; }
+        .tab-nav { display: flex; background: #f1f5f9; border-bottom: 1px solid var(--border-light); }
+        .tab-link { flex: 1; padding: 15px; text-align: center; font-size: 0.65rem; font-weight: 800; color: #64748b; cursor: pointer; text-transform: uppercase; border-bottom: 3px solid transparent; }
+        .tab-link.active { color: var(--accent); background: white; border-bottom-color: var(--accent); }
+
+        .modal-content { flex: 1; overflow-y: auto; padding: 30px; color: var(--ui-text-dark); }
+        .pane { display: none; }
+        .pane.active { display: block; }
+
+        .field { margin-bottom: 20px; }
+        label { display: block; font-size: 0.7rem; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 8px; }
+        input, textarea, select { width: 100%; background: #f8fafc; border: 1px solid var(--border-light); border-radius: 8px; padding: 12px; color: #000; font-family: inherit; font-size: 0.9rem; }
+        input:focus { border-color: var(--accent); background: #fff; }
+
+        .media-matrix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 420px; margin: 0 auto; }
+        .slot { aspect-ratio: 1; background: #f1f5f9; border: 1px solid var(--border-light); border-radius: 12px; position: relative; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; color: #cbd5e1; font-weight: 800; }
+        .slot img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+        .slot-remove { position: absolute; top: 5px; right: 5px; background: var(--danger); color: white; width: 22px; height: 22px; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; }
+        
+        .upload-zone { border: 2px dashed var(--accent); padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 20px; cursor: pointer; color: var(--accent); font-size: 0.8rem; font-weight: 700; background: rgba(99, 102, 241, 0.05); }
+
+        .bi-card { background: #f8fafc; padding: 20px; border-radius: 12px; text-align: center; border: 1px solid var(--border-light); margin-bottom: 20px; }
+        .bi-val { font-family: 'JetBrains Mono'; font-size: 1.8rem; font-weight: 700; color: var(--success); }
+
+        .panel-foot { padding: 20px 30px; border-top: 1px solid var(--border-light); background: #f8fafc; display: flex; gap: 10px; }
+        .btn-save { flex: 3; padding: 16px; background: var(--accent); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 0.9rem; }
+        .btn-delete-sku { flex: 1; padding: 16px; background: #fff; color: var(--danger); border: 1px solid var(--danger); border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 0.9rem; }
+        .btn-delete-sku:hover { background: var(--danger); color: #fff; }
+
+        .slot { 
+            cursor: grab; 
+            user-select: none;
+            transition: transform 0.1s ease;
+        }
+        .slot:active { cursor: grabbing; transform: scale(0.95); }
+        .slot img { pointer-events: none; }
+        
+        #sys-log { position: fixed; bottom: 12px; left: 12px; font-family: 'JetBrains Mono'; font-size: 9px; color: #444; pointer-events: none; }
+
+        body { display: block; opacity: 0; }
+        body.authorized { opacity: 1; transition: 0.3s ease; }
+    </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeEditor()"></div>
+<div id="sys-log">STRIX SHOP PRODUCTS MANAGEMENT</div>
+
+<nav>
+    <div class="nav-main">
+        <a href="home.html" class="logo-box" target="_self">
+            <img src="logoh.png" alt="STRIX">
+        </a>
+        <div class="search-engine">
+            <input type="text" id="master-search" placeholder="Filter inventory..." oninput="renderGrid()">
+        </div>
+        <button class="btn-new" onclick="openNewEditor()">+ ADD NEW PRODUCT</button>
+    </div>
+</nav>
+<div class="filter-bar" id="pill-box">
+    <div class="pill active" onclick="setFilter('all', this)">All Collections</div>
+    <div class="pill" onclick="setFilter('SCHOOL SUPPLIES', this)">SCHOOL SUPPLIES</div>
+    <div class="pill" onclick="setFilter('TOYS AND GAMES', this)">TOYS AND GAMES</div>
+    <div class="pill" onclick="setFilter('MATERIALS', this)">MATERIALS</div>
+    <div class="pill" onclick="setFilter('LEARNING PROPS', this)">LEARNING PROPS</div>
+    <div class="pill" onclick="setFilter('ELECTRONICS', this)">ELECTRONICS</div>
+    <div class="pill" onclick="setFilter('KEYCHAINS', this)">KEYCHAINS</div>
+    <div class="pill" onclick="setFilter('ACCESSORIES', this)">ACCESSORIES</div>
+    <div class="pill" onclick="setFilter('GIFT CARDS', this)">GIFT CARDS</div>
+        <div class="pill" onclick="setFilter('OTHER', this)">OTHER</div>
+</div>
+
+<main class="workspace">
+    <div class="grid" id="main-grid"></div>
+</main>
+
+<aside class="panel" id="side-panel">
+    <div class="panel-head">
+        <h2 id="modal-title" style="margin:0">PRODUCT ENGINE</h2>
+        <span onclick="closeEditor()" style="cursor:pointer; font-size: 1.5rem;">✕</span>
+    </div>
+
+    <div class="tab-nav">
+        <div class="tab-link active" onclick="switchTab(0)">General</div>
+        <div class="tab-link" onclick="switchTab(1)">Media</div>
+        <div class="tab-link" onclick="switchTab(2)">Variants</div>
+        <div class="tab-link" onclick="switchTab(3)">Metrics</div>
+        <div class="tab-link" onclick="switchTab(4)">Business</div>
+    </div>
+
+    <div class="modal-content">
+        <input type="hidden" id="p-id">
+        
+        <div class="pane active" id="pane-0">
+            <div class="field"><label>Item Name</label><input type="text" id="f-name" placeholder="Name"></div>
+            <div class="field">
+                <label>Category Group</label>
+                <select id="f-cat">
+                    <option value="SCHOOL SUPPLIES">SCHOOL SUPPLIES</option>
+                    <option value="TOYS AND GAMES">TOYS AND GAMES</option>
+                    <option value="MATERIALS">MATERIALS</option>
+                    <option value="LEARNING PROPS">LEARNING PROPS</option>
+                    <option value="ELECTRONICS">ELECTRONICS</option>
+                    <option value="KEYCHAINS">KEYCHAINS</option>
+                    <option value="ACCESSORIES">ACCESSORIES</option>
+                    <option value="GIFT CARDS">GIFT CARDS</option>
+                    <option value="OTHER">OTHER</option>
+                </select>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px">
+                <div class="field"><label>Price ($)</label><input type="number" id="f-price" step="0.01" oninput="runBI()"></div>
+                <div class="field"><label>Stock</label><input type="number" id="f-stock"></div>
+            </div>
+            <div class="field"><label>Description</label><textarea id="f-desc" rows="5"></textarea></div>
+        </div>
+
+        <div class="pane" id="pane-1">
+            <div class="upload-zone" onclick="document.getElementById('file-bulk').click()">+ BATCH UPLOAD (UP TO 9)</div>
+            <input type="file" id="file-bulk" hidden multiple accept="image/*" onchange="handleBulkFiles(event)">
+            <div class="media-matrix" id="media-grid"></div>
+        </div>
+
+        <div class="pane" id="pane-2">
+            <div id="attr-stack"></div>
+            <button class="pill" style="width:100%; background:#f1f5f9; border-color:#cbd5e1; color:#000; margin-top: 10px;" onclick="addAttrRow()">+ Add Option Field</button>
+        </div>
+
+        <div class="pane" id="pane-3">
+            <div class="field"><label>Average Score (1-5)</label><input type="number" id="f-stars" step="0.1" min="0" max="5"></div>
+            <div class="field"><label>Total Review Count</label><input type="number" id="f-revs"></div>
+        </div>
+
+        <div class="pane" id="pane-4">
+            <div class="field"><label>Unit Cost ($)</label><input type="number" id="f-cost" step="0.01" oninput="runBI()"></div>
+            <div class="bi-card"><label>Estimated Unit Profit</label><div class="bi-val" id="val-profit">$0.00</div></div>
+            <div class="field" style="margin-top:20px"><label>Internal SKU</label><input type="text" id="f-sku" placeholder="STX-XXX"></div>
+        </div>
+    </div>
+
+    <div class="panel-foot">
+        <button class="btn-delete-sku" id="delete-btn-ui" onclick="deleteMaster()">DELETE</button>
+        <button class="btn-save" id="btn-save-master" onclick="saveMaster()">PUBLISH CHANGES</button>
+    </div>
+</aside>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script>
+    // Config
+    const firebaseConfig = { 
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU", 
+        authDomain: "strix-shop.firebaseapp.com", 
+        projectId: "strix-shop" 
+    };
+    firebase.initializeApp(firebaseConfig);
+    
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    // Variables
+    let items = [];
+    let mediaState = [];
+    let dragOrigin = null;
+    let currentFilter = "all";
+    let currentUser = null;
+
+    let currentUserData = null;
+
+    auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = "index.html";
+                return;
+            }
+
+        const docSnap = await db.collection("users").doc(user.uid).get();
+
+        if (!docSnap.exists) {
+            window.location.href = "home.html";
+            return;
+        }
+
+        currentUserData = docSnap.data();
+
+        document.body.classList.add("authorized");
+
+        init();
+
+        const isAdmin = currentUserData.acc === "admin";
+
+        if (!isAdmin) {
+
+            document.getElementById("btn-save-master").style.opacity = "0.5";
+            document.getElementById("btn-save-master").style.pointerEvents = "none";
+
+            document.getElementById("delete-btn-ui").style.opacity = "0.5";
+            document.getElementById("delete-btn-ui").style.pointerEvents = "none";
+
+            document.querySelector(".btn-new").style.opacity = "0.5";
+            document.querySelector(".btn-new").style.pointerEvents = "none";
+        }
+    });
+
+    async function init() {
+        // Real-time listener for products
+        db.collection("products").onSnapshot(snap => {
+            items = snap.docs.map(doc => ({ uid: doc.id, ...doc.data() }));
+            renderGrid();
+        });
+    }
+
+    function renderGrid() {
+        const grid = document.getElementById('main-grid');
+        const qInput = document.getElementById('master-search');
+        const q = qInput ? qInput.value.toLowerCase() : "";
+        grid.innerHTML = "";
+
+items.filter(i => {
+
+    const searchableText = [
+        i.name || "",
+        i.description || "",
+        i.sku || ""
+    ].join(" ");
+
+    const mQ =
+        q === "" ||
+        fuzzyMatch(searchableText, q);
+
+    const mC =
+        currentFilter === "all" ||
+        i.category === currentFilter;
+
+    return mQ && mC;
+})
+
+.forEach(i => {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.onclick = (e) => { if(!e.target.closest('.stk-btn')) editItem(i.uid); };
+
+            card.innerHTML = `
+                <div class="img-preview"><img src="${i.images?.[0] || 'https://via.placeholder.com/200?text=No+Image'}"></div>
+                <div class="item-content">
+                    <div class="item-cat">${i.category}</div>
+                    <h4 class="item-name">${i.name}</h4>
+                    <div class="card-row">
+                    <span class="item-price">$${Number(i.price).toFixed(2)}</span>
+                    </div>
+                    <div class="stock-bar">
+                    <button class="stk-btn" onclick="quickStock(event, '${i.uid}', -1)">-</button>
+                    <span class="stk-val">STOCK: ${i.stock || 0}</span>
+                    <button class="stk-btn" onclick="quickStock(event, '${i.uid}', 1)">+</button>
+                    </div>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+
+    function fuzzyMatch(text, query) {
+    text = (text || "").toLowerCase();
+    query = query.toLowerCase();
+
+    // Exact contains
+    if (text.includes(query)) return true;
+
+    // Word-by-word typo forgiveness
+    const words = text.split(/\s+/);
+
+    for (const word of words) {
+        if (levenshtein(word, query) <= 2) return true;
+    }
+
+    return false;
+}
+
+function levenshtein(a, b) {
+    const matrix = [];
+
+    for (let i = 0; i <= b.length; i++) {
+        matrix[i] = [i];
+    }
+
+    for (let j = 0; j <= a.length; j++) {
+        matrix[0][j] = j;
+    }
+
+    for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+            if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j] + 1
+                );
+            }
+        }
+    }
+
+    return matrix[b.length][a.length];
+}
+
+async function quickStock(event, uid, change) {
+
+    event.stopPropagation();
+
+    if (!currentUserData || currentUserData.adminStatus !== true) {
+        alert("ACCESS DENIED");
+        return;
+    }
+
+    const item = items.find(x => x.uid === uid);
+
+    const newS = Math.max(0, (Number(item.stock) || 0) + change);
+
+    await db.collection("products").doc(uid).update({
+        stock: newS
+    });
+}
+
+    //
+    function renderMedia() {
+        const box = document.getElementById('media-grid'); box.innerHTML = "";
+        for(let i=0; i<9; i++) {
+            const slot = document.createElement('div'); 
+            slot.className = "slot";
+            if(mediaState[i]) {
+                slot.draggable = true;
+                slot.innerHTML = `<div class="slot-remove" onclick="event.stopPropagation(); mediaState.splice(${i},1); renderMedia()">✕</div><img src="${mediaState[i]}" style="pointer-events:none;">`;
+                slot.ondragstart = () => dragOrigin = i;
+                slot.ondragover = e => e.preventDefault();
+                slot.ondrop = () => { 
+                    const item = mediaState.splice(dragOrigin, 1)[0]; 
+                    mediaState.splice(i, 0, item); 
+                    renderMedia(); 
+                };
+            } else { slot.innerHTML = "+"; }
+            box.appendChild(slot);
+        }
+    }
+
+    async function compress(b64) {
+        return new Promise(res => {
+            const img = new Image(); img.src = b64;
+            img.onload = () => {
+                const cvs = document.createElement('canvas');
+                cvs.width = 800; cvs.height = img.height * (800 / img.width);
+                cvs.getContext('2d').drawImage(img, 0, 0, cvs.width, cvs.height);
+                res(cvs.toDataURL('image/jpeg', 0.7));
+            };
+        });
+    }
+
+    async function handleBulkFiles(e) {
+        for(let f of Array.from(e.target.files)) {
+            if(mediaState.length >= 9) break;
+            const r = new FileReader();
+            const raw = await new Promise(res => { r.onload = ev => res(ev.target.result); r.readAsDataURL(f); });
+            mediaState.push(await compress(raw));
+            renderMedia();
+        }
+    }
+
+    //
+    async function saveMaster() {
+        const id = document.getElementById('p-id').value;
+        const btn = document.getElementById('btn-save-master');
+        btn.innerText = "PUBLISHING...";
+        btn.disabled = true;
+
+        const attrs = Array.from(document.querySelectorAll('.at-l')).map((el, i) => ({
+            label: el.value, 
+            values: document.querySelectorAll('.at-v')[i].value.split(',').map(x => x.trim()).filter(x => x)
+        })).filter(a => a.label);
+
+        const data = {
+            name: document.getElementById('f-name').value,
+            price: Number(document.getElementById('f-price').value) || 0,
+            category: document.getElementById('f-cat').value,
+            description: document.getElementById('f-desc').value,
+            stock: Number(document.getElementById('f-stock').value) || 0,
+            stars: Number(document.getElementById('f-stars').value) || 0,
+            reviewCount: Number(document.getElementById('f-revs').value) || 0,
+            unitCost: Number(document.getElementById('f-cost').value) || 0,
+            sku: document.getElementById('f-sku').value,
+            images: mediaState,
+            attributes: attrs,
+            modified: Date.now()
+        };
+
+        try {
+            if(id) await db.collection("products").doc(id).set(data, {merge:true});
+            else await db.collection("products").add(data);
+            closeEditor();
+        } catch (error) {
+            console.error("Publish Error:", error);
+            alert("Insufficient Permissions. Check your Firestore Rules.");
+        } finally {
+            btn.innerText = "PUBLISH CHANGES";
+            btn.disabled = false;
+        }
+    }
+
+async function deleteMaster() {
+
+    if (!currentUserData || currentUserData.adminStatus !== true) {
+        alert("ADMIN ACCESS REQUIRED");
+        return;
+    }
+
+    const id = document.getElementById('p-id').value;
+
+    if (!id) return;
+
+    if (confirm("Confirm: Permanently destroy this SKU?")) {
+
+        try {
+
+            await db.collection("products").doc(id).delete();
+
+            closeEditor();
+
+        } catch (err) {
+
+            console.error(err);
+
+            alert("DELETE FAILED");
+        }
+    }
+}
+
+    //
+    function openNewEditor() {
+        resetForm();
+        document.getElementById('modal-title').innerText = "NEW PRODUCT";
+        document.getElementById('delete-btn-ui').style.display = 'none';
+        document.getElementById('overlay').classList.add('visible');
+        setTimeout(() => document.getElementById('side-panel').classList.add('active'), 10);
+        renderMedia();
+    }
+
+    function editItem(uid) {
+        const i = items.find(x => x.uid === uid);
+        resetForm();
+        document.getElementById('p-id').value = i.uid;
+        document.getElementById('modal-title').innerText = "EDITING PRODUCT";
+        document.getElementById('delete-btn-ui').style.display = 'block';
+        document.getElementById('f-name').value = i.name || "";
+        document.getElementById('f-cat').value = i.category || "SCHOOL SUPPLIES";
+        document.getElementById('f-price').value = i.price || 0;
+        document.getElementById('f-desc').value = i.description || "";
+        document.getElementById('f-stock').value = i.stock || 0;
+        document.getElementById('f-stars').value = i.stars || 0;
+        document.getElementById('f-revs').value = i.reviewCount || 0;
+        document.getElementById('f-cost').value = i.unitCost || 0;
+        document.getElementById('f-sku').value = i.sku || "";
+        mediaState = i.images ? [...i.images] : [];
+        if(i.attributes) i.attributes.forEach(a => addAttrRow(a.label, a.values.join(', ')));
+        renderMedia(); runBI(); switchTab(0);
+        document.getElementById('overlay').classList.add('visible');
+        setTimeout(() => document.getElementById('side-panel').classList.add('active'), 10);
+    }
+
+    function closeEditor() { document.getElementById('side-panel').classList.remove('active'); setTimeout(() => document.getElementById('overlay').classList.remove('visible'), 300); }
+    function switchTab(idx) { document.querySelectorAll('.tab-link').forEach((t, i) => t.classList.toggle('active', i === idx)); document.querySelectorAll('.pane').forEach((p, i) => p.classList.toggle('active', i === idx)); }
+    function setFilter(c, el) { currentFilter = c; document.querySelectorAll('.pill').forEach(p => p.classList.remove('active')); el.classList.add('active'); renderGrid(); }
+    function addAttrRow(l="", v="") { const div = document.createElement('div'); div.className = 'field'; div.innerHTML = `<label>Label</label><input type="text" class="at-l" value="${l}"><label>Options</label><input type="text" class="at-v" value="${v}">`; document.getElementById('attr-stack').appendChild(div); }
+    function runBI() { const p = Number(document.getElementById('f-price').value); const c = Number(document.getElementById('f-cost').value); document.getElementById('val-profit').innerText = `$${(p-c).toFixed(2)}`; }
+    function resetForm() { document.getElementById('p-id').value = ""; document.querySelectorAll('.modal-content input, .modal-content textarea').forEach(i => i.value = ""); document.getElementById('attr-stack').innerHTML = ""; mediaState = []; }
+</script>
+</body>
+</html>

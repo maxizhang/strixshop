@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Frequently Asked Questions </title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <nav>
+        <a href="home.html"><img src="logoh.png" alt="STRIX" style="height:30px"></a>
+        <div style="font-weight:700; font-size:12px; letter-spacing:1px">FAQs - Frequently Asked Questions</div>
+    </nav>
+
+    <div class="container">
+        <div class="header-section">
+            <h1>Frequently Asked Questions</h1>
+            <p style="color: var(--text-dim)">Essential information regarding orders, logistics, and operations.</p>
+        </div>
+
+        <div id="faq-list">
+            </div>
+    </div>
+
+    <footer>
+        &copy; 2026 STRIX SHOP
+    </footer>
+
+    <script>
+        const faqs = [
+            { q: "How do I place an order?", 
+            a: "Go to our products page, add items to your cart, and proceed through the checkout page. You can browse as many products as you like, and a confirmation email will be sent shortly after your order is placed." },
+            
+            { q: "What payment methods are accepted?", 
+            a: "We currently accept only digital Strix Shop Credits, Strix Shop Gift Cards, and Cash, all in USD (United States Dollars). Payment will be collected when your orders arrive, or at another scheduled time." },
+            
+            { q: "Is my personal data secure?", 
+            a: "All order data is transmitted though Google Firebase. Your account and password is only stored in Google Firebase, and cannot be accessed even by Strix Shop's Team Members." },
+            
+            { q: "Can I cancel my order?", 
+            a: "As stated in the agreement at checkout, all orders are final once placed. However, you may cancel your order by contacting Customer Support within 2 hours (guarenteed), or if you have a legit reason to cancel after 2 hours (likely)." },
+            
+            { q: "How long does delivery take?", 
+            a: "Standard delivery usually take between 5-6 weeks. Quick deliveries (with items that are in stock) generally take between 2-5 days. Deliveries occur during homeroom or other pre-arranged times." },
+            
+            { q: "Where is my receipt?", 
+            a: "A digital receipt is generated instantly upon checkout for your reference. A copy is also transmitted to your provided email within 24 hours. If you would like a printed copy of your receipt, please contact Customer Support."},
+            
+            { q: "Can I modify an item in my cart after checkout?", 
+            a: "No. Once a order is placed, the order is locked for processing. However, you can ask a team member to cancel it for you (via customer support), and place a new one later. " },
+            
+            { q: "What is the 25% pre-payment rule?", 
+            a: "For some large/expensive inventory requests, we may require a 25% deposit before final delivery is authorized. This is to maximize your delivery, and minimize the shop's losses," },
+            
+            { q: "Do you ship outside of the school?", 
+            a: "Strix Shop currently operates exclusively within Conestoga High School. However, we plan to expand our business within a few months (or perhaps, next year) to all of Chester County." },
+            
+            { q: "What if an item is out of stock?", 
+            a: "Out of stock items will still be open for purchase. However, it will be delivered to you for a standard shipping time, which varies between 5-6 weeks." },
+            
+            { q: "How do I use a Gift Card?", 
+            a: "Select the 'Gift Card' option during checkout and give the gift card when delivery is made alongside your payment." },
+            
+            { q: "What if my item is damaged?", 
+            a: "Report product defects to Customer Service within 48 hours of delivery. See our Terms and Conditions for more information." },
+            
+            { q: "Can I return an item for a refund?", 
+            a: "Due to the nature of our operations, all sales are final. Exchanges or refunds may be considered for defects or other possibilities by contacting Customer Support." },
+            
+            { q: "What happens if I'm absent on delivery day?", 
+            a: "Please contact customer support to reschedule a delivery. Remember, unless a valid excuse is provded, additional fees may apply after 7 business days." },
+            
+            { q: "How do I track my order status?", 
+            a: "To check your order, please ask a Customer Support Team Member." },
+            
+            { q: "Can I order for a friend?", 
+            a: "Generally no, but if you have your friend's total consent, please ensure the 'Customer Name' and 'Homeroom' fields reflect you, and not your friend." },
+
+        ];
+       const faqList = document.getElementById('faq-list');
+
+        faqs.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'faq-item';
+            div.innerHTML = `
+                <div class="faq-question" onclick="toggleFaq(${index})">
+                    ${item.q}
+                    <div class="arrow"></div>
+                </div>
+                <div class="faq-answer">
+                    ${item.a}
+                </div>
+            `;
+            faqList.appendChild(div);
+        });
+
+        function toggleFaq(index) {
+            const items = document.querySelectorAll('.faq-item');
+            items[index].classList.toggle('active');
+        }
+
+        (function() {
+    const canvas = document.getElementById('snowCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, flakes = [];
+})();
+    </script>
+</body>
+</html>

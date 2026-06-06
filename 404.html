@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 | Strix Shop</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #020205;
+            --accent: rgb(147, 167, 201);
+            --error-red: #ef4444;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100vh;
+            background: var(--bg-deep); color: white;
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden; display: flex; align-items: center; justify-content: center;
+        }
+
+        #bgstar { position: fixed; top: 0; left: 0; z-index: 1; pointer-events: none; }
+
+        .error-container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 800px;
+            padding: 40px;
+        }
+
+        .error-msg a,
+        .error-msg a:visited {
+            color: #ffffff;
+        }
+
+        .glitch-code {
+            font-family: 'Quicksand', monospace;
+            font-size: 5rem;
+            font-weight: 400;
+            color: var(--accent);
+            margin: 0;
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        .error-msg {
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin: 20px 0;
+            font-weight: 500;
+            color: #ffffff;
+        }
+
+        .status-line {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            background: var(--glass);
+            padding: 10px 20px;
+            border-radius: 5px;
+            border-left: 3px solid var(--error-red);
+            display: inline-block;
+            margin-bottom: 40px;
+        }
+
+        .btn-return {
+            display: inline-block;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        .btn-return:hover {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+            transform: translateY(-5px);
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bgstar"></canvas>
+
+    <div class="error-container">
+        <p class="glitch-code">Error: 404</p>
+        <div class="error-msg">
+            Sorry, the page you are looking for does not exist.
+            <br><br><br>
+            Please visit <a href="cs.html">Customer Support</a> for more <br> information or if you believe there is a mistake
+            <br>
+        </div>
+        <div class="status-line">ERROR: 518181518111415231254750141520061521144</div>
+        <br>
+        <a href="home.html" class="btn-return">Return to Home Page</a>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('bgstar');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5;
+                this.alpha = Math.random();
+                this.blink = Math.random() * 0.02;
+            }
+            draw() {
+                this.alpha += this.blink;
+                if (this.alpha > 1 || this.alpha < 0) this.blink = -this.blink;
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        window.addEventListener('resize', () => { resize(); stars = Array.from({length:150}, () => new Star()); });
+        resize(); stars = Array.from({length:150}, () => new Star());
+        (function animate() { ctx.clearRect(0,0,canvas.width, canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); })();
+    </script>
+</body>
+</html>

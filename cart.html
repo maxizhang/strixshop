@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Cart and Checkout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!--Email Sender-->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+    (function(){
+        emailjs.init("tyzAlM0ABPTPnzZbm");
+    })();
+    </script>
+
+<style>
+        :root {
+            --primary: #333872;
+            --bg: #f5f7fb;
+            --surface: #ffffff;
+            --text-main: #0a1931;
+            --text-dim: #64748b;
+            --border: #e2e8f0;
+            --nav-dark: #0a0c12;
+        }
+
+        body { margin: 0; font-family: 'Montserrat', sans-serif; background: var(--bg); color: var(--text-main); min-height: 100vh; }
+
+        nav { background: var(--nav-dark); width: 100%; position: sticky; top: 0; z-index: 1000; }
+        .nav-main { display: flex; align-items: center; padding: 15px 5%; justify-content: space-between; }
+        .logo-box img { height: 32px; cursor: pointer; }
+        .nav-right { display: flex; align-items: center; gap: 20px; color: white; font-size: 13px; }
+
+        .container {
+            background: var(--surface);
+            width: 90%;
+            max-width: 880px;
+            margin: 80px auto;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.07);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header { padding: 30px 40px 10px; }
+        h1 { font-size: 32px; font-weight: 800; margin: 0 0 10px; color: #002b5b; }
+        h2 { font-size: 18px; font-weight: 400; margin: 0 0 10px; color: #002b5b; }
+        p { font-size: 12px; font-weight: 300; margin: 0 0 10px; color: #002b5b; }
+
+        .tabs { display: flex; background: #f1f5f9; padding: 5px; border-radius: 10px; margin-bottom: 20px; }
+        .tab { flex: 1; text-align: center; padding: 12px; font-weight: 700; font-size: 13px; cursor: pointer; border-radius: 8px; color: var(--text-dim); transition: 0.3s; }
+        .tab.active { background: white; color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+
+        #cart-view, #checkout-view { padding: 0 40px 30px; }
+        #checkout-view { display: none; }
+
+        .cart-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px;
+            padding: 18px 0;
+            border-bottom: 1px solid #f1f5f9; 
+        }
+
+        .cart-item img { 
+            width: 120px; 
+            height: 75px; 
+            object-fit: cover; 
+            border-radius: 12px;
+            background: #eee;
+            flex-shrink: 0;
+        }
+
+        .item-info { 
+            flex: 1; 
+        }
+
+        .item-price {
+            font-weight: 800;
+            font-size: 16px;
+            margin-left: auto;
+            padding-left: 10px;
+        }
+
+        .qty-control { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
+        .qty-btn { width: 24px; height: 24px; border: 1px solid var(--border); background: white; border-radius: 4px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+        .qty-num { font-size: 13px; font-weight: 700; min-width: 20px; text-align: center; }
+
+        .trash-btn {
+            background: url('trashicon.png') no-repeat center;
+            background-size: contain;
+            border: none;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+        .trash-btn:hover { transform: scale(1.15); }
+
+        #empty-msg { text-align: center; padding: 60px 20px; }
+        .continue-shopping-img { width: 200px; margin-bottom: 20px; cursor: pointer; border-radius:10px; }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 700; font-size: 12px; margin-bottom: 8px; color: var(--text-dim); text-transform: uppercase; }
+        .required-star { color: #ef4444; }
+        input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; box-sizing: border-box; }
+        
+        .checkbox-label { display: flex; gap: 12px; color: #334155; font-size: 13px; font-weight: 600; line-height: 1.4; margin-bottom: 15px; cursor: pointer; }
+        .checkbox-label input { width: auto; margin-top: 3px; }
+
+        .footer { padding: 20px 40px 40px; display: flex; align-items: center; justify-content: space-between; background: #fff; border-top: 1px solid var(--border); }
+        .total-amount { font-size: 28px; font-weight: 800; }
+        .btn-continue { background: var(--primary); color: white; border: none; padding: 18px 50px; border-radius: 6px; font-weight: 800; font-size: 16px; cursor: pointer; transition: 0.3s; }
+        .btn-continue:disabled { background: #cbd5e1; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-main">
+        <div class="logo-box" onclick="window.location.href='home.html'"><img src="logoh.png" alt="STRIX"></div>
+        <div class="nav-right">Welcome to <b>StrixShop</b> Checkout</div>
+    </div>
+</nav>
+
+<div class="container" id="main-app-container">
+    <header>
+        <h1 id="page-title">Your Cart</h1>
+        <h2>Please contact <a href="cs.html">Customer Service</a> if you would like to find a past receipt.</h2>
+        <p>If you are under 18, you may purchase only under the supervision of a parent or guardian.</p>
+        <p>Discounts will be applied when your order is processed. It will not show up yet. If you think there is an error, please contact Costomer Service. Thank you. </p>
+        <div class="tabs">
+            <div class="tab active" id="tab-cart" onclick="switchView('cart')">1. Order Summary</div>
+            <div class="tab" id="tab-checkout" onclick="switchView('checkout')">2. Checkout Details</div>
+        </div>
+    </header>
+
+    <div id="cart-view">
+        <div class="cart-scroll" id="cart-items-list"></div>
+        <div id="empty-msg" style="display:none;">
+            <img src="gobackshopmore.png" class="continue-shopping-img" onclick="window.location.href='products.html'" alt="Continue Shopping">
+            <div style="font-weight:600; color:var(--text-dim);">Your cart is feeling a bit light...</div>
+        </div>
+    </div>
+
+    <div id="checkout-view">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+            <div class="form-group"><label>First Name</label><input type="text" id="fname" placeholder="First Name"></div>
+            <div class="form-group"><label>Last Name</label><input type="text" id="lname" placeholder="Last Name"></div>
+        </div>
+        
+        <div class="form-group"><label>Email Address<span class="required-star">*</span></label><input type="email" id="email" placeholder="example@example.com" required></div>
+        
+        <div class="form-group">
+            <label>Grade Level<span class="required-star">*</span></label>
+            <select id="grade">
+                <option value="" disabled selected>Select Grade</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>Other</option>
+            </select>
+        </div>
+
+        <div class="form-group"><label>Homeroom Teacher OR Number<span class="required-star">*</span></label><input type="text" id="homeroom" placeholder="Teacher Name or Room #" required></div>
+
+        <div class="form-group">
+            <label>Use Gift Cards to Pay?<span class="required-star">*</span></label>
+            <div style="display:flex; gap: 30px; font-weight: 600; font-size: 14px;">
+                <label style="display:flex; align-items:center; gap:8px;"><input type="radio" name="giftcard" value="yes"> Yes</label>
+                <label style="display:flex; align-items:center; gap:8px;"><input type="radio" name="giftcard" value="no" checked> No</label>
+            </div>
+        </div>
+
+        <div class="form-group"><label>Other comments or concerns?</label><textarea id="comments" rows="2" maxlength="1000" placeholder="Max 1,000 characters..."></textarea></div>
+        
+        <label class="checkbox-label">
+            <input type="checkbox" id="check-binding" required>
+            <span>All orders are final once placed. By submitting an order, the customer enters into a binding agreement to purchase the item(s).<span class="required-star">*</span></span>
+        </label>
+        
+        <label class="checkbox-label">
+            <input type="checkbox" id="check-deposit" required>
+            <span>I understand I might be asked to pay up to 25% of the order prior to delivery, and the rest will be paid after the delivery is received.<span class="required-star">*</span></span>
+        </label>
+
+        <label class="checkbox-label">
+            <input type="checkbox" id="check-terms" required>
+            <span>I have read and agree to the Terms and Conditions.<span class="required-star">*</span></span>
+        </label>
+    </div>
+
+    <div class="footer">
+        <div class="total-box">
+            <div id="item-count" style="font-size:12px; font-weight:700; color:var(--text-dim);">Subtotal (0 Items)</div>
+            <div class="total-amount" id="total-price">$0.00</div>
+            <div style="font-size:12px; font-weight:700; color:var(--text-dim);">If you would like a printed copy of your receipt, please contact <a href = "cs.html">Customer Service</a>. Thank you.</div>
+        </div>
+        <button class="btn-continue" id="action-btn" onclick="handleAction()">Continue</button>
+    </div>
+</div>
+
+<div id="receipt-container" style="display:none;"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script>
+    // Firebase
+    const firebaseConfig = { 
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU", 
+        authDomain: "strix-shop.firebaseapp.com", 
+        projectId: "strix-shop" 
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    let rawItems = [];
+    let groupedItems = [];
+    let currentView = 'cart';
+
+    // Authorization
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            db.collection("carts").doc(user.uid).collection("items").onSnapshot(snap => {
+                rawItems = snap.docs.map(doc => ({docId: doc.id, ...doc.data()}));
+                processItems(); 
+            });
+        } else {
+            window.location.href = "index.html";
+        }
+    });
+
+    function processItems() {
+        const groups = {};
+        rawItems.forEach(item => {
+            const key = item.productId + JSON.stringify(item.selections || {});
+            if (groups[key]) {
+                groups[key].qty += (parseInt(item.qty) || 1);
+                groups[key].docIds.push(item.docId);
+            } else {
+                groups[key] = { ...item, qty: (parseInt(item.qty) || 1), docIds: [item.docId] };
+            }
+        });
+        groupedItems = Object.values(groups);
+        renderCart();
+    }
+
+    function renderCart() {
+        const list = document.getElementById('cart-items-list');
+        const emptyMsg = document.getElementById('empty-msg');
+        list.innerHTML = "";
+        let total = 0;
+
+        if (groupedItems.length === 0) {
+            emptyMsg.style.display = "block";
+            document.getElementById('action-btn').disabled = true;
+        } else {
+            emptyMsg.style.display = "none";
+            document.getElementById('action-btn').disabled = false;
+        }
+
+        groupedItems.forEach(item => {
+            const itemTotal = (parseFloat(item.price) * item.qty);
+            total += itemTotal;
+            const div = document.createElement('div');
+            div.className = "cart-item";
+            div.innerHTML = `
+                <img src="${item.image || 'https://via.placeholder.com/100'}">
+                <div class="item-info">
+                    <div style="font-weight:700; font-size:15px;">${item.name}</div>
+                    <div style="font-size:12px; color:var(--text-dim); margin-top:2px;">
+                        ${Object.values(item.selections || {}).join(' / ')}
+                    </div>
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="updateQty('${item.docIds[0]}', -1)">-</button>
+                        <span class="qty-num">${item.qty}</span>
+                        <button class="qty-btn" onclick="updateQty('${item.docIds[0]}', 1)">+</button>
+                    </div>
+                </div>
+                <div style="font-weight:800; font-size:16px; margin-right:10px;">$${itemTotal.toFixed(2)}</div>
+                <button class="trash-btn" onclick="deleteGroup('${item.docIds.join(',')}')"></button>
+            `;
+            list.appendChild(div);
+        });
+
+        document.getElementById('total-price').innerText = `$${total.toFixed(2)}`;
+        document.getElementById('item-count').innerText = `Subtotal (${rawItems.length} Items)`;
+    }
+
+    // Functions
+    async function updateQty(docId, change) {
+        const item = rawItems.find(i => i.docId === docId);
+        let newQty = (parseInt(item.qty) || 1) + change;
+        if (newQty < 1) return; 
+        if (newQty > 10) return alert("Max quantity of 10 reached.");
+        await db.collection("carts").doc(auth.currentUser.uid).collection("items").doc(docId).update({ qty: newQty });
+    }
+
+    async function getIP() {
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            return data.ip;
+        } catch (e) {
+            return "undefined";
+        }
+    }
+
+    async function deleteGroup(idsString) {
+        const ids = idsString.split(',');
+        const batch = db.batch();
+        ids.forEach(id => batch.delete(db.collection("carts").doc(auth.currentUser.uid).collection("items").doc(id)));
+        await batch.commit();
+    }
+
+    function switchView(view) {
+        currentView = view;
+        document.getElementById('cart-view').style.display = view === 'cart' ? 'block' : 'none';
+        document.getElementById('checkout-view').style.display = view === 'checkout' ? 'block' : 'none';
+        document.getElementById('tab-cart').classList.toggle('active', view === 'cart');
+        document.getElementById('tab-checkout').classList.toggle('active', view === 'checkout');
+        document.getElementById('action-btn').innerText = view === 'cart' ? 'Continue' : 'Submit Order';
+        document.getElementById('page-title').innerText = view === 'cart' ? 'Your Cart' : 'Checkout Details';
+    }
+
+    function handleAction() {
+        if(currentView === 'cart') switchView('checkout');
+        else validateAndSubmit();
+    }
+
+    // Submit + Confirmation Email
+    async function validateAndSubmit() {
+        const email = document.getElementById('email').value;
+        const homeroom = document.getElementById('homeroom').value;
+        const firstName = document.getElementById('fname').value;
+        const lastName = document.getElementById('lname').value;
+        const grade = document.getElementById('grade').value;
+        const giftcard = document.querySelector('input[name="giftcard"]:checked').value;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if(!firstName || !lastName || !email || !homeroom || !grade) return alert("Please fill all required fields.");
+        if(!emailRegex.test(email)) return alert("Invalid email address.");
+        if(!document.getElementById('check-binding').checked || !document.getElementById('check-deposit').checked || !document.getElementById('check-terms').checked) return alert("Please agree to all terms.");
+
+        const actionBtn = document.getElementById('action-btn');
+        actionBtn.disabled = true;
+        actionBtn.innerText = "Processing...";
+
+        const userIP = await getIP();
+        const dateStr = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+        const totalVal = document.getElementById('total-price').innerText.replace('$', '');
+
+        // Email Generator (Preventing 413 Error)
+        const emailItemRows = groupedItems.map(item => {
+
+            const variantText = Object.entries(item.selections || {})
+                .map(([key, value]) => `${key}: ${value}`)
+                .join(" / ");
+
+            return `
+        ${item.name}
+        ${variantText ? `(${variantText})` : ""}
+        Qty: ${item.qty}
+        $${(parseFloat(item.price) * item.qty).toFixed(2)}
+
+        `;
+        }).join('\n');
+
+
+        const orderData = {
+            customer: `${firstName} ${lastName}`,
+            email: email,
+            grade: grade,
+            homeroom: homeroom,
+            giftcard: giftcard,
+            notes: document.getElementById('comments').value,
+            orderDate: dateStr,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            ip: userIP,
+            status: "Placed",
+            items: groupedItems.map(item => ({
+                productId: item.productId || "",
+                name: item.name || "",
+                price: parseFloat(item.price) || 0,
+                qty: parseInt(item.qty) || 1,
+                selections: item.selections || {},
+                variantText: Object.entries(item.selections || {})
+                    .map(([key, value]) => `${key}: ${value}`)
+                    .join(" / "),
+                sku: item.sku || ""
+            })),
+            total: totalVal
+        };
+
+        try {
+            const docRef = await db.collection("orders").add(orderData);
+            orderData.orderId = docRef.id;
+
+            // EmailJS Transmission
+            await emailjs.send("service_strixshop", "template_smofd35", {
+                order_id: docRef.id,
+                date: dateStr,
+                ip: userIP,
+                name: orderData.customer,
+                email: orderData.email,
+                grade: orderData.grade,
+                homeroom: orderData.homeroom,
+                item_list: emailItemRows,
+                total: totalVal,
+            });
+
+            // Clear Cart
+            const batch = db.batch();
+            rawItems.forEach(item => batch.delete(db.collection("carts").doc(auth.currentUser.uid).collection("items").doc(item.docId)));
+            await batch.commit();
+
+            // Show receipt on screen
+            showReceipt(orderData);
+
+        } catch (e) {
+            alert("Order Error: " + e.message);
+            actionBtn.disabled = false;
+            actionBtn.innerText = "Submit Order";
+        }
+    }
+
+    // Receipt
+    function showReceipt(data) {
+        const itemRows = data.items.map(item => `
+            <div style="display:flex; justify-content:space-between; padding:18px 0; border-bottom:1px solid #eee; color:#000;">
+                <div>
+                    <div style="font-weight: 700; font-size:16px;">${item.name}</div>
+                    <div style="font-size: 12px; color: #666; margin-top:4px;">
+                        Qty: ${item.qty}
+                        </div>
+                        ${item.variantText
+                            ? `<div style="font-size:12px; color:#94a3b8; margin-top:4px;">
+                                ${item.variantText}
+                            </div>`
+                            : ""}
+                </div>
+                <div style="font-weight: 700; font-size:16px;">$${(parseFloat(item.price) * item.qty).toFixed(2)}</div>
+            </div>
+        `).join('');
+
+        const receiptHTML = `
+        <div style="margin: 0; background: #f4f7fb; font-family: 'Inter', sans-serif; color: #000; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; min-height: 100vh;">
+            <div style="width: 100%; max-width: 550px; background: white; padding: 40px; border-radius: 24px; box-shadow: 0 15px 40px rgba(0,0,0,0.08);">
+                <div style="text-align: center; border-bottom: 2px solid #333872; padding-bottom: 25px; margin-bottom: 25px;">
+                    <h1 style="margin: 0; letter-spacing:4px; font-weight:800; color:#333872;">STRIX SHOP</h1>
+                    <div style="font-size:11px; color:#666; margin-top:8px; text-transform:uppercase; letter-spacing:1px;">Official Transaction Record <br> For a printer receipt, please contact <a href="cs.html">Customer Service</a> <br> and provide the code given in your confirmation email. Thanks! </div>
+
+                    <div style="font-size:13px; font-weight:700; margin-top:5px; color:#333872;">ID: ${data.orderID}</div>
+                </div>
+                <div style="margin-bottom:25px; line-height:1.6; font-size:14px;">
+                    <div style="color:#666; text-transform:uppercase; font-size:10px; font-weight:800; letter-spacing:1px; margin-bottom:8px;">Customer Data</div>
+                    <div><b>Name:</b> ${data.customer}</div>
+                    <div><b>Email:</b> ${data.email}</div>
+                    <div><b>Date:</b> ${data.orderDate}</div>
+                    <div style="margin-top:10px;"><b>Source IP:</b> ${data.ip}</div>
+                </div>
+                <div style="border-top:1px solid #eee;">
+                    <div style="color:#666; text-transform:uppercase; font-size:10px; font-weight:800; letter-spacing:1px; margin-top:20px; margin-bottom:10px;">Itemized Selection</div>
+                    ${itemRows}
+                </div>
+                <div style="text-align:right; margin-top:30px; padding:25px; background:#f9fafb; border-radius:15px;">
+                    <div style="font-size:12px; color:#666; font-weight:700; text-transform:uppercase;">Final Balance Due</div>
+                    <div style="font-size:32px; font-weight:900; color:#333872;">$${data.total} USD</div>
+                </div>
+                <button onclick="window.location.href='home.html'" style="width:100%; margin-top:35px; padding:18px; background:#333872; color:white; border:none; border-radius:12px; cursor:pointer; font-weight:800; font-size:16px;">Return to Home Portal</button>
+            </div>
+        </div>`;
+
+        document.getElementById("main-app-container").style.display = "none";
+        const rc = document.getElementById("receipt-container");
+        rc.style.display = "block";
+        rc.innerHTML = receiptHTML;
+        window.scrollTo(0,0);
+    }
+</script>
+</body>
+</html>

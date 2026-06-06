@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop A| Strix Shop Credits (SSC) Management</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #020205;
+            --sidebar-bg: rgba(10, 12, 18, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --accent-blue: #3b82f6;
+            --text-main: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.6);
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
+        body { 
+            margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; 
+            background-color: var(--bg-deep); color: var(--text-main); height: 100vh; 
+            display: none; overflow: hidden; 
+        }
+        
+        body.authorized { display: flex; opacity: 1; transition: 0.3s ease; }
+
+        #bgstar { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .sidebar { 
+            width: 350px; background: var(--sidebar-bg); border-right: 1px solid var(--glass-border); 
+            display: flex; flex-direction: column; z-index: 10; backdrop-filter: blur(20px);
+        }
+        .sidebar-nav { padding: 25px; border-bottom: 1px solid var(--glass-border); text-align: center; }
+        .logo img { height: 40px; cursor: pointer; margin-bottom: 10px; }
+        .nav-title { 
+            font-weight: 700; font-size: 0.9rem; letter-spacing: 1px; 
+            color: var(--accent-blue); text-transform: uppercase; 
+        }
+
+        .user-list { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 8px; }
+        .user-item { 
+            display: flex; align-items: center; gap: 15px; padding: 15px; border-radius: 15px; 
+            cursor: pointer; transition: 0.3s; border: 1px solid transparent;
+        }
+        .user-item:hover { background: rgba(255,255,255,0.05); }
+        .user-item.active { background: rgba(59, 130, 246, 0.15); border-color: var(--accent-blue); }
+        
+        .user-pfp { 
+            width: 40px; height: 40px; border-radius: 50%; background-size: cover; 
+            background-position: center; border: 1px solid var(--glass-border); flex-shrink: 0;
+        }
+        .user-info { flex: 1; overflow: hidden; }
+        .badge { font-size: 0.6rem; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; font-weight: 800; margin-left: 5px; }
+        .badge-admin { background: var(--accent-blue); color: white; }
+
+        .main-editor { flex: 1; display: flex; flex-direction: column; z-index: 10; align-items: center; justify-content: center; padding: 40px; }
+        .editor-card { 
+            width: 100%; max-width: 500px; background: rgba(255,255,255,0.03); 
+            padding: 40px; border-radius: 40px; border: 1px solid var(--glass-border); backdrop-filter: blur(20px);
+            text-align: center;
+        }
+        .ssc-display { font-family: 'JetBrains Mono'; font-size: 4rem; font-weight: 700; margin: 20px 0; color: var(--success); }
+        
+        .control-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .math-btn { 
+            padding: 10px; border-radius: 10px; border: 1px solid var(--glass-border); 
+            background: rgba(255,255,255,0.05); color: white; font-weight: 700; cursor: pointer; 
+        }
+        .math-btn:hover { background: var(--accent-blue); color: white; }
+        .btn-sub { color: var(--danger); }
+        .btn-add { color: var(--success); }
+
+        input#manual-ssc { 
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); 
+            padding: 15px; border-radius: 15px; color: white; text-align: center; font-size: 1.2rem; font-family: 'JetBrains Mono'; margin-bottom: 20px;
+        }
+
+        .save-btn { 
+            width: 100%; padding: 15px; border-radius: 15px; border: none; 
+            background: white; color: black; font-weight: 800; cursor: pointer; text-transform: uppercase;
+        }
+        .save-btn:hover { background: var(--success); color: white; }
+
+        .placeholder { color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <canvas id="bgstar"></canvas>
+
+    <div class="sidebar">
+        <div class="sidebar-nav">
+            <a href="home.html" class="logo"><img src="logoh.png" alt="logo"></a>
+            <div class="nav-title">Strix Shop Credits Control</div>
+        </div>
+        <div class="user-list" id="user-list"></div>
+    </div>
+
+    <div class="main-editor">
+        <div id="placeholder" class="placeholder">Select a user to adjust balance</div>
+        
+        <div class="editor-card" id="editor-card" style="display: none;">
+            <span style="font-size: 0.7rem; letter-spacing: 3px; color: var(--accent-blue); font-weight: 800;">ACCOUNT SETTLEMENT</span>
+            <div id="target-name" style="font-weight: 700; margin-top: 10px; font-size: 1.2rem;">User Name</div>
+            <div class="ssc-display" id="ssc-view">0</div>
+            
+            <div class="control-group">
+                <button class="math-btn btn-sub" onclick="adjust(-10)">-10</button>
+                <button class="math-btn btn-sub" onclick="adjust(-5)">-5</button>
+                <button class="math-btn btn-sub" onclick="adjust(-1)">-1</button>
+                <button class="math-btn btn-add" onclick="adjust(1)">+1</button>
+                <button class="math-btn btn-add" onclick="adjust(5)">+5</button>
+                <button class="math-btn btn-add" onclick="adjust(10)">+10</button>
+            </div>
+
+            <label style="font-size: 0.6rem; color: var(--text-dim); display: block; margin-bottom: 8px;">OVERRIDE CREDIT VALUE</label>
+            <input type="number" id="manual-ssc" value="0">
+
+            <button class="save-btn" id="save-btn" onclick="saveSSC()">Update Database</button>
+        </div>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, collection, onSnapshot, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = { apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU", authDomain: "strix-shop.firebaseapp.com", projectId: "strix-shop" };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let activeUserId = null;
+    let currentBalance = 0;
+
+
+    function loadAllUsers() {
+        const list = document.getElementById('user-list');
+        onSnapshot(collection(db, "users"), (snap) => {
+            list.innerHTML = '';
+            snap.forEach(uDoc => {
+                const u = uDoc.data();
+                const isAdmin = u.acc === "admin";
+
+                const div = document.createElement('div');
+                div.className = `user-item ${activeUserId === uDoc.id ? 'active' : ''}`;
+                div.innerHTML = `
+                    <div class="user-pfp" style="background-image:url('${u.pfp || 'https://via.placeholder.com/150'}')"></div>
+                    <div class="user-info">
+                        <div style="font-weight:700; font-size:0.9rem; display:flex; align-items:center;">
+                            ${u.firstName} ${u.lastName}
+                            ${isAdmin ? '<span class="badge badge-admin">Admin</span>' : ''}
+                        </div>
+                        <div style="font-size:0.7rem; color:var(--text-dim);">Balance: ${u.ssc !== undefined ? u.ssc : 100} SSC</div>
+                    </div>
+                `;
+                div.onclick = () => selectUser(uDoc.id, `${u.firstName} ${u.lastName}`, u.ssc !== undefined ? u.ssc : 100);
+                list.appendChild(div);
+            });
+        });
+    }
+
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    const docSnap = await getDoc(doc(db, "users", user.uid));
+
+    if (!docSnap.exists()) {
+        window.location.href = "home.html";
+        return;
+    }
+
+    const currentUserData = docSnap.data();
+
+    const canView = currentUserData.acc === "admin";
+    const canModify = currentUserData.acc === "admin";
+
+    if (!canView) {
+        window.location.href = "home.html";
+        return;
+    }
+
+    document.body.classList.add("authorized");
+
+    loadAllUsers();
+
+    if (!canModify) {
+
+        const btn = document.getElementById("save-btn");
+
+        btn.style.opacity = "0.5";
+        btn.style.cursor = "not-allowed";
+    }
+
+    window.currentUserData = currentUserData;
+
+});
+
+    function selectUser(id, name, ssc) {
+        activeUserId = id;
+        currentBalance = ssc;
+        document.getElementById('placeholder').style.display = 'none';
+        document.getElementById('editor-card').style.display = 'block';
+        document.getElementById('target-name').innerText = name;
+        updateUI();
+    }
+
+    // Attach adjustment function to window so HTML buttons can see it (Module scoping fix)
+    window.adjust = (amt) => {
+        currentBalance += amt;
+        updateUI();
+    };
+
+    function updateUI() {
+        document.getElementById('ssc-view').innerText = currentBalance;
+        document.getElementById('manual-ssc').value = currentBalance;
+    }
+
+
+    window.saveSSC = async () => {
+        if (!window.currentUserData || window.currentUserData.acc !== "admin") {
+            alert("ACCESS DENIED");
+            return;
+            }
+        if(!activeUserId) return;
+        const newVal = parseInt(document.getElementById('manual-ssc').value);
+        const btn = document.getElementById('save-btn');
+        btn.innerText = "Syncing...";
+        btn.disabled = true;
+
+        try {
+            await updateDoc(doc(db, "users", activeUserId), { ssc: newVal });
+            alert("Updated!");
+        } catch (e) {
+            console.error(e);
+            alert("Error: Action Failed.");
+        } finally {
+            btn.innerText = "Update Database";
+            btn.disabled = false;
+        }
+    };
+
+    // BG Stars
+    const canvas = document.getElementById('bgstar');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    class Star {
+        constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5; this.alpha = Math.random(); this.blink = Math.random() * 0.02; }
+        draw() { this.alpha += this.blink; if (this.alpha > 1 || this.alpha < 0) this.blink = -this.blink; ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+    }
+    function initStars() { stars = []; for(let i=0; i<150; i++) stars.push(new Star()); }
+    function animate() { ctx.clearRect(0,0,canvas.width, canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); }
+    window.addEventListener('resize', () => { resize(); initStars(); });
+    resize(); initStars(); animate();
+</script>
+</body>
+</html>

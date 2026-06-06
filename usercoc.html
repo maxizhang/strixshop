@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | User Code of Conduct</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #06070b;
+            --surface: #10131a;
+            --surface-2: #151923;
+            --accent: rgb(193, 190, 233);
+            --text-main: #ffffff;
+            --text-dim: #94a3b8;
+            --border: rgba(255,255,255,0.08);
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text-main);
+            font-family: 'Quicksand', sans-serif;
+            line-height: 1.7;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 15px 5%;
+
+            background: rgba(10, 12, 18, 0.96);
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-tag {
+            font-size: 12px;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: var(--text-dim);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 70px auto;
+            padding: 0 20px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+
+        .header-section h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .header-section p {
+            color: var(--text-dim);
+            max-width: 750px;
+            margin: 0 auto;
+            font-size: 1rem;
+        }
+
+        .conduct-layout {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .conduct-card {
+            background: linear-gradient(
+                180deg,
+                var(--surface),
+                var(--surface-2)
+            );
+
+            border: 1px solid var(--border);
+            border-radius: 24px;
+
+            padding: 30px;
+
+            transition: 0.25s ease;
+        }
+
+        .conduct-card:hover {
+            border-color: rgba(193, 190, 233, 0.25);
+            transform: translateY(-4px);
+        }
+
+        .card-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--accent);
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+        }
+
+        .conduct-card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 14px;
+        }
+
+        .conduct-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .danger-box {
+            margin-top: 16px;
+            padding: 14px 16px;
+
+            border-radius: 14px;
+
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.18);
+
+            color: #fca5a5;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .final-banner {
+            margin-top: 70px;
+
+            background: linear-gradient(
+                135deg,
+                rgba(193, 190, 233, 0.08),
+                rgba(255,255,255,0.02)
+            );
+
+            border: 1px solid var(--border);
+            border-radius: 28px;
+
+            padding: 45px;
+            text-align: center;
+        }
+
+        .final-banner h2 {
+            margin-bottom: 12px;
+            font-size: 2rem;
+        }
+
+        .final-banner p {
+            color: var(--text-dim);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        footer {
+            margin-top: 80px;
+            text-align: center;
+            padding: 40px;
+            color: var(--text-dim);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 900px) {
+            .conduct-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .header-section h1 {
+                font-size: 2.4rem;
+            }
+
+            .final-banner {
+                padding: 35px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="home.html">
+            <img src="logoh.png" alt="STRIX" style="height:30px">
+        </a>
+
+        <div class="nav-tag">USER CONDUCT</div>
+    </nav>
+
+    <div class="container">
+
+        <div class="header-section">
+            <h1>User Conduct & Expectations</h1>
+
+            <p>
+                The operational standards and behavioral expectations required for all
+                users, customers, and team members within the Strix Shop ecosystem.
+            </p>
+        </div>
+
+        <div class="conduct-layout">
+
+            <div class="conduct-card">
+                <div class="card-number">SECTION 01</div>
+                <h2>Integrity in Transactions</h2>
+
+                <p>
+                    Orders placed through Strix Shop are considered intentional purchase
+                    commitments. False orders, abandoned deliveries, or repeated failure
+                    to complete transactions may result in account suspension.
+                </p>
+            </div>
+
+            <div class="conduct-card">
+                <div class="card-number">SECTION 02</div>
+                <h2>Prohibition of Hacking</h2>
+
+                <p>
+                    Attempts to exploit vulnerabilities, inject malicious code, bypass
+                    authentication systems, access restricted databases, or manipulate
+                    digital infrastructure are strictly forbidden.
+                </p>
+
+                <div class="danger-box">
+                    ZERO TOLERANCE POLICY — Unauthorized access attempts may result in
+                    permanent bans and reports to school administration.
+                </div>
+            </div>
+
+            <div class="conduct-card">
+                <div class="card-number">SECTION 03</div>
+                <h2>Professional Communication</h2>
+
+                <p>
+                    Communication with staff members and customers must remain respectful
+                    and appropriate at all times. Harassment, intimidation, threats, or
+                    abusive language will not be tolerated.
+                </p>
+            </div>
+
+            <div class="conduct-card">
+                <div class="card-number">SECTION 04</div>
+                <h2>Accurate Information</h2>
+
+                <p>
+                    Users are expected to provide accurate account details, including
+                    names, emails, and homeroom information. Impersonation or false
+                    identities undermine operational reliability.
+                </p>
+            </div>
+
+            <div class="conduct-card">
+                <div class="card-number">SECTION 05</div>
+                <h2>One Account Per Student</h2>
+
+                <p>
+                    Creating multiple accounts for promotional abuse, order manipulation,
+                    or ban evasion is considered fraudulent behavior and may lead to
+                    account termination.
+                </p>
+            </div>
+
+            <div class="conduct-card">
+                <div class="card-number">SECTION 06</div>
+                <h2>Reporting Vulnerabilities</h2>
+
+                <p>
+                    Users who discover glitches, pricing errors, or security weaknesses
+                    are expected to report them responsibly instead of exploiting them
+                    for personal gain.
+                </p>
+            </div>
+
+            <div class="conduct-card">
+                <div class="card-number">SECTION 07</div>
+                <h2>Payment Compliance</h2>
+
+                <p>
+                    Customers must be prepared to complete payment during scheduled
+                    delivery windows. Repeated non-payment incidents may result in
+                    restricted ordering privileges.
+                </p>
+            </div>
+
+            <div class="conduct-card">
+                <div class="card-number">SECTION 08</div>
+                <h2>Respect for School Property</h2>
+
+                <p>
+                    Strix Shop operates within a school environment. All users are
+                    expected to comply with school policies and avoid misuse of the
+                    platform for prohibited activities.
+                </p>
+            </div>
+
+            <div class="conduct-card">
+                <div class="card-number">SECTION 09</div>
+                <h2>Privacy of Others</h2>
+
+                <p>
+                    Users may not access, share, record, or distribute another person's
+                    personal information, transaction records, or order history without
+                    explicit authorization.
+                </p>
+            </div>
+
+            <div class="conduct-card">
+                <div class="card-number">SECTION 10</div>
+                <h2>Enforcement</h2>
+
+                <p>
+                    Violations of this Code may result in account suspension, order
+                    cancellation, permanent platform removal, or escalation to school
+                    authorities when necessary.
+                </p>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <footer>
+        &copy; 2026 STRIX SHOP
+    </footer>
+
+</body>
+</html>

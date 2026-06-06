@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop A | Admin Quick-Access Portal</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #020205;
+            --accent: #3b82f6;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.12);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg-deep);
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #bgstar {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .terminal-box {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 600px;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            padding: 30px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: var(--accent);
+            margin-bottom: 25px;
+        }
+
+        /* SIMPLE GRID ONLY */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .admin-btn {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--glass-border);
+            padding: 16px;
+            border-radius: 14px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .admin-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            background: rgba(59,130,246,0.08);
+        }
+
+        .full {
+            grid-column: span 2;
+        }
+
+        @media (max-width: 600px) {
+            .full {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<canvas id="bgstar"></canvas>
+
+<div class="terminal-box">
+    <div class="header">
+        <h1>ADMIN QUICK-ACCESS PORTAL</h1>
+    </div>
+
+    <div class="admin-grid">
+        <a href="ssc.html" class="admin-btn">STRIX SHOP CREDITS</a>
+        <a href="csa.html" class="admin-btn">CUSTOMER SUPPORT</a>
+        <a href="productmanagement.html" class="admin-btn">BACKROOM INVENTORY</a>
+        <a href="tables.html" class="admin-btn">ORDER TRACKER</a>
+        <a href="reporta.html" class="admin-btn">REVIEW REPORTS</a>
+        <a href="users.html" class="admin-btn">USER FILES</a>
+
+        <a href="mailto:maxizhang1128@gmail.com" class="admin-btn full">
+            EMAIL MAXI
+        </a>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
+        authDomain: "strix-shop.firebaseapp.com",
+        projectId: "strix-shop",
+        storageBucket: "strix-shop.firebasestorage.app",
+        messagingSenderId: "300414445622",
+        appId: "1:300414445622:web:97465fa5309c27b9605097",
+        measurementId: "G-L1QFZG26YE"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    auth.onAuthStateChanged((user) => {
+        if (!user) {
+            window.location.href = "index.html";
+        }
+    });
+const canvas = document.getElementById('bgstar');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+class Star {
+    constructor() {
+        this.x = Math.random() * innerWidth;
+        this.y = Math.random() * innerHeight;
+        this.size = Math.random() * 1.5;
+        this.alpha = Math.random();
+        this.speed = Math.random() * 0.02;
+    }
+    draw() {
+        this.alpha += this.speed;
+        if (this.alpha > 1 || this.alpha < 0) this.speed = -this.speed;
+        ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+let stars = [];
+function init() {
+    stars = [];
+    for (let i = 0; i < 80; i++) stars.push(new Star());
+}
+
+function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s => s.draw());
+    requestAnimationFrame(animate);
+}
+
+resize();
+init();
+animate();
+window.onresize = () => { resize(); init(); };
+</script>
+
+</body>
+</html>

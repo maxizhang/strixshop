@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Customer Support</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #020205;
+            --sidebar-bg: rgba(27, 27, 29, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --accent-blue: rgb(168, 185, 211);
+            --text-main: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.6);
+            --admin-bubble: rgba(255, 255, 255, 0.08);
+            --user-bubble: #6d6d74e5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+        
+        body { 
+            background-color: var(--bg-deep); 
+            color: var(--text-main); 
+            height: 100vh; 
+            display: flex; 
+            overflow: hidden;
+        }
+
+        #bgstar { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+
+        .sidebar { 
+            width: 350px; 
+            background: var(--sidebar-bg); 
+            border-right: 1px solid var(--glass-border); 
+            display: flex; 
+            flex-direction: column; 
+            z-index: 10;
+            backdrop-filter: blur(20px);
+        }
+
+        .sidebar nav {
+            padding: 25px;
+            border-bottom: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        .logo img { height: 40px; cursor: pointer; margin-bottom: 10px; }
+        .nav-title { font-weight: 700; font-size: 0.9rem; color: var(--accent-blue); text-transform: uppercase; }
+
+        .info-pane { flex: 1; overflow-y: auto; padding: 25px; display: flex; flex-direction: column; gap: 20px; }
+        .info-card { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 15px; border: 1px solid var(--glass-border); }
+        .info-card h4 { font-size: 0.8rem; margin-bottom: 8px; color: white; letter-spacing: 1px; }
+        .info-card p { font-size: 0.75rem; color: var(--text-dim); line-height: 1.5; }
+        .info-card a { color: var(--accent-blue); text-decoration: none; font-weight: 700; font-size: 0.75rem; }
+        .main-chat { flex: 1; display: flex; flex-direction: column; z-index: 10; background: rgba(0,0,0,0.2); }
+        
+        .chat-header { 
+            padding: 20px 30px; 
+            border-bottom: 1px solid var(--glass-border); 
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(10, 12, 18, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        #messages-container { flex: 1; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+
+        .msg-wrapper { display: flex; gap: 12px; align-items: flex-end; margin-bottom: 10px; max-width: 75%; }
+        .msg-mine { align-self: flex-end; flex-direction: row-reverse; }
+        .msg-other { align-self: flex-start; }
+
+        .chat-pfp { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--glass-border); object-fit: cover; }
+        
+        .bubble { padding: 12px 18px; border-radius: 20px; font-size: 0.9rem; line-height: 1.4; }
+        .msg-mine .bubble { background: var(--user-bubble); color: white; border-bottom-right-radius: 4px; }
+        .msg-other .bubble { background: var(--admin-bubble); color: white; border: 1px solid var(--glass-border); border-bottom-left-radius: 4px; border: 1px solid var(--accent-blue); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
+        
+        .time { font-size: 0.6rem; color: var(--text-dim); margin-top: 5px; font-family: 'JetBrains Mono'; display: block; }
+
+        .input-area { 
+            padding: 25px 35px; 
+            border-top: 1px solid var(--glass-border); 
+            display: flex; gap: 15px; 
+            background: var(--sidebar-bg);
+            backdrop-filter: blur(20px);
+        }
+
+        input#msg-input { 
+            flex: 1; background: rgba(255,255,255,0.05); 
+            border: 1px solid var(--glass-border); 
+            padding: 12px 25px; border-radius: 50px; 
+            color: white; outline: none;
+        }
+
+        .send-btn { 
+            background: white; color: black; border: none; 
+            padding: 0 25px; border-radius: 50px; 
+            cursor: pointer; font-weight: 700; transition: 0.3s;
+        }
+        .send-btn:hover { background: var(--accent-blue); color: white; }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <canvas id="bgstar"></canvas>
+
+    <div class="sidebar">
+        <nav>
+            <a href="home.html" class="logo"><img src="logoh.png" alt="logo"></a>
+            <div class="nav-title">Customer Support</div>
+        </nav>
+        <div class="info-pane">
+            <div class="info-card">
+                <h4>LEGAL DOCS</h4>
+                <p><a href="privacypolicy.html" target="_blank">Privacy Policy</a></p>
+                <p><a href="terms.html" target="_blank">Terms & Conditions</a></p>
+            </div>
+            <div class="info-card">
+                <h4>HOURS</h4>
+                <p><b>Mon - Fri:</b> 8:00 AM - 9:00 PM</p>
+            </div>
+            <div class="info-card">
+                <h4>No Reply?</h4>
+                <p>Don't worry! We will reply soon! Customer Support typically reply within 24 hours.</p>
+            </div>
+            <div class="info-card">
+                <h4><span style="color: #10b981;">STRIX SHOP CREW MEMBERS</span></h4>
+                <p>Owner and CEO: <b>MAXI ZHANG</b></p>
+                <p>General Manager: <b>SHAUNAK GUDURU</b></p>
+                <p></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-chat">
+        <div class="chat-header">
+            <div id="display-name" style="font-weight: 700; letter-spacing: 1px;">loading...</div>
+            <div style="font-size: 0.7rem; color: var(--text-dim); font-family: 'JetBrains Mono';">User ID: <span id="chan-id">loading...</span></div>
+        </div>
+        
+        <div id="messages-container"></div>
+
+        <form class="input-area" id="chat-form">
+            <input type="text" id="msg-input" placeholder="Enter message..." autocomplete="off">
+            <button type="submit" class="send-btn">SEND</button>
+        </form>
+    </div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc, collection, query, orderBy, onSnapshot, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = { 
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU", 
+        authDomain: "strix-shop.firebaseapp.com", 
+        projectId: "strix-shop" 
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    let fullName = "Customer";
+    let customerPfp = "logospfd.png";
+
+    onAuthStateChanged(auth, async (user) => {
+        if (!user) { window.location.href = "index.html"; return; }
+        
+        const uDoc = await getDoc(doc(db, "users", user.uid));
+        if (uDoc.exists()) {
+            const d = uDoc.data();
+            fullName = `${d.firstName || ""} ${d.lastName || ""}`.trim() || "Customer";
+            customerPfp = d.pfp || customerPfp;
+            document.getElementById('display-name').innerText = fullName.toUpperCase();
+        }
+        
+        document.getElementById('chan-id').innerText = user.uid.substring(0,12).toUpperCase();
+        loadMessages(user.uid);
+    });
+
+    function loadMessages(uid) {
+        const q = query(collection(db, "support_chats", uid, "messages"), orderBy("timestamp", "asc"));
+        onSnapshot(q, (snapshot) => {
+            const cont = document.getElementById('messages-container');
+            cont.innerHTML = '';
+            snapshot.forEach(d => {
+                const m = d.data();
+                const isMine = m.senderId === auth.currentUser.uid;
+                const pfp = isMine ? customerPfp : "logospfd.png";
+                const time = m.timestamp ? new Date(m.timestamp.seconds * 1000).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : "---";
+
+                const wrapper = document.createElement('div');
+                wrapper.className = `msg-wrapper ${isMine ? 'msg-mine' : 'msg-other'}`;
+                wrapper.innerHTML = `
+                    <img src="${pfp}" class="chat-pfp">
+                    <div class="bubble-wrap">
+                        <div class="bubble">${m.text}</div>
+                        <span class="time">${time}</span>
+                    </div>
+                `;
+                cont.appendChild(wrapper);
+            });
+            cont.scrollTop = cont.scrollHeight;
+        });
+    }
+
+    document.getElementById('chat-form').onsubmit = async (e) => {
+        e.preventDefault();
+        const input = document.getElementById('msg-input');
+        if (!input.value.trim()) return;
+        
+        const text = input.value;
+        input.value = '';
+        
+        await addDoc(collection(db, "support_chats", auth.currentUser.uid, "messages"), {
+            text: text,
+            senderId: auth.currentUser.uid,
+            acc: "customer",
+            timestamp: serverTimestamp()
+        });
+    };
+
+    
+    const canvas = document.getElementById('bgstar');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    class Star {
+        constructor() { this.x = Math.random()*canvas.width; this.y = Math.random()*canvas.height; this.size = Math.random()*1.5; this.alpha = Math.random(); this.blink = Math.random()*0.02; }
+        draw() { this.alpha += this.blink; if (this.alpha > 1 || this.alpha < 0) this.blink = -this.blink; ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); }
+    }
+    function initStars() { stars = []; for(let i=0; i<200; i++) stars.push(new Star()); }
+    function animate() { ctx.clearRect(0,0,canvas.width, canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); }
+    window.addEventListener('resize', () => { resize(); initStars(); });
+    resize(); initStars(); animate();
+</script>
+</body>
+</html>

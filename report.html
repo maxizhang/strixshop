@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #06070b;
+            --panel: #11141c;
+            --accent: #c1bee9;
+            --text-main: #ffffff;
+            --text-dim: #8b93a7;
+            --border: rgba(255, 255, 255, 0.08);
+            --error: #ef4444;
+            --success: #10b981;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Quicksand', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        #bgstar { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+
+        .report-card {
+            width: 100%;
+            max-width: 600px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 34px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header { text-align: center; margin-bottom: 30px; }
+        .header h1 { font-size: 28px; letter-spacing: 4px; margin: 0; text-transform: uppercase; }
+        .header p { color: var(--text-dim); font-size: 13px; margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
+
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-size: 11px; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; }
+
+        input, select, textarea {
+            width: 100%;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 14px 18px;
+            color: rgb(156, 154, 180);
+            font-family: 'Quicksand', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus { border-color: var(--accent); background: rgba(255,255,255,0.05); }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 16px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover { transform: translateY(-2px); opacity: 0.9; }
+        .btn-submit:disabled { background: #444; color: #888; cursor: not-allowed; }
+
+        .status-msg { text-align: center; font-size: 13px; margin-top: 15px; display: none; }
+    </style>
+</head>
+<body>
+
+<canvas id="bgstar"></canvas>
+
+<div class="report-card">
+    <div class="header">
+        <h1>File a Report</h1>
+        <p>Internal Submission Portal</p>
+    </div>
+
+    <form id="report-form">
+        <div class="form-group">
+            <label>Report Subject</label>
+            <input type="text" id="subject" placeholder="e.g. Bug Report, Team Member Report, ..." required>
+        </div>
+
+        <div class="form-group">
+            <label>Category</label>
+            <select id="category" required>
+                <option value="" disabled selected>Select Classification</option>
+                <option value="Team Memver">Report Team Member</option>
+                <option value="Customer Service">Customer Service</option>
+                <option value="Product Issue">Product Issue</option>
+                <option value="Technical Bug">System Bug</option>
+                <option value="Suspicious Activity">Suspicious Activity</option>
+                <option value="Scam">Scam</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Detailed Description</label>
+            <textarea id="details" rows="5" placeholder="Provide as much detail as possible..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn">SUBMIT TRANSMISSION</button>
+        <div id="status-msg" class="status-msg"></div>
+    </form>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script>
+    const firebaseConfig = { 
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU", 
+        authDomain: "strix-shop.firebaseapp.com", 
+        projectId: "strix-shop" 
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    const reportForm = document.getElementById('report-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const statusMsg = document.getElementById('status-msg');
+
+let currentUser = null;
+
+auth.onAuthStateChanged(user => {
+    currentUser = user;
+
+    if (!user) {
+        statusMsg.style.display = "block";
+        statusMsg.style.color = "var(--error)";
+        statusMsg.innerText = "You are not logged in.";
+    }
+});
+
+reportForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!currentUser) {
+        alert("You must be logged in to submit a report.");
+        return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerText = "TRANSMITTING...";
+
+    const reportData = {
+        uid: currentUser.uid,
+        email: currentUser.email || "No Email",
+        subject: document.getElementById('subject').value.trim(),
+        category: document.getElementById('category').value,
+        details: document.getElementById('details').value.trim(),
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        status: "pending"
+    };
+
+    try {
+
+        await db.collection("reports").add(reportData);
+
+        statusMsg.style.display = "block";
+        statusMsg.style.color = "var(--success)";
+        statusMsg.innerText = "Transmission successful.";
+
+        reportForm.reset();
+
+        setTimeout(() => {
+            window.location.href = "home.html";
+        }, 2000);
+
+    } catch (error) {
+
+        console.error("REPORT ERROR:", error);
+
+        submitBtn.disabled = false;
+        submitBtn.innerText = "SUBMIT TRANSMISSION";
+
+        statusMsg.style.display = "block";
+        statusMsg.style.color = "var(--error)";
+        statusMsg.innerText = error.message;
+    }
+});
+
+    const canvas = document.getElementById('bgstar');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    class Star { constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.5; this.alpha = Math.random(); this.blink = Math.random() * 0.02; } draw() { this.alpha += this.blink; if (this.alpha > 1 || this.alpha < 0) this.blink = -this.blink; ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); } }
+    resize(); for(let i=0; i<100; i++) stars.push(new Star());
+    function animate() { ctx.clearRect(0,0,canvas.width, canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); }
+    window.onresize = resize; animate();
+</script>
+</body>
+</html>

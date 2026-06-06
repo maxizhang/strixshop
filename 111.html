@@ -1,0 +1,46 @@
+SCHOOL SUPPLIES
+TOYS AND GAMES
+MATERIALS
+LEARNING PROPS
+ELECTRONICS
+KEYCHAINS
+ACCESSORIES
+GIFT CARDS
+OTHER
+
+
+<!--Change Firebase Descriptions-->
+<script>
+async function renameCategory() {
+
+    const snap = await db
+        .collection("products")
+        .where("category", "==", "TOYS")
+        .get();
+
+    const batch = db.batch();
+
+    snap.forEach(doc => {
+
+        batch.update(doc.ref, {
+            category: "TOYS AND GAMES"
+        });
+
+    });
+
+    await batch.commit();
+
+    console.log("DONE");
+}
+
+renameCategory();
+</script>
+
+Zisi Zhu
+Budget Manager
+StrixNews Editor
+Human Resources?
+
+
+Voting Rights:
+- 

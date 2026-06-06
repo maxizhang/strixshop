@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="logospfd.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Sign In</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --overlay: rgba(10, 15, 25, 0.8);
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.6);
+            --error: #ff5f5f;
+        }
+
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background: #050505; 
+            color: var(--text-main);
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+        }
+
+        .bg-image-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('indexbg.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.85; 
+            z-index: 0;
+        }
+
+        #starfield {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+            pointer-events: none;
+        }
+
+        .overlay-shield {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 20%, var(--overlay) 100%);
+            z-index: 2;
+        }
+
+        .container {
+            position: relative;
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; z-index: 10;
+        }
+
+        .login-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            padding: 3rem 2.5rem;
+            border-radius: 40px;
+            width: 100%;
+            max-width: 340px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        h1 { margin: 0; font-size: 2.2rem; font-weight: 700; letter-spacing: 2px; }
+        .version { font-size: 0.7rem; color: var(--text-dim); margin-bottom: 2rem; display: block; font-weight: 300; }
+
+        input {
+            width: 100%; padding: 15px 22px; margin: 12px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: white; outline: none;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        input:focus { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.5); }
+        input::placeholder { color: #ffffff; opacity: 0.7; }
+
+        button {
+            width: 100%; padding: 15px; margin-top: 1.5rem;
+            background: #ffffff; color: #3a3455;
+            border: none; border-radius: 50px;
+            font-weight: 700; font-size: 1rem;
+            cursor: pointer; transition: transform 0.2s;
+        }
+
+        button:hover { background: #f0f0f0; transform: scale(1.02); }
+
+        #error-display { color: var(--error); font-size: 0.85rem; margin-top: 10px; min-height: 1.2rem; }
+
+        .toggle-link {
+            margin-top: 25px; display: inline-block; font-size: 0.85rem;
+            color: var(--text-dim); cursor: pointer; text-decoration: none;
+            transition: color 0.2s;
+        }
+        .toggle-link:hover { color: var(--text-main); }
+    </style>
+</head>
+<body>
+
+<div class="bg-image-layer"></div>
+<canvas id="starfield"></canvas>
+<div class="overlay-shield"></div>
+
+<div class="container">
+    <div class="login-card">
+        <h1>STRIX SHOP</h1>
+        <span class="version">v2.02.094.50</span>
+        <!--Verion.verion#.update#.file#-->
+        
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email Address" required>
+            <input type="password" id="password" placeholder="Password" required>
+            
+            <div id="error-display"></div>
+
+            <button type="submit" id="mainBtn">Sign In</button>
+        </form>
+
+        <a href="createacc.html" class="toggle-link">Create Account</a>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+// Firebase Configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
+        authDomain: "strix-shop.firebaseapp.com",
+        projectId: "strix-shop",
+        storageBucket: "strix-shop.firebasestorage.app",
+        messagingSenderId: "300414445622",
+        appId: "1:300414445622:web:97465fa5309c27b9605097"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+// Login
+    const loginForm = document.getElementById('loginForm');
+    const errorDisplay = document.getElementById('error-display');
+
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        errorDisplay.innerText = "";
+        
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        signInWithEmailAndPassword(auth, email, password)
+            .then(() => window.location.href = "home.html")
+            .catch(err => {
+                if (err.code === 'auth/invalid-email') errorDisplay.innerText = "Invalid email format.";
+                else if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') errorDisplay.innerText = "Incorrect email or password.";
+                else errorDisplay.innerText = "Please check your credentials or create an account.";
+            });
+    });
+
+// Background
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    class Star {
+        constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.2; this.speed = Math.random() * 0.15; }
+        update() { this.y -= this.speed; if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; } }
+        draw() { ctx.fillStyle = "rgba(255, 255, 255, 0.4)"; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+    }
+    for (let i = 0; i < 120; i++) stars.push(new Star());
+    function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.update(); s.draw(); }); requestAnimationFrame(animate); }
+    window.addEventListener('resize', resize);
+    resize(); animate();
+</script>
+</body>
+</html>
