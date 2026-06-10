@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop A | Order Management</title>
     <link rel="icon" type="image/png" href="logospfd.png">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght=300;500;700&family=Inter:wght=300;400;600;700&family=JetBrains+Mono:wght=400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-deep: #020205;
@@ -52,11 +52,11 @@
         .receipt-title { font-size: 12px; color: var(--accent-blue); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
         .receipt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .box { background: #1c2230; padding: 15px; border-radius: 8px; border: 1px solid #2a2f3a; font-size: 14px; }
-        .agreement-text { font-size: 13px; color: #ffffff; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .agreement-text { font-size: 13px; color: #9aa4b2; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         
         .item-row { border-bottom: 1px solid #2a2f3a; padding: 15px 0; display: flex; justify-content: space-between; }
         .item-name { font-weight: 600; color: #fff; font-size: 15px; }
-        .item-subtext { font-size: 13px; color: #fff; }
+        .item-subtext { font-size: 13px; color: #9aa4b2; }
         
         .notes-area-wrap {
             margin-top: 20px; padding: 20px;
@@ -105,21 +105,21 @@
         }
         .delete-all-btn:hover { opacity: 0.8; }
 
-        /* Sidebar*/
+        /* Sidebar Calculator Layout styles */
         .sidebar-calc-panel {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 15px;
             padding: 15px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
         .calc-screen-wrap {
             background: #000000;
-            border: 1px solid var(--glass-border);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 8px;
-            padding: 10px;
+            padding: 6px;
         }
         .calc-screen-input {
             width: 100%;
@@ -127,31 +127,31 @@
             border: none;
             color: #ffffff;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
+            font-size: 13px;
             text-align: right;
             outline: none;
         }
         .calc-screen-output {
             color: var(--accent-blue);
             font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
+            font-size: 11px;
             text-align: right;
             margin-top: 4px;
-            min-height: 16px;
+            min-height: 14px;
         }
         .calc-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            gap: 4px;
         }
         .calc-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--glass-border);
             border-radius: 6px;
             color: #ffffff;
-            padding: 10px 0;
+            padding: 8px 0;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.15s ease;
@@ -164,12 +164,11 @@
             background: rgba(193, 190, 233, 0.08);
         }
         .calc-btn.action-btn {
-            color: var(--error);
+            font-weight: 700;
         }
         .calc-btn.eval-btn {
             background: var(--accent-blue);
             color: #000000;
-            grid-column: span 2;
         }
         .calc-btn.eval-btn:hover {
             background: #ffffff;
@@ -178,16 +177,16 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            margin-top: 4px;
+            margin-top: 2px;
             border-top: 1px dashed var(--glass-border);
-            padding-top: 10px;
+            padding-top: 6px;
         }
         .pct-input {
             flex: 1;
             background: #000;
             border: 1px solid var(--glass-border);
-            padding: 8px;
-            border-radius: 6px;
+            padding: 6px;
+            border-radius: 4px;
             color: #fff;
             font-family: 'JetBrains Mono';
             font-size: 11px;
@@ -198,8 +197,8 @@
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--glass-border);
             color: var(--accent-blue);
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 6px 10px;
+            border-radius: 4px;
             font-size: 11px;
             font-weight: 700;
             cursor: pointer;
@@ -212,11 +211,11 @@
             inset: 0;
             background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(2px);
-            z-index: 30; /* Higher than receipt, but lower than browser-left */
+            z-index: 30;
             align-items: center;
-            justify-content: flex-end; /* Pushes modal rightward so left-side module stays exposed */
+            justify-content: flex-end;
             padding: 40px;
-            pointer-events: none; /* Allows click-through interaction on blank space */
+            pointer-events: none;
         }
         .popup-card {
             width: 500px;
@@ -226,7 +225,7 @@
             border-radius: 20px;
             padding: 25px;
             box-shadow: -10px 25px 80px rgba(0,0,0,0.8);
-            pointer-events: auto; /* Restores local interactivity to input controls */
+            pointer-events: auto;
         }
         .popup-title { font-size: 1.2rem; font-weight: 700; color: white; margin-bottom: 20px; }
         .discount-list { max-height: 250px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px; }
@@ -242,7 +241,7 @@
         .popup-btn:hover { opacity: 0.85; }
         .popup-btn.primary { background: var(--accent-blue); color: black; }
 
-        .agreement-text span { font-weight: 600; color: #ffffff}
+        .agreement-text span { font-weight: 600; }
 
         @media print {
             body, html { height: auto !important; overflow: visible !important; background: white !important; }
@@ -279,56 +278,57 @@
             </div>
             <div id="search-status" style="font-size:0.75rem; color:var(--text-dim); text-align:center; padding:5px 10px 10px 10px;">Waiting for input...</div>
 
-<div class="sidebar-calc-panel" style="gap: 8px; background: rgba(255, 255, 255, 0.02); border-color: rgba(255, 255, 255, 0.08);">
+            <div class="sidebar-calc-panel">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="font-size:0.65rem; font-weight:800; color:var(--accent-blue); letter-spacing:1px">Calculator</span>
+                    <span style="font-size:0.65rem; font-weight:800; color:var(--accent-blue); letter-spacing:1px">COMPUTATION MODULE</span>
                     <span style="font-size:0.6rem; color:var(--success); font-family:'JetBrains Mono'; display:none;" id="calc-auto-status">⚡ Auto-Linked</span>
                 </div>
-                <div class="calc-screen-wrap" style="padding: 6px; border-color: rgba(255,255,255,0.06);">
-                    <input type="text" id="calcInput" class="calc-screen-input" style="font-size: 13px;" placeholder="0" onkeydown="if(event.key==='Enter') runCalc()">
-                    <div id="calcResult" class="calc-screen-output" style="font-size: 11px; min-height: 14px;"></div>
+                <div class="calc-screen-wrap">
+                    <input type="text" id="calcInput" class="calc-screen-input" placeholder="0" onkeydown="if(event.key==='Enter') runCalc()">
+                    <div id="calcResult" class="calc-screen-output"></div>
                 </div>
                 
-                <div class="calc-grid" style="gap: 4px;">
-                    <button class="calc-btn action-btn" style="color: var(--error); font-size:11px; padding: 8px 0;" onclick="clearCalc('AC')">AC</button>
-                    <button class="calc-btn action-btn" style="color: var(--text-dim); font-size:11px; padding: 8px 0;" onclick="clearCalc('C')">C</button>
-                    <button class="calc-btn op-btn" style="font-size:11px; padding: 8px 0;" onclick="toggleParens()">()</button>
-                    <button class="calc-btn op-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('/')">÷</button>
+                <div class="calc-grid">
+                    <button class="calc-btn action-btn" style="color: var(--error);" onclick="clearCalc('AC')">AC</button>
+                    <button class="calc-btn action-btn" style="color: var(--text-dim);" onclick="clearCalc('C')">C</button>
+                    <button class="calc-btn op-btn" onclick="toggleParens()">()</button>
+                    <button class="calc-btn op-btn" onclick="appendCalc('/')">÷</button>
                     
-                    <button class="calc-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('7')">7</button>
-                    <button class="calc-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('8')">8</button>
-                    <button class="calc-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('9')">9</button>
-                    <button class="calc-btn op-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('*')">×</button>
+                    <button class="calc-btn" onclick="appendCalc('7')">7</button>
+                    <button class="calc-btn" onclick="appendCalc('8')">8</button>
+                    <button class="calc-btn" onclick="appendCalc('9')">9</button>
+                    <button class="calc-btn op-btn" onclick="appendCalc('*')">×</button>
                     
-                    <button class="calc-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('4')">4</button>
-                    <button class="calc-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('5')">5</button>
-                    <button class="calc-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('6')">6</button>
-                    <button class="calc-btn op-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('-')">-</button>
+                    <button class="calc-btn" onclick="appendCalc('4')">4</button>
+                    <button class="calc-btn" onclick="appendCalc('5')">5</button>
+                    <button class="calc-btn" onclick="appendCalc('6')">6</button>
+                    <button class="calc-btn op-btn" onclick="appendCalc('-')">-</button>
                     
-                    <button class="calc-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('1')">1</button>
-                    <button class="calc-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('2')">2</button>
-                    <button class="calc-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('3')">3</button>
-                    <button class="calc-btn op-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('+')">+</button>
+                    <button class="calc-btn" onclick="appendCalc('1')">1</button>
+                    <button class="calc-btn" onclick="appendCalc('2')">2</button>
+                    <button class="calc-btn" onclick="appendCalc('3')">3</button>
+                    <button class="calc-btn op-btn" onclick="appendCalc('+')">+</button>
                     
-                    <button class="calc-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('0')">0</button>
-                    <button class="calc-btn" style="font-size:11px; padding: 8px 0;" onclick="appendCalc('.')">.</button>
-                    <button class="calc-btn op-btn" style="font-size:11px; padding: 8px 0;" onclick="backspaceCalc()">⌫</button>
-                    <button class="calc-btn eval-btn" style="font-size:11px; padding: 8px 0;" onclick="runCalc()">=</button>
+                    <button class="calc-btn" onclick="appendCalc('0')">0</button>
+                    <button class="calc-btn" onclick="appendCalc('.')">.</button>
+                    <button class="calc-btn op-btn" onclick="backspaceCalc()">⌫</button>
+                    <button class="calc-btn eval-btn" onclick="runCalc()">=</button>
                 </div>
 
-                <div class="pct-calculator-row" style="padding-top: 6px; margin-top: 2px;">
+                <div class="pct-calculator-row">
                     <div style="position: relative; flex: 1.2; display: flex; align-items: center;">
-                        <input id="pctAmount" class="pct-input" type="number" step="0.01" style="padding: 6px; font-size:11px; border-radius: 4px; padding-left: 14px;" placeholder="Amt">
+                        <input id="pctAmount" class="pct-input" type="number" step="0.01" style="padding-left: 14px;" placeholder="Amt">
                         <span style="position: absolute; left: 5px; font-size: 9px; color: var(--text-dim);">$</span>
                     </div>
                     <div style="position: relative; flex: 0.8; display: flex; align-items: center;">
-                        <input id="pctPercent" class="pct-input" type="number" style="padding: 6px; font-size:11px; border-radius: 4px; padding-right: 14px;" placeholder="%">
+                        <input id="pctPercent" class="pct-input" type="number" style="padding-right: 14px;" placeholder="%">
                         <span style="position: absolute; right: 5px; font-size: 9px; color: var(--text-dim);">%</span>
                     </div>
-                    <button class="pct-btn" style="padding: 6px 10px; font-size:11px; border-radius: 4px;" onclick="runPercent()">Calc</button>
+                    <button class="pct-btn" onclick="runPercent()">Calc</button>
                 </div>
                 <div id="pctResult" style="font-family:'JetBrains Mono'; font-size:10px; color:var(--success); text-align:center; min-height:12px; margin-top:-2px;"></div>
             </div>
+        </div>
 
         <div class="browser-right" id="receipt-display">
             <div style="display:flex; align-items:center; justify-content:center; height:100%; color:var(--text-dim)">Search for an Order ID to load the receipt.</div>
@@ -475,7 +475,6 @@
 
             const subtotal = Array.isArray(data.items) ? data.items.reduce((sum, item) => sum + ((Number(item.price)||0) * (Number(item.qty)||1)), 0) : 0;
             
-            // Look up active discounts saved within the document fields
             const activeDiscounts = Array.isArray(data.discounts) ? data.discounts : [];
             const discountTotal = activeDiscounts.reduce((sum, d) => sum + (Number(d.amount) || 0), 0);
             const finalTotal = Math.max(0, subtotal - discountTotal);
@@ -527,11 +526,11 @@
                         <div class="total-price">$${finalTotal.toFixed(2)} USD</div>
                     </div>
                 </div>`;
+
+            // Automatically push total into the modified sidebar percent engine
+            autoInjectTotal(finalTotal);
         }
 
-        // Feed the calculated final total into our modern sidebar module automatically
-            autoInjectTotal(finalTotal);
-        
         function loadTable() {
             const body = document.getElementById('Table-body');
             const statuses = ["Placed", "Ordered", "Shipping", "Arrived", "Delivering", "Delivered", "Cancelled"];
@@ -597,7 +596,6 @@
             const listContainer = document.getElementById("discountList");
             listContainer.innerHTML = "";
             
-            // Populate dialog with data saved in Firebase fields
             if (currentOrderData && Array.isArray(currentOrderData.discounts)) {
                 currentOrderData.discounts.forEach(d => {
                     addDiscountRow(d.name, d.amount);
@@ -636,12 +634,10 @@
             });
 
             try {
-                // Persistent saving right into Firestore document field
                 await db.collection("orders").doc(currentOrderId).update({
                     discounts: updatedDiscounts
                 });
                 
-                // Refresh local tracking references instantly
                 currentOrderData.discounts = updatedDiscounts;
                 
                 closeDiscountPopup();
@@ -655,12 +651,11 @@
             }
         }
 
-// calculator
+        /* ===== SIDEBAR CALCULATOR ENGINE LOGIC ===== */
         let lastResultCalculated = false;
 
         function appendCalc(val) {
             const input = document.getElementById("calcInput");
-            // If the operator engine just computed a value and user types a digit, start fresh
             if (lastResultCalculated && !isNaN(val)) {
                 input.value = "";
             }
@@ -689,7 +684,6 @@
             const openCount = (txt.match(/\(/g) || []).length;
             const closeCount = (txt.match(/\)/g) || []).length;
             
-            // Autofill?
             if (openCount === closeCount || txt.endsWith('(') || txt.match(/[\+\-\*\/]$/)) {
                 input.value += '(';
             } else {
@@ -705,14 +699,10 @@
             if (!input.value.trim()) return;
             
             try {
-                // Token verification pattern safely replacing basic math functions
                 const sanitizedExpression = input.value.replace(/×/g, '*').replace(/÷/g, '/');
-                
-                // Using modern parsing instead of unsafe execution blocks where possible
                 const result = new Function(`return (${sanitizedExpression})`)();
                 
                 if (result !== undefined && !isNaN(result)) {
-                    // Check if it's a decimal floating overflow and format cleanly
                     display.innerText = Number.isInteger(result) ? result : parseFloat(result.toFixed(4));
                     lastResultCalculated = true;
                 } else {
@@ -735,7 +725,6 @@
                 `<span style="color:var(--accent-blue)">-${percent}%:</span> $${calculatedDeduction.toFixed(2)} | <span style="color:var(--text-main)">Net: $${localizedRemaining.toFixed(2)}</span>`;
         }
 
-        // Autofill Total Amount
         function autoInjectTotal(finalBalanceAmount) {
             const amtInput = document.getElementById("pctAmount");
             const statusLabel = document.getElementById("calc-auto-status");
@@ -743,11 +732,13 @@
             if(amtInput && !isNaN(finalBalanceAmount)) {
                 amtInput.value = parseFloat(finalBalanceAmount).toFixed(2);
                 
-                // Visual Indicator Flash to let users know tracking was applied
                 if(statusLabel) {
                     statusLabel.style.display = "block";
                     statusLabel.style.opacity = "1";
-                    setTimeout(() => { statusLabel.style.transition = "opacity 1s"; statusLabel.style.opacity = "0.4"; }, 1500);
+                    setTimeout(() => { 
+                        statusLabel.style.transition = "opacity 1s"; 
+                        statusLabel.style.opacity = "0.4"; 
+                    }, 1500);
                 }
             }
         }
