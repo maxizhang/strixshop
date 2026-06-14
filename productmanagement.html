@@ -534,7 +534,7 @@ async function quickStock(event, uid, change) {
 
 async function deleteMaster() {
 
-    if (!currentUserData || currentUserData.adminStatus !== true) {
+    if (!currentUserData || currentUserData.acc != admin) {
         alert("ADMIN ACCESS REQUIRED");
         return;
     }
