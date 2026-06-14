@@ -435,7 +435,7 @@ async function quickStock(event, uid, change) {
 
     event.stopPropagation();
 
-    if (!currentUserData || currentUserData.acc === "admin") {
+    if (!currentUserData || currentUserData.acc != "admin") {
         alert("ACCESS DENIED");
         return;
     }
