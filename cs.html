@@ -27,7 +27,6 @@
         body { 
             margin: 0;
             font-family: 'Quicksand', sans-serif;
-            /* A tiny bit darker / more muted light blue-gray gradient */
             background: linear-gradient(-45deg, #cbd5e1, #e2e8f0, #c7d2fe, #bfdbfe);
             background-size: 400% 400%;
             animation: fluidBackground 20s ease infinite;
@@ -105,7 +104,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* App Layout with Rounded Corners and Glass */
+        /* App Layout Base */
         .app-layout {
             display: flex;
             flex: 1;
@@ -134,9 +133,12 @@
             padding: 24px;
             border-bottom: 1px solid var(--border);
             text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .nav-title { font-weight: 700; font-size: 0.85rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+        .nav-title { font-weight: 700; font-size: 0.85rem; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
 
         .info-pane { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
         .info-card { 
@@ -150,7 +152,7 @@
         .info-card p { font-size: 0.78rem; color: var(--text-dim); line-height: 1.4; font-weight: 600; }
         .info-card a { color: var(--primary); text-decoration: underline; font-weight: 700; font-size: 0.78rem; }
         
-        .main-chat { flex: 1; display: flex; flex-direction: column; z-index: 10; background: rgba(255, 255, 255, 0.2); }
+        .main-chat { flex: 1; display: flex; flex-direction: column; z-index: 10; background: rgba(255, 255, 255, 0.2); min-width: 0; }
         
         .chat-header { 
             padding: 18px 30px; 
@@ -208,7 +210,7 @@
             flex-shrink: 0;
         }
         
-        .bubble-wrap { display: flex; flex-direction: column; }
+        .bubble-wrap { display: flex; flex-direction: column; min-width: 0; }
         .msg-mine .bubble-wrap { align-items: flex-end; }
         .msg-other .bubble-wrap { align-items: flex-start; }
 
@@ -220,11 +222,10 @@
             letter-spacing: 0.5px;
         } 
         
-        .bubble { padding: 12px 16px; border-radius: 18px; font-size: 0.93rem; line-height: 1.4; position: relative; font-weight: 600; }
+        .bubble { padding: 12px 16px; border-radius: 18px; font-size: 0.93rem; line-height: 1.4; position: relative; font-weight: 600; word-break: break-word; }
         .msg-mine .bubble { background: var(--user-bubble); color: #ffffff; border-bottom-right-radius: 4px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
         .msg-other .bubble { background: var(--admin-bubble); color: var(--text-main); border-bottom-left-radius: 4px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03); }
         
-        /* Clickable images with NO heavy borders */
         .bubble img, .bubble video {
             max-width: 260px;
             max-height: 260px;
@@ -232,20 +233,16 @@
             display: block;
             margin-top: 6px;
             object-fit: cover;
-            border: none; /* Removed heavy border */
+            border: none;
             cursor: pointer;
             transition: opacity 0.2s;
         }
-        .bubble img:hover {
-            opacity: 0.92;
-        }
+        .bubble img:hover { opacity: 0.92; }
 
         .upload-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: rgba(255, 255, 255, 0.7);
             border-radius: 18px;
             display: flex;
@@ -282,15 +279,10 @@
             background: rgba(255, 255, 255, 0.6);
             border: 1px solid var(--border);
             color: var(--text-main);
-            width: 42px;
-            height: 42px;
+            width: 42px; height: 42px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.2s;
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: 0.2s; flex-shrink: 0;
         }
         .attach-btn:hover { background: var(--primary); color: #ffffff; border-color: var(--primary); }
 
@@ -299,8 +291,8 @@
             border: 1px solid var(--border); 
             padding: 12px 20px; border-radius: 50px; 
             color: var(--text-main); outline: none;
-            font-size: 0.93rem;
-            font-weight: 600;
+            font-size: 0.93rem; font-weight: 600;
+            min-width: 0;
         }
         input#msg-input::placeholder { color: var(--text-dim); }
         input#msg-input:focus { border-color: var(--primary); background: rgba(255, 255, 255, 0.85); }
@@ -310,20 +302,85 @@
             padding: 0 22px; height: 42px; border-radius: 50px; 
             cursor: pointer; font-weight: 700; transition: 0.2s;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            flex-shrink: 0;
         }
         .send-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
 
         .spin { animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        ::-webkit-scrollbar { width: 5px; }
+        /* Mobile specific toggles */
+        .mobile-toggle-btn {
+            display: none;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--border);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 10px; }
+
+        /* PHONE LAYOUT OVERRIDES (Applied dynamically if mobile device detected) */
+        body.is-mobile {
+            height: 100dvh;
+            overflow: hidden;
+        }
+        body.is-mobile .app-layout {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            border-radius: 0;
+            border: none;
+            flex-direction: column;
+        }
+        body.is-mobile nav.top-nav {
+            display: none; /* Hide desktop nav on phones for maximum screen space */
+        }
+        body.is-mobile .sidebar {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 100;
+            background: rgba(240, 244, 248, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        body.is-mobile .sidebar.open {
+            transform: translateX(0);
+        }
+        body.is-mobile .mobile-toggle-btn {
+            display: inline-block;
+        }
+        body.is-mobile .main-chat {
+            width: 100%;
+            height: 100%;
+        }
+        body.is-mobile .chat-header {
+            padding: 12px 16px;
+        }
+        body.is-mobile #messages-container {
+            padding: 15px 10px;
+        }
+        body.is-mobile .input-area {
+            padding: 10px 12px;
+            padding-bottom: max(10px, env(safe-area-inset-bottom));
+        }
+        body.is-mobile .msg-wrapper {
+            max-width: 88%;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Professional Navbar -->
-    <nav class="top-nav">
+    <!-- Professional Navbar (Desktop/Tablet) -->
+    <nav class="top-nav" id="desktop-nav">
         <div class="nav-main">
             <div class="logo-box" onclick="window.location.href='home.html'"><img src="logoh.png" alt="STRIX"></div>
             <div class="nav-right-actions">
@@ -338,9 +395,10 @@
     </nav>
 
     <div class="app-layout">
-        <div class="sidebar">
+        <div class="sidebar" id="app-sidebar">
             <div class="sidebar-header">
                 <div class="nav-title">Support Portal</div>
+                <button type="button" class="mobile-toggle-btn" id="close-sidebar-btn">Close ✕</button>
             </div>
             <div class="info-pane">
                 <div class="info-card">
@@ -368,8 +426,11 @@
 
         <div class="main-chat">
             <div class="chat-header">
-                <div id="display-name" style="font-weight: 700; letter-spacing: 1px; color: #1e293b;">loading...</div>
-                <div style="font-size: 0.75rem; color: var(--text-dim); font-family: 'JetBrains Mono'; font-weight: 700;">User ID: <span id="chan-id">loading...</span></div>
+                <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                    <button type="button" class="mobile-toggle-btn" id="open-sidebar-btn">Menu ☰</button>
+                    <div id="display-name" style="font-weight: 700; letter-spacing: 1px; color: #1e293b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">loading...</div>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-dim); font-family: 'JetBrains Mono'; font-weight: 700; flex-shrink: 0;">ID: <span id="chan-id">loading...</span></div>
             </div>
             
             <div id="messages-container"></div>
@@ -386,6 +447,32 @@
             </form>
         </div>
     </div>
+
+<script>
+    // Automatic device detection script (iPads/Tablets map to desktop layout, phones map to mobile layout)
+    function detectDeviceAndApply() {
+        const ua = navigator.userAgent;
+        const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|silk|scout)/i.test(ua);
+        const isMobilePhone = /Mobi|Android/i.test(ua) && !isTablet;
+
+        if (isMobilePhone) {
+            document.body.classList.add('is-mobile');
+        } else {
+            document.body.classList.remove('is-mobile');
+        }
+    }
+    detectDeviceAndApply();
+
+    // Mobile sidebar toggle handlers
+    const sidebar = document.getElementById('app-sidebar');
+    const openSidebarBtn = document.getElementById('open-sidebar-btn');
+    const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+
+    if (openSidebarBtn && closeSidebarBtn && sidebar) {
+        openSidebarBtn.onclick = () => sidebar.classList.add('open');
+        closeSidebarBtn.onclick = () => sidebar.classList.remove('open');
+    }
+</script>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -423,7 +510,7 @@
             document.getElementById('display-name').innerText = fullName.toUpperCase();
         }
         
-        document.getElementById('chan-id').innerText = user.uid.substring(0,12).toUpperCase();
+        document.getElementById('chan-id').innerText = user.uid.substring(0,8).toUpperCase();
         loadMessages(user.uid);
     });
 
@@ -509,7 +596,6 @@
                     if (m.mediaType === 'video') {
                         contentHTML = `<div class="bubble">${textLabel}<video src="${m.mediaUrl}" controls></video></div>`;
                     } else {
-                        // Clickable image wrapped in <a> tag with no heavy border
                         contentHTML = `<div class="bubble">${textLabel}<a href="${m.mediaUrl}" target="_blank"><img src="${m.mediaUrl}" alt="Attached Photo" loading="lazy"></a></div>`;
                     }
                 } else if (m.type === "rating_request") {
