@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Help Center</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --surface: rgba(255, 255, 255, 0.18);
+            --text-main: #0f172a;
+            --text-dim: #475569;
+            --border: rgba(255, 255, 255, 0.55);
+            --nav-dark: #0a0c12;
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
+            background-size: 400% 400%;
+            animation: fluidBackground 20s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        @keyframes fluidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #bgstar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Professional Navbar */
+        nav {
+            background: var(--nav-dark);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            padding: 14px 5%;
+            justify-content: space-between;
+        }
+
+        nav a img {
+            height: 32px;
+            cursor: pointer;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.2s;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+
+        /* Hero Section */
+        .help-hero {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto 20px auto;
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: var(--glass-shadow);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .help-hero:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .help-hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 12px;
+            color: #1e1b4b;
+            letter-spacing: -0.5px;
+        }
+
+        .help-subtext {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dim);
+            line-height: 1.6;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* Container & Main Layout */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto 60px auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Help Grid - Strictly 3 Boxes Per Row */
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .help-card {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: 28px;
+            padding: 30px;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            gap: 20px;
+        }
+
+        .help-card:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .help-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mini-label {
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .help-content h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: #1e1b4b;
+        }
+
+        .help-content p {
+            color: var(--text-dim);
+            line-height: 1.5;
+            font-size: 13px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .help-arrow {
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            transition: transform 0.2s;
+        }
+
+        .help-card:hover .help-arrow {
+            transform: translateX(4px);
+        }
+
+        /* Support Panel */
+        .support-panel {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .support-panel:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .support-left {
+            max-width: 700px;
+        }
+
+        .support-left h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: #1e1b4b;
+        }
+
+        .support-left p {
+            color: var(--text-dim);
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .support-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 12px 24px;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            white-space: nowrap;
+        }
+
+        .support-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .help-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .support-panel {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .help-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bgstar"></canvas>
+
+    <nav>
+        <a href="home.html">
+            <img src="logoh.png" alt="STRIX">
+        </a>
+        <div class="nav-right-actions">
+            <a href="home.html" class="nav-link-item">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Home
+            </a>
+            <div class="nav-divider"></div>
+            <div class="nav-title">
+                HELP CENTER
+            </div>
+        </div>
+    </nav>
+
+    <section class="help-hero">
+        <h1>How can we assist you?</h1>
+        <p class="help-subtext">
+            Access documentation, policies, frequently asked questions,
+            or contact a Strix Shop Customer Service Team Member.
+        </p>
+    </section>
+
+    <main class="container">
+
+        <section class="help-grid">
+
+            <a href="faqs.html" class="help-card">
+                <div class="help-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+
+                <div class="help-content">
+                    <div class="mini-label">SUPPORT</div>
+                    <h2>Frequently Asked Questions</h2>
+                    <p>
+                        Find answers regarding orders, payments,
+                        delivery timelines, and general operations.
+                    </p>
+                </div>
+
+                <div class="help-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="terms.html" class="help-card">
+                <div class="help-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
+
+                <div class="help-content">
+                    <div class="mini-label">LEGAL</div>
+                    <h2>Legal & Terms</h2>
+                    <p>
+                        Review operational policies, agreements,
+                        conditions, and customer responsibilities.
+                    </p>
+                </div>
+
+                <div class="help-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            </a>
+
+            <a href="ethicscode.html" class="help-card">
+                <div class="help-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        <polyline points="9 11 11 13 15 9"></polyline>
+                    </svg>
+                </div>
+
+                <div class="help-content">
+                    <div class="mini-label">ETHICS</div>
+                    <h2>Code of Ethics</h2>
+                    <p>
+                        Learn about our commitments regarding
+                        transparency, fairness, and accountability.
+                    </p>
+                </div>
+
+                <div class="help-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </div>
+            </a>
+
+        </section>
+
+        <section class="support-panel">
+
+            <div class="support-left">
+                <div class="mini-label">LIVE SUPPORT</div>
+                <h2>Still need help?</h2>
+                <p>
+                    Our Customer Service Team Members are available
+                    to assist with account issues, delivery concerns,
+                    product questions, and operational support.
+                </p>
+            </div>
+
+            <div class="support-right">
+                <a href="cs.html" class="support-btn">
+                    Contact Customer Support
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const canvas = document.getElementById('bgstar');
+        const ctx = canvas.getContext('2d');
+
+        let stars = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5;
+                this.alpha = Math.random();
+                this.blink = Math.random() * 0.02;
+            }
+
+            draw() {
+                this.alpha += this.blink;
+
+                if (this.alpha > 1 || this.alpha < 0) {
+                    this.blink = -this.blink;
+                }
+
+                ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initStars() {
+            stars = [];
+            for (let i = 0; i < 120; i++) {
+                stars.push(new Star());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(star => star.draw());
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            initStars();
+        });
+
+        resize();
+        initStars();
+        animate();
+    </script>
+
+</body>
+</html>

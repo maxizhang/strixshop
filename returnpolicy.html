@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Return Policy</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --surface: rgba(255, 255, 255, 0.18);
+            --text-main: #0f172a;
+            --text-dim: #475569;
+            --border: rgba(255, 255, 255, 0.55);
+            --nav-dark: #0a0c12;
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
+            background-size: 400% 400%;
+            animation: fluidBackground 20s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        @keyframes fluidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Professional Navbar */
+        nav {
+            background: var(--nav-dark);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 14px 5%;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-box img {
+            height: 32px;
+            cursor: pointer;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.2s;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .header {
+            text-align: center;
+            padding: 50px 20px 30px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #1e1b4b;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--text-dim);
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 90%;
+            margin: 0 auto 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .section {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: 28px;
+            border: 1.5px solid var(--border);
+            padding: 32px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .section:hover {
+            background: rgba(255, 255, 255, 0.28);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #1e1b4b;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section p, .section li {
+            color: var(--text-dim);
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .section ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .section b {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .section a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.2s;
+        }
+
+        .section a:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        .nested-sub-box {
+            margin-top: 20px;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .nested-sub-box h3 {
+            font-size: 15px;
+            color: #1e1b4b;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-main">
+        <div class="logo-box" onclick="window.location.href='home.html'">
+            <img src="logoh.png" alt="STRIX">
+        </div>
+        <div class="nav-right-actions">
+            <a href="home.html" class="nav-link-item">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Home
+            </a>
+            <div class="nav-divider"></div>
+            <span class="nav-badge-text">RETURN POLICY</span>
+        </div>
+    </div>
+</nav>
+
+<div class="header">
+    <h1>Return Policy</h1>
+    <p>Version 1 | Last Edited May 31st, 2026 | Effective August 1st, 2026</p>
+</div>
+
+<div class="container">
+
+    <div class="section">
+        <h2>1. General Stance</h2>
+        <p>
+            Strix Shop generally operates on a <b>No Returns, No Refunds</b> basis unless required by applicable law.
+            <br><br>
+            Exceptions are granted only under specific, verified conditions outlined in Section 2.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>2. Eligibility for Replacement</h2>
+        <p>You may request a replacement or a remedy only if:</p>
+        <ul>
+            <li><b>Severe Damage:</b> The product is rendered unusable upon arrival.</li>
+            <li><b>Incorrect Item:</b> You received an item significantly different from what you ordered.</li>
+            <li><b>Time Frame:</b> You must contact <a href="cs.html">Customer Support</a> within <b>48 hours</b> of the delivery timestamp.</li>
+        </ul>
+        <p>
+            Requests made after 48 hours will likely be denied regardless of the product condition.
+            <br><br>
+            Clear image or photographic evidence may be requested.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>3. Required Evidence</h2>
+        <p>To process any claim, the Customer will likely be required to provide clear, high-resolution photo or video evidence of:</p>
+        <ul>
+            <li>The damaged area of the product.</li>
+            <li>The original packaging as it was received.</li>
+            <li>The shipping label or proof of delivery.</li>
+        </ul>
+        <p>
+            Failure to provide evidence within 48 hours of contacting <a href="cs.html">Customer Support</a> will result in the closure of the request.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>4. Non-Returnable Items</h2>
+        <p>The following categories are <b>non-returnable</b> and <b>non-refundable</b>:</p>
+        <ul>
+            <li><b>Gift Cards:</b> Any product purchased as a gift card, discount card, or related.</li>
+            <li><b>Used Items:</b> Any item that shows signs of use, wear, or missing original tags/packaging.</li>
+            <li><b>Personal Hygiene:</b> Items such as masks, earrings, or apparel that has been (or has the possibility of being) worn.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>5. Variations and "As-Is" Status</h2>
+        <p>
+            As per Section 6 of our <a href="terms.html">Terms and Conditions</a>, all products are sold "As-Is." The following do not qualify as defects:
+        </p>
+        <ul>
+            <li>Small variations in size (1-3 inches / 2.5-8.5 cm).</li>
+            <li>Minor color differences due to screen settings or lighting.</li>
+            <li>Texture variations inherent to the manufacturing process.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>6. Strix Shop Credits (SSC)</h2>
+        <p>
+            In cases where a return is justified but a replacement is unavailable, Strix Shop may, at its sole discretion, issue <b>Strix Shop Credits (SSC)</b>. 
+            <br><br>
+            As outlined in our Terms, these credits have no cash value and are restricted to use within Strix Shop. SSC cannot be redeemed, exchanged, or converted into cash under any circumstances.
+        </p>
+        
+        <div class="nested-sub-box">
+            <h3>Per our <a href="terms.html">Terms and Conditions</a>, guidelines on Strix Shop Credits:</h3>
+            <p>
+                Strix Shop Credits (SSC) are non-transferable, promotional loyalty points granted at the sole discretion of Strix Shop.
+                <br><br>
+                SSC can be earned or granted for activities such as purchases, bug reporting, or as a courtesy for service issues. Every 1.00 SSC is valued at $0.01 USD for internal redemption purposes only.
+                <br><br>
+                SSC holds no real-world cash value; as such, SSC cannot be withdrawn, refunded, or exchanged for physical currency. These credits are a limited license for use within Strix Shop, tied strictly to the original recipient's account.
+                <br><br>
+                Strix Shop credits could be forfeited without compensation upon account termination or if obtained through fraudulent means or the exploitation of system glitches. Strix Shop reserves the right to modify, expire, or cancel the SSC system and its valuation at any time with prior notice.
+            </p>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>7. Debt and Unpaid Balances</h2>
+        <p>
+            The <b>Private Ledger of Debt</b> is Strix Shop's internal record of unpaid balances owed to Strix Shop. If a refund is requested for an item that was purchased while the customer had an outstanding balance, the refund value will first be applied toward settling that balance.
+            <br><br>
+            If you refuse to pay for an item within the 7-day grace period, you forfeit all rights to request returns or support for that item.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>8. Cancellation Policy</h2>
+        <p>
+            Order cancellations are permitted only within two hours of the transaction. After this window, the standard Return Policy applies.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>Revisions</h2>
+        <ul>
+            <li><a href="rp1.html" style="color:var(--text-dim); text-decoration:none;">Edition 0</a></li>
+            <li><a href="returnpolicy.html">Edition 1, 05.07.2026</a> <b>&larr; Current Edition</b></li>
+        </ul>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2026 STRIX SHOP. All transactions are governed by the Strix Return Protocol.
+</footer>
+
+</body>
+</html>

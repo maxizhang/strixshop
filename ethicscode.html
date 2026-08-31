@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Code of Ethics</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --surface: rgba(255, 255, 255, 0.18); /* Much more translucent glass */
+            --text-main: #0f172a;
+            --text-dim: #475569;
+            --border: rgba(255, 255, 255, 0.55); /* Crisp, glowing glass edge */
+            --border-subtle: rgba(226, 232, 240, 0.3);
+            --nav-dark: #0a0c12;
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
+            background-size: 400% 400%;
+            animation: fluidBackground 20s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        @keyframes fluidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        a {
+            text-decoration: none;
+            font-weight: 700;
+            color: #64748b;
+            transition: color 0.2s;
+        }
+        a:hover {
+            color: #334155;
+        }
+
+        /* Taobao-inspired Professional Navbar */
+        nav {
+            background: var(--nav-dark);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 14px 5%;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-box img {
+            height: 32px;
+            cursor: pointer;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.2s;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+
+        /* Container & Main Layout */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        main.container {
+            padding: 40px 0 80px 0;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .ethics-header-simple {
+            padding: 50px 0 10px 0;
+        }
+
+        .header-section {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: var(--glass-shadow);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .header-section:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 12px;
+            color: #1e1b4b;
+            letter-spacing: -0.5px;
+        }
+
+        .header-description {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dim);
+            line-height: 1.6;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        /* Mission Panel */
+        .mission-panel {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: 32px;
+            padding: 35px;
+            box-shadow: var(--glass-shadow);
+            display: grid;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 30px;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .mission-panel:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .section-mini-title {
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+            font-weight: 700;
+        }
+
+        .section-mini-title.green { color: #16a34a; }
+        .section-mini-title.red { color: #dc2626; }
+
+        .mission-left h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            color: #1e1b4b;
+        }
+
+        .mission-left p {
+            color: var(--text-dim);
+            line-height: 1.6;
+            font-size: 13px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .mission-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 20px 15px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-dim);
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        /* Ethics Grid */
+        .ethics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .ethics-card {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: 32px;
+            padding: 35px;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .ethics-card:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .icon-circle.success {
+            background: rgba(22, 163, 74, 0.15);
+            color: #16a34a;
+            border: 1px solid rgba(22, 163, 74, 0.3);
+        }
+
+        .icon-circle.warning {
+            background: rgba(220, 38, 38, 0.15);
+            color: #dc2626;
+            border: 1px solid rgba(220, 38, 38, 0.3);
+        }
+
+        .card-top h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e1b4b;
+            margin: 0;
+        }
+
+        .principle-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .principle-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .principle-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .principle-dot.green { background: #16a34a; box-shadow: 0 0 8px rgba(22, 163, 74, 0.5); }
+        .principle-dot.red { background: #dc2626; box-shadow: 0 0 8px rgba(220, 38, 38, 0.5); }
+
+        .principle-item h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1e1b4b;
+            margin-bottom: 4px;
+        }
+
+        .principle-item p {
+            font-size: 13px;
+            color: var(--text-dim);
+            line-height: 1.6;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* Footer Panel Quote */
+        .ethics-footer-panel {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: 32px;
+            padding: 30px 35px;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .ethics-footer-panel:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .quote-line {
+            height: 1px;
+            flex: 1;
+            background: rgba(79, 70, 229, 0.2);
+        }
+
+        .ethics-quote {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-dim);
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (max-width: 900px) {
+            .mission-panel, .ethics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-main">
+            <div class="logo-box" onclick="window.location.href='home.html'">
+                <img src="logoh.png" alt="STRIX">
+            </div>
+            <div class="nav-right-actions">
+                <a href="home.html" class="nav-link-item">
+                    <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    Home
+                </a>
+                <div class="nav-divider"></div>
+                <span class="nav-badge-text">Code of Ethics</span>
+            </div>
+        </div>
+    </nav>
+
+    <section class="ethics-header-simple">
+        <div class="container">
+            <div class="header-section">
+                <h1>Strix Shop Code of Ethics</h1>
+                <p class="header-description">
+                    Strix Shop is committed to honest operations, fair treatment,
+                    transparency, and responsible business practices within our
+                    school community.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+
+        <section class="mission-panel">
+            <div class="mission-left">
+                <span class="section-mini-title">OUR MISSION</span>
+                <h2>Building a store everyone can actually trust.</h2>
+                <p>
+                    Strix Shop exists to provide useful products,
+                    fair pricing, and responsible operations while
+                    maintaining transparency with every customer.
+                </p>
+            </div>
+
+            <div class="mission-stats">
+                <div class="stat-box">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Transparent Pricing</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">0</span>
+                    <span class="stat-label">Hidden Fees</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="ethics-grid">
+
+            <div class="ethics-card positive">
+                <div class="card-top">
+                    <div class="icon-circle success">✓</div>
+                    <div>
+                        <span class="section-mini-title green">WHAT WE PROMISE</span>
+                        <h2>Commitments</h2>
+                    </div>
+                </div>
+
+                <div class="principle-list">
+                    <div class="principle-item">
+                        <div class="principle-dot green"></div>
+                        <div>
+                            <h3>Transparency</h3>
+                            <p>We provide accurate pricing, realistic delivery estimates, and clear communication.</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-item">
+                        <div class="principle-dot green"></div>
+                        <div>
+                            <h3>Reliability</h3>
+                            <p>Orders are fulfilled carefully and responsibly with the exact products promised.</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-item">
+                        <div class="principle-dot green"></div>
+                        <div>
+                            <h3>Accountability</h3>
+                            <p>If problems occur, we acknowledge them directly and work toward fair resolutions.</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-item">
+                        <div class="principle-dot green"></div>
+                        <div>
+                            <h3>Privacy</h3>
+                            <p>Customer data is used strictly for operational purposes and never sold or distributed.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ethics-card negative">
+                <div class="card-top">
+                    <div class="icon-circle warning">✕</div>
+                    <div>
+                        <span class="section-mini-title red">WHAT WE AVOID</span>
+                        <h2>Prohibitions</h2>
+                    </div>
+                </div>
+
+                <div class="principle-list">
+                    <div class="principle-item">
+                        <div class="principle-dot red"></div>
+                        <div>
+                            <h3>Hidden Charges</h3>
+                            <p>Surprise fees and misleading pricing structures are prohibited. There are no shipping fees.</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-item">
+                        <div class="principle-dot red"></div>
+                        <div>
+                            <h3>False Advertising</h3>
+                            <p>Products must be represented accurately with truthful descriptions and imagery.</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-item">
+                        <div class="principle-dot red"></div>
+                        <div>
+                            <h3>Favoritism</h3>
+                            <p>Order processing and customer treatment remain equal regardless of personal relationships.</p>
+                        </div>
+                    </div>
+
+                    <div class="principle-item">
+                        <div class="principle-dot red"></div>
+                        <div>
+                            <h3>Pressure Tactics</h3>
+                            <p>Customers should never feel manipulated into unnecessary purchases. This is not Temu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="ethics-footer-panel">
+            <div class="quote-line"></div>
+            <p class="ethics-quote">“supercalifragilisticexpialidocious”</p>
+            <div class="quote-line"></div>
+        </section>
+
+    </main>
+
+    <footer>
+        &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
+            authDomain: "strix-shop.firebaseapp.com",
+            projectId: "strix-shop",
+            storageBucket: "strix-shop.firebasestorage.app",
+            messagingSenderId: "300414445622",
+            appId: "1:300414445622:web:97465fa5309c27b9605097"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "index.html";
+            }
+        });
+    </script>
+</body>
+</html>

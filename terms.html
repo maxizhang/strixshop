@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Terms & Conditions</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --surface: rgba(255, 255, 255, 0.18);
+            --text-main: #0f172a;
+            --text-dim: #475569;
+            --border: rgba(255, 255, 255, 0.55);
+            --nav-dark: #0a0c12;
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
+            background-size: 400% 400%;
+            animation: fluidBackground 20s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        @keyframes fluidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Professional Navbar */
+        nav {
+            background: var(--nav-dark);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 14px 5%;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-box img {
+            height: 32px;
+            cursor: pointer;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.2s;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 50px 20px 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #1e1b4b;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--text-dim);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Container & Sections */
+        .container {
+            max-width: 900px;
+            width: 90%;
+            margin: 20px auto 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            flex: 1;
+        }
+
+        .section {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: 28px;
+            border: 1.5px solid var(--border);
+            padding: 32px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .section:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateY(-2px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .section h2 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: #1e1b4b;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-left: 4px solid var(--primary);
+            padding-left: 14px;
+        }
+
+        .section p, .section li {
+            color: var(--text-dim);
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .section ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .section b, .section strong {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .section a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .section a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-main">
+        <div class="logo-box" onclick="window.location.href='home.html'">
+            <img src="logoh.png" alt="STRIX">
+        </div>
+        <div class="nav-right-actions">
+            <a href="home.html" class="nav-link-item">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Home
+            </a>
+            <div class="nav-divider"></div>
+            <span class="nav-badge-text">TERMS & CONDITIONS</span>
+        </div>
+    </div>
+</nav>
+
+<div class="header">
+    <h1>Terms and Conditions</h1>
+    <p>Version 1 | Last Edited May 31st, 2026 | Effective August 1st, 2026</p>
+</div>
+
+<div class="container">
+
+    <div class="section">
+        <h2>1. Acceptance of Terms</h2>
+        <p>By accessing Strix Shop's web portal, purchasing items, or participating in any activity involving Strix Shop, the Customer acknowledges that he/she has read, understood, and agreed to be bound by these Terms.
+        <br><br>
+        This document may be referred to as the "Terms and Conditions" or the "Strix Shop Terms and Conditions."
+        <br><br>
+        These Terms constitute an agreement between the Buyer and Strix Shop.
+        <br><br>
+        Strix Shop reserves the right to update these Terms at any time without prior notice.
+        <br><br>
+        Continued use of Services, including access to the online portal, constitutes acceptance of the most recent version.</p>
+    </div>
+
+    <div class="section">
+        <h2>2. Eligibility & Minors</h2>
+        <p>Users under 14 years of age require verified parental consent for orders or financial transactions.
+        <br><br>
+        If you are under 18, purchases should involve a parent or guardian.
+        <br><br>
+        Strix Shop assumes no liability for unauthorized purchases made by minors using adult-owned payment methods.
+        <br><br>
+        Users under 13 years of age may not create an account or make a purchase.
+        <br><br>
+        Strix Shop assumes that payment methods and funds used by customers are obtained legally unless evidence suggests otherwise.</p>
+    </div>
+
+    <div class="section">
+        <h2>3. Account Security</h2>
+        <p>You are solely responsible for maintaining the confidentiality of your login credentials.
+        <br><br>
+        Any activity performed under your account may be considered your responsibility.
+        <br><br>
+        If you suspect unauthorized access to your account, please contact customer support immediately.
+        <br><br>
+        Strix Shop may request information including, but not limited to: name, age, and email.
+        <br><br>
+        Customers may choose not to provide certain information; however, some services or products may become unavailable.
+        <br><br>
+        Strix Shop does not sell personal information unless required by applicable law.
+        <br><br>
+        Personal information may be used solely for:
+        <br> - providing products and services
+        <br> - ensuring customer safety
+        <br> - understanding customer needs
+        <br> - improving engagement and support</p>
+    </div>
+
+    <div class="section">
+        <h2>4. Intellectual Property</h2>
+        <p>All graphics, logos, code, and content (including STRIXNews articles and STRIXStudio media) are the property of Strix Shop unless otherwise stated.
+        <br><br>
+        Unauthorized reproduction or automated scraping may violate these Terms and applicable laws.
+        <br><br>
+        All content included in or made available through Strix Shop services is protected under applicable United States copyright laws.</p>
+    </div>
+
+    <div class="section">
+        <h2>5. Digital Goods</h2>
+        <p>Digital products are licensed, not sold.
+        <br><br>
+        Purchase grants a <strong>single-user non-transferable license</strong>.
+        <br><br>
+        Sharing digital files with non-purchasers may result in account suspension or additional action if abuse continues.</p>
+    </div>
+
+    <div class="section">
+        <h2>6. Products</h2>
+        <p>Measurements may vary; a range of approximately 5% of total length is considered normal and acceptable.
+        <br><br>
+        Colors, textures, and finishes may differ slightly from photos due to lighting, materials, or screen settings.
+        <br><br>
+        Accessories shown in photos are generally used as props and may not be included.
+        <br><br>
+        All products are sold "as is."
+        <br>
+        * "As is" indicates that the product is offered in its existing condition.</p>
+    </div>
+
+    <div class="section">
+        <h2>7. Delivery</h2>
+        <p>Pre-ordered deliveries generally take 4–6 weeks to arrive.
+        <br><br>
+        Delivery times may vary depending on location, weather, customs, or shipping delays.
+        <br><br>
+        Once an order is marked as delivered, responsibility for the product transfers to the customer.
+        <br><br>
+        Strix Shop is not responsible for stolen, misplaced, or unclaimed packages after delivery.
+        <br><br>
+        If payment is not completed within 7 business days after delivery or pickup arrangements, a late fee of up to $1 per day may be added for each additional day. Total accumulated late fees shall not exceed $15 per order. Late fees shall not exceed the original purchase price of the affected order.
+        <br><br>
+        This fee exists to encourage timely payment and order completion.</p>
+    </div>
+
+    <div class="section">
+        <h2>8. Orders</h2>
+        <p>Strix Shop may accept or decline any order at its discretion.
+        <br><br>
+        We reserve the right to limit order quantities to prevent unauthorized bulk reselling or abuse.
+        <br><br>
+        Technical glitches that display incorrect prices, including $0.00 values, do not constitute a valid contract.
+        <br><br>
+        Such glitches or bugs should be reported to Strix Shop. Confirmed reports may receive promotional credits.
+        <br><br>
+        Strix Shop shall not be responsible for delays or failures caused by events beyond its reasonable control, including natural disasters, internet outages, supplier disruptions, labor disputes, governmental actions, or transportation interruptions.
+        <br><br>
+        If you have questions about your order(s), please contact <a href="cs.html">Customer Service</a>.
+        <br><br>
+        Additional identity verification may be requested for higher-value orders exceeding $30 USD.</p>
+    </div>
+
+    <div class="section">
+        <h2>9. Returns and Refunds</h2>
+        <p>Generally, there are no returns or refunds unless required by applicable law.
+        <br><br>
+        Exceptions may apply only if:
+        <br> - the product arrives severely damaged
+        <br> - contact is made within 48 hours of delivery
+        <br> - clear photo or video evidence is provided
+        <br><br>
+        Strix Shop reserves the right to determine whether replacement, store credit, or another remedy is appropriate.
+        <br><br>
+        Normal variations in size, color, or texture do not qualify as defects.</p>
+    </div>
+
+    <div class="section">
+        <h2>10. Cancellations</h2>
+        <p>Order cancellations are permitted only within two hours of the initial transaction timestamp.
+        <br><br>
+        After this window, cancellation requests may be treated as standard returns.
+        <br><br>
+        Strix Shop reserves the right to cancel orders due to defects, supplier issues, stock shortages, or other operational reasons.
+        <br><br>
+        If Strix Shop initiates a cancellation for internal reasons, a full refund will be issued when applicable.
+        <br><br>
+        Customers who repeatedly cancel orders excessively may temporarily lose purchasing privileges.
+        <br><br>
+        If products arrive damaged or are otherwise problematic, please refer to the Returns and Refunds section.</p>
+    </div>
+
+    <div class="section">
+        <h2>11. Payment</h2>
+        <p>Products may be verified by Strix Shop before transfer of ownership occurs.
+        <br><br>
+        Unpaid balances after 7 business days may result in suspension of associated STRIX accounts.
+        <br><br>
+        Accepted payment methods currently include:
+        <br> - USD (United States Dollars) Cash
+        <br> - verified Strix Giftcards (SSG)
+        <br> - Strix Shop Credits (SSC)
+        <br><br>
+        Strix Giftcards are single-use and typically range from $5 to $25.
+        <br><br>
+        For more information regarding Strix Shop Credits, please refer to Section 16.</p>
+    </div>
+
+    <div class="section">
+        <h2>12. Liability</h2>
+        <p>Strix Shop is not liable for indirect damages resulting from use of products or services.
+        <br><br>
+        Strix Shop is not responsible for:
+        <br> - delays caused by carriers, weather, or incorrect addresses
+        <br> - damage caused by misuse or improper handling after delivery
+        <br> - allergic reactions or material sensitivities
+        <br><br>
+        Maximum liability shall not exceed 1.5× the original purchase price of the affected item.</p>
+    </div>
+
+    <div class="section">
+        <h2>13. Privacy & Governing Law</h2>
+        <p>Interactions with Strix Shop are governed by our data and privacy practices designed to protect customer information.
+        <br><br>
+        Any disputes arising from these Terms shall generally be governed by the laws of Pennsylvania.
+        <br><br>
+        We encourage disputes to be resolved privately and respectfully whenever possible.
+        <br><br>
+        If payment remains unpaid after extended periods, additional action may be considered depending on the situation.
+        <br><br>
+        If any provision of these Terms is found invalid, the remaining sections shall remain enforceable.
+        <br><br>
+        Illegal activity involving Strix Shop may result in account suspension, reporting, or other necessary action.</p>
+    </div>
+
+    <div class="section">
+        <h2>14. Business Nature</h2>
+        <p>Strix Shop operates as an independent student-run dropshipping store.
+        <br><br>
+        Strix Shop does not claim to provide official educational curriculum; materials are supplemental and community-created.
+        <br><br>
+        Business models, pricing, branding, and services may change over time.
+        <br><br>
+        Strix Shop may not physically warehouse or inspect every product before shipment.
+        <br><br>
+        Product availability, packaging, and shipping timelines depend partly on suppliers.</p>
+    </div>
+
+    <div class="section">
+        <h2>15. Prohibited Conduct</h2>
+        <p>Users may not utilize bots, scripts, or automated systems to scrape data or disrupt services.
+        <br><br>
+        Attempts to exploit systems, manipulate credits, or abuse vulnerabilities are prohibited.
+        <br><br>
+        Harassment, threats, or abusive behavior toward staff or couriers may result in suspension or permanent bans.
+        <br><br>
+        Users may not resell or sublicense STRIX digital materials without permission.</p>
+    </div>
+
+    <div class="section">
+        <h2>16. Strix Shop Credits</h2>
+        <p>Strix Shop Credits (SSC) are non-transferable promotional points granted at the discretion of Strix Shop.
+        <br><br>
+        SSC may be earned through purchases, bug reporting, promotions, or customer service resolutions.
+        <br><br>
+        100 SSC currently equals $1 USD in internal redemption value.
+        <br><br>
+        SSC has no real-world cash value and cannot be exchanged for physical currency.
+        <br><br>
+        SSC usage limits may apply to purchases.
+        <br><br>
+        Credits obtained through abuse, fraud, or glitches may be removed without compensation.
+        <br><br>
+        Strix Shop reserves the right to modify or discontinue the SSC system at any time.</p>
+    </div>
+
+    <div class="section">
+        <h2>17. Strix Shop Portal Performance</h2>
+        <p>The Strix Shop portal is provided on an "available" basis without guarantees of uninterrupted uptime.
+        <br><br>
+        Emergency maintenance may temporarily limit access to the portal.
+        <br><br>
+        Users who discover vulnerabilities or bugs are encouraged to report them responsibly.
+        <br><br>
+        Exploiting glitches or intentionally degrading portal performance is prohibited.
+        <br><br>
+        Strix Shop is not responsible for data loss caused by browser incompatibility or local internet issues.
+        <br><br>
+        Bad-faith activity may result in account suspension or restrictions.</p>
+    </div>
+
+    <div class="section">
+        <h2>18. Entirety of Agreement</h2>
+        <p>This document constitutes the primary agreement between the Customer and Strix Shop.
+        <br><br>
+        External advertisements, verbal statements, or social media posts are not considered legally binding promises unless officially published by Strix Shop.
+        <br><br>
+        Failure to enforce a section at one time does not waive future enforcement rights.
+        <br><br>
+        Modifications are valid only when updated on the official portal or approved in writing by Strix Shop.
+        <br><br>
+        By continuing to use our services, customers acknowledge that they have had sufficient opportunity to review these Terms.</p>
+    </div>
+
+    <div class="section">
+        <h2>Revisions</h2>
+        <ul>
+            <li><a href="toc1.html">Edition 1 — 01.15.2026</a><b>&larr; Current Edition</b></li>
+        </ul>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+</footer>
+
+</body>
+</html>

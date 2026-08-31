@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Privacy Policy</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --surface: rgba(255, 255, 255, 0.18);
+            --text-main: #0f172a;
+            --text-dim: #475569;
+            --border: rgba(255, 255, 255, 0.55);
+            --nav-dark: #0a0c12;
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
+            background-size: 400% 400%;
+            animation: fluidBackground 20s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        @keyframes fluidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Professional Navbar */
+        nav {
+            background: var(--nav-dark);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 14px 5%;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-box img {
+            height: 32px;
+            cursor: pointer;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.2s;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 50px 20px 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #1e1b4b;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--text-dim);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Container & Sections */
+        .container {
+            max-width: 900px;
+            width: 90%;
+            margin: 20px auto 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            flex: 1;
+        }
+
+        .section {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: 28px;
+            border: 1.5px solid var(--border);
+            padding: 32px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .section:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateY(-2px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .section h2 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: #1e1b4b;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-left: 4px solid var(--primary);
+            padding-left: 14px;
+        }
+
+        .section p, .section li {
+            color: var(--text-dim);
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .section ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .section b {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .section a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .section a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-main">
+        <div class="logo-box" onclick="window.location.href='home.html'">
+            <img src="logoh.png" alt="STRIX">
+        </div>
+        <div class="nav-right-actions">
+            <a href="home.html" class="nav-link-item">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Home
+            </a>
+            <div class="nav-divider"></div>
+            <span class="nav-badge-text">PRIVACY POLICY</span>
+        </div>
+    </div>
+</nav>
+
+<div class="header">
+    <h1>Privacy Policy</h1>
+    <p>Version 1 | Last Edited May 31st, 2026 | Effective August 1st, 2026</p>
+</div>
+
+<div class="container">
+
+    <div class="section">
+        <h2>1. Data Collection</h2>
+        <p>Strix Shop collects personal information that you provide when creating an account. This includes:
+            <br><br>
+            - <b>Identity Data:</b> Full name, Date of Birth, Age, Gender, and Preferred Pronouns.
+            <br>
+            - <b>Contact Data:</b> Email address and Backup Recovery Email.
+            <br>
+            - <b>Academic Data:</b> Grade level and school affiliation.
+            <br>
+            - <b>Security Data:</b> Username, encrypted Passwords, and Security Question answers.
+            <br>
+            - <b>Profile Data:</b> Profile picture links, usernames, etc.
+            <br><br>
+            When you create a password with Strix Shop, it is protected by Google Firebase. Therefore, Strix Shop has no access to your password. If you would like to change your password, please contact <a href="cs.html">Customer Support</a>.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>2. Use of Information</h2>
+        <p>We use your data strictly for the operation of Strix Shop. Specifically:
+            <br><br>
+            - To process orders and manage your account.
+            <br>
+            - To verify your identity for transactions.
+            <br>
+            - To facilitate account recovery through security questions.
+            <br>
+            - To personalize your experience.
+            <br><br>
+            We do not and will not sell your information to third-parties, unless required by applicable law.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>3. Data Storage & Firebase</h2>
+        <p>Strix Shop utilizes <a href="https://firebase.google.com/" target="_blank">Google Firebase</a> for secure data storage and authentication. 
+            <br><br>
+            While we strive to protect your personal information, no method of digital storage is 100% secure, although we try and keep this online portal as secure as possible. By using the portal, you acknowledge this inherent risk.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>4. Third-Party Sharing</h2>
+        <p><b>Strix Shop does not sell, trade, or rent student data to third parties.</b>
+            <br><br>
+            We only share information with third parties when:
+            <br> - Required by federal or state law (e.g., a court order).
+            <br> - Necessary to complete a delivery (sharing your name/homeroom with a Strix delivery member).
+            <br> - Required to prevent fraud or protect the safety of Strix Shop, Strix or other customers.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>5. Minor Privacy (COPPA)</h2>
+        <p>As per our Terms, users under 13 are prohibited from account creation. 
+            <br><br>
+            <b>We encourage parents to monitor their child's digital interaction with Strix Shop.</b>
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>6. Cookies and Tracking</h2>
+        <p>Our web portal may use local storage or "necessary cookies" to keep you logged in and remember your cart items. 
+            <br>
+            We use the minimum amount of necessary cookies to protect your privacy.
+            <br>
+            Strix Shop may display advertisements, promotions, announcements, or sponsored content. These advertisements are displayed generally and are not personalized based on user behavior, browsing history, or personal information.
+            <br>
+            We do not use tracking cookies for external advertising purposes.
+            <br><br>
+            You can disable cookies in your browser settings, but nearly all features of the Shop may stop functioning.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>7. Data Retention & Deletion</h2>
+        <p>We retain your information as long as your account is active. 
+            <br><br>
+            If you wish to delete your account and all associated data, you must contact <a href="cs.html">Customer Support</a>.
+            <br><br>
+            Please note that data related to unpaid balances or legal disputes will be retained until the issue is resolved.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>8. Changes to this Policy</h2>
+        <p>Strix Shop reserves the right to modify this Privacy Policy at any time, with or without notice, with or without cause.
+            <br><br>
+            Any changes will be posted here. Continued use of the portal after changes take effect constitutes your agreement to the new policy.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>9. Contact Information</h2>
+        <p>Any questions please contact <a href="cs.html">Customer Support</a>.</p>
+    </div>
+
+    <div class="section">
+        <h2>Revisions</h2>
+        <p>
+            <li><a href="privacypolicy.html">Edition 1, 05.06.2026</a> <b>&larr; Current Edition</b></li>
+        </p>
+    </div>
+
+</div>
+
+<footer>
+    &copy; © 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+</footer>
+
+</body>
+</html>

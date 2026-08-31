@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Careers</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --surface: rgba(255, 255, 255, 0.18); /* High translucency glass */
+            --text-main: #0f172a;
+            --text-dim: #475569;
+            --border: rgba(255, 255, 255, 0.55); /* Crisp glass edge */
+            --nav-dark: #0a0c12;
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --radius-main: 32px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
+            background-size: 400% 400%;
+            animation: fluidBackground 20s ease infinite;
+            color: var(--text-main);
+            font-family: 'Quicksand', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        @keyframes fluidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #bgstar {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* NAVIGATION BAR */
+        nav {
+            background: var(--nav-dark);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 14px 5%;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-box img {
+            height: 32px;
+            cursor: pointer;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.2s;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+
+        /* HERO SECTION */
+        .help-hero {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 20px 30px 20px;
+        }
+
+        .help-hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #1e1b4b;
+            margin-bottom: 10px;
+        }
+
+        .help-subtext {
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--text-dim);
+            font-size: 14px;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        /* CONTAINER & GRIDS */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1100px;
+            margin: 0 auto 50px auto;
+            padding: 0 20px;
+            flex: 1;
+            width: 100%;
+        }
+
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .help-card {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-main);
+            padding: 35px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .help-card:hover {
+            transform: translateY(-4px);
+            background: rgba(255, 255, 255, 0.28);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .career-svg-icon {
+            width: 28px;
+            height: 28px;
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            margin-bottom: 16px;
+        }
+
+        .mini-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .help-content h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #1e1b4b;
+        }
+
+        .help-content p {
+            color: var(--text-dim);
+            line-height: 1.6;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        /* SUPPORT / APPLICATION PANEL */
+        .support-panel {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-main);
+            padding: 40px 45px;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            margin-top: 24px;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .support-panel:hover {
+            background: rgba(255, 255, 255, 0.28);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .support-left h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 8px 0 10px 0;
+            color: #1e1b4b;
+        }
+
+        .support-left p {
+            color: var(--text-dim);
+            font-size: 13px;
+            font-weight: 600;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .support-btn {
+            background: var(--primary);
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .support-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(79, 70, 229, 0.35);
+        }
+
+        /* FOOTER */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 25px;
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 850px) {
+            .support-panel {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 30px;
+            }
+            .help-hero h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+<!-- Taobao-Inspired Professional Navbar -->
+<nav>
+    <div class="nav-main">
+        <div class="logo-box" onclick="window.location.href='home.html'"><img src="logoh.png" alt="STRIX"></div>
+        <div class="nav-right-actions">
+            <a href="home.html" class="nav-link-item">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Home
+            </a>
+            <a href="cs.html" class="nav-link-item">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636l3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                Customer Service
+            </a>
+            <div class="nav-divider"></div>
+            <span class="nav-badge-text">Careers</span>
+        </div>
+    </div>
+</nav>
+
+<section class="help-hero">
+    <h1>Build the Future of Strix</h1>
+    <p class="help-subtext">
+        Explore the different roles and vast opportunities with Strix Shop.
+    </p>
+</section>
+
+<main class="container">
+
+    <section class="help-grid">
+
+        <!-- Human Resources -->
+        <div class="help-card">
+            <svg class="career-svg-icon" viewBox="0 0 24 24">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <div class="help-content">
+                <div class="mini-label">1 position</div>
+                <h2>Human Resources & Data Analyst</h2>
+                <p>
+                    Job Analysis, Recruitment, Organization of Workforce, Analyze Data, Design Rewards, etc.
+                </p>
+            </div>
+        </div>
+
+        <!-- Finance -->
+        <div class="help-card">
+            <svg class="career-svg-icon" viewBox="0 0 24 24">
+                <line x1="12" y1="1" x2="12" y2="23"/>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+            <div class="help-content">
+                <div class="mini-label">1 position</div>
+                <h2>Finance & Accounting</h2>
+                <p>
+                    Analyze Financial Health, Create Financial Reports, Assess Financial Risks, Manage Budget, etc.
+                </p>
+            </div>
+        </div>
+
+        <!-- Engineering & IT -->
+        <div class="help-card">
+            <svg class="career-svg-icon" viewBox="0 0 24 24">
+                <polyline points="16 18 22 12 16 6"/>
+                <polyline points="8 6 2 12 8 18"/>
+            </svg>
+            <div class="help-content">
+                <div class="mini-label">0 positions</div>
+                <h2>Engineering & IT</h2>
+                <p>
+                    Build and secure website, Develop Apps for internal and external use, Fix System Bugs, etc.
+                </p>
+            </div>
+        </div>
+
+        <!-- Marketing -->
+        <div class="help-card">
+            <svg class="career-svg-icon" viewBox="0 0 24 24">
+                <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+                <path d="M12 12L2.1 10a10 10 0 0 0 11.8 11.8z"/>
+                <path d="M12 12V2a10 10 0 0 0-9.9 10z"/>
+            </svg>
+            <div class="help-content">
+                <div class="mini-label">1 position</div>
+                <h2>Marketing & Communications</h2>
+                <p>
+                    Promote brand identity, Create content, Lead customer engagement activities, Represent Company in partnerships, etc.
+                </p>
+            </div>
+        </div>
+
+        <!-- Operations -->
+        <div class="help-card">
+            <svg class="career-svg-icon" viewBox="0 0 24 24">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            </svg>
+            <div class="help-content">
+                <div class="mini-label">1 position</div>
+                <h2>Operations</h2>
+                <p>
+                    Develop policies, track KPI, Identify business opportunities, Organize Supply Chains, etc. Fluency in Chinese Mandarin Preferred.
+                </p>
+            </div>
+        </div>
+
+        <!-- Legal -->
+        <div class="help-card">
+            <svg class="career-svg-icon" viewBox="0 0 24 24">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <div class="help-content">
+                <div class="mini-label">2 positions</div>
+                <h2>Legal & Compliance</h2>
+                <p>
+                    Review contracts, Protect corporate intellectual property, Represent company in legal matters, Provide legal advice, etc.
+                </p>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="support-panel">
+        <div class="support-left">
+            <div class="mini-label">APPLICATIONS OPEN</div>
+            <h2>Submit Credentials</h2>
+            <p>If you are interested in working with Strix Shop, please send your resumé as a pdf.</p>
+        </div>
+        <div class="support-right">
+            <a href="mailto:maxizhang1128@gmail.com" class="support-btn">maxizhang1128@gmail.com</a>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+</footer>
+
+
+</body>
+</html>

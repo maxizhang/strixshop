@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Returns & Refunds</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --surface: rgba(255, 255, 255, 0.18);
+            --text-main: #0f172a;
+            --text-dim: #475569;
+            --border: rgba(255, 255, 255, 0.55);
+            --nav-dark: #0a0c12;
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
+            background-size: 400% 400%;
+            animation: fluidBackground 20s ease infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        @keyframes fluidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Professional Navbar */
+        nav {
+            background: var(--nav-dark);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 14px 5%;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-box img {
+            height: 32px;
+            cursor: pointer;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.2s;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            padding: 50px 20px 20px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #1e1b4b;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--text-dim);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Container & Sections */
+        .container {
+            max-width: 900px;
+            width: 90%;
+            margin: 20px auto 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            flex: 1;
+        }
+
+        .section {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: 28px;
+            border: 1.5px solid var(--border);
+            padding: 32px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .section:hover {
+            background: rgba(255, 255, 255, 0.28);
+            transform: translateY(-2px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .section h2 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: #1e1b4b;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-left: 4px solid var(--primary);
+            padding-left: 14px;
+        }
+
+        .section p, .section li {
+            color: var(--text-dim);
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .section ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .section b {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .section a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .section a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-main">
+        <div class="logo-box" onclick="window.location.href='home.html'">
+            <img src="logoh.png" alt="STRIX">
+        </div>
+        <div class="nav-right-actions">
+            <a href="home.html" class="nav-link-item">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Home
+            </a>
+            <div class="nav-divider"></div>
+            <span class="nav-badge-text">RETURNS & REFUNDS</span>
+        </div>
+    </div>
+</nav>
+
+<div class="header">
+    <h1>Returns & Refunds Policy</h1>
+    <p>Version 1 | Effective August 1st, 2026</p>
+</div>
+
+<div class="container">
+
+    <div class="section">
+        <h2>1. Overview & Initiation</h2>
+        <p>Strix Shop strives to ensure you are fully satisfied with your purchases. If you need to request a return or a refund, you must contact our <a href="cs.html">Customer Support</a> team directly to review your case and initiate the process. Unauthorised or direct returns without prior support approval may not be accepted.</p>
+    </div>
+
+    <div class="section">
+        <h2>2. Eligibility for Returns</h2>
+        <p>To be eligible for a return or exchange, items must meet the following criteria:
+            <br><br>
+            - Requests must be submitted within <b>14 days</b> of delivery or order receipt.
+            <br>
+            - Items must be unused, unworn (if applicable), and in their original packaging with all tags attached.
+            <br>
+            - Proof of purchase or order confirmation number must be provided when contacting support.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>3. Non-Returnable Items</h2>
+        <p>Certain types of goods cannot be returned or refunded, including:
+            <br><br>
+            - Customised or personalised products made specifically to order.
+            <br>
+            - Perishable goods, personal care items, or digital goods.
+            <br>
+            - Final sale or clearance items marked down at the time of purchase.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>4. Damaged or Defective Items</h2>
+        <p>If you received a damaged, defective, or incorrect item, please notify <a href="cs.html">Customer Support</a> immediately upon arrival. Include clear photos of the damage or issue along with your order details so our team can swiftly arrange a replacement, store credit, or refund.</p>
+    </div>
+
+    <div class="section">
+        <h2>5. Refund Processing</h2>
+        <p>Once your return request has been reviewed and approved by Customer Support:
+            <br><br>
+            - If applicable, instructions for item drop-off or hand-delivery will be provided by our team.
+            <br>
+            - Approved refunds will be processed back to your original payment method or issued as store credit, depending on the transaction type and terms outlined in our <a href="terms.html">Terms and Conditions</a>.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>6. Contact Us</h2>
+        <p>For any questions regarding our return policies or to file a return/refund claim, please reach out to <a href="cs.html">Customer Support</a>.</p>
+    </div>
+
+</div>
+
+<footer>
+    &copy; 2026 STRIX SHOP. All transactions and returns are governed by Strix Shop policies.
+</footer>
+
+</body>
+</html>

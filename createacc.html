@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Create Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --card-bg: rgba(15, 15, 25, 0.7);
+            --text-main: #ffffff;
+            --accent: #ffffff;
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.15);
+            --error: #ff5f5f;
+        }
+
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background: #020205; color: var(--text-main);
+            font-family: 'Quicksand', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .bg-gif-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('indexbg.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.25; 
+            z-index: 0;
+        }
+
+        #bgstar {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            display: flex; justify-content: center; align-items: flex-start; 
+            min-height: 100vh; z-index: 10;
+            padding: 80px 20px;
+            box-sizing: border-box;
+        }
+
+        .setup-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            padding: 3.5rem;
+            border-radius: 40px;
+            width: 100%;
+            max-width: 700px;
+            border: 1px solid var(--border);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.05);
+            margin-bottom: 40px;
+        }
+
+        h2 { font-weight: 700; margin: 0 0 1rem; letter-spacing: 3px; font-size: 2.2rem; text-align: center; text-transform: uppercase; }
+        
+        .section-title { 
+            font-size: 0.85rem; font-weight: 700; text-transform: uppercase; 
+            color: rgba(255,255,255,0.7); margin: 45px 0 15px 0; 
+            letter-spacing: 3px; border-bottom: 1px solid var(--border); 
+            padding-bottom: 8px; 
+        }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+
+        .input-wrap { display: flex; flex-direction: column; gap: 5px; }
+        .field-label { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.5); padding-left: 15px; text-transform: uppercase; }
+
+        input, select {
+            width: 100%; padding: 16px 22px; 
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: white; outline: none;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: 0.4s;
+        }
+
+        input:focus, select:focus { border-color: #fff; background: rgba(255,255,255,0.12); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
+        select option { background: #0a0a15; color: white; }
+
+        a { color: white; text-decoration: underline; text-underline-offset: 3px; opacity: 0.8; transition: 0.3s; }
+        a:hover { opacity: 1; }
+
+        .checkbox-group { display: flex; align-items: flex-start; gap: 12px; margin: 20px 0; cursor: pointer; font-size: 0.85rem; line-height: 1.5; }
+        .checkbox-group input { width: auto; margin-top: 4px; cursor: pointer; }
+
+        button {
+            width: 100%; padding: 18px; margin-top: 3rem;
+            background: #ffffff; color: #000;
+            border: none; border-radius: 50px;
+            font-weight: 700; cursor: pointer; font-size: 1.1rem;
+            letter-spacing: 1px; transition: 0.3s;
+        }
+
+        button:hover { background: #e0e0e0; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,255,255,0.2); }
+        button:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        .error-box { color: var(--error); font-size: 0.9rem; text-align: center; margin-top: 20px; min-height: 1.2em; font-weight: 500; }
+        
+        .success-overlay { 
+            position: fixed; inset: 0; background: #020205; z-index: 100; 
+            display: none; flex-direction: column; align-items: center; 
+            justify-content: center; text-align: center; 
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="bg-gif-layer"></div>
+<canvas id="bgstar"></canvas>
+
+<div class="container">
+    <div class="setup-card">
+        <h2>Create Your Account</h2>
+        
+        <div id="error-msg" class="error-box"></div>
+
+        <form id="reg-form">
+            <div class="section-title">Identity</div>
+            <div class="form-grid">
+                <div class="input-wrap">
+                    <span class="field-label">First Name</span>
+                    <input type="text" id="f-name" placeholder="E.g. Harry" required>
+                </div>
+                <div class="input-wrap">
+                    <span class="field-label">Last Name</span>
+                    <input type="text" id="l-name" placeholder="E.g. Potter" required>
+                </div>
+                <div class="input-wrap">
+                    <span class="field-label">Date of Birth</span>
+                    <input type="date" id="dob" required>
+                </div>
+                <div class="input-wrap">
+                    <span class="field-label">Current Age</span>
+                    <input type="number" id="age" min="12" max="120" required>
+                </div>
+                <div class="input-wrap">
+                    <span class="field-label">Gender</span>
+                    <select id="gender" required>
+                        <option value="" disabled selected>Select</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="input-wrap">
+                    <span class="field-label">Pronouns</span>
+                    <select id="pronouns">
+                        <option value="" disabled selected>Select</option>
+                        <option value="he/him">He/Him</option>
+                        <option value="she/her">She/Her</option>
+                        <option value="they/them">They/Them</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section-title">School and Academics Information</div>
+            <div class="form-grid">
+                <div class="input-wrap">
+                    <span class="field-label">Grade Level</span>
+                    <select id="grade" required>
+                        <option value="" disabled selected>Select (9-12)</option>
+                        <option value="9">Grade 9</option>
+                        <option value="10">Grade 10</option>
+                        <option value="11">Grade 11</option>
+                        <option value="12">Grade 12</option>
+                    </select>
+                </div>
+                <div class="input-wrap">
+                    <span class="field-label">School</span>
+                    <select id="school">
+                        <option value="Conestoga High School">Conestoga High School</option>
+                        <option value="Other">Other</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="section-title">Security</div>
+            <div class="form-grid">
+                <div class="input-wrap">
+                    <span class="field-label">Username</span>
+                    <input type="text" id="username" placeholder="Username" required>
+                </div>
+                <div class="input-wrap">
+                    <span class="field-label">Email</span>
+                    <input type="email" id="email" placeholder="harrypotter@hogwarts.edu" required>
+                </div>
+                <div class="input-wrap">
+                    <span class="field-label">Password</span>
+                    <input type="password" id="pass" placeholder="Min 8 characters" required minlength="8">
+                    <span class="field-label">* Don't worry, your password is secure and is stored in Google Firebase. Nobody, including us, will have access to your password.</span>
+                </div>
+                <div class="input-wrap">
+                    <span class="field-label">Confirm Password</span>
+                    <input type="password" id="pass-confirm" placeholder="Repeat Passcode" required minlength="8">
+                </div>
+                <div class="input-wrap" style="grid-column: span 2;">
+                    <span class="field-label">Profile Image Link</span>
+                    <input type="url" id="pfp" placeholder="Paste URL (optional)">
+                </div>
+            </div>
+
+            <div class="section-title">Recovery Protocol</div>
+            <div class="form-grid">
+                <div class="input-wrap" style="grid-column: span 2;">
+                    <span class="field-label">Security Question</span>
+                    <select id="sec-question" required>
+                        <option value="" disabled selected>Select a question for account recovery in the future.</option>
+                        <option>What is your favorite color?</option>
+                        <option>What city were you born in?</option>
+                        <option>What is your pet's name?</option>
+                        <option>What is your favorite movie?</option>
+                        <option>What is your favorite book?</option>
+                    </select>
+                </div>
+                <div class="input-wrap" style="grid-column: span 2;">
+                    <span class="field-label">Security Answer</span>
+                    <input type="text" id="sec-answer" placeholder="Your Answer" required>
+                </div>
+                <div class="input-wrap" style="grid-column: span 2;">
+                    <span class="field-label">Secondary Recovery Email</span>
+                    <input type="email" id="recovery-email" placeholder="Personal email (optional)">
+                </div>
+            </div>
+
+            <div class="section-title">Compliance</div>
+            <label class="checkbox-group">
+                <input type="checkbox" id="check-terms" required>
+                <span>I verify that I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a>.</span>
+            </label>
+            <label class="checkbox-group">
+                <input type="checkbox" id="check-privacy" required>
+                <span>I have reviewed the <a href="privacypolicy.html" target="_blank">Privacy Policy</a>.</span>
+            </label>
+            <label class="checkbox-group">
+                <input type="checkbox" id="check-bot" required>
+                <span>I am an authorized human and not a robot.</span>
+            </label>
+
+            <button type="submit" id="submitBtn">Generate Account</button>
+        </form>
+    </div>
+</div>
+
+<div id="success-screen" class="success-overlay">
+    <h1>SYNC COMPLETE!</h1>
+    <p>Returning to login portal...</p>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    // Stars Background
+    const canvas = document.getElementById('bgstar');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    class Star {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 1.5;
+            this.alpha = Math.random();
+            this.blink = Math.random() * 0.02;
+        }
+        draw() {
+            this.alpha += this.blink;
+            if (this.alpha > 1 || this.alpha < 0) this.blink = -this.blink;
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    function initStars() { stars = []; for(let i=0; i<200; i++) stars.push(new Star()); }
+    function animate() { ctx.clearRect(0,0,canvas.width, canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); }
+    window.addEventListener('resize', () => { resize(); initStars(); });
+    resize(); initStars(); animate();
+
+    //Firebase & Authentication
+    const firebaseConfig = {
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
+        authDomain: "strix-shop.firebaseapp.com",
+        projectId: "strix-shop"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const regForm = document.getElementById('reg-form');
+    const errorMsg = document.getElementById('error-msg');
+    const submitBtn = document.getElementById('submitBtn');
+
+    regForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorMsg.innerText = "";
+
+const password = document.getElementById('pass').value.trim();
+const confirmPassword = document.getElementById('pass-confirm').value.trim();
+
+if (password.length < 8) {
+    errorMsg.innerText = "Security requirement: Password must be at least 8 characters.";
+    return;
+}
+
+if (password !== confirmPassword) {
+    errorMsg.innerText = "Security mismatch: Passcodes do not match.";
+    return;
+}
+
+const termsChecked = document.getElementById('check-terms').checked;
+const privacyChecked = document.getElementById('check-privacy').checked;
+const botChecked = document.getElementById('check-bot').checked;
+
+if (!termsChecked || !privacyChecked || !botChecked) {
+    errorMsg.innerText = "You must complete all compliance confirmations.";
+    return;
+}
+
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Syncing with Vault...";
+
+        const email = document.getElementById('email').value;
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+// Get IP
+async function getIPAddress() {
+    try {
+
+        const response = await fetch("https://api.ipify.org?format=json");
+
+        const data = await response.json();
+
+        return data.ip;
+
+    } catch (error) {
+
+        console.error("Failed to get IP:", error);
+
+        return "Unknown";
+    }
+}
+
+const userIP = await getIPAddress();
+// End Get IP
+
+await setDoc(doc(db, "users", user.uid), {
+
+    firstName: document.getElementById('f-name').value,
+    lastName: document.getElementById('l-name').value,
+    username: document.getElementById('username').value,
+    email: email,
+    dob: document.getElementById('dob').value,
+    age: document.getElementById('age').value,
+    gender: document.getElementById('gender').value,
+    grade: document.getElementById('grade').value,
+    school: document.getElementById('school').value,
+    pfp: document.getElementById('pfp').value || "",
+    pronouns: document.getElementById('pronouns').value || "None",
+    securityQuestion: document.getElementById('sec-question').value,
+    securityAnswer: document.getElementById('sec-answer').value,
+    recoveryEmail: document.getElementById('recovery-email').value || "",
+
+    createdAt: serverTimestamp(),
+
+    // Autoset to Customer
+    acc: "customer",
+    setupComplete: true,
+
+    // Checking...
+    compliance: {
+
+        acceptedTerms: document.getElementById('check-terms').checked,
+        acceptedPrivacy: document.getElementById('check-privacy').checked,
+        confirmedHuman: document.getElementById('check-bot').checked,
+
+        acceptedAt: new Date().toISOString(),
+
+        browser: navigator.userAgent,
+
+        ipAddress: userIP,
+
+        language: navigator.language,
+
+        platform: navigator.platform,
+
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    }
+
+});
+    // End Checking
+
+            await signOut(auth);
+            document.getElementById('success-screen').style.display = 'flex';
+            setTimeout(() => { window.location.href = "index.html"; }, 2500);
+
+        } catch (err) {
+            console.error(err);
+            errorMsg.innerText = "Error";
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Retry Sync";
+        }
+    });
+</script>
+</body>
+</html>

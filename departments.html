@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Departments</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --surface: rgba(255, 255, 255, 0.18); /* High translucency glass */
+            --text-main: #1e1b4b;
+            --text-dim: #475569;
+            --border: rgba(255, 255, 255, 0.55); /* Crisp glass edge */
+            --nav-dark: #0a0c12;
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --radius-main: 32px;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
+            background-size: 400% 400%;
+            animation: fluidBackground 20s ease infinite;
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        @keyframes fluidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #bgstar {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* NAVIGATION BAR */
+        nav {
+            background: var(--nav-dark);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 14px 5%;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-box img {
+            height: 32px;
+            cursor: pointer;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+            transition: transform 0.2s ease;
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.2s;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+
+        /* CONTAINER & STACK */
+        .container {
+            position: relative; 
+            z-index: 10;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 80px 5% 100px 5%;
+            flex: 1;
+            width: 100%;
+        }
+
+        .dept-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+        }
+
+        .dept-block {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            align-items: center;
+            gap: 60px;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, box-shadow 0.3s ease;
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-main);
+            padding: 45px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .dept-block.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dept-block:hover {
+            background: rgba(255, 255, 255, 0.28);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        /* Alternating layout order cleanly */
+        .dept-block:nth-child(even) {
+            grid-template-columns: 0.9fr 1.1fr;
+        }
+        
+        .dept-block:nth-child(even) .dept-image-wrap {
+            order: 2;
+        }
+
+        .dept-block:nth-child(even) .dept-text {
+            order: 1;
+        }
+
+        .dept-image-wrap {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            aspect-ratio: 16/10;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+        }
+
+        .dept-image-wrap img {
+            width: 100%; 
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .dept-block:hover .dept-image-wrap img {
+            transform: scale(1.06);
+        }
+
+        .dept-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .dept-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .dept-text h2 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            color: #1e1b4b;
+        }
+
+        .dept-text p {
+            font-size: 1rem;
+            color: var(--text-dim);
+            line-height: 1.8;
+            margin-bottom: 35px;
+            font-weight: 600;
+        }
+
+        .dept-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 14px 32px;
+            background: var(--primary);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 1.5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+        }
+
+        .dept-btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(79, 70, 229, 0.35);
+        }
+
+        /* FOOTER */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 30px;
+            color: var(--text-dim);
+            font-size: 12px;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            font-weight: 700;
+        }
+
+        @media (max-width: 960px) {
+            .dept-block, .dept-block:nth-child(even) {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 25px;
+            }
+            .dept-block:nth-child(even) .dept-image-wrap {
+                order: unset;
+            }
+            .dept-block:nth-child(even) .dept-text {
+                order: unset;
+            }
+            .dept-text h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+    <nav>
+        <div class="nav-main">
+            <div class="logo-box" onclick="window.location.href='home.html'">
+                <img src="logoh.png" alt="STRIX">
+            </div>
+            <div class="nav-right-actions">
+                <a href="home.html" class="nav-link-item">
+                    <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    Home
+                </a>
+                <div class="nav-divider"></div>
+                <span class="nav-badge-text">Departments</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dept-stack">
+            
+            <div class="dept-block">
+                <div class="dept-image-wrap">
+                    <img src="newsdisplay.png" alt="Strix News">
+                </div>
+                <div class="dept-text">
+                    <span class="dept-tag">Information</span>
+                    <h2>STRIX NEWS</h2>
+                    <p>Delivers Local, National, and International news to you instantly.<br><strong>Launch:</strong> January, 2027<br><strong>Director:</strong> Maxi Zhang<br><strong>Editor-in-Chief:</strong> Era Garg</p>
+                    <a href="strixnews.html" class="dept-btn">View Newsletter</a>
+                </div>
+            </div>
+
+            <div class="dept-block">
+                <div class="dept-image-wrap">
+                    <img src="shopdisplay.png" alt="Strix Shop">
+                </div>
+                <div class="dept-text">
+                    <span class="dept-tag">Shop</span>
+                    <h2>STRIX SHOP</h2>
+                    <p>Provides students with the best materials at the most affordable costs.<br><strong>Launch:</strong> August, 2026<br><strong>Director:</strong> Maxi Zhang</p>
+                    <a href="home.html" class="dept-btn">View Shop</a>
+                </div>
+            </div>
+
+            <div class="dept-block">
+                <div class="dept-image-wrap">
+                    <img src="studiodisplay.png" alt="Strix Studio">
+                </div>
+                <div class="dept-text">
+                    <span class="dept-tag">Creative</span>
+                    <h2>STRIX STUDIO</h2>
+                    <p>Creates high-quality media and performances for the public and YouTube.<br><strong>Launch:</strong> January, 2027<br><strong>Director:</strong> Maxi Zhang</p>
+                    <a href="strixstudio.html" class="dept-btn">View Portfolio</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+    </footer>
+
+    <script>
+
+        // Intersection Observer for scroll reveals
+        const observerOptions = {
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.dept-block').forEach(block => {
+            observer.observe(block);
+        });
+
+        window.addEventListener('resize', () => {
+            resize();
+            initStars();
+        });
+        
+        resize();
+        initStars();
+        animate();
+    </script>
+</body>
+</html>

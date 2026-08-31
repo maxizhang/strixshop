@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Order Management</title>
+    <!-- Rounded Font: Quicksand -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --surface: rgba(255, 255, 255, 0.4); /* High transparency glass */
+            --surface-solid: rgba(255, 255, 255, 0.85);
+            --text-main: #0f172a;
+            --text-dim: #64748b;
+            --border: rgba(255, 255, 255, 0.45); /* Thick, semi-transparent glass edge */
+            --border-subtle: rgba(226, 232, 240, 0.5);
+            --nav-dark: #0a0c12;
+            --success: #10b981;
+            --error: #ef4444;
+            --glass-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        * { box-sizing: border-box; }
+        
+        body { 
+            margin: 0; 
+            font-family: 'Quicksand', sans-serif; 
+            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
+            background-size: 400% 400%;
+            animation: fluidBackground 20s ease infinite;
+            color: var(--text-main); 
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden; 
+        }
+
+        @keyframes fluidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        a { text-decoration: none; font-weight: 700; color: #64748b; transition: color 0.2s; }
+        a:hover { color: #334155; }
+
+        /* Taobao-inspired Professional Navbar */
+        nav { 
+            background: var(--nav-dark); 
+            width: 100%; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .nav-main { 
+            display: flex; 
+            align-items: center; 
+            padding: 14px 5%; 
+            justify-content: space-between; 
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .logo-box img { 
+            height: 32px; 
+            cursor: pointer; 
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); 
+        }
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.2s;
+        }
+        .nav-link-item:hover, .nav-link-item.active {
+            color: #ffffff;
+        }
+        .nav-link-item:hover svg, .nav-link-item.active svg {
+            stroke: #ffffff;
+        }
+        .nav-link-item.active {
+            position: relative;
+        }
+        .nav-link-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 700;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+
+        /* View Layouts */
+        .view-content { flex: 1; display: none; position: relative; z-index: 10; padding: 40px 5%; max-width: 1400px; margin: 0 auto; width: 100%; }
+        .view-content.active { display: flex; flex-direction: column; }
+
+        #search-view { flex-direction: row; gap: 24px; align-items: flex-start; }
+        .browser-left { width: 380px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0; }
+        
+        .glass-card {
+            background: var(--surface);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 3px solid var(--border);
+            border-radius: 28px;
+            padding: 25px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 35px 70px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .browser-right { 
+            flex: 1; 
+            background: var(--surface);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 3px solid var(--border);
+            border-radius: 28px;
+            padding: 35px;
+            box-shadow: var(--glass-shadow);
+            min-height: 600px;
+            position: relative;
+        }
+        
+        .receipt-card { 
+            background: rgba(255, 255, 255, 0.85); 
+            border-radius: 20px; 
+            padding: 35px; 
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06); 
+            color: var(--text-main); 
+            max-width: 800px; 
+            margin: 0 auto; 
+            border: 2px solid var(--border-subtle);
+        }
+        .receipt-header { text-align: center; border-bottom: 2px solid var(--border-subtle); padding-bottom: 25px; margin-bottom: 25px; }
+        .receipt-header h1 { margin: 0; font-size: 26px; letter-spacing: 1px; color: #1e1b4b; font-weight: 700; }
+        .section { margin-bottom: 25px; }
+        .receipt-title { font-size: 11px; color: var(--primary); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        .receipt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .box { background: rgba(255, 255, 255, 0.6); padding: 12px 15px; border-radius: 12px; border: 1px solid var(--border-subtle); font-size: 13px; font-weight: 600; color: var(--text-main); }
+        .agreement-text { font-size: 12px; font-weight: 600; color: var(--text-dim); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .item-row { border-bottom: 1px solid var(--border-subtle); padding: 12px 0; display: flex; justify-content: space-between; }
+        .item-name { font-weight: 700; color: var(--text-main); font-size: 14px; }
+        .item-subtext { font-size: 12px; font-weight: 600; color: var(--text-dim); }
+        
+        .notes-area-wrap {
+            margin-top: 20px; padding: 20px;
+            background: rgba(79, 70, 229, 0.04);
+            border: 2px dashed rgba(79, 70, 229, 0.3);
+            border-radius: 16px;
+        }
+        .notes-input {
+            width: 100%; min-height: 70px; background: rgba(255,255,255,0.5); border: 1px solid var(--border-subtle);
+            color: var(--text-main); font-size: 13px; font-weight: 600; padding: 10px;
+            resize: vertical; outline: none; margin-top: 8px; border-radius: 10px;
+        }
+        .sync-btn {
+            margin-top: 10px; background: var(--primary); color: #fff;
+            border: none; padding: 8px 16px; border-radius: 8px;
+            font-size: 11px; font-weight: 700; cursor: pointer; text-transform: uppercase;
+            transition: background 0.2s;
+        }
+        .sync-btn:hover { background: var(--primary-hover); }
+
+        /* Table UI Styling */
+        .table-wrap {
+            width: 100%; 
+            background: var(--surface);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 3px solid var(--border);
+            border-radius: 28px;
+            overflow: auto;
+            box-shadow: var(--glass-shadow);
+            padding: 10px;
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 16px 14px;
+            color: var(--primary);
+            position: sticky; top: 0;
+            text-align: left; letter-spacing: 0.5px;
+            text-transform: uppercase; font-size: 11px; font-weight: 700;
+            border-bottom: 2px solid var(--border-subtle);
+        }
+        td { padding: 14px; font-weight: 600; border-bottom: 1px solid var(--border-subtle); color: var(--text-main); }
+        tbody tr:hover { background: rgba(79, 70, 229, 0.03); }
+
+        .status-select { background: rgba(255,255,255,0.8); color: var(--text-main); border: 1px solid var(--border-subtle); padding: 6px 10px; border-radius: 8px; font-weight: 700; font-size: 12px; outline: none; }
+        .status-delivered { background: var(--success) !important; color: white !important; }
+        .status-cancelled { background: var(--error) !important; color: white !important; }
+
+        .total-section { margin-top: 25px; padding: 25px; border-top: 2px solid var(--border-subtle); text-align: right; background: rgba(255, 255, 255, 0.6); border-radius: 16px; }
+        .total-label { color: var(--primary); font-size: 14px; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+        .total-price { color: #1e1b4b; font-size: 32px; font-weight: 700; margin-top: 8px; }
+
+        .print-btn { position: absolute; top: 25px; right: 25px; background: #475569; color: #fff; padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 12px; border: none; z-index: 50; transition: background 0.2s; }
+        .print-btn:hover { background: #334155; }
+
+        .delete-all-btn {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            padding: 10px 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            cursor: pointer;
+            font-weight: 700; font-size: 12px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            margin-bottom: 20px; transition: all 0.2s ease;
+        }
+        .delete-all-btn:hover { background: var(--error); color: white; border-color: var(--error); }
+
+        /* Sidebar Calculator Panel */
+        .sidebar-calc-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .calc-screen-wrap {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 10px 14px;
+        }
+        .calc-screen-input {
+            width: 100%; background: transparent; border: none;
+            color: var(--text-main); font-size: 16px; font-weight: 700; text-align: right; outline: none;
+        }
+        .calc-screen-output {
+            color: var(--primary); font-size: 12px; font-weight: 700; text-align: right; margin-top: 4px; min-height: 16px;
+        }
+        .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+        .calc-btn {
+            background: rgba(255, 255, 255, 0.6); border: 1px solid var(--border-subtle);
+            border-radius: 8px; color: var(--text-main); padding: 10px 0;
+            font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.15s ease;
+        }
+        .calc-btn:hover { background: rgba(255, 255, 255, 0.9); }
+        .calc-btn.op-btn { color: var(--primary); background: rgba(79, 70, 229, 0.08); }
+        .calc-btn.action-btn { color: var(--error); }
+        .calc-btn.eval-btn { background: var(--primary); color: #ffffff; grid-column: span 2; }
+        .calc-btn.eval-btn:hover { background: var(--primary-hover); }
+        .pct-calculator-row {
+            display: flex; align-items: center; gap: 6px;
+            margin-top: 4px; border-top: 1px dashed var(--border-subtle); padding-top: 10px;
+        }
+        .pct-input {
+            flex: 1; background: rgba(255,255,255,0.7); border: 1px solid var(--border-subtle);
+            padding: 8px 10px; border-radius: 8px; color: var(--text-main); font-size: 12px; font-weight: 600; width: 100%; outline: none;
+        }
+        .pct-btn {
+            background: rgba(79, 70, 229, 0.1); border: 1px solid var(--border-subtle);
+            color: var(--primary); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;
+        }
+
+        /* Modals */
+        .popup-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.3); backdrop-filter: blur(6px);
+            z-index: 2000; align-items: center; justify-content: center; padding: 20px;
+        }
+        .popup-card {
+            width: 800px; max-width: 100%; background: #ffffff;
+            border: 3px solid var(--border); border-radius: 28px; padding: 30px;
+            box-shadow: 0 35px 70px rgba(0,0,0,0.2);
+        }
+        .popup-title { font-size: 1.25rem; font-weight: 700; color: #1e1b4b; margin-bottom: 15px; }
+        .discount-list { max-height: 250px; overflow-y: auto; margin-bottom: 15px; padding-right: 5px; }
+        .discount-entry { display: flex; gap: 10px; margin-bottom: 10px; }
+        .discount-entry input { flex: 1; background: #f8fafc; border: 1px solid var(--border-subtle); color: var(--text-main); font-weight: 600; padding: 10px; border-radius: 12px; outline: none; }
+        .discount-entry button { width: 45px; border: none; border-radius: 12px; background: var(--error); color: white; cursor: pointer; font-weight: 700; }
+
+        .popup-actions { display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+        .popup-btn { background: #e2e8f0; color: var(--text-main); border: none; border-radius: 12px; padding: 10px 18px; cursor: pointer; font-weight: 700; font-size: 13px; transition: 0.2s; }
+        .popup-btn:hover { opacity: 0.85; }
+        .popup-btn.primary { background: var(--primary); color: white; }
+
+        @media print {
+            body, html { height: auto !important; overflow: visible !important; background: white !important; }
+            nav, .browser-left, .print-btn, .sync-btn, #table-view, #discountPopup { display: none !important; }
+            .view-content, #search-view.active { display: block !important; padding: 0 !important; }
+            .browser-right { display: block !important; width: 100% !important; background: white !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
+            .receipt-card { background: white !important; color: black !important; box-shadow: none !important; width: 100% !important; border: none !important; padding: 0 !important; }
+            .box, .agreement-text span, .notes-area-wrap { background: #f8fafc !important; color: black !important; border: 1px solid #ddd !important; }
+            .receipt-header h1, .total-price, .item-name { color: black !important; }
+            .item-row { border-bottom: 1px solid #eee !important; }
+            .notes-input { color: black !important; background: white !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Taobao-Inspired Professional Navbar -->
+    <nav>    
+        <div class="nav-main">        
+            <div class="logo-box" onclick="window.location.href='home.html'"><img src="logoh.png" alt="STRIX"></div>        
+            <div class="nav-right-actions">            
+                <button class="nav-link-item active" onclick="switchTab('search', this)">                
+                    <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>                
+                    Search & Receipts            
+                </button>            
+                <button class="nav-link-item" onclick="switchTab('table', this)">                
+                    <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>                
+                    Orders Table            
+                </button>            
+                <div class="nav-divider"></div>            
+                <span class="nav-badge-text">Order Tracker</span>        
+            </div>    
+        </div>
+    </nav>
+
+    <!-- Search & Receipt View -->
+    <div id="search-view" class="view-content active">
+        <div class="browser-left">
+            <div class="glass-card">
+                <span class="card-tag" style="font-size:11px; color:var(--primary); text-transform:uppercase; font-weight:700; letter-spacing:1px; display:block; margin-bottom:10px;">Order Decryption</span>
+                <input type="text" id="order-search" style="width:100%; background:rgba(255,255,255,0.7); border:1px solid var(--border-subtle); padding:12px; border-radius:12px; color:var(--text-main); font-weight:600; outline:none;" placeholder="Enter Submission ID..." oninput="lookupOrder(this.value.trim())">
+                <div id="search-status" style="font-size:12px; font-weight:600; color:var(--text-dim); text-align:center; margin-top:12px;">Waiting for input...</div>
+            </div>
+
+            <div class="glass-card sidebar-calc-panel">
+                <span style="font-size:11px; color:var(--primary); text-transform:uppercase; font-weight:700; letter-spacing:1px; display:block;">Computation Module</span>
+                <div class="calc-screen-wrap">
+                    <input type="text" id="calcInput" class="calc-screen-input" placeholder="0" onkeydown="if(event.key==='Enter') runCalc()">
+                    <div id="calcResult" class="calc-screen-output"></div>
+                </div>
+                
+                <div class="calc-grid">
+                    <button class="calc-btn action-btn" onclick="clearCalc()">C</button>
+                    <button class="calc-btn op-btn" onclick="appendCalc('(')">(</button>
+                    <button class="calc-btn op-btn" onclick="appendCalc(')')">)</button>
+                    <button class="calc-btn op-btn" onclick="appendCalc('/')">/</button>
+                    
+                    <button class="calc-btn" onclick="appendCalc('7')">7</button>
+                    <button class="calc-btn" onclick="appendCalc('8')">8</button>
+                    <button class="calc-btn" onclick="appendCalc('9')">9</button>
+                    <button class="calc-btn op-btn" onclick="appendCalc('*')">*</button>
+                    
+                    <button class="calc-btn" onclick="appendCalc('4')">4</button>
+                    <button class="calc-btn" onclick="appendCalc('5')">5</button>
+                    <button class="calc-btn" onclick="appendCalc('6')">6</button>
+                    <button class="calc-btn op-btn" onclick="appendCalc('-')">-</button>
+                    
+                    <button class="calc-btn" onclick="appendCalc('1')">1</button>
+                    <button class="calc-btn" onclick="appendCalc('2')">2</button>
+                    <button class="calc-btn" onclick="appendCalc('3')">3</button>
+                    <button class="calc-btn op-btn" onclick="appendCalc('+')">+</button>
+                    
+                    <button class="calc-btn" onclick="appendCalc('0')">0</button>
+                    <button class="calc-btn" onclick="appendCalc('.')">.</button>
+                    <button class="calc-btn op-btn" onclick="backspaceCalc()">⌫</button>
+                    <button class="calc-btn op-btn" onclick="appendCalc('Math.sqrt(')">√</button>
+
+                    <button class="calc-btn eval-btn" onclick="runCalc()">=</button>
+                </div>
+
+                <div class="pct-calculator-row">
+                    <input id="pctAmount" class="pct-input" type="number" placeholder="Amt">
+                    <input id="pctPercent" class="pct-input" type="number" placeholder="%">
+                    <button class="pct-btn" onclick="runPercent()">%</button>
+                </div>
+                <div id="pctResult" style="font-size:12px; font-weight:700; color:var(--success); text-align:center; min-height:16px;"></div>
+            </div>
+        </div>
+
+        <div class="browser-right" id="receipt-display">
+            <div style="display:flex; align-items:center; justify-content:center; height:100%; color:var(--text-dim); font-weight:600;">Search for an Order ID to load the receipt.</div>
+        </div>
+
+        <div id="discountPopup" class="popup-overlay">
+            <div class="popup-card">
+                <h2 class="popup-title">Discount Manager</h2>
+                <p style="font-size: 12px; font-weight: 600; color: var(--text-dim); margin-bottom: 12px;">Title | Amount Deducted</p>
+                <div id="discountList" class="discount-list"></div>
+                <div class="popup-actions">
+                    <button class="popup-btn primary" onclick="addDiscountRow()">Add Discount</button>
+                    <button class="popup-btn" id="saveDiscountsBtn" onclick="saveDiscounts()">Apply changes</button>
+                    <button class="popup-btn" onclick="closeDiscountPopup()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Table View -->
+    <div id="table-view" class="view-content">
+        <div><button class="delete-all-btn" onclick="bulkDeleteOrders()">Clear Table</button></div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order Date</th>
+                        <th>Status</th>
+                        <th>Customer</th>
+                        <th>Email</th>
+                        <th>Grade</th>
+                        <th>Homeroom</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="Table-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Firebase SDK Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU", authDomain: "strix-shop.firebaseapp.com", projectId: "strix-shop" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        const MASTER_UID = "PNssYZn1wNUGjmzeAq1eHz2QHKf1";
+        let currentUserData = null;
+
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            const docSnap = await db.collection("users").doc(user.uid).get();
+            if (!docSnap.exists) {
+                window.location.href = "home.html";
+                return;
+            }
+
+            currentUserData = docSnap.data();
+            if (!["agent", "admin"].includes(currentUserData.acc)) {
+                window.location.href = "home.html";
+                return;
+            }
+
+            loadTable();
+        });
+
+        let currentOrderData = null;
+        let currentOrderId = null;
+
+        function switchTab(type, btnElement) {
+            document.querySelectorAll('.nav-link-item').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
+            if(type === 'search') {
+                document.getElementById('search-view').classList.add('active');
+                if(btnElement) btnElement.classList.add('active');
+            } else {
+                document.getElementById('table-view').classList.add('active');
+                if(btnElement) btnElement.classList.add('active');
+            }
+        }
+
+        async function lookupOrder(id) {
+            if(!id) return;
+            const snap = await db.collection("orders").doc(id).get();
+            if(snap.exists) { 
+                renderReceipt(id, snap.data()); 
+                document.getElementById('search-status').innerText = "Record decrypted."; 
+            } else { 
+                document.getElementById('search-status').innerText = "Record not found."; 
+            }
+        }
+
+        async function getSku(productName) {
+            const snap = await db.collection("products").where("name", "==", productName).limit(1).get();
+            return !snap.empty ? snap.docs[0].data().sku || "N/A" : "N/A";
+        }
+
+        async function saveNote(id) {
+            const noteText = document.getElementById(`order-notes-${id}`).value;
+            const btn = event.target;
+            btn.innerText = "SYNCING...";
+            try {
+                await db.collection("orders").doc(id).update({ notes: noteText });
+                btn.innerText = "SYNCED";
+                setTimeout(() => { btn.innerText = "Sync Notes to Cloud"; }, 2000);
+            } catch (error) {
+                btn.innerText = "SYNC FAILED";
+            }
+        }
+
+        async function renderReceipt(id, data) {
+            const display = document.getElementById('receipt-display');
+            display.innerHTML = '<div style="text-align:center; padding:50px; font-weight:700;">SYNCING SECURE DATA...</div>';
+            
+            currentOrderData = data;
+            currentOrderId = id;
+
+            let itemRows = '';
+            if (Array.isArray(data.items)) {
+                const rows = await Promise.all(data.items.map(async i => {
+                    const liveSku = await getSku(i.name);
+                    const selectionsText = Object.entries(i.selections || {}).map(([key, value]) => `${key}: ${value}`).join(' / ');
+
+                    return `
+                    <div class="item-row">
+                        <div class="item-details">
+                            <span class="item-name">${i.name}</span>
+                            ${selectionsText ? `<br><span class="item-subtext">${selectionsText}</span>` : ''}
+                            <br><span class="item-subtext">SKUID: ${liveSku}</span>
+                        </div>
+                        <div style="font-weight:700;">$${(parseFloat(i.price) * (i.qty || 1)).toFixed(2)}</div>
+                    </div>`;
+                }));
+                itemRows = rows.join('');
+            }
+
+            const subtotal = Array.isArray(data.items) ? data.items.reduce((sum, item) => sum + ((Number(item.price)||0) * (Number(item.qty)||1)), 0) : 0;
+            
+            const activeDiscounts = Array.isArray(data.discounts) ? data.discounts : [];
+            const discountTotal = activeDiscounts.reduce((sum, d) => sum + (Number(d.amount) || 0), 0);
+            const finalTotal = Math.max(0, subtotal - discountTotal);
+            
+            const discountHtml = activeDiscounts.map(d => `
+                <div class="agreement-text">${d.name} <span>-$${(Number(d.amount) || 0).toFixed(2)}</span></div>
+            `).join("");
+
+            display.innerHTML = `
+                <button class="print-btn" onclick="window.print()">PRINT RECEIPT</button>
+                <button class="print-btn" style="right:150px;background:#64748b" onclick="openDiscountPopup()">DISCOUNTS</button>
+
+                <div class="receipt-card">
+                    <div class="receipt-header"><h1>STRIX SHOP</h1><p style="color:var(--text-dim); margin-top:5px; font-weight:600;">Official Order Receipt • ID: ${id}</p></div>
+                    
+                    <div class="section"><div class="receipt-title">Customer Info</div><div class="receipt-grid">
+                        <div class="box"><b>Order Date:</b> ${data.orderDate || '---'}</div>
+                        <div class="box"><b>Status:</b> ${data.status || 'Placed'}</div>
+                        <div class="box"><b>Source:</b> Strix Shop Web Portal</div>
+                        <div class="box"><b>IP Address:</b> ${data.ip || '---'}</div>
+                    </div></div>
+
+                    <div class="section"><div class="receipt-title">Customer Information</div><div class="receipt-grid">
+                        <div class="box"><b>Customer:</b> ${data.customer || '---'}</div>
+                        <div class="box"><b>Email:</b> ${data.email || '---'}</div>
+                        <div class="box"><b>Grade:</b> ${data.grade || '---'}</div>
+                        <div class="box"><b>Homeroom:</b> ${data.homeroom || '---'}</div>
+                    </div></div>
+
+                    <div class="section"><div class="receipt-title">Agreements & Legal</div><div class="box">
+                        <div class="agreement-text">"All orders are final once placed." <span>YES</span></div>
+                        <div class="agreement-text">"Partial payment option accepted." <span>YES</span></div>
+                        <div class="agreement-text">"Agree to Terms and Conditions." <span>YES</span></div>
+                    </div></div>
+
+                    <div class="section"><div class="receipt-title">Order Items</div><div>${itemRows}</div></div>
+
+                    <div class="notes-area-wrap">
+                        <div class="receipt-title" style="margin-bottom:0">Customer Notes</div>
+                        <textarea id="order-notes-${id}" class="notes-input" placeholder="Enter processing notes or instructions...">${data.notes || ''}</textarea>
+                        <button class="sync-btn" onclick="saveNote('${id}')">Sync Notes to Cloud</button>
+                    </div>
+
+                    <div class="total-section">
+                        <div class="agreement-text">Subtotal <span>$${subtotal.toFixed(2)}</span></div>
+                        ${discountHtml}
+                        <div class="agreement-text" style="font-weight:700; margin-top:12px;">Total Discounts <span>-$${discountTotal.toFixed(2)}</span></div>
+                        <div class="total-label">Final Balance Due</div>
+                        <div class="total-price">$${finalTotal.toFixed(2)} USD</div>
+                    </div>
+                </div>`;
+        }
+
+        function loadTable() {
+            const body = document.getElementById('Table-body');
+            const statuses = ["Placed", "Ordered", "Shipping", "Arrived", "Delivering", "Delivered", "Cancelled"];
+            db.collection("orders").orderBy("createdAt", "desc").onSnapshot(snap => {
+                body.innerHTML = "";
+                snap.forEach(doc => {
+                    const d = doc.data();
+                    const current = d.status || "Placed";
+                    let sClass = (current === "Delivered") ? 'status-delivered' : (current === "Cancelled" ? 'status-cancelled' : '');
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${d.orderDate}</td>
+                        <td><select class="status-select ${sClass}" onchange="updateStatus('${doc.id}', this.value)">
+                            ${statuses.map(s => `<option value="${s}" ${s === current ? 'selected' : ''}>${s}</option>`).join('')}</select></td>
+                        <td>${d.customer}</td>
+                        <td>${d.email}</td>
+                        <td>${d.grade}</td>
+                        <td>${d.homeroom}</td>
+                        <td style="font-weight:700">$${d.total}</td>
+                        <td>
+                            <button onclick="viewOrder('${doc.id}')" style="background:none; border:none; color:var(--primary); cursor:pointer; margin-right:8px; font-weight:700;">VIEW</button>
+                        </td>
+                        <td>
+                            <button onclick="deleteSingleOrder('${doc.id}')" style="background:none; border:none; color:var(--error); cursor:pointer; display:flex; align-items:center; justify-content:center; padding:4px;" title="Delete Order"> <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"> <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/> </svg> </button>
+                        </td>`;
+                        
+                    body.appendChild(tr);
+                });
+            });
+        }
+
+        async function updateStatus(id, val) { await db.collection("orders").doc(id).update({ status: val }); }
+        function viewOrder(id) { 
+            switchTab('search', document.querySelectorAll('.nav-link-item')[0]); 
+            document.getElementById('order-search').value = id; 
+            lookupOrder(id); 
+        }
+
+        // Calculator Logic
+        function appendCalc(val) {
+            const input = document.getElementById('calcInput');
+            input.value += val;
+        }
+        function clearCalc() {
+            document.getElementById('calcInput').value = '';
+            document.getElementById('calcResult').innerText = '';
+        }
+        function backspaceCalc() {
+            const input = document.getElementById('calcInput');
+            input.value = input.value.slice(0, -1);
+        }
+        function runCalc() {
+            const input = document.getElementById('calcInput').value;
+            try {
+                const res = eval(input);
+                document.getElementById('calcResult').innerText = `= ${res}`;
+            } catch (e) {
+                document.getElementById('calcResult').innerText = 'Error';
+            }
+        }
+        function runPercent() {
+            const amt = parseFloat(document.getElementById('pctAmount').value) || 0;
+            const pct = parseFloat(document.getElementById('pctPercent').value) || 0;
+            const result = (amt * pct) / 100;
+            document.getElementById('pctResult').innerText = `Result: ${result.toFixed(2)}`;
+        }
+
+        // Discount Popup Logic
+        function openDiscountPopup() {
+            if (!currentOrderData) return;
+            const list = document.getElementById('discountList');
+            list.innerHTML = '';
+            const discounts = currentOrderData.discounts || [];
+            discounts.forEach((d, idx) => {
+                appendDiscountRowUI(d.name, d.amount, idx);
+            });
+            document.getElementById('discountPopup').style.display = 'flex';
+        }
+        function closeDiscountPopup() {
+            document.getElementById('discountPopup').style.display = 'none';
+        }
+        function addDiscountRow() {
+            appendDiscountRowUI('', '', document.querySelectorAll('.discount-entry').length);
+        }
+        function appendDiscountRowUI(name, amount, idx) {
+            const list = document.getElementById('discountList');
+            const div = document.createElement('div');
+            div.className = 'discount-entry';
+            div.innerHTML = `
+                <input type="text" placeholder="Reason/Name" value="${name}" class="disc-name">
+                <input type="number" placeholder="Amount" value="${amount}" class="disc-amt">
+                <button onclick="this.parentElement.remove()">×</button>
+            `;
+            list.appendChild(div);
+        }
+        async function saveDiscounts() {
+            if (!currentOrderId) return;
+            const entries = document.querySelectorAll('.discount-entry');
+            const newDiscounts = [];
+            entries.forEach(e => {
+                const name = e.querySelector('.disc-name').value.trim();
+                const amount = parseFloat(e.querySelector('.disc-amt').value) || 0;
+                if(name) newDiscounts.push({ name, amount });
+            });
+            try {
+                await db.collection("orders").doc(currentOrderId).update({ discounts: newDiscounts });
+                currentOrderData.discounts = newDiscounts;
+                renderReceipt(currentOrderId, currentOrderData);
+                closeDiscountPopup();
+            } catch(err) {
+                alert("Failed to save discounts.");
+            }
+        }
+
+        async function bulkDeleteOrders() {
+            if (!auth.currentUser || auth.currentUser.uid !== MASTER_UID) {
+                alert("ACCESS DENIED: Master Agent permission required to clear the table.");
+                return;
+            }
+            if (!confirm("Are you sure you want to clear the newest 500 records?")) return;
+            try {
+                const snap = await db.collection("orders").orderBy("createdAt", "desc").limit(500).get();
+                const batch = db.batch();
+                snap.forEach(doc => batch.delete(doc.ref));
+                await batch.commit();
+                alert("Table successfully wiped.");
+            } catch(e) {
+                alert("Failed to clear table.");
+            }
+        }
+
+        async function deleteSingleOrder(id) {
+            if (!auth.currentUser || auth.currentUser.uid !== MASTER_UID) {
+                alert("ACCESS DENIED: Master Agent permission required.");
+                return;
+            }
+            if (!confirm("Delete this order?")) return;
+            try {
+                await db.collection("orders").doc(id).delete();
+            } catch(e) {
+                alert("Failed to delete order.");
+            }
+        }
+    </script>
+</body>
+</html>
