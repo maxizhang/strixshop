@@ -453,7 +453,7 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        const MASTER_UID = "PNssYZn1wNUGjmzeAq1eHz2QHKf1";
+        const M_UID = "PNssYZn1wNUGjmzeAq1eHz2QHKf1";
         let currentUserData = null;
 
         auth.onAuthStateChanged(async (user) => {
@@ -717,8 +717,8 @@
         }
 
         async function bulkDeleteOrders() {
-            if (!auth.currentUser || auth.currentUser.uid !== MASTER_UID) {
-                alert("ACCESS DENIED: Master Agent permission required to clear the table.");
+            if (!auth.currentUser || auth.currentUser.uid !== M_UID) {
+                alert("ACCESS DENIED: M Agent permission required to clear the table.");
                 return;
             }
             if (!confirm("Are you sure you want to clear the newest 500 records?")) return;
@@ -734,8 +734,8 @@
         }
 
         async function deleteSingleOrder(id) {
-            if (!auth.currentUser || auth.currentUser.uid !== MASTER_UID) {
-                alert("ACCESS DENIED: Master Agent permission required.");
+            if (!auth.currentUser || auth.currentUser.uid !== M_UID) {
+                alert("ACCESS DENIED: M Agent permission required.");
                 return;
             }
             if (!confirm("Delete this order?")) return;

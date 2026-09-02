@@ -134,8 +134,8 @@
             border: 1px solid var(--border); 
             padding: 8px 18px; 
             border-radius: 50px; 
-            font-size: 0.7rem; 
-            font-weight: 700; 
+            font-size: 0.65rem; 
+            font-weight: 800; 
             cursor: pointer; 
             color: var(--text-dim); 
             text-transform: uppercase; 
@@ -270,7 +270,7 @@
             <img src="logoh.png" alt="STRIX">
         </a>
         <div class="search-engine">
-            <input type="text" id="master-search" placeholder="Filter inventory..." oninput="renderGrid()">
+            <input type="text" id="M-search" placeholder="Filter inventory..." oninput="renderGrid()">
         </div>
         <button class="btn-new" onclick="openNewEditor()">+ ADD NEW PRODUCT</button>
     </div>
@@ -357,8 +357,8 @@
     </div>
 
     <div class="panel-foot">
-        <button class="btn-delete-sku" id="delete-btn-ui" onclick="deleteMaster()">DELETE</button>
-        <button class="btn-save" id="btn-save-master" onclick="saveMaster()">PUBLISH CHANGES</button>
+        <button class="btn-delete-sku" id="delete-btn-ui" onclick="deleteM()">DELETE</button>
+        <button class="btn-save" id="btn-save-M" onclick="saveM()">PUBLISH CHANGES</button>
     </div>
 </aside>
 
@@ -405,8 +405,8 @@
         const isAdmin = currentUserData.acc === "admin" || currentUserData.adminStatus === true;
 
         if (!isAdmin) {
-            document.getElementById("btn-save-master").style.opacity = "0.5";
-            document.getElementById("btn-save-master").style.pointerEvents = "none";
+            document.getElementById("btn-save-M").style.opacity = "0.5";
+            document.getElementById("btn-save-M").style.pointerEvents = "none";
 
             document.getElementById("delete-btn-ui").style.opacity = "0.5";
             document.getElementById("delete-btn-ui").style.pointerEvents = "none";
@@ -425,7 +425,7 @@
 
     function renderGrid() {
         const grid = document.getElementById('main-grid');
-        const qInput = document.getElementById('master-search');
+        const qInput = document.getElementById('M-search');
         const q = qInput ? qInput.value.toLowerCase() : "";
         grid.innerHTML = "";
 
@@ -549,9 +549,9 @@
         }
     }
 
-    async function saveMaster() {
+    async function saveM() {
         const id = document.getElementById('p-id').value;
-        const btn = document.getElementById('btn-save-master');
+        const btn = document.getElementById('btn-save-M');
         btn.innerText = "PUBLISHING...";
         btn.disabled = true;
 
@@ -588,7 +588,7 @@
         }
     }
 
-    async function deleteMaster() {
+    async function deleteM() {
         const isAdmin = currentUserData && (currentUserData.acc === "admin" || currentUserData.adminStatus === true);
         if (!isAdmin) {
             alert("ADMIN ACCESS REQUIRED");

@@ -11,7 +11,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -158,6 +158,20 @@ a{
     color:rgba(255,255,255,.86);
     position:relative;
     z-index:1;
+}
+
+.user-id-badge {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #e2e8f0;
+    position: relative;
+    z-index: 1;
 }
 
 .toolbar{
@@ -564,8 +578,9 @@ a{
 
     <section class="hero">
         <h1>My Orders</h1>
-        <p>Everything you've bought, all in one place.
-        </p>
+        <p>Everything you've bought, all in one place.</p>
+        <!-- User ID displayed here -->
+        <div class="user-id-badge" id="uid-display">User ID: Syncing...</div>
     </section>
 
     <div class="toolbar">
@@ -621,10 +636,10 @@ let searchTerm = "";
 
 auth.onAuthStateChanged(user => {
     if (user) {
-        // Use the customer name instead of uid. 
-        // We check auth.currentUser.displayName, or you can supply a default/fallback name if needed.
-        const customerName = user.displayName || "Brenda Shen"; // Fallback to your test name if displayName isn't set yet
-        loadCustomerOrders(customerName);
+        // Display the user's unique ID on the page
+        document.getElementById("uid-display").textContent = "User ID: " + user.uid;
+        // Query orders using the authenticated user's unique uid matching the database field
+        loadCustomerOrders(user.uid);
     } else {
         window.location.href = "index.html";
     }
@@ -809,10 +824,10 @@ async function reorderOrder(orderId, button) {
     }
 }
 
-// Updated function to query orders by customer name instead of uid
-function loadCustomerOrders(customerName) {
+// Query orders using uid matching the database schema
+function loadCustomerOrders(uid) {
     db.collection("orders")
-        .where("customer", "==", customerName)
+        .where("uid", "==", uid)
         .onSnapshot(
             snap => {
                 allOrders = snap.docs
@@ -826,7 +841,7 @@ function loadCustomerOrders(customerName) {
                                 <svg class="icon-lg" viewBox="0 0 24 24"><path d="M3 7h18"></path><path d="M5 7l1.5 13h11L19 7"></path><path d="M9 7a3 3 0 0 1 6 0"></path></svg>
                             </div>
                             <h3>No orders yet</h3>
-                            <p>Your purchases for "${escapeHtml(customerName)}" will appear here after you place an order.</p>
+                            <p>Your purchases linked to this User ID will appear here after you place an order.</p>
                         </div>
                     `;
                     return;
