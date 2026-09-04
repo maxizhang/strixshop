@@ -11,14 +11,14 @@
         :root {
             --color-text-main: #0f172a;
             --color-text-muted: #64728b;
-            --color-accent-blue: #415e9e;
-            --color-accent-cyan: #9e56ac;
-            --color-logo-bg: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            --color-accent-blue: #6366f1; /* Rich Indigo/Blue */
+            --color-accent-purple: #9333ea; /* Vibrant Purple */
+            --color-logo-bg: linear-gradient(135deg, #393661 0%, #403e7f 100%);
             --color-glass-bg: rgba(255, 255, 255, 0.7);
             --color-glass-border: rgba(255, 255, 255, 0.9);
             --color-glass-hover: rgba(255, 255, 255, 0.95);
             --shadow-glass: 0 16px 40px 0 rgba(31, 38, 135, 0.08);
-            --shadow-glow: 0 10px 30px rgba(37, 99, 235, 0.15);
+            --shadow-glow: 0 10px 30px rgba(99, 102, 241, 0.2);
             --radius-main: 24px;
         }
 
@@ -29,7 +29,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #e0e7ff, #f3e8ff, #e0f2fe, #dcfce7, #fef3c7);
+            background: linear-gradient(135deg, #e0e7ff, #fae8ff, #ede9fe, #dcfce7, #fef3c7);
             background-size: 400% 400%;
             animation: fluidMorph 12s ease infinite;
             color: var(--color-text-main);
@@ -133,7 +133,7 @@
             background: #ffffff;
             transform: translateX(8px);
             box-shadow: var(--shadow-glow);
-            border-color: rgba(37, 99, 235, 0.3);
+            border-color: rgba(99, 102, 241, 0.3);
             color: var(--color-accent-blue);
         }
 
@@ -211,7 +211,7 @@
         }
 
         .search-btn {
-            background: linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-cyan));
+            background: linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-purple));
             border: none;
             width: 36px;
             height: 36px;
@@ -267,7 +267,7 @@
             position: absolute;
             top: -4px;
             right: -4px;
-            background: linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-cyan));
+            background: linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-purple));
             color: white;
             padding: 2px 8px;
             border-radius: 12px;
@@ -394,7 +394,7 @@
             background: #ffffff;
             transform: translateY(-8px);
             box-shadow: 0 20px 30px rgba(0,0,0,0.06);
-            border-color: rgba(37, 99, 235, 0.3);
+            border-color: rgba(99, 102, 241, 0.3);
         }
 
         .category-block h2 {
@@ -430,14 +430,14 @@
         .resource-card:hover {
             background: #ffffff;
             transform: translateX(5px);
-            border-color: rgba(37, 99, 235, 0.3);
+            border-color: rgba(99, 102, 241, 0.3);
         }
 
         .resource-icon {
             width: 42px;
             height: 42px;
             border-radius: 12px;
-            background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+            background: linear-gradient(135deg, #e0e7ff, #ede9fe);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -672,8 +672,8 @@
         .portal-icon-btn:hover {
             background: #ffffff;
             transform: translateY(-5px) scale(1.08);
-            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.15);
-            color: #7125eb;
+            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.15);
+            color: var(--color-accent-purple);
         }
 
         .portal-icon-btn::after {
@@ -735,7 +735,7 @@
             left: 0; top: 0; bottom: 0;
             width: 4px;
             border-radius: 4px;
-            background: linear-gradient(180deg, var(--color-accent-blue), var(--color-accent-cyan));
+            background: linear-gradient(180deg, var(--color-accent-blue), var(--color-accent-purple));
         }
 
         .footer-col a {
