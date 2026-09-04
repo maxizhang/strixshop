@@ -252,54 +252,54 @@
             font-weight: 800;
         }
 
-/* Banners */
-.images-section {
-    background: var(--color-glass-bg);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid var(--color-glass-border);
-    box-shadow: var(--shadow-glass);
-    border-radius: var(--radius-main);
-    position: relative;
-    width: 100%;
-    max-width: 1150px;
-    aspect-ratio: 115 / 30;
-    height: auto;
-    overflow: hidden;
-    transform: translateZ(5);
-}
+        /* Banners */
+        .images-section {
+            background: var(--color-glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--color-glass-border);
+            box-shadow: var(--shadow-glass);
+            border-radius: var(--radius-main);
+            position: relative;
+            width: 100%;
+            max-width: 1150px;
+            aspect-ratio: 115 / 30;
+            height: auto;
+            overflow: hidden;
+            transform: translateZ(5);
+        }
 
-.banner-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transform: scale(1.08);
-    pointer-events: none; 
-    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: opacity, transform;
-    display: block;
-}
+        .banner-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: scale(1.08);
+            pointer-events: none; 
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform;
+            display: block;
+        }
 
-.banner-slide.active {
-    opacity: 1;
-    transform: scale(1);
-    pointer-events: auto; 
-}
+        .banner-slide.active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto; 
+        }
 
-.banner-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+        .banner-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
         .slider-arrow {
             position: absolute;
@@ -752,12 +752,68 @@ img {
             .footer-grid-2x4 { grid-template-columns: repeat(2, 1fr); }
         }
 
+        /* MOBILE RESPONSIVE OVERRIDES: Light Glassmorphic, No Heavy Container Boxes, Non-Essential Items Moved to Bottom */
         @media (max-width: 900px) {
-            .app-container { flex-direction: column; }
-            .sidebar { width: 100%; }
-            .tabs-sidebar { flex-direction: row; flex-wrap: wrap; }
-            .nav-tab { flex: 1 1 calc(50% - 12px); }
-            .footer-grid-2x4 { grid-template-columns: 1fr; }
+            body {
+                padding: 10px;
+            }
+            .app-container {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .main-wrapper {
+                order: 1;
+                gap: 16px;
+            }
+            .sidebar {
+                order: 2;
+                width: 100%;
+                gap: 16px;
+            }
+            /* Remove heavy container background styles and use seamless light glassmorphic styling */
+            .tabs-sidebar, .info-section, .footer-section, .top-icons-bar, .logo-box {
+                background: rgba(255, 255, 255, 0.15) !important;
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+                border: 1px solid rgba(255, 255, 255, 0.3) !important;
+                box-shadow: none !important;
+                border-radius: 16px;
+                padding: 16px;
+            }
+            .top-icons-bar {
+                height: auto;
+                padding: 12px 16px;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .search-bar {
+                max-width: 100%;
+                width: 100%;
+            }
+            .nav-right-icons {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .tabs-sidebar {
+                flex-direction: column;
+            }
+            /* Hide the full category list links from sidebar on mobile and move them or keep them minimal */
+            .tabs-sidebar .nav-tab {
+                display: none; /* Secondary items moved down / accessible via catalog */
+            }
+            .sidebar-title {
+                display: none;
+            }
+            /* On mobile, non-essential widgets like ticker and uptime are sent to the bottom via ordering */
+            .vertical-ticker-container, .strix-uptime-widget {
+                order: 10;
+                background: rgba(255, 255, 255, 0.1) !important;
+                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            }
+            .footer-grid-2x4 { 
+                grid-template-columns: 1fr; 
+                gap: 20px;
+            }
         }
     </style>
 
@@ -787,8 +843,20 @@ img {
             <a href="products.html?category=GIFT CARDS" class="nav-tab">Gift Cards</a>
             <a href="products.html?category=OTHER" class="nav-tab">Other</a>
 
-            <br><hr />
+            <div class="sidebar-account-widget">
+                <div class="sidebar-account-header">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>My Account Hub</span>
+                </div>
+                <div class="sidebar-account-email" id="sidebarUserEmail">Checking session...</div>
+                <div class="sidebar-account-actions">
+                    <a href="myacc.html" class="sidebar-acc-btn">Profile</a>
+                    <a href="myorders.html" class="sidebar-acc-btn">Orders</a>
+                    <a href="#" class="sidebar-acc-btn" onclick="logout()">Sign Out</a>
+                </div>
+            </div>
 
+            <!-- Non-essential widgets moved down for phone layout -->
             <div class="vertical-ticker-container" id="verticalTicker">
                 <div class="vertical-ticker-track" id="verticalTrack">
                     <div class="rolling-card">
@@ -805,8 +873,6 @@ img {
                     </div>
                 </div>
             </div>
-
-            <br><hr />
 
             <div class="strix-uptime-widget">
                 <div class="uptime-header">
@@ -830,21 +896,6 @@ img {
                         <span class="uptime-num" id="uptimeSeconds">00</span>
                         <span class="uptime-label">Secs</span>
                     </div>
-                </div>
-            </div>
-
-            <br><hr />
-
-            <div class="sidebar-account-widget">
-                <div class="sidebar-account-header">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    <span>My Account Hub</span>
-                </div>
-                <div class="sidebar-account-email" id="sidebarUserEmail">Checking session...</div>
-                <div class="sidebar-account-actions">
-                    <a href="myacc.html" class="sidebar-acc-btn">Profile</a>
-                    <a href="myorders.html" class="sidebar-acc-btn">Orders</a>
-                    <a href="#" class="sidebar-acc-btn" onclick="logout()">Sign Out</a>
                 </div>
             </div>
         </nav>
@@ -876,37 +927,31 @@ img {
 
         <section class="images-section">
             <div class="hero-slider" id="slider">
-                <!-- Slide 1: Image only -->
+                <!-- Slide 1 -->
                 <div class="banner-slide active">
                     <img src="bannerimage1.png" alt="Welcome to Strix Shop">
                 </div>
-
-                <!-- Slide 2: Image only -->
+                <!-- Slide 2 -->
                 <div class="banner-slide">
                     <img src="bannerimage2.png" alt="New Online Portal">
                 </div>
-
-                <!-- Slide 3: Linked -->
+                <!-- Slide 3 -->
                 <a href="partnerships.html" class="banner-slide">
                     <img src="bannerimage3.png" alt="Sell at Strix Shop">
                 </a>
-
-                <!-- Slide 4: Image only -->
+                <!-- Slide 4 -->
                 <div class="banner-slide">
                     <img src="bannerimage4.png" alt="Welcome to New Strix Shop">
                 </div>
-
-                <!-- Slide 5: Linked -->
+                <!-- Slide 5 -->
                 <a href="membership.html" class="banner-slide">
                     <img src="bannerimage5.png" alt="Become a Member">
                 </a>
-
-                <!-- Slide 6: Image only -->
+                <!-- Slide 6 -->
                 <div class="banner-slide">
                     <img src="bannerimage6.png" alt="Explore New Website">
                 </div>
-
-                <!-- Slide 7: Linked -->
+                <!-- Slide 7 -->
                 <a href="cs.html" class="banner-slide">
                     <img src="bannerimage7.png" alt="Advertise Here">
                 </a>
