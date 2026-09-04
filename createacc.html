@@ -73,7 +73,13 @@
             padding-bottom: 8px; 
         }
 
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; box-sizing: border-box; }
+        .form-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 20px; 
+            width: 100%; 
+            box-sizing: border-box; 
+        }
         
         .full-line-grid {
             display: flex;
@@ -87,11 +93,19 @@
             .form-grid { grid-template-columns: 1fr; } 
         }
 
-        .input-wrap { display: flex; flex-direction: column; gap: 5px; width: 100%; box-sizing: border-box; }
+        .input-wrap { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 5px; 
+            width: 100%; 
+            min-width: 0; 
+            box-sizing: border-box; 
+        }
         .field-label { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.5); padding-left: 15px; text-transform: uppercase; }
 
         input, select {
             width: 100%; 
+            min-width: 0;
             height: 54px;
             padding: 0 22px; 
             background: var(--input-bg);
@@ -227,7 +241,7 @@
         </div>
 
         <div class="glass-section" data-step="2">
-            <div class="section-title">Identity (2/2)</div>
+            <div class="section-title">Identity - Gender & Pronouns</div>
             <div class="form-grid">
                 <div class="input-wrap">
                     <span class="field-label">Gender</span>
