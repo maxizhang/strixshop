@@ -75,22 +75,17 @@
 
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         
-        .security-grid {
+        .single-column-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 20px;
-        }
-        .security-grid .full-line {
-            grid-column: span 2;
         }
 
         @media (max-width: 600px) { 
             .form-grid { grid-template-columns: 1fr; } 
-            .security-grid { grid-template-columns: 1fr; }
-            .security-grid .full-line { grid-column: span 1; }
         }
 
-        .input-wrap { display: flex; flex-direction: column; gap: 5px; }
+        .input-wrap { display: flex; flex-direction: column; gap: 5px; width: 100%; box-sizing: border-box; }
         .field-label { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.5); padding-left: 15px; text-transform: uppercase; }
 
         input, select {
@@ -120,6 +115,7 @@
             border: none; border-radius: 50px;
             font-weight: 700; cursor: pointer; font-size: 1.1rem;
             letter-spacing: 1px; transition: 0.3s;
+            box-sizing: border-box;
         }
 
         button:hover { background: #e0e0e0; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,255,255,0.2); }
@@ -171,7 +167,7 @@
     <form id="reg-form" style="width: 100%;">
         
         <div class="glass-section active-step" data-step="1">
-            <div class="section-title">Identity</div>
+            <div class="section-title">Identity (1/2)</div>
             <div class="form-grid">
                 <div class="input-wrap">
                     <span class="field-label">First Name</span>
@@ -189,6 +185,12 @@
                     <span class="field-label">Current Age</span>
                     <input type="number" id="age" min="12" max="120" required>
                 </div>
+            </div>
+        </div>
+
+        <div class="glass-section" data-step="2">
+            <div class="section-title">Identity & Academics (2/2)</div>
+            <div class="form-grid">
                 <div class="input-wrap">
                     <span class="field-label">Gender</span>
                     <select id="gender" required>
@@ -208,12 +210,6 @@
                         <option value="other">Other</option>
                     </select>
                 </div>
-            </div>
-        </div>
-
-        <div class="glass-section" data-step="2">
-            <div class="section-title">School and Academics Information</div>
-            <div class="form-grid">
                 <div class="input-wrap">
                     <span class="field-label">Grade Level</span>
                     <select id="grade" required>
@@ -235,26 +231,26 @@
         </div>
 
         <div class="glass-section" data-step="3">
-            <div class="section-title">Security</div>
-            <div class="security-grid">
-                <div class="input-wrap full-line">
+            <div class="section-title">Security Credentials</div>
+            <div id="security-grid-container" class="form-grid">
+                <div class="input-wrap">
                     <span class="field-label">Username</span>
                     <input type="text" id="username" placeholder="Username" required>
                 </div>
-                <div class="input-wrap full-line">
+                <div class="input-wrap">
                     <span class="field-label">Email</span>
                     <input type="email" id="email" placeholder="harrypotter@hogwarts.edu" required>
                 </div>
-                <div class="input-wrap full-line">
+                <div class="input-wrap">
                     <span class="field-label">Password</span>
                     <input type="password" id="pass" placeholder="Min 8 characters" required minlength="8">
-                    <span class="field-label" style="font-size: 0.65rem; color: rgba(255,255,255,0.4);">* Stored securely via Firebase Auth.</span>
+                    <span class="field-label" style="font-size: 0.65rem; color: rgba(255,255,255,0.4);">* Stored via Firebase Auth.</span>
                 </div>
-                <div class="input-wrap full-line">
+                <div class="input-wrap">
                     <span class="field-label">Confirm Password</span>
                     <input type="password" id="pass-confirm" placeholder="Repeat Passcode" required minlength="8">
                 </div>
-                <div class="input-wrap full-line">
+                <div class="input-wrap" style="grid-column: span 2;" id="pfp-wrap">
                     <span class="field-label">Profile Image Link</span>
                     <input type="url" id="pfp" placeholder="Paste URL (optional)">
                 </div>
@@ -365,15 +361,22 @@
         }
     });
 
-    // Mobile Step-by-Step Navigation Logic
+    // Mobile Step-by-Step Navigation Logic & Responsive Grid Adjustment
     let currentStep = 1;
     const totalSteps = 5;
     const sections = document.querySelectorAll('.glass-section');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    const securityGrid = document.getElementById('security-grid-container');
+    const pfpWrap = document.getElementById('pfp-wrap');
 
     function updateStepView() {
         if (window.innerWidth <= 600) {
+            // Apply single-column layout for username, email, password, confirm password on mobile
+            securityGrid.classList.remove('form-grid');
+            securityGrid.classList.add('single-column-grid');
+            pfpWrap.style.gridColumn = "span 1";
+
             sections.forEach((sec, idx) => {
                 if (idx + 1 === currentStep) {
                     sec.classList.add('active-step');
@@ -389,7 +392,11 @@
                 nextBtn.style.display = 'block';
             }
         } else {
-            // Desktop view: show all sections
+            // Desktop view: show all sections, restore desktop security grid
+            securityGrid.classList.remove('single-column-grid');
+            securityGrid.classList.add('form-grid');
+            pfpWrap.style.gridColumn = "span 2";
+
             sections.forEach(sec => sec.classList.add('active-step'));
             prevBtn.style.display = 'none';
             nextBtn.style.display = 'none';
