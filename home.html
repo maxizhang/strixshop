@@ -11,13 +11,13 @@
         :root {
             --color-text-main: #0f172a;
             --color-text-muted: #64728b;
-            --color-accent-blue: #7992b5;
-            --color-accent-cyan: #835595;
+            --color-accent-blue: #415e9e;
+            --color-accent-cyan: #9e56ac;
             --color-logo-bg: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            --color-glass-bg: rgba(255, 255, 255, 0.65);
-            --color-glass-border: rgba(255, 255, 255, 0.85);
+            --color-glass-bg: rgba(255, 255, 255, 0.7);
+            --color-glass-border: rgba(255, 255, 255, 0.9);
             --color-glass-hover: rgba(255, 255, 255, 0.95);
-            --shadow-glass: 0 16px 40px 0 rgba(31, 38, 135, 0.07);
+            --shadow-glass: 0 16px 40px 0 rgba(31, 38, 135, 0.08);
             --shadow-glow: 0 10px 30px rgba(37, 99, 235, 0.15);
             --radius-main: 24px;
         }
@@ -29,19 +29,21 @@
         }
 
         body {
-            background: linear-gradient(-45deg, #eef2ff, #f0f9ff, #e0f2fe, #f8fafc);
+            background: linear-gradient(135deg, #e0e7ff, #f3e8ff, #e0f2fe, #dcfce7, #fef3c7);
             background-size: 400% 400%;
-            animation: fluidBackground 18s ease infinite;
+            animation: fluidMorph 12s ease infinite;
             color: var(--color-text-main);
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
             display: flex;
             padding: 20px;
+            overflow-x: hidden;
         }
 
-        @keyframes fluidBackground {
+        @keyframes fluidMorph {
             0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+            33% { background-position: 100% 30%; }
+            66% { background-position: 50% 100%; }
             100% { background-position: 0% 50%; }
         }
 
@@ -52,6 +54,7 @@
             max-width: 1650px;
             margin: 0 auto;
             gap: 24px;
+            position: relative;
         }
 
         /* LEFT SIDEBAR */
@@ -145,7 +148,7 @@
 
         /* TOP HEADER */
         .top-icons-bar {
-            background: #dbe2f4;
+            background: var(--color-glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--color-glass-border);
@@ -157,6 +160,26 @@
             justify-content: space-between;
             gap: 20px;
             height: 95px;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--color-glass-border);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--color-text-main);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            background: #ffffff;
+            box-shadow: var(--shadow-glow);
         }
 
         .search-bar {
@@ -266,7 +289,6 @@
             aspect-ratio: 115 / 30;
             height: auto;
             overflow: hidden;
-            transform: translateZ(5);
         }
 
         .banner-slide {
@@ -279,7 +301,6 @@
             transform: scale(1.08);
             pointer-events: none; 
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            will-change: opacity, transform;
             display: block;
         }
 
@@ -289,13 +310,7 @@
             pointer-events: auto; 
         }
 
-        .banner-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        img {
+        .banner-slide img, img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -752,63 +767,61 @@
             .footer-grid-2x4 { grid-template-columns: repeat(2, 1fr); }
         }
 
-        /* MOBILE RESPONSIVE OVERRIDES: Light Glassmorphic, No Heavy Container Boxes, Non-Essential Items Moved to Bottom */
+        /* MOBILE RESPONSIVE SIDEBAR DRAWER OVERRIDES */
         @media (max-width: 900px) {
             body {
                 padding: 10px;
             }
-            .app-container {
-                flex-direction: column;
-                gap: 16px;
-            }
-            .main-wrapper {
-                order: 1;
-                gap: 16px;
+            .mobile-menu-toggle {
+                display: flex;
             }
             .sidebar {
-                order: 2;
-                width: 100%;
-                gap: 16px;
+                position: fixed;
+                top: 0;
+                left: -320px;
+                width: 300px;
+                height: 100vh;
+                z-index: 1100;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(25px);
+                -webkit-backdrop-filter: blur(25px);
+                box-shadow: 10px 0 30px rgba(0, 0, 0, 0.15);
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                overflow-y: auto;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
             }
-            /* Remove heavy container background styles and use seamless light glassmorphic styling */
-            .tabs-sidebar, .info-section, .footer-section, .top-icons-bar, .logo-box {
-                background: rgba(255, 255, 255, 0.15) !important;
-                backdrop-filter: blur(15px);
-                -webkit-backdrop-filter: blur(15px);
-                border: 1px solid rgba(255, 255, 255, 0.3) !important;
-                box-shadow: none !important;
-                border-radius: 16px;
-                padding: 16px;
+            .sidebar.open {
+                transform: translateX(320px);
+            }
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.4);
+                backdrop-filter: blur(4px);
+                z-index: 1050;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .sidebar-overlay.active {
+                display: block;
+                opacity: 1;
             }
             .top-icons-bar {
-                height: auto;
                 padding: 12px 16px;
-                flex-direction: column;
-                gap: 12px;
+                height: auto;
+                flex-wrap: wrap;
             }
             .search-bar {
+                order: 3;
+                width: 100%;
                 max-width: 100%;
-                width: 100%;
-            }
-            .nav-right-icons {
-                width: 100%;
-                justify-content: space-between;
-            }
-            .tabs-sidebar {
-                flex-direction: column;
-            }
-            /* Hide the full category list links from sidebar on mobile and move them or keep them minimal */
-            .tabs-sidebar .nav-tab {
-                display: none; /* Secondary items moved down / accessible via catalog */
-            }
-            .sidebar-title {
-                display: none;
-            }
-            /* On mobile, non-essential widgets like ticker and uptime are sent to the bottom via ordering */
-            .vertical-ticker-container, .strix-uptime-widget {
-                order: 10;
-                background: rgba(255, 255, 255, 0.1) !important;
-                border: 1px solid rgba(255, 255, 255, 0.2) !important;
             }
             .footer-grid-2x4 { 
                 grid-template-columns: 1fr; 
@@ -824,8 +837,10 @@
 </head>
 <body>
 
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <div class="app-container">
-    <aside class="sidebar">
+    <aside class="sidebar" id="appSidebar">
         <div class="logo-box">
             <img src="logoh.png" alt="STRIX">
         </div>
@@ -856,7 +871,6 @@
                 </div>
             </div>
 
-            <!-- Non-essential widgets moved down for phone layout -->
             <div class="vertical-ticker-container" id="verticalTicker">
                 <div class="vertical-ticker-track" id="verticalTrack">
                     <div class="rolling-card">
@@ -903,6 +917,13 @@
     
     <div class="main-wrapper">
         <header class="top-icons-bar">
+            <button class="mobile-menu-toggle" id="menuToggle" aria-label="Open Navigation Menu">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
             <div class="search-bar">
                 <input id="searchInput" type="text" placeholder="Search school supplies, electronics, and more...">
                 <button class="search-btn" id="searchBtn" aria-label="Search">
@@ -1241,6 +1262,21 @@
             container.addEventListener('mouseleave', () => isPaused = false);
 
             requestAnimationFrame(step);
+        }
+
+        // Mobile Sidebar Drawer Toggle Functionality
+        const menuToggle = document.getElementById('menuToggle');
+        const appSidebar = document.getElementById('appSidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        function toggleMobileMenu() {
+            appSidebar.classList.toggle('open');
+            sidebarOverlay.classList.toggle('active');
+        }
+
+        if (menuToggle && appSidebar && sidebarOverlay) {
+            menuToggle.addEventListener('click', toggleMobileMenu);
+            sidebarOverlay.addEventListener('click', toggleMobileMenu);
         }
     });
 
