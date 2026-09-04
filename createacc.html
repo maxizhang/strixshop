@@ -99,12 +99,14 @@
             gap: 5px; 
             width: 100%; 
             min-width: 0; 
+            overflow: hidden;
             box-sizing: border-box; 
         }
         .field-label { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.5); padding-left: 15px; text-transform: uppercase; }
 
         input, select {
             width: 100%; 
+            max-width: 100%;
             min-width: 0;
             height: 54px;
             padding: 0 22px; 
@@ -116,6 +118,9 @@
             font-family: inherit;
             font-size: 0.95rem;
             transition: 0.4s;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
         }
 
         input:focus, select:focus { border-color: #fff; background: rgba(255,255,255,0.12); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
@@ -125,7 +130,7 @@
         a:hover { opacity: 1; }
 
         .checkbox-group { display: flex; align-items: flex-start; gap: 12px; margin: 15px 0; cursor: pointer; font-size: 0.85rem; line-height: 1.5; }
-        .checkbox-group input { width: auto; height: auto; margin-top: 4px; cursor: pointer; padding: 0; }
+        .checkbox-group input { width: auto; height: auto; margin-top: 4px; cursor: pointer; padding: 0; appearance: auto; -webkit-appearance: checkbox; }
 
         button {
             width: 100%; padding: 18px;
@@ -241,7 +246,7 @@
         </div>
 
         <div class="glass-section" data-step="2">
-            <div class="section-title">Identity - Gender & Pronouns</div>
+            <div class="section-title">Gender and Pronouns</div>
             <div class="form-grid">
                 <div class="input-wrap">
                     <span class="field-label">Gender</span>
