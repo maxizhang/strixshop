@@ -10,16 +10,15 @@
     <style>
         :root {
             --color-text-main: #0f172a;
-            --color-text-muted: #64728b;
-            --color-accent-blue: #6366f1; /* Rich Indigo/Blue */
-            --color-accent-purple: #9333ea; /* Vibrant Purple */
+            --color-text-muted: #53627c;
+            --color-accent-blue: #6d85bc;
+            --color-accent-purple: #8664bc;
             --color-logo-bg: linear-gradient(135deg, #393661 0%, #403e7f 100%);
-            --color-glass-bg: rgba(255, 255, 255, 0.7);
-            --color-glass-border: rgba(255, 255, 255, 0.9);
-            --color-glass-hover: rgba(255, 255, 255, 0.95);
-            --shadow-glass: 0 16px 40px 0 rgba(31, 38, 135, 0.08);
-            --shadow-glow: 0 10px 30px rgba(99, 102, 241, 0.2);
-            --radius-main: 24px;
+            --color-glass-bg: rgba(255, 255, 255, 0.82);
+            --color-glass-border: rgba(255, 255, 255, 0.95);
+            --shadow-glass: 0 16px 40px 0 rgba(31, 38, 135, 0.07);
+            --shadow-glow: 0 10px 30px rgba(109, 133, 188, 0.2);
+            --radius-main: 22px;
         }
 
         * {
@@ -29,65 +28,62 @@
         }
 
         body {
-            background: linear-gradient(135deg, #e0e7ff, #fae8ff, #ede9fe, #dcfce7, #fef3c7);
-            background-size: 400% 400%;
-            animation: fluidMorph 12s ease infinite;
+            background: linear-gradient(120deg, #809bce, #95b8d1, #b8e0d4, #d6eadf, #eac4d5, #b8e0d4, #809bce);
+            background-size: 500% 500%;
+            animation: fluidMorph 20s ease infinite;
             color: var(--color-text-main);
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
             display: flex;
-            padding: 20px;
+            padding: 16px;
             overflow-x: hidden;
         }
 
         @keyframes fluidMorph {
             0% { background-position: 0% 50%; }
-            33% { background-position: 100% 30%; }
-            66% { background-position: 50% 100%; }
+            50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* LAYOUT STRUCTURE */
         .app-container {
             display: flex;
             width: 100%;
             max-width: 1650px;
             margin: 0 auto;
-            gap: 24px;
+            gap: 20px;
             position: relative;
         }
 
-        /* LEFT SIDEBAR */
+        /* SIDEBAR */
         .sidebar {
-            width: 300px;
+            width: 290px;
             flex-shrink: 0;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
         }
 
-        /* LOGO BOX */
         .logo-box {
             background: var(--color-logo-bg);
-            border: 1px solid rgba(218, 136, 136, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 10px 25px rgba(102, 122, 167, 0.15);
             border-radius: var(--radius-main);
-            padding: 24px;
+            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 95px;
+            height: 85px;
             position: relative;
             overflow: hidden;
-            transition: transform 0.4s ease;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .logo-box:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
         .logo-box img {
-            height: 38px;
+            height: 34px;
             filter: brightness(0) invert(1);
             object-fit: contain;
         }
@@ -99,30 +95,30 @@
             border: 1px solid var(--color-glass-border);
             box-shadow: var(--shadow-glass);
             border-radius: var(--radius-main);
-            padding: 24px;
+            padding: 18px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             flex-grow: 1;
         }
 
         .sidebar-title {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 800;
             letter-spacing: 1.5px;
             text-transform: uppercase;
             color: var(--color-text-muted);
-            margin: 5px 0 10px 8px;
+            margin: 2px 0 4px 6px;
         }
 
         .nav-tab {
             display: flex;
             align-items: center;
-            padding: 14px 20px;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            border-radius: 16px;
-            font-size: 0.88rem;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            font-size: 0.82rem;
             font-weight: 600;
             color: var(--color-text-main);
             text-decoration: none;
@@ -131,22 +127,21 @@
 
         .nav-tab:hover {
             background: #ffffff;
-            transform: translateX(8px);
+            transform: translateX(6px);
             box-shadow: var(--shadow-glow);
-            border-color: rgba(99, 102, 241, 0.3);
+            border-color: rgba(109, 133, 188, 0.3);
             color: var(--color-accent-blue);
         }
 
-        /* RIGHT WRAPPER */
+        /* MAIN WRAPPER */
         .main-wrapper {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
             min-width: 0;
         }
 
-        /* TOP HEADER */
         .top-icons-bar {
             background: var(--color-glass-bg);
             backdrop-filter: blur(25px);
@@ -154,20 +149,20 @@
             border: 1px solid var(--color-glass-border);
             box-shadow: var(--shadow-glass);
             border-radius: var(--radius-main);
-            padding: 0 30px;
+            padding: 0 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
-            height: 95px;
+            gap: 16px;
+            height: 85px;
         }
 
         .mobile-menu-toggle {
             display: none;
             background: rgba(255, 255, 255, 0.8);
             border: 1px solid var(--color-glass-border);
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             cursor: pointer;
             align-items: center;
@@ -184,13 +179,13 @@
 
         .search-bar {
             flex-grow: 1;
-            max-width: 750px;
+            max-width: 700px;
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             border: 1px solid var(--color-glass-border);
             border-radius: 50px;
-            padding: 6px 8px 6px 24px;
+            padding: 5px 6px 5px 20px;
             transition: all 0.3s ease;
         }
 
@@ -206,15 +201,15 @@
             width: 100%;
             outline: none;
             font-family: 'Montserrat', sans-serif;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             color: var(--color-text-main);
         }
 
         .search-btn {
             background: linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-purple));
             border: none;
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             cursor: pointer;
             display: flex;
@@ -230,11 +225,11 @@
         .nav-right-icons {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 20px;
         }
 
         .user-welcome {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--color-text-muted);
             text-decoration: none;
         }
@@ -248,9 +243,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 48px;
-            height: 48px;
-            background: rgba(255, 255, 255, 0.7);
+            width: 44px;
+            height: 44px;
+            background: rgba(255, 255, 255, 0.75);
             border: 1px solid var(--color-glass-border);
             border-radius: 50%;
             text-decoration: none;
@@ -259,7 +254,7 @@
 
         .cart-icon:hover {
             background: #ffffff;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-glow);
         }
 
@@ -269,13 +264,13 @@
             right: -4px;
             background: linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-purple));
             color: white;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 0.72rem;
+            padding: 2px 7px;
+            border-radius: 10px;
+            font-size: 0.7rem;
             font-weight: 800;
         }
 
-        /* Banners */
+        /* BANNERS SECTION */
         .images-section {
             background: var(--color-glass-bg);
             backdrop-filter: blur(15px);
@@ -285,9 +280,7 @@
             border-radius: var(--radius-main);
             position: relative;
             width: 100%;
-            max-width: 1150px;
             aspect-ratio: 115 / 30;
-            height: auto;
             overflow: hidden;
         }
 
@@ -298,7 +291,7 @@
             width: 100%;
             height: 100%;
             opacity: 0;
-            transform: scale(1.08);
+            transform: scale(1.03);
             pointer-events: none; 
             transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
             display: block;
@@ -310,7 +303,7 @@
             pointer-events: auto; 
         }
 
-        .banner-slide img, img {
+        .banner-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -320,12 +313,12 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
             border: 1px solid var(--color-glass-border);
             color: var(--color-text-main);
-            width: 50px;
-            height: 50px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             cursor: pointer;
             z-index: 10;
@@ -333,29 +326,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0.5;
+            opacity: 0.8;
         }
 
         .slider-arrow:hover {
             background: #ffffff;
-            transform: translateY(-50%) scale(1.15);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            opacity: 0.8;
+            transform: translateY(-50%) scale(1.08);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+            opacity: 1;
         }
 
-        .prev { left: 24px; }
-        .next { right: 24px; }
+        .prev { left: 16px; }
+        .next { right: 16px; }
 
-        /* SECTION TITLES & CARDS */
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .section-title {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 800;
             color: var(--color-text-main);
             letter-spacing: -0.5px;
@@ -368,23 +360,23 @@
             border: 1px solid var(--color-glass-border);
             box-shadow: var(--shadow-glass);
             border-radius: var(--radius-main);
-            padding: 36px;
+            padding: 28px;
             display: flex;
             flex-direction: column;
-            gap: 40px;
+            gap: 24px;
         }
 
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
         }
 
         .category-block {
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.65);
             border: 1px solid var(--color-glass-border);
-            border-radius: 20px;
-            padding: 30px 24px;
+            border-radius: 18px;
+            padding: 24px 20px;
             text-align: left;
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -392,52 +384,53 @@
 
         .category-block:hover {
             background: #ffffff;
-            transform: translateY(-8px);
-            box-shadow: 0 20px 30px rgba(0,0,0,0.06);
-            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 25px rgba(0,0,0,0.05);
+            border-color: rgba(109, 133, 188, 0.3);
         }
 
         .category-block h2 {
-            font-size: 1.15rem;
-            margin-bottom: 10px;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
             font-weight: 800;
             color: var(--color-text-main);
         }
 
         .category-block p {
             color: var(--color-text-muted);
-            font-size: 0.85rem;
-            line-height: 1.6;
+            font-size: 0.82rem;
+            line-height: 1.5;
         }
 
         .resource-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 16px;
         }
 
         .resource-card {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.55);
             border: 1px solid var(--color-glass-border);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 16px;
             display: flex;
             align-items: flex-start;
-            gap: 16px;
+            gap: 14px;
             transition: all 0.3s ease;
         }
 
         .resource-card:hover {
             background: #ffffff;
-            transform: translateX(5px);
-            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-3px);
+            border-color: rgba(109, 133, 188, 0.3);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.03);
         }
 
         .resource-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #e0e7ff, #ede9fe);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #e4ebfb, #f3eafa);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -446,27 +439,27 @@
         }
 
         .resource-info h3 {
-            font-size: 0.9rem;
+            font-size: 0.86rem;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .resource-info p {
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             color: var(--color-text-muted);
-            line-height: 1.4;
+            line-height: 1.35;
         }
 
-        /* VERTICAL TICKER */
+        /* COMPACT VERTICAL TICKER */
         .vertical-ticker-container {
-            height: 340px;
+            height: 180px;
             width: 100%;
             overflow: hidden;
             position: relative;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.45);
             border: 1px solid var(--color-glass-border);
-            border-radius: 16px;
-            padding: 16px;
+            border-radius: 14px;
+            padding: 12px;
         }
 
         .vertical-ticker-container::before,
@@ -475,76 +468,76 @@
             position: absolute;
             left: 0;
             width: 100%;
-            height: 40px;
+            height: 25px;
             z-index: 2;
             pointer-events: none;
         }
 
         .vertical-ticker-container::before {
             top: 0;
-            background: linear-gradient(to bottom, rgba(240, 245, 255, 0.95), transparent);
+            background: linear-gradient(to bottom, rgba(240, 245, 255, 0.9), transparent);
         }
 
         .vertical-ticker-container::after {
             bottom: 0;
-            background: linear-gradient(to top, rgba(240, 245, 255, 0.95), transparent);
+            background: linear-gradient(to top, rgba(240, 245, 255, 0.9), transparent);
         }
 
         .vertical-ticker-track {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             will-change: transform;
         }
 
         .vertical-ticker-container .rolling-card {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             border: 1px solid var(--color-glass-border);
-            border-radius: 12px;
-            padding: 14px 16px;
+            border-radius: 10px;
+            padding: 10px 12px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 3px;
         }
 
         .vertical-ticker-container .author {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--color-accent-blue);
             font-weight: 700;
         }
 
         .vertical-ticker-container p {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--color-text-main);
-            line-height: 1.35;
+            line-height: 1.3;
             margin: 0;
         }
 
         /* UPTIME WIDGET */
         .strix-uptime-widget {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.45);
             border: 1px solid var(--color-glass-border);
-            border-radius: 16px;
-            padding: 16px;
+            border-radius: 14px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .uptime-header {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 700;
             color: var(--color-accent-blue);
         }
 
         .pulse-dot {
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             background-color: #22c55e;
             border-radius: 50%;
             animation: pulseAnimation 2s infinite;
@@ -552,21 +545,21 @@
 
         @keyframes pulseAnimation {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 5px rgba(34, 197, 94, 0); }
+            70% { transform: scale(1); box-shadow: 0 0 0 4px rgba(34, 197, 94, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
         }
 
         .uptime-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
+            gap: 5px;
         }
 
         .uptime-box {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.75);
             border: 1px solid var(--color-glass-border);
-            border-radius: 10px;
-            padding: 8px 4px;
+            border-radius: 8px;
+            padding: 6px 2px;
             text-align: center;
             display: flex;
             flex-direction: column;
@@ -575,34 +568,34 @@
 
         .uptime-num {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: var(--color-text-main);
         }
 
         .uptime-label {
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             text-transform: uppercase;
             font-weight: 700;
             color: var(--color-text-muted);
         }
 
-        /* SIDEBAR ACCOUNT WIDGET */
+        /* ACCOUNT WIDGET */
         .sidebar-account-widget {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.45);
             border: 1px solid var(--color-glass-border);
-            border-radius: 16px;
-            padding: 16px;
+            border-radius: 14px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .sidebar-account-header {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.75rem;
+            gap: 6px;
+            font-size: 0.7rem;
             font-weight: 800;
             letter-spacing: 1.2px;
             text-transform: uppercase;
@@ -610,29 +603,29 @@
         }
 
         .sidebar-account-email {
-            font-size: 0.82rem;
+            font-size: 0.78rem;
             font-weight: 600;
             color: var(--color-text-main);
             word-break: break-all;
-            background: rgba(255, 255, 255, 0.6);
-            padding: 8px 10px;
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 6px 8px;
+            border-radius: 8px;
             border: 1px solid var(--color-glass-border);
         }
 
         .sidebar-account-actions {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .sidebar-acc-btn {
             flex: 1;
             text-align: center;
-            padding: 8px 0;
-            background: rgba(255, 255, 255, 0.8);
+            padding: 6px 0;
+            background: rgba(255, 255, 255, 0.85);
             border: 1px solid var(--color-glass-border);
-            border-radius: 10px;
-            font-size: 0.75rem;
+            border-radius: 8px;
+            font-size: 0.7rem;
             font-weight: 700;
             color: var(--color-text-main);
             text-decoration: none;
@@ -649,8 +642,8 @@
         .nav-portal-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 16px;
-            justify-content: space-between;
+            gap: 14px;
+            justify-content: space-around;
             align-items: center;
         }
 
@@ -659,9 +652,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 54px;
-            height: 54px;
-            background: rgba(255, 255, 255, 0.75);
+            width: 52px;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.8);
             border: 1px solid var(--color-glass-border);
             border-radius: 16px;
             color: #0f172a;
@@ -671,28 +664,28 @@
 
         .portal-icon-btn:hover {
             background: #ffffff;
-            transform: translateY(-5px) scale(1.08);
-            box-shadow: 0 12px 24px rgba(99, 102, 241, 0.15);
+            transform: translateY(-4px) scale(1.06);
+            box-shadow: 0 10px 20px rgba(109, 133, 188, 0.15);
             color: var(--color-accent-purple);
         }
 
         .portal-icon-btn::after {
             content: attr(data-tooltip);
             position: absolute;
-            bottom: -38px;
+            bottom: -34px;
             left: 50%;
             transform: translateX(-50%) translateY(4px);
             background: #1e293b;
             color: #ffffff;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 600;
-            padding: 6px 12px;
-            border-radius: 8px;
+            padding: 5px 10px;
+            border-radius: 6px;
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
             transition: all 0.25s ease;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             z-index: 20;
         }
 
@@ -709,32 +702,32 @@
             border: 1px solid var(--color-glass-border);
             box-shadow: var(--shadow-glass);
             border-radius: var(--radius-main);
-            padding: 44px;
+            padding: 36px;
         }
 
         .footer-grid-2x4 {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 40px 30px;
+            gap: 30px 24px;
         }
 
         .footer-col h4 {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 800;
             letter-spacing: 1.2px;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
             color: var(--color-text-main);
             text-transform: uppercase;
             position: relative;
-            padding-left: 12px;
+            padding-left: 10px;
         }
 
         .footer-col h4::before {
             content: '';
             position: absolute;
             left: 0; top: 0; bottom: 0;
-            width: 4px;
-            border-radius: 4px;
+            width: 3px;
+            border-radius: 3px;
             background: linear-gradient(180deg, var(--color-accent-blue), var(--color-accent-purple));
         }
 
@@ -742,24 +735,24 @@
             display: block;
             color: var(--color-text-muted);
             text-decoration: none;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 500;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             transition: all 0.25s ease;
         }
 
         .footer-col a:hover {
             color: var(--color-accent-blue);
-            transform: translateX(5px);
+            transform: translateX(4px);
         }
 
         .bottom-bar {
             text-align: center;
-            margin-top: 40px;
-            padding-top: 24px;
-            border-top: 1px solid rgba(15, 23, 42, 0.08);
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(15, 23, 42, 0.06);
             color: var(--color-text-muted);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 600;
         }
 
@@ -767,35 +760,29 @@
             .footer-grid-2x4 { grid-template-columns: repeat(2, 1fr); }
         }
 
-        /* MOBILE RESPONSIVE SIDEBAR DRAWER OVERRIDES */
+        /* MOBILE RESPONSIVE STYLES */
         @media (max-width: 900px) {
-            body {
-                padding: 10px;
-            }
-            .mobile-menu-toggle {
-                display: flex;
-            }
+            body { padding: 10px; }
+            .mobile-menu-toggle { display: flex; }
             .sidebar {
                 position: fixed;
                 top: 0;
                 left: -320px;
-                width: 300px;
+                width: 290px;
                 height: 100vh;
                 z-index: 1100;
-                background: rgba(255, 255, 255, 0.95);
+                background: rgba(255, 255, 255, 0.96);
                 backdrop-filter: blur(25px);
                 -webkit-backdrop-filter: blur(25px);
                 box-shadow: 10px 0 30px rgba(0, 0, 0, 0.15);
                 transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 overflow-y: auto;
-                padding: 20px;
+                padding: 16px;
                 display: flex;
                 flex-direction: column;
-                gap: 20px;
+                gap: 16px;
             }
-            .sidebar.open {
-                transform: translateX(320px);
-            }
+            .sidebar.open { transform: translateX(320px); }
             .sidebar-overlay {
                 display: none;
                 position: fixed;
@@ -803,30 +790,16 @@
                 left: 0;
                 width: 100vw;
                 height: 100vh;
-                background: rgba(0, 0, 0, 0.4);
+                background: rgba(0, 0, 0, 0.35);
                 backdrop-filter: blur(4px);
                 z-index: 1050;
                 opacity: 0;
                 transition: opacity 0.3s ease;
             }
-            .sidebar-overlay.active {
-                display: block;
-                opacity: 1;
-            }
-            .top-icons-bar {
-                padding: 12px 16px;
-                height: auto;
-                flex-wrap: wrap;
-            }
-            .search-bar {
-                order: 3;
-                width: 100%;
-                max-width: 100%;
-            }
-            .footer-grid-2x4 { 
-                grid-template-columns: 1fr; 
-                gap: 20px;
-            }
+            .sidebar-overlay.active { display: block; opacity: 1; }
+            .top-icons-bar { padding: 10px 14px; height: auto; flex-wrap: wrap; }
+            .search-bar { order: 3; width: 100%; max-width: 100%; }
+            .footer-grid-2x4 { grid-template-columns: 1fr; gap: 16px; }
         }
     </style>
 
@@ -860,7 +833,7 @@
 
             <div class="sidebar-account-widget">
                 <div class="sidebar-account-header">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     <span>My Account Hub</span>
                 </div>
                 <div class="sidebar-account-email" id="sidebarUserEmail">Checking session...</div>
@@ -875,15 +848,15 @@
                 <div class="vertical-ticker-track" id="verticalTrack">
                     <div class="rolling-card">
                         <span class="author">2026.8.28</span>
-                        <p>Initial Release (V 3.1.1.57.8.64)<br><br>Strix Shop's website was first published!</p>
+                        <p>Initial Release (V 3.1.1.57.8.64)<br>Strix Shop website published!</p>
                     </div>
                     <div class="rolling-card">
                         <span class="author">2026.8.29</span>
-                        <p>Domain Attributed (V 3.1.1.57.8.64)<br><br>Strix Shop uploaded to domain: strixshop28.com</p>
+                        <p>Domain Attributed (V 3.1.1.57.8.64)<br>strixshop28.com active!</p>
                     </div>
                     <div class="rolling-card">
                         <span class="author">2026.9.07</span>
-                        <p>Orders Acceptance (V 3.1.1.57.8.64)<br><br>Strix Shop begins to accept customer orders!</p>
+                        <p>Orders Acceptance (V 3.1.1.57.8.64)<br>Customer orders open!</p>
                     </div>
                 </div>
             </div>
@@ -948,46 +921,42 @@
 
         <section class="images-section">
             <div class="hero-slider" id="slider">
-                <!-- Slide 1 -->
                 <div class="banner-slide active">
                     <img src="bannerimage1.png" alt="Welcome to Strix Shop">
                 </div>
-                <!-- Slide 2 -->
                 <div class="banner-slide">
                     <img src="bannerimage2.png" alt="New Online Portal">
                 </div>
-                <!-- Slide 3 -->
                 <a href="partnerships.html" class="banner-slide">
                     <img src="bannerimage3.png" alt="Sell at Strix Shop">
                 </a>
-                <!-- Slide 4 -->
                 <div class="banner-slide">
                     <img src="bannerimage4.png" alt="Welcome to New Strix Shop">
                 </div>
-                <!-- Slide 5 -->
                 <div class="banner-slide">
                     <img src="bannerimage5.png" alt="20% Voucher">
-                </a>
-                <!-- Slide 6 -->
+                </div>
                 <div class="banner-slide">
                     <img src="bannerimage6.png" alt="Explore New Website">
                 </div>
-                <!-- Slide 7 -->
                 <a href="cs.html" class="banner-slide">
                     <img src="bannerimage7.png" alt="Advertise Here">
                 </a>
             </div>
 
             <button class="slider-arrow prev" onclick="changeSlide(-1)" aria-label="Previous Slide">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
             </button>
             <button class="slider-arrow next" onclick="changeSlide(1)" aria-label="Next Slide">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </button>
         </section>
 
         <section class="info-section">
             <div class="resource-card">
+                <div class="resource-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"></path><circle cx="18" cy="16" r="1"></circle></svg>
+                </div>
                 <div class="resource-info">
                     <h3>Grand Opening Discount!</h3>
                     <p>With a physical voucher, get 20% off of your first purchase!</p>
@@ -998,49 +967,31 @@
         <section class="info-section">
             <nav class="nav-portal-grid">
                 <a href="products.html" class="portal-icon-btn" data-tooltip="Products" aria-label="Products">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>
-                    </svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                 </a>
                 <a href="cs.html" class="portal-icon-btn" data-tooltip="Customer Support" aria-label="Customer Support">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path>
-                    </svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
                 </a>
                 <a href="terms.html" class="portal-icon-btn" data-tooltip="Terms & Conditions" aria-label="Terms & Conditions">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
                 </a>
                 <a href="events.html" class="portal-icon-btn" data-tooltip="Events" aria-label="Events">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                 </a>
                 <a href="strixnews.html" class="portal-icon-btn" data-tooltip="Newsletter" aria-label="Newsletter">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline>
-                    </svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                 </a>
                 <a href="myacc.html" class="portal-icon-btn" data-tooltip="My Account" aria-label="My Account">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
-                    </svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                 </a>
                 <a href="myorders.html" class="portal-icon-btn" data-tooltip="My Orders" aria-label="My Orders">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                    </svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
                 </a>
                 <a href="cart.html" class="portal-icon-btn" data-tooltip="My Cart" aria-label="My Cart">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                 </a>
-                <a href='mailto:maxizhang.strix@outlook.com' class="portal-icon-btn" data-tooltip="Email Us" aria-label="Email Us">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
+                <a href="mailto:maxizhang.strix@outlook.com" class="portal-icon-btn" data-tooltip="Email Us" aria-label="Email Us">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                 </a>
             </nav>
         </section>
@@ -1065,15 +1016,15 @@
                     </div>
                 </div>
             </div>
-            <br><br>
-            <div>
+            
+            <div style="margin-top: 6px;">
                 <div class="section-header">
                     <h2 class="section-title">Student Hub & Quick References</h2>
                 </div>
                 <div class="resource-grid">
                     <div class="resource-card">
                         <div class="resource-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
                         </div>
                         <div class="resource-info">
                             <h3>Campus Delivery</h3>
@@ -1082,20 +1033,20 @@
                     </div>
                     <div class="resource-card">
                         <div class="resource-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                         </div>
                         <div class="resource-info">
                             <h3>Student Discounts</h3>
-                            <p>Save money by using vouchers, gift cards, and strix shop credits</p>
+                            <p>Save money by using vouchers, gift cards, and Strix Shop credits</p>
                         </div>
                     </div>
                     <div class="resource-card">
                         <div class="resource-icon">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                         </div>
                         <div class="resource-info">
-                            <h3>Shipping times</h3>
-                            <p>Deliveries for in-stock items arrive within 3 business days; pre-order items arrive in 4-6 weeks.</p>
+                            <h3>Shipping Times</h3>
+                            <p>Deliveries for in-stock items arrive within 3 business days; pre-orders in 4-6 weeks.</p>
                         </div>
                     </div>
                 </div>
@@ -1173,7 +1124,6 @@
 
 <script>
     window.addEventListener('DOMContentLoaded', () => {
-        // Firebase Config & Initialization
         const firebaseConfig = {
             apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
             authDomain: "strix-shop.firebaseapp.com",
@@ -1193,7 +1143,6 @@
             const userEmailEl = document.getElementById("sidebarUserEmail");
 
             if (user) {
-                console.log("Logged in as:", user.email);
                 if (userEmailEl) userEmailEl.textContent = user.email;
 
                 db.collection("carts").doc(user.uid).collection("items")
@@ -1203,7 +1152,6 @@
                         console.error("Error listening to cart:", err);
                     });
             } else {
-                console.warn("No user detected. Redirecting to login...");
                 if (userEmailEl) userEmailEl.textContent = "Not signed in";
                 window.location.href = "index.html";
             }
@@ -1245,7 +1193,7 @@
             track.innerHTML += track.innerHTML;
 
             let scrollPos = 0;
-            const speed = 0.6;
+            const speed = 0.4;
             let isPaused = false;
 
             function step() {
@@ -1265,7 +1213,7 @@
             requestAnimationFrame(step);
         }
 
-        // Mobile Sidebar Drawer Toggle Functionality
+        // Mobile Sidebar Drawer Toggle
         const menuToggle = document.getElementById('menuToggle');
         const appSidebar = document.getElementById('appSidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -1284,7 +1232,7 @@
     // Hero Slider Functionality
     let currentSlideIndex = 0;
     const slides = document.querySelectorAll('.banner-slide');
-    const autoSlideInterval = 3000;
+    const autoSlideInterval = 4000;
     let slideTimer;
 
     function showSlide(index) {
