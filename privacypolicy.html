@@ -24,6 +24,10 @@
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Quicksand', sans-serif;
             background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
@@ -110,12 +114,13 @@
             font-weight: 600;
             color: #94a3b8;
             letter-spacing: 0.5px;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         /* Header Section */
         .header {
             text-align: center;
-            padding: 50px 20px 20px;
+            padding: 50px 20px 30px;
             max-width: 900px;
             margin: auto;
         }
@@ -129,7 +134,8 @@
 
         .header p {
             color: var(--text-dim);
-            font-size: 14px;
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
             font-weight: 600;
         }
 
@@ -137,11 +143,10 @@
         .container {
             max-width: 900px;
             width: 90%;
-            margin: 20px auto 50px;
+            margin: 0 auto 60px;
             display: flex;
             flex-direction: column;
             gap: 24px;
-            flex: 1;
         }
 
         .section {
@@ -157,20 +162,19 @@
 
         .section:hover {
             background: rgba(255, 255, 255, 0.28);
-            transform: translateY(-2px);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
         .section h2 {
-            font-size: 16px;
-            margin-bottom: 16px;
+            font-size: 18px;
+            margin-bottom: 15px;
             color: #1e1b4b;
             font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-left: 4px solid var(--primary);
-            padding-left: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .section p, .section li {
@@ -181,11 +185,11 @@
         }
 
         .section ul {
-            margin-left: 25px;
+            margin-left: 20px;
             margin-bottom: 15px;
         }
 
-        .section b {
+        .section b, .section strong {
             color: var(--text-main);
             font-weight: 700;
         }
@@ -194,20 +198,23 @@
             color: var(--primary);
             text-decoration: none;
             font-weight: 700;
+            transition: color 0.2s;
         }
 
         .section a:hover {
+            color: var(--primary-hover);
             text-decoration: underline;
         }
 
         footer {
             text-align: center;
-            padding: 25px;
+            padding: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-dim);
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 1px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
@@ -231,11 +238,10 @@
 
 <div class="header">
     <h1>Privacy Policy</h1>
-    <p>Version 1 | Last Edited May 31st, 2026 | Effective August 1st, 2026</p>
+    <p>Version 1 | Last Edited September 4th, 2026 | Effective September 5th, 2026</p>
 </div>
 
 <div class="container">
-
     <div class="section">
         <h2>1. Data Collection</h2>
         <p>Strix Shop collects personal information that you provide when creating an account. This includes:
@@ -246,7 +252,7 @@
             <br>
             - <b>Academic Data:</b> Grade level and school affiliation.
             <br>
-            - <b>Security Data:</b> Username, encrypted Passwords, and Security Question answers.
+            - <b>Security Data:</b> Username, Passwords, and Security Question answers.
             <br>
             - <b>Profile Data:</b> Profile picture links, usernames, etc.
             <br><br>
@@ -291,7 +297,7 @@
 
     <div class="section">
         <h2>5. Minor Privacy (COPPA)</h2>
-        <p>As per our Terms, users under 13 are prohibited from account creation. 
+        <p>As per our Terms and in coordination with COPPA laws, users under 14 are prohibited from account creation. 
             <br><br>
             <b>We encourage parents to monitor their child's digital interaction with Strix Shop.</b>
         </p>
@@ -336,15 +342,14 @@
 
     <div class="section">
         <h2>Revisions</h2>
-        <p>
-            <li><a href="privacypolicy.html">Edition 1, 05.06.2026</a> <b>&larr; Current Edition</b></li>
-        </p>
+        <ul>
+            <li><a href="privacypolicy.html">Edition 1, 09.04.2026</a> <b>&larr; Current Edition</b></li>
+        </ul>
     </div>
-
 </div>
 
 <footer>
-    &copy; © 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
 </footer>
 
 </body>

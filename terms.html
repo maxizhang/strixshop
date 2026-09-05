@@ -19,9 +19,9 @@
         }
 
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
         html {
@@ -114,12 +114,13 @@
             font-weight: 600;
             color: #94a3b8;
             letter-spacing: 0.5px;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         /* Header Section */
         .header {
             text-align: center;
-            padding: 50px 20px 20px;
+            padding: 50px 20px 30px;
             max-width: 900px;
             margin: auto;
         }
@@ -133,7 +134,8 @@
 
         .header p {
             color: var(--text-dim);
-            font-size: 14px;
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
             font-weight: 600;
         }
 
@@ -141,11 +143,10 @@
         .container {
             max-width: 900px;
             width: 90%;
-            margin: 20px auto 50px;
+            margin: 0 auto 60px;
             display: flex;
             flex-direction: column;
             gap: 24px;
-            flex: 1;
         }
 
         .section {
@@ -161,20 +162,19 @@
 
         .section:hover {
             background: rgba(255, 255, 255, 0.28);
-            transform: translateY(-2px);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
         .section h2 {
-            font-size: 16px;
-            margin-bottom: 16px;
+            font-size: 18px;
+            margin-bottom: 15px;
             color: #1e1b4b;
             font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-left: 4px solid var(--primary);
-            padding-left: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .section p, .section li {
@@ -185,7 +185,7 @@
         }
 
         .section ul {
-            margin-left: 25px;
+            margin-left: 20px;
             margin-bottom: 15px;
         }
 
@@ -198,20 +198,23 @@
             color: var(--primary);
             text-decoration: none;
             font-weight: 700;
+            transition: color 0.2s;
         }
 
         .section a:hover {
+            color: var(--primary-hover);
             text-decoration: underline;
         }
 
         footer {
             text-align: center;
-            padding: 25px;
+            padding: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-dim);
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 1px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            background: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
@@ -329,7 +332,7 @@
 
     <div class="section">
         <h2>9. Strict Return Policy and Defect Reviews</h2>
-        <p>Strix Shop has a strict "All Sales Final" policy. We do not offer general returns, exchanges, or cash refunds unless required by state or federal consumer laws.
+        <p>Strix Shop has a strict "All Sales Final" policy. We generally do not offer general returns, exchanges, or cash refunds unless required by state or federal consumer laws.
         <br><br>
         The only exceptions are items with major structural defects or damage that occurred before delivery. To request a review, you must contact Strix Shop Support within forty-eight (48) hours of delivery and provide clear photos or videos showing the damage.
         <br><br>
@@ -432,9 +435,14 @@
     </div>
 
     <div class="section">
+        <h2>19. Compliance with Conestoga High School's Code of Conduct</h2>
+        <p>All actions Strix Shop takes to manage delivery and collect sales will comply with <a href='https://resources.finalsite.net/images/v1788287598/tesdnet/tb4wbob3yvejoa3itees/CoCFINAL2026-2027.pdf' target="_blank">Conestoga High School's Code of Conduct 2026-2027</a>. It is required for all users (members and employees) to follow <a href='https://resources.finalsite.net/images/v1788287598/tesdnet/tb4wbob3yvejoa3itees/CoCFINAL2026-2027.pdf' target="_blank">Conestoga High School's Code of Conduct 2026-2027</a> at all times.</p>
+    </div>
+
+    <div class="section">
         <h2>Revisions</h2>
         <ul>
-            <li><a href="toc1.html">Edition 1 — 01.15.2026</a><b>&larr; Current Edition</b></li>
+            <li><a href="toc1.html">Edition 1 — 08.31.2026</a> <b>&larr; Current Edition</b></li>
         </ul>
     </div>
 
