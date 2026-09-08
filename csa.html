@@ -331,7 +331,7 @@
         .msg-wrapper { 
             display: flex; 
             gap: 12px; 
-            align-items: flex-start; /* Changed from flex-end to align items to the top */
+            align-items: flex-start;
             margin-bottom: 10px; 
             max-width: 75%; 
         }
@@ -381,7 +381,7 @@
         .msg-admin .bubble { 
             background: var(--user-bubble); 
             color: #ffffff; 
-            border-top-right-radius: 4px; /* Adjusted corner for top alignment */
+            border-top-right-radius: 4px; 
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
         }
 
@@ -389,7 +389,7 @@
             background: var(--admin-bubble); 
             color: var(--text-main); 
             border: 1px solid var(--border); 
-            border-top-left-radius: 4px; /* Adjusted corner for top alignment */
+            border-top-left-radius: 4px; 
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         }
 
@@ -406,6 +406,48 @@
         }
 
         .bubble img:hover { opacity: 0.92; }
+
+        /* Lightbox Modal Styles */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-modal.active {
+            display: flex;
+        }
+
+        .image-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            object-fit: contain;
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: #ffffff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .image-modal-close:hover {
+            color: var(--error);
+        }
 
         .rating-card {
             background: rgba(255, 255, 255, 0.6);
@@ -591,6 +633,12 @@
     </div>
 </div>
 
+<!-- Lightbox Modal for Detailed Image Viewing -->
+<div class="image-modal" id="imageModal">
+    <span class="image-modal-close" id="modalClose">&times;</span>
+    <img id="modalImage" src="" alt="Enlarged View">
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -610,6 +658,27 @@ let activeClient = null;
 let adminProfile = { name: "Support Agent", pfp: "logospfd.png" };
 
 const clearBtn = document.getElementById('clear-chat-trigger');
+const imageModal = document.getElementById('imageModal');
+const modalImage = document.getElementById('modalImage');
+const modalClose = document.getElementById('modalClose');
+
+// Lightbox functionality
+function openLightbox(imgSrc) {
+    modalImage.src = imgSrc;
+    imageModal.classList.add('active');
+}
+
+modalClose.onclick = () => {
+    imageModal.classList.remove('active');
+};
+
+imageModal.onclick = (e) => {
+    if (e.target === imageModal) {
+        imageModal.classList.remove('active');
+    }
+};
+
+window.openLightbox = openLightbox;
 
 clearBtn.onclick = async () => {
     if (!activeClient) return;
@@ -664,7 +733,6 @@ onAuthStateChanged(auth, async (user) => {
     document.body.classList.add("authorized");
 
     adminProfile.name = `${data.firstName || "Agent"} ${data.lastName || ""}`.trim();
-    // Fixed the syntax error here by replacing invalid template literal syntax with safe fallback values
     adminProfile.pfp = data.pfp || "logospfd.png";
 
     window.currentUser = { uid: user.uid, ...data };
@@ -771,7 +839,7 @@ function openChat(uid, name) {
                 contentHTML = `
                     <div class="bubble">
                         ${m.text ? `<div style="margin-bottom: 6px;">${m.text}</div>` : ""}
-                        <img src="${imgSrc}" alt="Customer Uploaded Image" onclick="window.open('${imgSrc}', '_blank')">
+                        <img src="${imgSrc}" alt="Customer Uploaded Image" onclick="openLightbox('${imgSrc}')">
                     </div>
                 `;
             } 

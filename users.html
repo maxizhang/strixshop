@@ -10,7 +10,7 @@
 
     <style>
         :root {
-            --primary: #4f46e5;
+            --primary: #6157b5;
             --primary-hover: #4338ca;
             --surface: rgba(255, 255, 255, 0.75);
             --surface-card: rgba(255, 255, 255, 0.6);
@@ -191,6 +191,7 @@
         .badge-pro { background: rgba(14, 165, 233, 0.12); color: #0284c7; }
         .badge-premium { background: rgba(168, 85, 247, 0.12); color: #9333ea; }
         .badge-admin { background: rgba(239, 68, 68, 0.12); color: #dc2626; }
+        .badge-status { background: rgba(16, 185, 129, 0.12); color: #059669; }
 
         .sidebar {
             position: fixed; 
@@ -254,12 +255,44 @@
         }
         .full-width { grid-column: span 2; }
         .label { font-size: 10px; color: var(--primary); font-weight: 700; margin-bottom: 4px; letter-spacing: 1px; }
-        .value { outline: none; font-size: 13px; color: var(--text-main); font-weight: 600; display: block; word-break: break-all; }
+        .value { outline: none; font-size: 13px; color: var(--text-main); font-weight: 600; display: block; word-break: break-all; min-height: 18px; }
         .value[contenteditable="true"]:hover {
             background: rgba(79, 70, 229, 0.05);
             border-radius: 4px;
             padding: 2px 4px;
             margin: -2px -4px;
+        }
+
+        /* Entry/Exit History List Box (Expanded naturally, no scrollbar) */
+        .history-section {
+            margin-top: 20px;
+            background: var(--surface-card);
+            border: 1.5px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+        }
+        .history-title {
+            font-size: 10px;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .history-item {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-subtle);
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .sidebar-footer { 
@@ -318,7 +351,7 @@
                 <th>Name</th>
                 <th>Email</th>
                 <th>Status</th>
-                <th>SSC</th>
+                <th>Latest Sign-In Activity</th>
             </tr>
         </thead>
         <tbody id="body"></tbody>
@@ -339,6 +372,14 @@
 
     <div class="sidebar-content">
         <div class="field-grid" id="fields-container"></div>
+        
+        <!-- Dedicated Entry/Exit Records History List -->
+        <div class="history-section">
+            <div class="history-title">Entry/Exit Records</div>
+            <div class="history-list" id="side-history-list">
+                <div style="font-size: 12px; color: var(--text-dim);">Loading records...</div>
+            </div>
+        </div>
     </div>
 
     <div class="sidebar-footer">
@@ -408,32 +449,58 @@ function getBadgeClass(acc) {
 }
 
 function load(){
-    db.collection("users").onSnapshot(snap => {
+    db.collection("users").onSnapshot(async snap => {
         document.getElementById("count").innerText = "TOTAL USERS: " + snap.size;
         const body = document.getElementById("body");
         body.innerHTML = "";
 
-        snap.forEach(doc => {
+        for (const doc of snap.docs) {
             const u = doc.data();
+            const userId = doc.id;
             const statusBadge = `<span class="${getBadgeClass(u.acc)}">${u.acc || "customer"}</span>`;
+            
+            let signinoutStatus = "No Activity";
+            let latestTimestamp = "";
+            let badgeClass = "badge badge-customer"; // Gray badge for No Activity
+            
+            try {
+                const entryDoc = await db.collection("entryexit").doc(userId).get();
+                if (entryDoc.exists) {
+                    const data = entryDoc.data();
+                    const recordsMap = data.records || {};
+                    const keys = Object.keys(recordsMap).filter(k => !isNaN(k));
+                    
+                    if (keys.length > 0) {
+                        keys.sort((a, b) => Number(b) - Number(a));
+                        const latestRecord = recordsMap[keys[0]];
+                        
+                        signinoutStatus = latestRecord.eventAction || "Active";
+                        latestTimestamp = (latestRecord.date || "") + " " + (latestRecord.time || "");
+                        badgeClass = "badge badge-status"; // Green badge when active
+                    }
+                }
+            } catch (e) {
+                console.error("Error fetching entryexit for", userId, e);
+            }
+
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td><div class="pfp-mini" style="background-image:url('${u.pfp || 'https://via.placeholder.com/100'}')"></div></td>
+                <td><div class="pfp-mini" style="background-image:url('${u.pfp || ''}')"></div></td>
                 <td style="font-weight:700;">${u.firstName || ""} ${u.lastName || ""}</td>
-                <td style="color:var(--text-dim); font-size:11px;">${u.email || "---"}</td>
+                <td style="color:var(--text-dim); font-size:11px;">${u.email || ""}</td>
                 <td>${statusBadge}</td>
-                <td>${u.ssc || 0}</td>
+                <td><span class="${badgeClass}">${signinoutStatus}</span> <span style="font-size:10px; color:var(--text-dim); margin-left:4px;">${latestTimestamp}</span></td>
             `;
-            tr.onclick = () => openSidebar(doc.id, u);
+            tr.onclick = () => openSidebar(userId, u);
             body.appendChild(tr);
-        });
+        }
     });
 }
 
-function openSidebar(id, u){
+async function openSidebar(id, u){
     currentId = id;
     document.getElementById("sidebar").classList.add("open");
-    document.getElementById("side-pfp").style.backgroundImage = `url('${u.pfp || 'https://via.placeholder.com/200'}')`;
+    document.getElementById("side-pfp").style.backgroundImage = `url('${u.pfp || ''}')`;
     document.getElementById("side-name").innerText = (u.firstName || "") + " " + (u.lastName || "");
     document.getElementById("side-uid").innerText = "ID: " + id.toUpperCase();
     
@@ -481,17 +548,59 @@ function openSidebar(id, u){
                 </select>
             `;
         } else {
-            // First Name and Last Name are now locked along with SSC Balance and Created At
             const isLocked = k === "First Name" || k === "Last Name" || k === "SSC Balance" || k === "Created At";
             const editableAttr = isLocked ? "" : 'contenteditable="true"';
+            const valContent = dataMap[k] !== undefined && dataMap[k] !== null ? dataMap[k] : "";
 
             div.innerHTML = `
                 <div class="label">${k.toUpperCase()}</div>
-                <div class="value" ${editableAttr}>${dataMap[k] !== undefined ? dataMap[k] : "---"}</div>
+                <div class="value" ${editableAttr}>${valContent}</div>
             `;
         }
         container.appendChild(div);
     });
+
+    // Populate Entry/Exit Records list inside the sidebar (naturally expanding)
+    const historyListEl = document.getElementById("side-history-list");
+    historyListEl.innerHTML = `<div style="font-size: 12px; color: var(--text-dim);">Loading records...</div>`;
+
+    try {
+        const entryDoc = await db.collection("entryexit").doc(id).get();
+        if (entryDoc.exists) {
+            const data = entryDoc.data();
+            const recordsMap = data.records || {};
+            const keys = Object.keys(recordsMap).filter(k => !isNaN(k));
+
+            if (keys.length > 0) {
+                keys.sort((a, b) => Number(b) - Number(a));
+                
+                historyListEl.innerHTML = "";
+                keys.forEach(key => {
+                    const rec = recordsMap[key];
+                    const item = document.createElement("div");
+                    item.className = "history-item";
+                    item.innerHTML = `
+                        <div>
+                            <span style="font-weight: 700; color: var(--primary);">${rec.eventAction || ''}</span>
+                            <div style="font-size: 10px; color: var(--text-dim);">IP: ${rec.ipAddress || ''}</div>
+                        </div>
+                        <div style="text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 11px;">
+                            <div>${rec.date || ''}</div>
+                            <div style="color: var(--text-dim);">${rec.time || ''}</div>
+                        </div>
+                    `;
+                    historyListEl.appendChild(item);
+                });
+            } else {
+                historyListEl.innerHTML = `<div style="font-size: 12px; color: var(--text-dim);">No entry/exit logs found.</div>`;
+            }
+        } else {
+            historyListEl.innerHTML = `<div style="font-size: 12px; color: var(--text-dim);">No entry/exit document found for user.</div>`;
+        }
+    } catch (err) {
+        console.error("Error loading records list:", err);
+        historyListEl.innerHTML = `<div style="font-size: 12px; color: var(--error);">Failed to load history.</div>`;
+    }
 }
 
 function closeSidebar(){ 
@@ -527,14 +636,14 @@ async function save(){
     };
 
     fields.forEach(f => {
-        const label = f.querySelector(".label").innerText;
+        const label = f.querySelector(".label")?.innerText;
         const valElement = f.querySelector(".value");
-        if (!valElement) return;
+        if (!valElement || !label) return;
 
         const val = valElement.tagName === "SELECT" ? valElement.value : valElement.innerText;
 
         if (keyMap[label]) {
-            let finalVal = val === "---" ? "" : val;
+            let finalVal = val;
 
             if (label === "SSC BALANCE") {
                 finalVal = Number(finalVal) || 0;
@@ -547,7 +656,7 @@ async function save(){
     try {
         await db.collection("users").doc(currentId).update(update);
         alert("RECORD UPDATED");
-        closeSidebar(); // Automatically close sidebar after publishing changes
+        closeSidebar();
     } catch (err) {
         console.error(err);
         alert("UPDATE FAILED");

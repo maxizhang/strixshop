@@ -238,7 +238,7 @@
                             const hoursDifference = (currentTime - lastSignInTime) / (1000 * 60 * 60);
 
                             if (hoursDifference <= 48) {
-                                showTransitionState("Signing in...");
+                                showTransitionState("Welcome Back, Signing In");
                                 await recordEntryExit(user, "automatic-entry");
                                 setTimeout(() => {
                                     window.location.href = "home.html";

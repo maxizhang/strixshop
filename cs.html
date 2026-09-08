@@ -239,6 +239,57 @@
         }
         .bubble img:hover { opacity: 0.92; }
 
+        /* Image Lightbox Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .image-modal.active {
+            display: flex;
+        }
+        .image-modal-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .image-modal-content img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 12px;
+            object-fit: contain;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .image-modal-close {
+            position: absolute;
+            top: -45px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: 700;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s;
+        }
+        .image-modal-close:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
         .upload-overlay {
             position: absolute;
             top: 0; left: 0;
@@ -325,7 +376,7 @@
         ::-webkit-scrollbar { width: 5px; height: 5px; }
         ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 10px; }
 
-        /* PHONE LAYOUT OVERRIDES (Applied dynamically if mobile device detected) */
+        /* PHONE LAYOUT OVERRIDES */
         body.is-mobile {
             height: 100dvh;
             overflow: hidden;
@@ -339,7 +390,7 @@
             flex-direction: column;
         }
         body.is-mobile nav.top-nav {
-            display: none; /* Hide desktop nav on phones for maximum screen space */
+            display: none;
         }
         body.is-mobile .sidebar {
             position: absolute;
@@ -448,8 +499,16 @@
         </div>
     </div>
 
+    <!-- Image Lightbox Modal Pop-up -->
+    <div class="image-modal" id="imageModal">
+        <div class="image-modal-content">
+            <button class="image-modal-close" id="modalCloseBtn">✕</button>
+            <img id="modalImage" src="" alt="Enlarged view">
+        </div>
+    </div>
+
 <script>
-    // Automatic device detection script (iPads/Tablets map to desktop layout, phones map to mobile layout)
+    // Automatic device detection script
     function detectDeviceAndApply() {
         const ua = navigator.userAgent;
         const isTablet = /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|silk|scout)/i.test(ua);
@@ -472,6 +531,31 @@
         openSidebarBtn.onclick = () => sidebar.classList.add('open');
         closeSidebarBtn.onclick = () => sidebar.classList.remove('open');
     }
+
+    // Lightbox modal functionality
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+    function openImageModal(imgSrc) {
+        modalImage.src = imgSrc;
+        imageModal.classList.add('active');
+    }
+
+    function closeImageModal() {
+        imageModal.classList.remove('active');
+        modalImage.src = '';
+    }
+
+    modalCloseBtn.onclick = closeImageModal;
+    imageModal.onclick = (e) => {
+        if (e.target === imageModal) {
+            closeImageModal();
+        }
+    };
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeImageModal();
+    });
 </script>
 
 <script type="module">
@@ -596,7 +680,7 @@
                     if (m.mediaType === 'video') {
                         contentHTML = `<div class="bubble">${textLabel}<video src="${m.mediaUrl}" controls></video></div>`;
                     } else {
-                        contentHTML = `<div class="bubble">${textLabel}<a href="${m.mediaUrl}" target="_blank"><img src="${m.mediaUrl}" alt="Attached Photo" loading="lazy"></a></div>`;
+                        contentHTML = `<div class="bubble">${textLabel}<img src="${m.mediaUrl}" alt="Attached Photo" class="chat-img-thumb" loading="lazy"></div>`;
                     }
                 } else if (m.type === "rating_request") {
                     const currentRating = m.rating || 0;
@@ -627,6 +711,15 @@
                         <span class="time">${time}</span>
                     </div>
                 `;
+
+                if (m.mediaUrl && m.mediaType !== 'video') {
+                    const imgThumb = wrapper.querySelector('.chat-img-thumb');
+                    if (imgThumb) {
+                        imgThumb.addEventListener('click', () => {
+                            openImageModal(m.mediaUrl);
+                        });
+                    }
+                }
 
                 if (m.type === "rating_request") {
                     const stars = wrapper.querySelectorAll('.star-interactive');

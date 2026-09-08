@@ -830,11 +830,11 @@
             <a href="products.html?category=ACCESSORIES" class="nav-tab">Accessories</a>
             <a href="products.html?category=GIFT CARDS" class="nav-tab">Gift Cards</a>
             <a href="products.html?category=OTHER" class="nav-tab">Other</a>
-
+<br>
             <div class="sidebar-account-widget">
                 <div class="sidebar-account-header">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    <span>My Account Hub</span>
+                    <span>My Account</span>
                 </div>
                 <div class="sidebar-account-email" id="sidebarUserEmail">Checking session...</div>
                 <div class="sidebar-account-actions">
@@ -843,24 +843,24 @@
                     <a href="#" class="sidebar-acc-btn" onclick="logout()">Sign Out</a>
                 </div>
             </div>
-
+<br>
             <div class="vertical-ticker-container" id="verticalTicker">
                 <div class="vertical-ticker-track" id="verticalTrack">
                     <div class="rolling-card">
                         <span class="author">2026.8.28</span>
-                        <p>Initial Release (V 3.1.1.57.8.64)<br>Strix Shop website published!</p>
+                        <p>Initial Release (V 4.2.1.55.11.2)<br>Strix Shop website published!</p>
                     </div>
                     <div class="rolling-card">
                         <span class="author">2026.8.29</span>
-                        <p>Domain Attributed (V 3.1.1.57.8.64)<br>strixshop28.com active!</p>
+                        <p>Domain Attributed (V 4.2.1.55.11.2)<br>strixshop28.com active!</p>
                     </div>
                     <div class="rolling-card">
                         <span class="author">2026.9.07</span>
-                        <p>Orders Acceptance (V 3.1.1.57.8.64)<br>Customer orders open!</p>
+                        <p>Orders Acceptance (V 4.2.1.55.11.2)<br>Customer orders open!</p>
                     </div>
                 </div>
             </div>
-
+<br>
             <div class="strix-uptime-widget">
                 <div class="uptime-header">
                     <span class="pulse-dot"></span>
@@ -1123,6 +1123,19 @@
 </div>
 
 <script>
+    let lastWriteTimestamp = 0;
+
+    async function getClientIP() {
+        try {
+            const response = await fetch('https://api.ipify.org?format=json');
+            const data = await response.json();
+            return data.ip;
+        } catch (error) {
+            console.warn("IP fetch blocked or failed:", error);
+            return "Unavailable";
+        }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
         const firebaseConfig = {
             apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
@@ -1279,8 +1292,51 @@
         });
     }
 
-    function logout() {
-        firebase.auth().signOut().then(() => {
+    // Updated logout routine recording exit events into the "entryexit" collection with 2-second rate limit
+    async function logout() {
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const user = auth.currentUser;
+
+        if (!user) {
+            window.location.href = "index.html";
+            return;
+        }
+
+        const nowMs = Date.now();
+        if (nowMs - lastWriteTimestamp < 2000) {
+            console.warn("Timestamp blocked: An action was recorded less than 2 seconds ago.");
+            return;
+        }
+        lastWriteTimestamp = nowMs;
+
+        const now = new Date();
+        const dateStr = now.toISOString().split('T')[0];
+        const timeStr = now.toTimeString().split(' ')[0];
+        const ipAddress = await getClientIP();
+
+        const exitRecord = {
+            date: dateStr,
+            time: timeStr,
+            fullTimestamp: now.toISOString(),
+            ipAddress: ipAddress,
+            eventAction: "exit"
+        };
+
+        const userRecordRef = db.collection("entryexit").doc(user.uid);
+
+        try {
+            await userRecordRef.set({
+                userId: user.uid,
+                email: user.email,
+                records: firebase.firestore.FieldValue.arrayUnion(exitRecord)
+            }, { merge: true });
+            console.log("Exit record successfully saved to Firestore!");
+        } catch (error) {
+            console.error("CRITICAL Firestore Error during exit recording:", error);
+        }
+
+        auth.signOut().then(() => {
             window.location.href = "index.html";
         });
     }

@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4f46e5;
+            --primary: #6157b5;
             --primary-hover: #4338ca;
             --surface: rgba(255, 255, 255, 0.18);
             --text-main: #0f172a;
@@ -558,7 +558,7 @@
             };
 
             await db.collection("returnRequests").add(returnData);
-            alert("Your return/refund request has been successfully submitted! Customer Support will review your case shortly.");
+            alert("Your return/refund request has been successfully submitted! We will review your case shortly.");
             document.getElementById('return-form').reset();
             document.getElementById('file-name-display').innerText = "Choose up to 10 image files...";
             submitBtn.disabled = false;

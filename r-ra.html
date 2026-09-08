@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Admin Returns Management</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6157b5;
+            --primary-hover: #4338ca;
+            --surface: rgba(255, 255, 255, 0.4);
+            --text-main: #0f172a;
+            --text-dim: #64748b;
+            --border: rgba(255, 255, 255, 0.45);
+            --border-subtle: rgba(226, 232, 240, 0.5);
+            --nav-dark: #0a0c12;
+            --glass-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Quicksand', sans-serif; 
+            word-break: break-word; 
+            overflow-wrap: break-word; 
+        }
+
+        body { 
+            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
+            background-size: 400% 400%;
+            animation: fluidBackground 20s ease infinite;
+            color: var(--text-main); 
+            min-height: 100vh; 
+            overflow-x: hidden;
+        }
+
+        @keyframes fluidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        nav { 
+            background: var(--nav-dark); 
+            width: 100%; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .nav-main { display: flex; align-items: center; padding: 14px 5%; justify-content: space-between; max-width: 1400px; margin: 0 auto; flex-wrap: wrap; gap: 10px; }
+        .logo-box img { height: 32px; cursor: pointer; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); }
+        .nav-right-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+        .nav-link-item { display: flex; align-items: center; gap: 8px; color: #cbd5e1; text-decoration: none; font-weight: 700; font-size: 13px; transition: color 0.2s; }
+        .nav-link-item:hover { color: #ffffff; }
+        .nav-divider { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); }
+        .nav-badge-text { font-size: 12px; font-weight: 600; color: #94a3b8; letter-spacing: 0.5px; }
+
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 40px auto;
+        }
+
+        .header-box {
+            background: var(--surface);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 3px solid var(--border);
+            padding: 30px 40px;
+            border-radius: 28px;
+            box-shadow: var(--glass-shadow);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-box h1 { font-size: 26px; color: #1e1b4b; font-weight: 700; }
+        .header-box p { font-size: 13px; color: var(--text-dim); font-weight: 600; margin-top: 4px; }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border-subtle);
+            background: rgba(255,255,255,0.5);
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            color: var(--text-dim);
+            transition: all 0.2s;
+        }
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .requests-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .request-card {
+            background: var(--surface);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 2px solid var(--border);
+            border-radius: 24px;
+            padding: 25px 30px;
+            box-shadow: var(--glass-shadow);
+            display: grid;
+            grid-template-columns: 1.5fr 2fr auto;
+            gap: 20px;
+            align-items: center;
+        }
+
+        @media(max-width: 992px) {
+            .request-card { grid-template-columns: 1fr; }
+        }
+
+        .req-info div { margin-bottom: 6px; font-size: 13px; color: var(--text-main); font-weight: 600; }
+        .req-info strong { color: #1e1b4b; }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        .badge.pending { background: rgba(234, 179, 8, 0.15); color: #ca8a04; }
+        .badge.resolved { background: rgba(16, 185, 129, 0.15); color: #059669; }
+
+        .req-details-box {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 100%;
+        }
+
+        .req-details {
+            font-size: 13px;
+            color: var(--text-dim);
+            background: rgba(255,255,255,0.4);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            max-height: 140px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .req-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        @media(max-width: 992px) {
+            .req-actions { align-items: stretch; }
+        }
+
+        .btn-resolve {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+            transition: background 0.2s;
+            text-align: center;
+        }
+        .btn-resolve:hover { background: #059669; }
+
+        .btn-view-imgs {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1px solid var(--border-subtle);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .btn-view-imgs:hover { background: #e2e8f0; }
+
+        #no-requests {
+            text-align: center;
+            padding: 60px;
+            font-weight: 600;
+            color: var(--text-dim);
+            background: var(--surface);
+            border-radius: 24px;
+            border: 2px solid var(--border);
+        }
+
+        /* Modal for Viewing Images */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--text-dim);
+        }
+        .img-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .img-grid img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .img-grid img:hover {
+            transform: scale(1.03);
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-main">
+        <div class="logo-box" onclick="window.location.href='home.html'">
+            <img src="logoh.png" alt="STRIX">
+        </div>
+        <div class="nav-right-actions">
+            <a href="home.html" class="nav-link-item">Home</a>
+            <div class="nav-divider"></div>
+            <span class="nav-badge-text">ADMIN RETURNS CONSOLE</span>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="header-box">
+        <div>
+            <h1>Returns & Refunds Management</h1>
+            <p>Review submitted return cases, inspect evidence, and close resolved requests.</p>
+        </div>
+        <div class="filter-tabs">
+            <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+            <button class="filter-btn" onclick="setFilter('Pending Review', this)">Pending</button>
+            <button class="filter-btn" onclick="setFilter('Resolved', this)">Resolved</button>
+        </div>
+    </div>
+
+    <div id="requests-list" class="requests-grid">
+        <!-- Loaded dynamically -->
+    </div>
+    <div id="no-requests" style="display: none;">No return requests found.</div>
+</div>
+
+<!-- Image Preview Modal -->
+<div class="modal" id="img-modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeModal()">&times;</span>
+        <h3 id="modal-title" style="margin-bottom: 10px; font-size: 16px; color: #1e1b4b;">Attached Proof Images</h3>
+        
+        <!-- Grid View of Images -->
+        <div class="img-grid" id="modal-img-grid"></div>
+
+        <!-- Full Size View Container (Fixed Base64 / about:blank issue) -->
+        <div id="full-img-container" style="display:none; text-align:center; margin-top:15px;">
+            <img id="full-preview-img" style="max-width:100%; max-height:60vh; border-radius:8px; border:1px solid #cbd5e1;" />
+            <br>
+            <button onclick="backToGrid()" style="margin-top:15px; padding:8px 18px; background:var(--primary); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer;">&larr; Back to All Images</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script>
+    const firebaseConfig = { 
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU", 
+        authDomain: "strix-shop.firebaseapp.com", 
+        projectId: "strix-shop" 
+    };
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    let allRequests = [];
+    let currentFilter = 'all';
+
+    auth.onAuthStateChanged(user => {
+        if (!user) {
+            alert("Please sign in.");
+            window.location.href = "index.html";
+            return;
+        }
+
+        db.collection("users").doc(user.uid).get().then(doc => {
+            const data = doc.data();
+            const isMaster = user.uid === "PNssYZn1wNUGjmzeAq1eHz2QHKf1";
+            const isAgentOrAdmin = data && ["agent", "admin"].includes(data.acc);
+
+            if (!isMaster && !isAgentOrAdmin) {
+                alert("Unauthorized access. Admin privileges required.");
+                window.location.href = "home.html";
+                return;
+            }
+
+            loadRequests();
+        }).catch(() => {
+            if (user.uid !== "PNssYZn1wNUGjmzeAq1eHz2QHKf1") {
+                alert("Unauthorized access.");
+                window.location.href = "home.html";
+            } else {
+                loadRequests();
+            }
+        });
+    });
+
+    function loadRequests() {
+        db.collection("returnRequests").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+            allRequests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderRequests();
+        });
+    }
+
+    function setFilter(filter, btn) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderRequests();
+    }
+
+    function renderRequests() {
+        const listContainer = document.getElementById('requests-list');
+        const noReqMsg = document.getElementById('no-requests');
+        listContainer.innerHTML = "";
+
+        const filtered = allRequests.filter(req => {
+            if (currentFilter === 'all') return true;
+            return req.status === currentFilter;
+        });
+
+        if (filtered.length === 0) {
+            noReqMsg.style.display = 'block';
+            return;
+        }
+        noReqMsg.style.display = 'none';
+
+        filtered.forEach(req => {
+            const dateStr = req.createdAt && req.createdAt.toDate ? req.createdAt.toDate().toLocaleString() : 'Just now';
+            const isResolved = req.status === 'Resolved';
+            const hasImages = req.fileDataList && req.fileDataList.length > 0;
+
+            const card = document.createElement('div');
+            card.className = 'request-card';
+            card.innerHTML = `
+                <div class="req-info">
+                    <div><strong>Customer:</strong> ${req.customerName} (${req.email})</div>
+                    <div><strong>Order ID:</strong> ${req.orderId}</div>
+                    <div><strong>Reason:</strong> <span style="color:var(--primary);">${req.reason}</span></div>
+                    <div><strong>Submitted:</strong> ${dateStr}</div>
+                    <div><strong>Status:</strong> <span class="badge ${isResolved ? 'resolved' : 'pending'}">${req.status || 'Pending Review'}</span></div>
+                </div>
+                <div class="req-details-box">
+                    <div style="font-size:11px; font-weight:700; color:var(--text-dim); text-transform:uppercase;">Details</div>
+                    <div class="req-details">${req.details}</div>
+                </div>
+                <div class="req-actions">
+                    ${hasImages ? `<button class="btn-view-imgs" onclick='openImages(${JSON.stringify(req.fileDataList)})'>View Proof (${req.fileDataList.length})</button>` : `<span style="font-size:11px; color:var(--text-dim);">No images attached</span>`}
+                    ${!isResolved ? `<button class="btn-resolve" onclick="resolveRequest('${req.id}')">Close & Resolve</button>` : `<span style="font-size:12px; font-weight:700; color:#059669;">Case Closed</span>`}
+                </div>
+            `;
+            listContainer.appendChild(card);
+        });
+    }
+
+    async function resolveRequest(id) {
+        if (!confirm("Are you sure you want to mark this return request as Resolved?")) return;
+        try {
+            await db.collection("returnRequests").doc(id).update({ status: "Resolved" });
+        } catch (e) {
+            alert("Error updating status: " + e.message);
+        }
+    }
+
+    function openImages(fileList) {
+        const grid = document.getElementById('modal-img-grid');
+        const fullContainer = document.getElementById('full-img-container');
+        const modalTitle = document.getElementById('modal-title');
+        
+        grid.style.display = 'grid';
+        fullContainer.style.display = 'none';
+        modalTitle.innerText = "Attached Proof Images";
+        grid.innerHTML = "";
+
+        fileList.forEach(base64 => {
+            const img = document.createElement('img');
+            img.src = base64;
+            img.onclick = () => {
+                grid.style.display = 'none';
+                fullContainer.style.display = 'block';
+                modalTitle.innerText = "Full Size Preview";
+                document.getElementById('full-preview-img').src = base64;
+            };
+            grid.appendChild(img);
+        });
+        document.getElementById('img-modal').style.display = 'flex';
+    }
+
+    function backToGrid() {
+        document.getElementById('modal-img-grid').style.display = 'grid';
+        document.getElementById('full-img-container').style.display = 'none';
+        document.getElementById('modal-title').innerText = "Attached Proof Images";
+    }
+
+    function closeModal() {
+        document.getElementById('img-modal').style.display = 'none';
+        backToGrid();
+    }
+</script>
+</body>
+</html>
