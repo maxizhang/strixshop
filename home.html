@@ -450,69 +450,6 @@
             line-height: 1.35;
         }
 
-        /* COMPACT VERTICAL TICKER */
-        .vertical-ticker-container {
-            height: 620px;
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            background: rgba(255, 255, 255, 0.45);
-            border: 1px solid var(--color-glass-border);
-            border-radius: 14px;
-            padding: 12px;
-        }
-
-        .vertical-ticker-container::before,
-        .vertical-ticker-container::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 25px;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        .vertical-ticker-container::before {
-            top: 0;
-            background: linear-gradient(to bottom, rgba(240, 245, 255, 0.9), transparent);
-        }
-
-        .vertical-ticker-container::after {
-            bottom: 0;
-            background: linear-gradient(to top, rgba(240, 245, 255, 0.9), transparent);
-        }
-
-        .vertical-ticker-track {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            will-change: transform;
-        }
-
-        .vertical-ticker-container .rolling-card {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid var(--color-glass-border);
-            border-radius: 10px;
-            padding: 10px 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .vertical-ticker-container .author {
-            font-family: 'Quicksand', monospace;
-            font-size: 0.65rem;
-            color: var(--color-accent-blue);
-            font-weight: 700;
-        }
-
-        .vertical-ticker-container p {
-            font-size: 0.75rem;
-            color: var(--color-text-main);
-            line-height: 1.3;
-            margin: 0;
-        }
 
         /* UPTIME WIDGET */
         .strix-uptime-widget {
@@ -844,35 +781,6 @@
                 </div>
             </div>
 <br>
-            <div class="vertical-ticker-container" id="verticalTicker">
-                <div class="vertical-ticker-track" id="verticalTrack">
-                    <div class="rolling-card">
-                        <span class="author">2026.8.28</span>
-                        <p>Initial Release (V 4.2.55.11.2.1)<br>Strix Shop website published!</p>
-                    </div>
-                    <div class="rolling-card">
-                        <span class="author">2026.8.29</span>
-                        <p>Domain Attributed (V 4.2.55.11.2.1)<br>strixshop28.com active!</p>
-                    </div>
-                    <div class="rolling-card">
-                        <span class="author">2026.9.07</span>
-                        <p>Orders Acceptance (V 4.2.55.11.2.1)<br>Customer orders open!</p>
-                    </div>
-                    <div class="rolling-card">
-                        <span class="author">2026.9.12</span>
-                        <p>Refined Background (V 4.2.55.11.2.2)<br>A newly designed gradience applied to some pages!</p>
-                    </div>
-                    <div class="rolling-card">
-                        <span class="author">2026.9.12</span>
-                        <p>Submit Return/Refund Request (V 4.2.56.11.3.3)<br>A newly designed gradience applied to some pages!</p>
-                    </div>
-                    <div class="rolling-card">
-                        <span class="author">2026.9.12</span>
-                        <p>Submit Return/Refund Request (V 4.2.56.11.3.3)<br>A newly designed gradience applied to some pages!</p>
-                    </div>
-                </div>
-            </div>
-<br>
             <div class="strix-uptime-widget">
                 <div class="uptime-header">
                     <span class="pulse-dot"></span>
@@ -895,6 +803,26 @@
                         <span class="uptime-num" id="uptimeSeconds">00</span>
                         <span class="uptime-label">Secs</span>
                     </div>
+                </div>
+            </div>
+<br>
+            <div class="sidebar-account-widget">
+                <div class="sidebar-account-header">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"></path></circle></svg>
+                    <span>Operating Version</span>
+                </div>
+                <div class="sidebar-account-email" id="sidebarVersion">Version 5.1.56.11.3.1</div>
+            </div>
+<br>
+            <div class="sidebar-account-widget">
+                <div class="sidebar-account-header">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+                    <span>Customer Support</span>
+                </div>
+                <div class="sidebar-account-email" id="sidebarUserEmail">Ask anything. We are here to help.</div>
+                <div class="sidebar-account-actions">
+                    <a href="cs.html" class="sidebar-acc-btn">Customer Support</a>
+                    <a href="mailto:hello.strix@outlook.com" class="sidebar-acc-btn">Email Us</a>
                 </div>
             </div>
         </nav>
@@ -1210,33 +1138,6 @@
         setInterval(updateUptime, 1000);
         updateUptime();
 
-        // Vertical Ticker Animation
-        const container = document.getElementById('verticalTicker');
-        const track = document.getElementById('verticalTrack');
-
-        if (container && track) {
-            track.innerHTML += track.innerHTML;
-
-            let scrollPos = 0;
-            const speed = 0.4;
-            let isPaused = false;
-
-            function step() {
-                if (!isPaused) {
-                    scrollPos += speed;
-                    if (scrollPos >= track.scrollHeight / 2) {
-                        scrollPos = 0;
-                    }
-                    track.style.transform = `translateY(-${scrollPos}px)`;
-                }
-                requestAnimationFrame(step);
-            }
-
-            container.addEventListener('mouseenter', () => isPaused = true);
-            container.addEventListener('mouseleave', () => isPaused = false);
-
-            requestAnimationFrame(step);
-        }
 
         // Mobile Sidebar Drawer Toggle
         const menuToggle = document.getElementById('menuToggle');

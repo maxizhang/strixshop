@@ -373,7 +373,7 @@
     <div class="nav-main">
         <div class="logo-box" onclick="window.location.href='home.html'"><img src="logoh.png" alt="STRIX"></div>
         <div class="nav-right-actions">
-            <a href="home.html" class="nav-link-item">
+<button class="btn" style="flex: 0 0 auto; padding: 10px 14px; background: var(--primary); color: #fff; border-radius: 12px; font-size: 12px; cursor: pointer; white-space: nowrap;" onclick="copyAllEmails()">Copy All Emails</button>            <a href="home.html" class="nav-link-item">
                 <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 Home
             </a>
@@ -490,6 +490,33 @@ firebase.auth().onAuthStateChanged(async u => {
         deleteBtn.style.cursor = "not-allowed";
     }
 });
+
+function copyAllEmails() {
+    if (!allUsersCache || allUsersCache.length === 0) {
+        alert("No users loaded yet.");
+        return;
+    }
+
+    // Extract emails, filter out empty/undefined ones, and join them with commas
+    const emails = allUsersCache
+        .map(doc => doc.data().email)
+        .filter(email => email && email.trim() !== "");
+
+    const formattedEmails = emails.join(", ");
+
+    if (formattedEmails.length === 0) {
+        alert("No email addresses found.");
+        return;
+    }
+
+    // Copy to clipboard
+    navigator.clipboard.writeText(formattedEmails).then(() => {
+        alert("All emails copied to clipboard:\n\n" + formattedEmails);
+    }).catch(err => {
+        console.error("Failed to copy emails: ", err);
+        prompt("Copy the emails below:", formattedEmails);
+    });
+}
 
 function getBadgeClass(acc) {
     const val = (acc || "customer").toLowerCase();
