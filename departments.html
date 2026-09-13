@@ -8,18 +8,18 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600;700;900&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --primary: #6157b5;
             --primary-hover: #4338ca;
-            --surface: rgba(255, 255, 255, 0.18); /* High translucency glass */
+            --surface: rgba(255, 255, 255, 0.22);
             --text-main: #1e1b4b;
             --text-dim: #475569;
-            --border: rgba(255, 255, 255, 0.55); /* Crisp glass edge */
+            --border: rgba(255, 255, 255, 0.65);
             --nav-dark: #0a0c12;
-            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --glass-shadow: 0 25px 50px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
             --radius-main: 32px;
         }
 
@@ -33,13 +33,14 @@
             margin: 0;
             background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
             background-size: 400% 400%;
-            animation: fluidBackground 20s ease infinite;
+            animation: fluidBackground 18s ease infinite;
             color: var(--text-main);
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Quicksand', sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            position: relative;
         }
 
         @keyframes fluidBackground {
@@ -48,11 +49,55 @@
             100% { background-position: 0% 50%; }
         }
 
-        #bgstar {
+        /* Animated Background Glowing Orbs */
+        .bg-orbs {
             position: fixed;
-            inset: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
             z-index: 1;
             pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: floatOrb 12s ease-in-out infinite alternate;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(129, 140, 248, 0.4);
+            top: -10%;
+            left: -10%;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(167, 243, 208, 0.4);
+            bottom: -20%;
+            right: -10%;
+            animation-delay: -4s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: rgba(244, 114, 182, 0.25);
+            top: 40%;
+            left: 30%;
+            animation-delay: -8s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translateY(0px) translateX(0px) scale(1); }
+            100% { transform: translateY(40px) translateX(30px) scale(1.1); }
         }
 
         /* NAVIGATION BAR */
@@ -143,7 +188,7 @@
         .dept-stack {
             display: flex;
             flex-direction: column;
-            gap: 80px;
+            gap: 50px;
         }
 
         .dept-block {
@@ -152,8 +197,8 @@
             align-items: center;
             gap: 60px;
             opacity: 0;
-            transform: translateY(60px);
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, box-shadow 0.3s ease;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease, box-shadow 0.4s ease;
             background: var(--surface);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
@@ -169,8 +214,9 @@
         }
 
         .dept-block:hover {
-            background: rgba(255, 255, 255, 0.28);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.32);
+            transform: translateY(-6px);
+            box-shadow: 0 35px 70px rgba(97, 87, 181, 0.15), inset 0 1px 3px rgba(255, 255, 255, 0.95);
         }
 
         /* Alternating layout order cleanly */
@@ -190,7 +236,7 @@
             position: relative;
             border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.7);
             aspect-ratio: 16/10;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
         }
@@ -213,7 +259,7 @@
         }
 
         .dept-tag {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Quicksand', sans-serif;
             color: var(--primary);
             font-size: 11px;
             letter-spacing: 3px;
@@ -293,6 +339,12 @@
 </head>
 <body>
 
+    <!-- Animated background glowing orbs -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
 
     <nav>
         <div class="nav-main">
@@ -320,7 +372,7 @@
                 <div class="dept-text">
                     <span class="dept-tag">Information</span>
                     <h2>STRIX NEWS</h2>
-                    <p>Delivers Local, National, and International news to you instantly.<br><strong>Launch:</strong> January, 2027<br><strong>Director:</strong> Maxi Zhang<br><strong>Editor-in-Chief:</strong> Era Garg</p>
+                    <p>Delivers Local, National, and International news to you instantly.<br><strong>Launch:</strong> January, 2027<br><strong>Director:</strong> Maxi Zhang<br><strong>Editor-in-Chief:</strong> Hiring!</p>
                     <a href="strixnews.html" class="dept-btn">View Newsletter</a>
                 </div>
             </div>
@@ -357,7 +409,6 @@
     </footer>
 
     <script>
-
         // Intersection Observer for scroll reveals
         const observerOptions = {
             threshold: 0.15
@@ -375,15 +426,6 @@
         document.querySelectorAll('.dept-block').forEach(block => {
             observer.observe(block);
         });
-
-        window.addEventListener('resize', () => {
-            resize();
-            initStars();
-        });
-        
-        resize();
-        initStars();
-        animate();
     </script>
 </body>
 </html>

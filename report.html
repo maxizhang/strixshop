@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strix Shop | Report</title>
+    <title>Strix Shop | Report Portal</title>
     <link rel="icon" type="image/png" href="logospfd.png">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #6157b5;
-            --primary-hover: #4338ca;
-            --surface: rgba(255, 255, 255, 0.18);
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --surface: rgba(255, 255, 255, 0.25);
+            --surface-hover: rgba(255, 255, 255, 0.35);
             --text-main: #0f172a;
             --text-dim: #475569;
-            --border: rgba(255, 255, 255, 0.55);
+            --border: rgba(255, 255, 255, 0.6);
             --nav-dark: #0a0c12;
-            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
-            --error: #dc2626;
-            --success: #059669;
+            --glass-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --error: #ef4444;
+            --success: #10b981;
         }
 
         * {
@@ -31,13 +32,13 @@
             font-family: 'Quicksand', sans-serif;
             background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
             background-size: 400% 400%;
-            animation: fluidBackground 20s ease infinite;
+            animation: fluidBackground 18s cubic-bezier(0.4, 0, 0.2, 1) infinite;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
-            line-height: 1.7;
+            line-height: 1.6;
         }
 
         @keyframes fluidBackground {
@@ -46,30 +47,54 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Professional Navbar */
+        /* Gradual Appearance Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            opacity: 0;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+        }
+
+        /* Glass Navbar */
         nav {
-            background: var(--nav-dark);
+            background: rgba(10, 12, 18, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             width: 100%;
             position: sticky;
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.2);
         }
 
         .nav-main {
             display: flex;
             align-items: center;
-            padding: 14px 5%;
+            padding: 16px 5%;
             justify-content: space-between;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .logo-box img {
-            height: 32px;
+            height: 34px;
             cursor: pointer;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.05);
         }
 
         .nav-right-actions {
@@ -86,12 +111,12 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 13px;
-            transition: color 0.2s;
+            transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .nav-link-item svg {
             stroke: #cbd5e1;
-            transition: stroke 0.2s;
+            transition: stroke 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .nav-link-item:hover {
@@ -110,16 +135,17 @@
 
         .nav-badge-text {
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             color: #94a3b8;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            font-family: 'Quicksand', monospace;
         }
 
         /* Container & Card Layout */
         .container {
-            max-width: 650px;
+            max-width: 680px;
             width: 90%;
-            margin: 40px auto;
+            margin: 50px auto;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -128,44 +154,49 @@
 
         .report-card {
             background: var(--surface);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border-radius: 28px;
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 32px;
             border: 1.5px solid var(--border);
-            padding: 40px;
+            padding: 45px;
             box-shadow: var(--glass-shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .report-card:hover {
+            background: var(--surface-hover);
+            box-shadow: 0 30px 60px -15px rgba(99, 102, 241, 0.2), inset 0 1px 2px rgba(255, 255, 255, 0.95);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
 
         .header h1 {
-            font-size: 26px;
+            font-size: 30px;
             color: #1e1b4b;
             margin-bottom: 8px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         .header p {
             color: var(--text-dim);
-            font-size: 13px;
-            font-weight: 600;
-            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            font-family: 'Quicksand', monospace;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         label {
             display: block;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Quicksand', monospace;
             font-size: 11px;
             letter-spacing: 1.5px;
             color: var(--primary);
@@ -176,48 +207,59 @@
 
         input, select, textarea {
             width: 100%;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            border-radius: 16px;
-            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1.5px solid rgba(255, 255, 255, 0.8);
+            border-radius: 18px;
+            padding: 15px 20px;
             color: var(--text-main);
             font-family: 'Quicksand', sans-serif;
             font-size: 14px;
             font-weight: 600;
             outline: none;
-            transition: 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         input:focus, select:focus, textarea:focus {
             border-color: var(--primary);
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
         }
 
         select option {
             background: #ffffff;
             color: var(--text-main);
+            font-weight: 600;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
         }
 
         .btn-submit {
             width: 100%;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
             color: #ffffff;
             border: none;
             padding: 16px;
-            border-radius: 16px;
+            border-radius: 18px;
             font-weight: 700;
-            font-size: 15px;
+            font-size: 14px;
+            font-family: 'Quicksand', monospace;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             margin-top: 10px;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
         }
 
         .btn-submit:hover {
-            background: var(--primary-hover);
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+            box-shadow: 0 12px 25px rgba(99, 102, 241, 0.45);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
         }
 
         .btn-submit:disabled {
@@ -231,23 +273,35 @@
             text-align: center;
             font-size: 13px;
             font-weight: 700;
-            margin-top: 15px;
+            margin-top: 18px;
             display: none;
+            font-family: 'Quicksand', monospace;
         }
 
         footer {
             text-align: center;
-            padding: 25px;
+            padding: 30px;
             color: var(--text-dim);
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
-            letter-spacing: 1px;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            letter-spacing: 1.5px;
+            font-family: 'Quicksand', monospace;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         @media (max-width: 600px) {
+            .container {
+                width: 95%;
+                margin: 20px auto;
+            }
             .report-card {
-                padding: 24px;
+                padding: 25px;
+                border-radius: 24px;
+            }
+            .header h1 {
+                font-size: 24px;
             }
         }
     </style>
@@ -274,13 +328,12 @@
     <div class="report-card">
         <div class="header">
             <h1>File a Report</h1>
-            <p>Internal Submission Portal</p>
         </div>
 
         <form id="report-form">
             <div class="form-group">
                 <label>Report Subject</label>
-                <input type="text" id="subject" placeholder="e.g. Bug Report, Team Member Report, ..." required>
+                <input type="text" id="subject" placeholder="e.g. Bug Report, Team Member Report..." required>
             </div>
 
             <div class="form-group">
@@ -298,11 +351,16 @@
             </div>
 
             <div class="form-group">
+                <label>Image Link / Proof (Optional)</label>
+                <input type="url" id="imageLink" placeholder="https://example.com/screenshot.png">
+            </div>
+
+            <div class="form-group">
                 <label>Detailed Description</label>
                 <textarea id="details" rows="5" placeholder="Provide as much detail as possible..." required></textarea>
             </div>
 
-            <button type="submit" class="btn-submit" id="submit-btn">SUBMIT TRANSMISSION</button>
+            <button type="submit" class="btn-submit" id="submit-btn">Submit</button>
             <div id="status-msg" class="status-msg"></div>
         </form>
     </div>
@@ -338,7 +396,7 @@
         if (!user) {
             statusMsg.style.display = "block";
             statusMsg.style.color = "var(--error)";
-            statusMsg.innerText = "You are not logged in.";
+            statusMsg.innerText = "⚠️ You are not logged in.";
         }
     });
 
@@ -358,6 +416,7 @@
             email: currentUser.email || "No Email",
             subject: document.getElementById('subject').value.trim(),
             category: document.getElementById('category').value,
+            imageLink: document.getElementById('imageLink').value.trim() || "",
             details: document.getElementById('details').value.trim(),
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             status: "pending"
@@ -368,7 +427,7 @@
 
             statusMsg.style.display = "block";
             statusMsg.style.color = "var(--success)";
-            statusMsg.innerText = "Transmission successful.";
+            statusMsg.innerText = "✓ Transmission successful.";
 
             reportForm.reset();
 

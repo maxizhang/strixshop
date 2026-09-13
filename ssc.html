@@ -28,15 +28,18 @@
             font-family: 'Quicksand', sans-serif;
         }
 
+        html, body {
+            height: 100vh;
+            overflow: hidden;
+        }
+
         body { 
             background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
             background-size: 400% 400%;
             animation: fluidBackground 20s ease infinite;
             color: var(--text-main); 
-            min-height: 100vh; 
-            display: none; 
+            display: none; /* Hidden until authorized */
             flex-direction: column;
-            overflow-x: hidden;
         }
 
         @keyframes fluidBackground {
@@ -55,11 +58,11 @@
         nav { 
             background: var(--nav-dark); 
             width: 100%; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
+            height: 61px;
+            flex-shrink: 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
         }
         .nav-main { 
             display: flex; 
@@ -93,34 +96,22 @@
             stroke: #cbd5e1;
             transition: stroke 0.2s;
         }
-        .nav-link-item:hover {
-            color: #ffffff;
-        }
-        .nav-link-item:hover svg {
-            stroke: #ffffff;
-        }
-        .nav-divider {
-            width: 1px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.15);
-        }
-        .nav-badge-text {
-            font-size: 12px;
-            font-weight: 600;
-            color: #94a3b8;
-            letter-spacing: 0.5px;
-        }
+        .nav-link-item:hover { color: #ffffff; }
+        .nav-link-item:hover svg { stroke: #ffffff; }
+        .nav-divider { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); }
+        .nav-badge-text { font-size: 12px; font-weight: 600; color: #94a3b8; letter-spacing: 0.5px; }
 
         /* Workspace Layout */
         .workspace {
             display: flex;
             flex: 1;
-            padding: 24px 5%;
+            padding: 20px 5%;
             gap: 24px;
             max-width: 1400px;
             margin: 0 auto;
             width: 100%;
             height: calc(100vh - 61px);
+            overflow: hidden;
         }
 
         .sidebar { 
@@ -134,195 +125,86 @@
             flex-direction: column; 
             box-shadow: var(--glass-shadow);
             overflow: hidden;
+            height: 100%;
         }
 
-        .sidebar-nav { 
-            padding: 20px 24px; 
-            border-bottom: 1.5px solid var(--border); 
-            text-align: left; 
-        }
-
-        .nav-title { 
-            font-weight: 700; 
-            font-size: 11px; 
-            letter-spacing: 1.5px; 
-            color: var(--primary); 
-            text-transform: uppercase; 
-        }
-
-        .user-list { 
-            flex: 1; 
-            overflow-y: auto; 
-            padding: 16px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-        }
-
-        .user-item { 
-            display: flex; 
-            align-items: center; 
-            gap: 14px; 
-            padding: 14px; 
-            border-radius: 20px; 
-            cursor: pointer; 
-            transition: 0.3s; 
-            background: rgba(255, 255, 255, 0.3);
-            border: 1.5px solid var(--border-subtle);
-        }
-
-        .user-item:hover { 
-            background: rgba(255, 255, 255, 0.6); 
-            transform: translateY(-2px);
-        }
-
-        .user-item.active { 
-            background: rgba(79, 70, 229, 0.12); 
-            border-color: var(--primary); 
-        }
+        .sidebar-nav { padding: 18px 24px; border-bottom: 1.5px solid var(--border); text-align: left; flex-shrink: 0; }
+        .nav-title { font-weight: 700; font-size: 11px; letter-spacing: 1.5px; color: var(--primary); text-transform: uppercase; }
         
-        .user-pfp { 
-            width: 40px; 
-            height: 40px; 
-            border-radius: 50%; 
-            background-size: cover; 
-            background-position: center; 
-            border: 1.5px solid var(--border); 
+        .user-list { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+        .user-item { 
+            display: flex; align-items: center; gap: 14px; padding: 12px 14px; border-radius: 20px; 
+            cursor: pointer; transition: 0.3s; background: rgba(255, 255, 255, 0.3);
+            border: 1.5px solid var(--border-subtle);
             flex-shrink: 0;
         }
-
-        .user-info { 
-            flex: 1; 
-            overflow: hidden; 
+        .user-item:hover { background: rgba(255, 255, 255, 0.6); transform: translateY(-1px); }
+        .user-item.active { background: rgba(79, 70, 229, 0.12); border-color: var(--primary); }
+        
+        .user-pfp { 
+            width: 38px; height: 38px; border-radius: 50%; background-size: cover; 
+            background-position: center; border: 1.5px solid var(--border); flex-shrink: 0;
         }
+        .user-info { flex: 1; overflow: hidden; }
+        .user-name-display { font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; color: #1e1b4b; }
+        .user-balance-display { font-size: 0.78rem; color: var(--text-dim); font-weight: 600; }
+        
+        .badge { font-size: 10px; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; font-weight: 700; margin-left: 6px; }
+        .badge-admin { background: rgba(79, 70, 229, 0.15); color: var(--primary); border: 1px solid rgba(79, 70, 229, 0.2); }
 
-        .badge { 
-            font-size: 10px; 
-            padding: 2px 8px; 
-            border-radius: 6px; 
-            text-transform: uppercase; 
-            font-weight: 700; 
-            margin-left: 6px; 
-        }
-
-        .badge-admin { 
-            background: rgba(79, 70, 229, 0.15); 
-            color: var(--primary); 
-            border: 1px solid rgba(79, 70, 229, 0.2);
-        }
-
-        .main-editor { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-        }
-
+        /* Main Editor */
+        .main-editor { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; overflow-y: auto; }
+        
         .editor-card { 
-            width: 100%; 
-            max-width: 520px; 
-            background: var(--surface); 
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            padding: 40px; 
-            border-radius: 32px; 
-            border: 1.5px solid var(--border); 
-            box-shadow: var(--glass-shadow);
-            text-align: center;
-        }
-
-        .ssc-display { 
-            font-size: 3.5rem; 
-            font-weight: 700; 
-            margin: 20px 0; 
-            color: #1e1b4b; 
-            letter-spacing: -1px;
+            width: 100%; max-width: 500px; background: var(--surface); backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px); padding: 32px; border-radius: 32px; 
+            border: 1.5px solid var(--border); box-shadow: var(--glass-shadow); text-align: center;
         }
         
-        .control-group { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 12px; 
-            margin-bottom: 24px; 
-        }
-
+        .editor-subtitle { font-size: 11px; letter-spacing: 1.5px; color: var(--primary); font-weight: 700; }
+        .target-name { font-weight: 700; margin-top: 6px; font-size: 1.1rem; color: #1e1b4b; }
+        .ssc-display { font-size: 3rem; font-weight: 700; margin: 14px 0; color: #1e1b4b; letter-spacing: -1px; }
+        
+        .control-group { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
         .math-btn { 
-            padding: 12px; 
-            border-radius: 16px; 
-            border: 1.5px solid var(--border); 
-            background: rgba(255, 255, 255, 0.5); 
-            color: var(--text-main); 
-            font-weight: 700; 
-            font-size: 1rem;
-            cursor: pointer; 
-            transition: 0.2s;
+            padding: 10px; border-radius: 14px; border: 1.5px solid var(--border); 
+            background: rgba(255, 255, 255, 0.5); color: var(--text-main); 
+            font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: 0.2s;
         }
-
-        .math-btn:hover { 
-            background: var(--primary); 
-            color: white; 
-            border-color: var(--primary);
-            transform: translateY(-1px);
-        }
-
+        .math-btn:hover { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-1px); }
         .btn-sub { color: var(--danger); }
         .btn-add { color: var(--success); }
 
+        .input-label { font-size: 10px; color: var(--text-dim); display: block; margin-bottom: 6px; font-weight: 700; text-transform: uppercase;}
         input#manual-ssc { 
-            width: 100%; 
-            background: rgba(255, 255, 255, 0.6); 
-            border: 1.5px solid var(--border); 
-            padding: 16px; 
-            border-radius: 16px; 
-            color: var(--text-main); 
-            text-align: center; 
-            font-size: 1.3rem; 
-            margin-bottom: 24px; 
-            font-weight: 700;
-            outline: none;
+            width: 100%; background: rgba(255, 255, 255, 0.6); border: 1.5px solid var(--border); 
+            padding: 12px 16px; border-radius: 14px; color: var(--text-main); text-align: center; 
+            font-size: 1.2rem; margin-bottom: 20px; font-weight: 700; outline: none; transition: 0.3s;
         }
+        input#manual-ssc:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(97, 87, 181, 0.2); background: white; }
 
         .save-btn { 
-            width: 100%; 
-            padding: 16px; 
-            border-radius: 16px; 
-            border: none; 
-            background: var(--primary); 
-            color: white; 
-            font-weight: 700; 
-            cursor: pointer; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-            transition: background 0.2s, transform 0.2s;
+            width: 100%; padding: 14px; border-radius: 14px; border: none; background: var(--primary); 
+            color: white; font-weight: 700; cursor: pointer; text-transform: uppercase;
+            letter-spacing: 1px; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); transition: background 0.2s, transform 0.2s;
         }
-
-        .save-btn:hover { 
-            background: var(--primary-hover); 
-            transform: translateY(-2px); 
-        }
+        .save-btn:hover:not(:disabled) { background: var(--primary-hover); transform: translateY(-2px); }
+        .save-btn:disabled { opacity: 0.7; cursor: not-allowed; }
 
         .placeholder { 
-            color: var(--text-dim); 
-            letter-spacing: 1.5px; 
-            text-transform: uppercase; 
-            font-size: 0.85rem; 
-            font-weight: 700;
-            background: var(--surface);
-            padding: 40px;
-            border-radius: 32px;
-            border: 1.5px solid var(--border);
-            backdrop-filter: blur(40px);
-            box-shadow: var(--glass-shadow);
+            color: var(--text-dim); letter-spacing: 1.5px; text-transform: uppercase; font-size: 0.85rem; 
+            font-weight: 700; background: var(--surface); padding: 40px; border-radius: 32px;
+            border: 1.5px solid var(--border); backdrop-filter: blur(40px); box-shadow: var(--glass-shadow);
         }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 10px; }
 
         @media (max-width: 900px) {
+            html, body { height: auto; overflow: auto; }
             .workspace { flex-direction: column; height: auto; overflow: visible; }
-            .sidebar { width: 100%; max-height: 400px; }
+            .sidebar { width: 100%; max-height: 350px; }
+            .main-editor { height: auto; padding-bottom: 30px; }
         }
     </style>
 </head>
@@ -358,8 +240,8 @@
             <div id="placeholder" class="placeholder">Select a user to adjust balance</div>
             
             <div class="editor-card" id="editor-card" style="display: none;">
-                <span style="font-size: 11px; letter-spacing: 1.5px; color: var(--primary); font-weight: 700;">ACCOUNT SETTLEMENT</span>
-                <div id="target-name" style="font-weight: 700; margin-top: 8px; font-size: 1.2rem; color: #1e1b4b;">User Name</div>
+                <span class="editor-subtitle">ACCOUNT SETTLEMENT</span>
+                <div id="target-name" class="target-name">User Name</div>
                 <div class="ssc-display" id="ssc-view">0</div>
                 
                 <div class="control-group">
@@ -371,7 +253,7 @@
                     <button class="math-btn btn-add" onclick="adjust(10)">+10</button>
                 </div>
 
-                <label style="font-size: 11px; color: var(--text-dim); display: block; margin-bottom: 8px; font-weight: 700;">OVERRIDE CREDIT VALUE</label>
+                <label class="input-label" for="manual-ssc">OVERRIDE CREDIT VALUE</label>
                 <input type="number" id="manual-ssc" value="0">
 
                 <button class="save-btn" id="save-btn" onclick="saveSSC()">Update Database</button>
@@ -399,20 +281,21 @@
             snap.forEach(uDoc => {
                 const u = uDoc.data();
                 const isAdmin = u.acc === "admin";
+                const userBalance = u.ssc !== undefined ? u.ssc : 100;
 
                 const div = document.createElement('div');
                 div.className = `user-item ${activeUserId === uDoc.id ? 'active' : ''}`;
                 div.innerHTML = `
                     <div class="user-pfp" style="background-image:url('${u.pfp || 'https://via.placeholder.com/150'}')"></div>
                     <div class="user-info">
-                        <div style="font-weight:700; font-size:0.9rem; display:flex; align-items:center; color: #1e1b4b;">
+                        <div class="user-name-display">
                             ${u.firstName || ""} ${u.lastName || ""}
                             ${isAdmin ? '<span class="badge badge-admin">Admin</span>' : ''}
                         </div>
-                        <div style="font-size:0.8rem; color:var(--text-dim); font-weight:600;">Balance: ${u.ssc !== undefined ? u.ssc : 100} SSC</div>
+                        <div class="user-balance-display">Balance: ${userBalance} SSC</div>
                     </div>
                 `;
-                div.onclick = () => selectUser(uDoc.id, `${u.firstName || ""} ${u.lastName || ""}`, u.ssc !== undefined ? u.ssc : 100);
+                div.onclick = (e) => selectUser(uDoc.id, `${u.firstName || ""} ${u.lastName || ""}`, userBalance, div);
                 list.appendChild(div);
             });
         });
@@ -433,30 +316,23 @@
 
         const currentUserData = docSnap.data();
 
-        const canView = currentUserData.acc === "admin";
-        const canModify = currentUserData.acc === "admin";
-
-        if (!canView) {
+        if (currentUserData.acc !== "admin") {
             window.location.href = "home.html";
             return;
         }
 
         document.body.classList.add("authorized");
-
         loadAllUsers();
-
-        if (!canModify) {
-            const btn = document.getElementById("save-btn");
-            btn.style.opacity = "0.5";
-            btn.style.cursor = "not-allowed";
-        }
-
         window.currentUserData = currentUserData;
     });
 
-    function selectUser(id, name, ssc) {
+    function selectUser(id, name, ssc, element) {
         activeUserId = id;
         currentBalance = ssc;
+        
+        document.querySelectorAll('.user-item').forEach(el => el.classList.remove('active'));
+        if (element) element.classList.add('active');
+
         document.getElementById('placeholder').style.display = 'none';
         document.getElementById('editor-card').style.display = 'block';
         document.getElementById('target-name').innerText = name;
@@ -467,6 +343,11 @@
         currentBalance += amt;
         updateUI();
     };
+
+    document.getElementById('manual-ssc').addEventListener('input', (e) => {
+        currentBalance = parseInt(e.target.value) || 0;
+        document.getElementById('ssc-view').innerText = currentBalance;
+    });
 
     function updateUI() {
         document.getElementById('ssc-view').innerText = currentBalance;
@@ -479,17 +360,18 @@
             return;
         }
         if(!activeUserId) return;
-        const newVal = parseInt(document.getElementById('manual-ssc').value);
+        
+        const newVal = parseInt(document.getElementById('manual-ssc').value) || 0;
         const btn = document.getElementById('save-btn');
         btn.innerText = "Syncing...";
         btn.disabled = true;
 
         try {
             await updateDoc(doc(db, "users", activeUserId), { ssc: newVal });
-            alert("Updated!");
+            alert("Balance successfully updated!");
         } catch (e) {
             console.error(e);
-            alert("Error: Action Failed.");
+            alert("Error: Database action failed.");
         } finally {
             btn.innerText = "Update Database";
             btn.disabled = false;

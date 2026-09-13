@@ -247,7 +247,7 @@
     <form id="reg-form" style="width: 100%;">
         
         <div class="glass-section active-step" data-step="1">
-            <div class="section-title">Identity (1/2)</div>
+            <div class="section-title">Identity (1/7)</div>
             <div class="form-grid">
                 <div class="input-wrap">
                     <span class="field-label">First Name</span>
@@ -269,7 +269,7 @@
         </div>
 
         <div class="glass-section" data-step="2">
-            <div class="section-title">Gender and Pronouns</div>
+            <div class="section-title">Gender and Pronouns (2/7)</div>
             <div class="form-grid">
                 <div class="input-wrap">
                     <span class="field-label">Gender</span>
@@ -294,7 +294,7 @@
         </div>
 
         <div class="glass-section" data-step="3">
-            <div class="section-title">School and Academics Information</div>
+            <div class="section-title">School and Grade Level (3/7)</div>
             <div class="form-grid">
                 <div class="input-wrap">
                     <span class="field-label">Grade Level</span>
@@ -304,6 +304,7 @@
                         <option value="10">Grade 10</option>
                         <option value="11">Grade 11</option>
                         <option value="12">Grade 12</option>
+                        <option value="other">Other</option>
                     </select>
                 </div>
                 <div class="input-wrap">
@@ -317,7 +318,7 @@
         </div>
 
         <div class="glass-section" data-step="4">
-            <div class="section-title">Security Credentials</div>
+            <div class="section-title">Credentials (4/7)</div>
             <div class="full-line-grid">
                 <div class="input-wrap">
                     <span class="field-label">Username</span>
@@ -350,7 +351,7 @@
         </div>
 
         <div class="glass-section" data-step="5">
-            <div class="section-title">Profile Picture</div>
+            <div class="section-title">Profile Picture <strong>(Optional 5/7)</strong></div>
             <div class="full-line-grid">
                 <div class="input-wrap">
                     <span class="field-label">Profile Image Link</span>
@@ -360,7 +361,7 @@
         </div>
 
         <div class="glass-section" data-step="6">
-            <div class="section-title">Recovery Protocol (Optional)</div>
+            <div class="section-title">Account Recovery <strong>(Optional 6/7)</strong></div>
             <div class="full-line-grid">
                 <div class="input-wrap">
                     <span class="field-label">Security Question</span>
@@ -378,21 +379,29 @@
                     <input type="text" id="sec-answer" placeholder="Your Answer">
                 </div>
                 <div class="input-wrap">
-                    <span class="field-label">Secondary Recovery Email</span>
+                    <span class="field-label">Recovery Email</span>
                     <input type="email" id="recovery-email" placeholder="Personal email (optional)">
                 </div>
             </div>
         </div>
 
         <div class="glass-section" data-step="7">
-            <div class="section-title">Compliance</div>
+            <div class="section-title">Compliance (7/7)</div>
             <label class="checkbox-group">
                 <input type="checkbox" id="check-terms" required>
                 <span>I verify that I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a>.</span>
             </label>
             <label class="checkbox-group">
                 <input type="checkbox" id="check-privacy" required>
-                <span>I have reviewed the <a href="privacypolicy.html" target="_blank">Privacy Policy</a>.</span>
+                <span>I agree to the <a href="privacypolicy.html" target="_blank">Privacy Policy</a>.</span>
+            </label>
+            <label class="checkbox-group">
+                <input type="checkbox" id="check-return" required>
+                <span>I agree to the <a href="returnpolicy.html" target="_blank">Return Policy</a>.</span>
+            </label>
+            <label class="checkbox-group">
+                <input type="checkbox" id="check-coc" required>
+                <span>I agree to the <a href="usercoc.html" target="_blank">User Code of Conduct</a>.</span>
             </label>
             <label class="checkbox-group">
                 <input type="checkbox" id="check-bot" required>
@@ -412,7 +421,7 @@
 </div>
 
 <div id="success-screen" class="success-overlay">
-    <h1>SYNC COMPLETE!</h1>
+    <h1>Success!</h1>
     <p>Returning to login portal...</p>
 </div>
 
@@ -564,20 +573,22 @@
         const confirmPassword = document.getElementById('pass-confirm').value.trim();
 
         if (password.length < 8) {
-            errorMsg.innerText = "Security requirement: Password must be at least 8 characters.";
+            errorMsg.innerText = "Password must be at least 8 characters.";
             return;
         }
 
         if (password !== confirmPassword) {
-            errorMsg.innerText = "Security mismatch: Passcodes do not match.";
+            errorMsg.innerText = "Passcodes do not match.";
             return;
         }
 
         const termsChecked = document.getElementById('check-terms').checked;
         const privacyChecked = document.getElementById('check-privacy').checked;
+        const returnChecked = document.getElementById('check-return').checked;
+        const cocChecked = document.getElementById('check-coc').checked;
         const botChecked = document.getElementById('check-bot').checked;
 
-        if (!termsChecked || !privacyChecked || !botChecked) {
+        if (!termsChecked || !privacyChecked || !returnChecked || !cocChecked || !botChecked) {
             errorMsg.innerText = "You must complete all compliance confirmations.";
             return;
         }
@@ -625,6 +636,8 @@
                 compliance: {
                     acceptedTerms: termsChecked,
                     acceptedPrivacy: privacyChecked,
+                    acceptedReturnPolicy: returnChecked,
+                    acceptedCodeOfConduct: cocChecked,
                     confirmedHuman: botChecked,
                     acceptedAt: new Date().toISOString(),
                     browser: navigator.userAgent,

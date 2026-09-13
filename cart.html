@@ -34,8 +34,8 @@
         body { 
             margin: 0; 
             font-family: 'Quicksand', sans-serif; 
-            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
-            background-size: 400% 400%;
+            background: linear-gradient(-45deg, #f09e9e, #efdd94, #8fe7af, #93bcef, #cda4f6);
+            background-size: 500% 500%;
             animation: fluidBackground 20s ease infinite;
             color: var(--text-main); 
             min-height: 100vh; 
@@ -117,7 +117,7 @@
             cursor: pointer;
             transition: transform 0.2s;
             flex-shrink: 0;
-            opacity: 0.8;
+            opacity: 1;
         }
         .trash-btn:hover { transform: scale(1.15); opacity: 1; }
 
@@ -127,12 +127,11 @@
 
         .form-group { margin-bottom: 22px; }
         label { display: block; font-weight: 700; font-size: 11px; margin-bottom: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px; }
-        .required-star { color: #ef4444; }
         
         input, select, textarea { 
             width: 100%; padding: 14px; border: 1px solid var(--border-subtle); border-radius: 14px; 
             font-family: inherit; font-size: 14px; font-weight: 600; box-sizing: border-box; 
-            background: rgba(255, 255, 255, 0.5); transition: border-color 0.2s, box-shadow 0.2s; 
+            background: rgba(255, 255, 255, 0.5); transition: border-color 0.2s, box-shadow 0.2s;
         }
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
         input:read-only { background: rgba(226, 232, 240, 0.35); color: var(--text-dim); cursor: pointer; border-color: rgba(226, 232, 240, 0.6); }
@@ -191,10 +190,10 @@
             <div class="form-group"><label>Last Name</label><input type="text" id="lname" readonly placeholder="Last Name"></div>
         </div>
         
-        <div class="form-group"><label>Email Address<span class="required-star">*</span></label><input type="email" id="email" placeholder="example@example.com" required></div>
+        <div class="form-group"><label>Email Address</label><input type="email" id="email" placeholder="harrypotter@hogwarts.edu" required></div>
         
         <div class="form-group">
-            <label>Grade Level<span class="required-star">*</span></label>
+            <label>Grade Level</label>
             <select id="grade" required>
                 <option value="" disabled selected>Select Grade</option>
                 <option value="9">9</option>
@@ -205,10 +204,10 @@
             </select>
         </div>
 
-        <div class="form-group"><label>Homeroom Teacher OR Number<span class="required-star">*</span></label><input type="text" id="homeroom" placeholder="Teacher Name or Room #" required></div>
+        <div class="form-group"><label>Homeroom Teacher OR Number</label><input type="text" id="homeroom" placeholder="Teacher Name or Room #" required></div>
 
         <div class="form-group">
-            <label>Use Gift Cards to Pay?<span class="required-star">*</span></label>
+            <label>Use Gift Cards to Pay?</label>
             <div style="display:flex; gap: 80px; font-weight: 600; font-size: 14px;">
                 <label style="display:flex; align-items:center; gap:8px;"><input type="radio" name="giftcard" value="yes"> Yes</label>
                 <label style="display:flex; align-items:center; gap:8px;"><input type="radio" name="giftcard" value="no" checked> No</label>
@@ -219,17 +218,17 @@
         
         <label class="checkbox-label">
             <input type="checkbox" id="check-binding" required>
-            <span>All orders are final once placed. By submitting an order, the customer enters into a binding agreement to purchase the item(s).<span class="required-star">*</span></span>
+            <span>All orders are final once placed. By submitting an order, the customer enters into a binding agreement to purchase the item(s).</span>
         </label>
         
         <label class="checkbox-label">
             <input type="checkbox" id="check-deposit" required>
-            <span>I understand I might be asked to pay up to 25% of the order prior to delivery, and the rest will be paid after the delivery is received.<span class="required-star">*</span></span>
+            <span>I understand I might be asked to pay up to 25% of the order prior to delivery, and the rest will be paid after the delivery is received.</span>
         </label>
 
         <label class="checkbox-label">
             <input type="checkbox" id="check-terms" required>
-            <span>I have read and agree to the Terms and Conditions.<span class="required-star">*</span></span>
+            <span>I have read and agree to the Terms and Conditions.</span>
         </label>
     </div>
 
@@ -237,7 +236,7 @@
         <div class="total-box">
             <div id="item-count" style="font-size:12px; font-weight:700; color:var(--text-dim);">Subtotal (0 Items)</div>
             <div class="total-amount" id="total-price">$0.00</div>
-            <div style="font-size:11px; font-weight:600; color:var(--text-dim); margin-top:4px;">If you would like a printed copy of your receipt, please contact <a href="cs.html">Customer Service</a>. Thank you.</div>
+            <div style="font-size:11px; font-weight:600; color:var(--text-dim); margin-top:4px;">If you would like a printed copy of your receipt, please contact <a href="cs.html">Customer Service</a>or send your order to customer <br>service <a href="myorders">Here</a>. Thank you for your cooperation.</div>
         </div>
         <button class="btn-continue" id="action-btn" onclick="handleAction()">Continue</button>
     </div>
@@ -426,7 +425,7 @@
         <tbody>
         <tr>
         <td style="padding: 0 10px; font-size: 14px; color: #475569; line-height: 1.5; text-align: left;">
-            Hello <strong>${orderData.customer}</strong>, thank you for shopping with Strix Shop! Your order has been successfully placed and is being processed. You can review your active orders anytime at your <a href="myorders.html" style="color: #6157b5; text-decoration: underline;">my orders page</a>. If you have any questions or require assistance, please visit our <a href="cs.html" style="color: #6157b5; text-decoration: underline;">Customer Support Center</a>.
+            Hello <strong>${orderData.customer}</strong>, thank you for shopping with Strix Shop! Your order has been successfully placed and is being processed. You can review your orders anytime at your <a href="myorders.html" style="color: #6157b5; text-decoration: underline;">my orders page</a>. If you have any questions or require assistance, please visit our <a href="cs.html" style="color: #6157b5; text-decoration: underline;">Customer Support Center</a>.
         </td>
         </tr>
         </tbody>
@@ -541,7 +540,7 @@
             <tr>
                 <td style="padding: 25px 40px; background-color: #0a0c12; color: #cbd5e1; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.1);">
                     <div style="font-size: 11px; letter-spacing: 2px; font-weight: 700; margin-bottom: 5px; color: #ffffff;">STRIX SHOP | Automated Receipt</div>
-                    <div style="font-size: 10px; font-family: monospace; color: #94a3b8;">SECURE USER IP: ${orderData.ip} &bull; UID: ${orderData.uid}</div>
+                    <div style="font-size: 10px; font-family: monospace; color: #94a3b8;">User IP: ${orderData.ip} &bull; User ID: ${orderData.uid}</div>
                 </td>
             </tr>
 

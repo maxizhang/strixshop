@@ -523,7 +523,7 @@
 
         async function renderReceipt(id, data) {
             const display = document.getElementById('receipt-display');
-            display.innerHTML = '<div style="text-align:center; padding:50px; font-weight:700;">SYNCING SECURE DATA...</div>';
+            display.innerHTML = '<div style="text-align:center; padding:50px; font-weight:700;">SYNCING...</div>';
             
             currentOrderData = data;
             currentOrderId = id;
@@ -588,7 +588,7 @@
 
                     <div class="notes-area-wrap">
                         <div class="receipt-title" style="margin-bottom:0">Customer Notes</div>
-                        <textarea id="order-notes-${id}" class="notes-input" placeholder="Enter processing notes or instructions...">${data.notes || ''}</textarea>
+                        <textarea id="order-notes-${id}" class="notes-input" placeholder="Enter notes...">${data.notes || ''}</textarea>
                         <button class="sync-btn" onclick="saveNote('${id}')">Sync Notes to Cloud</button>
                     </div>
 
@@ -604,7 +604,7 @@
 
         function loadTable() {
             const body = document.getElementById('Table-body');
-            const statuses = ["Placed", "Ordered", "Shipping", "Arrived", "Delivering", "Delivered", "Cancelled"];
+            const statuses = ["Placed", "Ordered", "Shipping", "In Stock", "Delivering", "Delivered", "Cancelled"];
             db.collection("orders").orderBy("createdAt", "desc").onSnapshot(snap => {
                 body.innerHTML = "";
                 snap.forEach(doc => {

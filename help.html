@@ -14,6 +14,7 @@
             --text-main: #0f172a;
             --text-dim: #475569;
             --border: rgba(255, 255, 255, 0.55);
+            --border-subtle: rgba(226, 232, 240, 0.3);
             --nav-dark: #0a0c12;
             --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
         }
@@ -33,6 +34,7 @@
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            position: relative;
         }
 
         @keyframes fluidBackground {
@@ -41,15 +43,77 @@
             100% { background-position: 0% 50%; }
         }
 
-        #bgstar {
+        /* Animated Background Glowing Orbs */
+        .bg-orbs {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
+            overflow: hidden;
             z-index: 1;
+            pointer-events: none;
         }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: floatOrb 12s ease-in-out infinite alternate;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(129, 140, 248, 0.4);
+            top: -10%;
+            left: -10%;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(167, 243, 208, 0.4);
+            bottom: -20%;
+            right: -10%;
+            animation-delay: -4s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: rgba(244, 114, 182, 0.25);
+            top: 40%;
+            left: 30%;
+            animation-delay: -8s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translateY(0px) translateX(0px) scale(1); }
+            100% { transform: translateY(40px) translateX(30px) scale(1.1); }
+        }
+
+        /* Entrance Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
 
         /* Professional Navbar */
         nav {
@@ -60,16 +124,25 @@
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-main {
             display: flex;
             align-items: center;
             padding: 14px 5%;
             justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        nav a img {
+        .logo-box img {
             height: 32px;
             cursor: pointer;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+            transition: transform 0.2s ease;
+        }
+        .logo-box img:hover {
+            transform: scale(1.05);
         }
 
         .nav-right-actions {
@@ -102,13 +175,14 @@
             stroke: #ffffff;
         }
 
+
         .nav-divider {
             width: 1px;
             height: 20px;
             background: rgba(255, 255, 255, 0.15);
         }
 
-        .nav-title {
+        .nav-badge-text {
             font-size: 12px;
             font-weight: 600;
             color: #94a3b8;
@@ -162,7 +236,7 @@
             z-index: 10;
             width: 90%;
             max-width: 1200px;
-            margin: 0 auto 60px auto;
+            margin: 0 auto 40px auto;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -308,6 +382,16 @@
             transform: translateY(-1px);
         }
 
+        footer {
+            text-align: center;
+            padding: 25px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-dim);
+            position: relative;
+            z-index: 10;
+        }
+
         /* Responsive Breakpoints */
         @media (max-width: 900px) {
             .help-grid {
@@ -328,25 +412,30 @@
 </head>
 <body>
 
-    <canvas id="bgstar"></canvas>
+    <!-- Animated background glowing orbs -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
 
     <nav>
-        <a href="home.html">
-            <img src="logoh.png" alt="STRIX">
-        </a>
-        <div class="nav-right-actions">
-            <a href="home.html" class="nav-link-item">
-                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                Home
-            </a>
-            <div class="nav-divider"></div>
-            <div class="nav-title">
-                HELP CENTER
+        <div class="nav-main">
+            <div class="logo-box" onclick="window.location.href='home.html'">
+                <img src="logoh.png" alt="STRIX">
+            </div>
+            <div class="nav-right-actions">
+                <a href="home.html" class="nav-link-item">
+                    <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    Home
+                </a>
+                <div class="nav-divider"></div>
+                <span class="nav-badge-text">HELP CENTER</span>
             </div>
         </div>
     </nav>
 
-    <section class="help-hero">
+    <section class="help-hero animate-in delay-1">
         <h1>How can we assist you?</h1>
         <p class="help-subtext">
             Access documentation, policies, frequently asked questions,
@@ -356,7 +445,7 @@
 
     <main class="container">
 
-        <section class="help-grid">
+        <section class="help-grid animate-in delay-2">
 
             <a href="faqs.html" class="help-card">
                 <div class="help-icon">
@@ -439,8 +528,7 @@
 
         </section>
 
-        <section class="support-panel">
-
+        <section class="support-panel animate-in delay-3">
             <div class="support-left">
                 <div class="mini-label">LIVE SUPPORT</div>
                 <h2>Still need help?</h2>
@@ -456,66 +544,40 @@
                     Contact Customer Support
                 </a>
             </div>
-
         </section>
 
     </main>
 
+    <footer>
+        &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
     <script>
-        const canvas = document.getElementById('bgstar');
-        const ctx = canvas.getContext('2d');
+        const firebaseConfig = {
+            apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
+            authDomain: "strix-shop.firebaseapp.com",
+            projectId: "strix-shop"
+        };
 
-        let stars = [];
+        firebase.initializeApp(firebaseConfig);
 
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
+        const db = firebase.firestore();
+        const auth = firebase.auth();
 
-        class Star {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.5;
-                this.alpha = Math.random();
-                this.blink = Math.random() * 0.02;
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                db.collection("carts")
+                .doc(user.uid)
+                .collection("items")
+                .onSnapshot(snap => {
+                    document.getElementById("cart-count").innerText = snap.size;
+                });
             }
-
-            draw() {
-                this.alpha += this.blink;
-
-                if (this.alpha > 1 || this.alpha < 0) {
-                    this.blink = -this.blink;
-                }
-
-                ctx.fillStyle = `rgba(255,255,255,${this.alpha})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function initStars() {
-            stars = [];
-            for (let i = 0; i < 120; i++) {
-                stars.push(new Star());
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(star => star.draw());
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', () => {
-            resize();
-            initStars();
         });
-
-        resize();
-        initStars();
-        animate();
     </script>
 
 </body>

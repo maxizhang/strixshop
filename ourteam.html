@@ -27,7 +27,7 @@
             font-family: 'Quicksand', sans-serif;
             background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
             background-size: 400% 400%;
-            animation: fluidBackground 20s ease infinite;
+            animation: fluidBackground 18s cubic-bezier(0.4, 0, 0.2, 1) infinite;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -39,6 +39,52 @@
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        /* Gradual Appearance Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header-section {
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .dept-management {
+            opacity: 0;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+        }
+
+        .grid-management {
+            opacity: 0;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
+        }
+
+        .dept-operations {
+            opacity: 0;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+        }
+
+        .grid-operations {
+            opacity: 0;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+        }
+
+        .dept-news {
+            opacity: 0;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
+        }
+
+        .grid-news {
+            opacity: 0;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
         }
 
         /* Professional Navbar */
@@ -65,6 +111,11 @@
             height: 32px;
             cursor: pointer;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.04);
         }
 
         .nav-right-actions {
@@ -81,12 +132,12 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 13px;
-            transition: color 0.2s;
+            transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .nav-link-item svg {
             stroke: #cbd5e1;
-            transition: stroke 0.2s;
+            transition: stroke 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .nav-link-item:hover {
@@ -132,6 +183,7 @@
             font-size: 32px;
             color: #1e1b4b;
             margin-bottom: 8px;
+            font-weight: 700;
         }
 
         .dept-header {
@@ -141,7 +193,7 @@
         }
 
         .dept-name {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Quicksand', monospace;
             font-size: 11px;
             letter-spacing: 2px;
             color: var(--primary);
@@ -172,12 +224,12 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .member-card:hover {
             background: rgba(255, 255, 255, 0.28);
-            transform: translateY(-4px);
+            transform: translateY(-5px);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
@@ -249,8 +301,7 @@
                 <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 Home
             </a>
-            <a href="products.html" class="nav-link-item">Products</a>
-            <a href="cart.html" class="nav-link-item">Cart</a>
+
             <div class="nav-divider"></div>
             <span class="nav-badge-text">OUR TEAM</span>
         </div>
@@ -266,37 +317,37 @@
         </p>
     </div>
 
-    <div class="dept-header">
+    <div class="dept-header dept-management">
         <span class="dept-name">Management</span>
     </div>
 
-    <div class="team-grid">
+    <div class="team-grid grid-management">
         <div class="member-card">
-            <img src="pfpmaxizhang.png" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
+            <img src="pfpmaxizhang.png" alt="Maxi Zhang" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
             <span class="member-name">Maxi Zhang</span>
-            <span class="member-meta">Founder & CEO | Age 14</span>
+            <span class="member-meta">Founder & CEO</span>
             <p class="member-bio">
                 Sole owner, founder and director of Strix, responsible for company leadership and all operations.
             </p>
         </div>
     </div>
 
-    <div class="dept-header">
+    <div class="dept-header dept-operations">
         <span class="dept-name">Operations</span>
     </div>
 
-    <div class="team-grid">
+    <div class="team-grid grid-operations">
         <div class="member-card">
-            <img src="pfpshaunakguduru.png" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
+            <img src="pfpshaunakguduru.png" alt="Shaunak Guduru" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
             <span class="member-name">Shaunak Guduru</span>
-            <span class="member-meta">Operations Director | Age 14</span>
+            <span class="member-meta">Operations Director</span>
             <p class="member-bio">
                 Oversees finances, staffing processes, assists company performance and all other operations.
             </p>
         </div>
 
         <div class="member-card">
-            <img src="pfpzisizhu.png" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
+            <img src="pfpzisizhu.png" alt="Zisi Zhu" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
             <span class="member-name">Zisi Zhu</span>
             <span class="member-meta">Products and Sales Manager</span>
             <p class="member-bio">
@@ -305,8 +356,8 @@
         </div>
 
         <div class="member-card">
-            <img src="pfp???.png" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
-            <span class="member-name">???</span>
+            <img src="pfpdohunlee.png" alt="Dohun Lee" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
+            <span class="member-name">Dohun Lee</span>
             <span class="member-meta">Marketing Manager</span>
             <p class="member-bio">
                 Promotes products for Strix Shop, conducts market research and applies marketing strategies.
@@ -314,33 +365,42 @@
         </div>
 
         <div class="member-card">
-            <img src="pfpelanlevy.png" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
+            <img src="pfpgeorgezhang.png" alt="George Zhang" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
+            <span class="member-name">George Zhang</span>
+            <span class="member-meta">Financial Manager</span>
+            <p class="member-bio">
+                Manages company budgets, reviews financial statements, and oversees fiscal health and financial strategy.
+            </p>
+        </div>
+
+        <div class="member-card">
+            <img src="pfpelanlevy.png" alt="Elan Levy" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
             <span class="member-name">Elan Levy</span>
-            <span class="member-meta">General Counsel | Age 14</span>
+            <span class="member-meta">General Counsel</span>
             <p class="member-bio">
                 Reviews contracts, provides legal consultation, and represents the company in legal matters.
             </p>
         </div>
 
         <div class="member-card">
-            <img src="pfpsujankalidoss.png" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
+            <img src="pfpsujankalidoss.png" alt="Sujan Kalidoss" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
             <span class="member-name">Sujan Kalidoss</span>
-            <span class="member-meta">Attorney | Age 14</span>
+            <span class="member-meta">Attorney</span>
             <p class="member-bio">
                 Assists with legal review, contracts, and other legal operations. Represents Strix Shop in court and other formal occasions.
             </p>
         </div>
     </div>
 
-    <div class="dept-header">
+    <div class="dept-header dept-news">
         <span class="dept-name">StrixNews</span>
     </div>
 
-    <div class="team-grid">
+    <div class="team-grid grid-news">
         <div class="member-card">
-            <img src="pfp???.png" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
+            <img src="pfp???.png" alt="StrixNews Director" class="member-pfp" onerror="this.src='strixshopplaceholder.png'">
             <span class="member-name">???</span>
-            <span class="member-meta">StrixNews Director | Age </span>
+            <span class="member-meta">StrixNews Director</span>
             <p class="member-bio">
                 Leads the StrixNews department and supervises article writing, editing, and publication.
             </p>

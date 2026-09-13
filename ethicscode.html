@@ -10,13 +10,13 @@
         :root {
             --primary: #6157b5;
             --primary-hover: #4338ca;
-            --surface: rgba(255, 255, 255, 0.18); /* Much more translucent glass */
+            --surface: rgba(255, 255, 255, 0.22);
             --text-main: #0f172a;
             --text-dim: #475569;
-            --border: rgba(255, 255, 255, 0.55); /* Crisp, glowing glass edge */
-            --border-subtle: rgba(226, 232, 240, 0.3);
+            --border: rgba(255, 255, 255, 0.65);
+            --border-subtle: rgba(226, 232, 240, 0.4);
             --nav-dark: #0a0c12;
-            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --glass-shadow: 0 25px 50px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
         }
 
         * {
@@ -28,12 +28,13 @@
             font-family: 'Quicksand', sans-serif;
             background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
             background-size: 400% 400%;
-            animation: fluidBackground 20s ease infinite;
+            animation: fluidBackground 18s ease infinite;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            position: relative;
         }
 
         @keyframes fluidBackground {
@@ -41,6 +42,79 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+
+        /* Animated Background Glowing Orbs */
+        .bg-orbs {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: floatOrb 12s ease-in-out infinite alternate;
+        }
+
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(129, 140, 248, 0.4);
+            top: -10%;
+            left: -10%;
+        }
+
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: rgba(167, 243, 208, 0.4);
+            bottom: -20%;
+            right: -10%;
+            animation-delay: -4s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: rgba(244, 114, 182, 0.25);
+            top: 40%;
+            left: 30%;
+            animation-delay: -8s;
+        }
+
+        @keyframes floatOrb {
+            0% { transform: translateY(0px) translateX(0px) scale(1); }
+            100% { transform: translateY(40px) translateX(30px) scale(1.1); }
+        }
+
+        /* Entrance Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
 
         a {
             text-decoration: none;
@@ -52,7 +126,6 @@
             color: #334155;
         }
 
-        /* Taobao-inspired Professional Navbar */
         nav {
             background: var(--nav-dark);
             width: 100%;
@@ -76,6 +149,10 @@
             height: 32px;
             cursor: pointer;
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+            transition: transform 0.2s ease;
+        }
+        .logo-box img:hover {
+            transform: scale(1.05);
         }
 
         .nav-right-actions {
@@ -121,7 +198,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Container & Main Layout */
         .container {
             position: relative;
             z-index: 10;
@@ -151,13 +227,13 @@
             padding: 40px;
             box-shadow: var(--glass-shadow);
             text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
         }
 
         .header-section:hover {
-            background: rgba(255, 255, 255, 0.28);
-            transform: translateY(-4px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.32);
+            transform: translateY(-6px);
+            box-shadow: 0 35px 70px rgba(97, 87, 181, 0.15), inset 0 1px 3px rgba(255, 255, 255, 0.95);
         }
 
         h1 {
@@ -177,7 +253,6 @@
             margin: 0 auto;
         }
 
-        /* Mission Panel */
         .mission-panel {
             background: var(--surface);
             backdrop-filter: blur(40px);
@@ -190,13 +265,13 @@
             grid-template-columns: 1.3fr 0.7fr;
             gap: 30px;
             align-items: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
         }
 
         .mission-panel:hover {
-            background: rgba(255, 255, 255, 0.28);
-            transform: translateY(-4px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.32);
+            transform: translateY(-6px);
+            box-shadow: 0 35px 70px rgba(97, 87, 181, 0.15), inset 0 1px 3px rgba(255, 255, 255, 0.95);
         }
 
         .section-mini-title {
@@ -234,12 +309,18 @@
         }
 
         .stat-box {
-            background: rgba(255, 255, 255, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.7);
             border-radius: 20px;
             padding: 20px 15px;
             text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.45);
         }
 
         .stat-number {
@@ -257,7 +338,6 @@
             line-height: 1.3;
         }
 
-        /* Ethics Grid */
         .ethics-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -275,13 +355,13 @@
             display: flex;
             flex-direction: column;
             gap: 24px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
         }
 
         .ethics-card:hover {
-            background: rgba(255, 255, 255, 0.28);
-            transform: translateY(-4px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.32);
+            transform: translateY(-6px);
+            box-shadow: 0 35px 70px rgba(97, 87, 181, 0.15), inset 0 1px 3px rgba(255, 255, 255, 0.95);
         }
 
         .card-top {
@@ -301,6 +381,11 @@
             font-weight: 700;
             flex-shrink: 0;
             box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            transition: transform 0.3s ease;
+        }
+
+        .ethics-card:hover .icon-circle {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .icon-circle.success {
@@ -338,18 +423,19 @@
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            margin-top: 6px;
+            margin-top: 5px;
             flex-shrink: 0;
         }
 
-        .principle-dot.green { background: #16a34a; box-shadow: 0 0 8px rgba(22, 163, 74, 0.5); }
-        .principle-dot.red { background: #dc2626; box-shadow: 0 0 8px rgba(220, 38, 38, 0.5); }
+        .principle-dot.green { background: #16a34a; box-shadow: 0 0 10px rgba(22, 163, 74, 0.7); }
+        .principle-dot.red { background: #dc2626; box-shadow: 0 0 10px rgba(220, 38, 38, 0.7); }
 
         .principle-item h3 {
             font-size: 14px;
             font-weight: 700;
             color: #1e1b4b;
-            margin-bottom: 4px;
+            margin: 0 0 4px 0;
+            line-height: 1.2;
         }
 
         .principle-item p {
@@ -360,7 +446,6 @@
             margin: 0;
         }
 
-        /* Footer Panel Quote */
         .ethics-footer-panel {
             background: var(--surface);
             backdrop-filter: blur(40px);
@@ -373,19 +458,19 @@
             align-items: center;
             justify-content: center;
             gap: 24px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
         }
 
         .ethics-footer-panel:hover {
-            background: rgba(255, 255, 255, 0.28);
-            transform: translateY(-4px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.32);
+            transform: translateY(-6px);
+            box-shadow: 0 35px 70px rgba(97, 87, 181, 0.15), inset 0 1px 3px rgba(255, 255, 255, 0.95);
         }
 
         .quote-line {
             height: 1px;
             flex: 1;
-            background: rgba(79, 70, 229, 0.2);
+            background: rgba(79, 70, 229, 0.25);
         }
 
         .ethics-quote {
@@ -416,6 +501,13 @@
 </head>
 <body>
 
+    <!-- Animated background glowing orbs -->
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
     <nav>
         <div class="nav-main">
             <div class="logo-box" onclick="window.location.href='home.html'">
@@ -432,7 +524,7 @@
         </div>
     </nav>
 
-    <section class="ethics-header-simple">
+    <section class="ethics-header-simple animate-in delay-1">
         <div class="container">
             <div class="header-section">
                 <h1>Strix Shop Code of Ethics</h1>
@@ -447,10 +539,10 @@
 
     <main class="container">
 
-        <section class="mission-panel">
+        <section class="mission-panel animate-in delay-2">
             <div class="mission-left">
                 <span class="section-mini-title">OUR MISSION</span>
-                <h2>Building a store everyone can actually trust.</h2>
+                <h2>Building a store students can trust.</h2>
                 <p>
                     Strix Shop exists to provide useful products,
                     fair pricing, and responsible operations while
@@ -470,7 +562,7 @@
             </div>
         </section>
 
-        <section class="ethics-grid">
+        <section class="ethics-grid animate-in delay-3">
 
             <div class="ethics-card positive">
                 <div class="card-top">
@@ -562,7 +654,7 @@
 
         </section>
 
-        <section class="ethics-footer-panel">
+        <section class="ethics-footer-panel animate-in delay-4">
             <div class="quote-line"></div>
             <p class="ethics-quote">“supercalifragilisticexpialidocious”</p>
             <div class="quote-line"></div>
@@ -597,4 +689,4 @@
         });
     </script>
 </body>
-</html>
+</html>a

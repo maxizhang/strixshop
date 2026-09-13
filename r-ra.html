@@ -272,7 +272,7 @@
         <div class="nav-right-actions">
             <a href="home.html" class="nav-link-item">Home</a>
             <div class="nav-divider"></div>
-            <span class="nav-badge-text">ADMIN RETURNS CONSOLE</span>
+            <span class="nav-badge-text">REVIEW RETURNS AND REFUNDS</span>
         </div>
     </div>
 </nav>
@@ -280,8 +280,7 @@
 <div class="container">
     <div class="header-box">
         <div>
-            <h1>Returns & Refunds Management</h1>
-            <p>Review submitted return cases, inspect evidence, and close resolved requests.</p>
+            <h1>Returns & Refunds</h1>
         </div>
         <div class="filter-tabs">
             <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
@@ -363,7 +362,7 @@
     });
 
     function loadRequests() {
-        db.collection("returnRequests").orderBy("createdAt", "desc").onSnapshot(snapshot => {
+        db.collection("rrR").orderBy("createdAt", "desc").onSnapshot(snapshot => {
             allRequests = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             renderRequests();
         });
@@ -423,7 +422,7 @@
     async function resolveRequest(id) {
         if (!confirm("Are you sure you want to mark this return request as Resolved?")) return;
         try {
-            await db.collection("returnRequests").doc(id).update({ status: "Resolved" });
+            await db.collection("rrR").doc(id).update({ status: "Resolved" });
         } catch (e) {
             alert("Error updating status: " + e.message);
         }
