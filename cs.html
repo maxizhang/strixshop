@@ -10,13 +10,14 @@
         :root {
             --primary: #1f3972;
             --primary-hover: #1d4ed8;
-            --surface: rgba(255, 255, 255, 0.85);
-            --surface-card: rgba(255, 255, 255, 0.6);
-            --border: rgba(255, 255, 255, 0.6);
+            /* Adjusted for slightly less transparency / better readability */
+            --surface: rgba(255, 255, 255, 0.92);
+            --surface-card: rgba(255, 255, 255, 0.75);
+            --border: rgba(255, 255, 255, 0.7);
             --text-main: #0f172a;
             --text-dim: #64748b;
             --user-bubble: #2563eb;
-            --admin-bubble: rgba(255, 255, 255, 0.9);
+            --admin-bubble: rgba(255, 255, 255, 0.95);
             --star-gold: #fbbf24;
             --nav-dark: #0f172a;
             --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
@@ -29,18 +30,17 @@
             font-family: 'Quicksand', sans-serif; 
         }
         
-        /* Strict full screen handling to prevent mobile scrolling out of bounds */
+        /* Fixed iPad/Mobile layout bug by removing position: fixed from html, body */
         html, body {
             width: 100%;
             height: 100%;
             height: 100dvh;
             overflow: hidden;
-            position: fixed;
         }
 
         body { 
             background: linear-gradient(-45deg, #f09e9e, #efdd94, #8fe7af, #93bcef, #cda4f6);
-            background-size: 500% 500%;
+            background-size: 400% 400%;
             animation: fluidBackground 20s ease infinite;
             color: var(--text-main); 
             display: flex; 
@@ -127,7 +127,7 @@
 
         .sidebar { 
             width: 340px; 
-            background: rgba(255, 255, 255, 0.5); 
+            background: rgba(255, 255, 255, 0.7); 
             border-right: 1px solid var(--border); 
             display: flex; 
             flex-direction: column; 
@@ -193,7 +193,7 @@
             display: flex; 
             flex-direction: column; 
             z-index: 10; 
-            background: rgba(255, 255, 255, 0.2); 
+            background: rgba(255, 255, 255, 0.3); 
             min-width: 0; 
             min-height: 0;
             position: relative;
@@ -205,7 +205,7 @@
             display: flex; 
             justify-content: space-between; 
             align-items: center;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.7);
             flex-shrink: 0;
         }
 
@@ -237,7 +237,7 @@
         }
         .date-divider span {
             position: relative;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             border: 1px solid var(--border);
             color: var(--text-dim);
             font-size: 0.7rem;
@@ -309,7 +309,7 @@
         /* Attached Product / Order Box */
         .chat-product-box {
             display: flex;
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.8);
             border: 1px solid rgba(0, 0, 0, 0.08);
             border-radius: 10px;
             padding: 8px;
@@ -320,8 +320,8 @@
             min-width: 220px;
         }
         .msg-mine .chat-product-box {
-            background: rgba(0, 0, 0, 0.15);
-            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
             color: #fff;
         }
         .chat-product-img {
@@ -343,7 +343,7 @@
             text-transform: uppercase;
             color: var(--text-dim);
         }
-        .msg-mine .chat-product-tag { color: rgba(255, 255, 255, 0.8); }
+        .msg-mine .chat-product-tag { color: rgba(255, 255, 255, 0.9); }
         .chat-product-name {
             font-size: 11px;
             font-weight: 800;
@@ -357,7 +357,7 @@
             color: var(--text-dim);
             display: flex; gap: 8px;
         }
-        .msg-mine .chat-product-meta { color: rgba(255, 255, 255, 0.9); }
+        .msg-mine .chat-product-meta { color: rgba(255, 255, 255, 0.95); }
 
         /* Lightbox */
         .image-modal {
@@ -380,14 +380,8 @@
             border-radius: 50%; cursor: pointer;
         }
 
-        .upload-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.7); border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-        }
-
         .rating-card {
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.8);
             border: 1px solid var(--border);
             border-radius: 12px; padding: 12px 16px; text-align: center;
         }
@@ -402,12 +396,12 @@
             border-top: 1px solid var(--border); 
             display: flex; gap: 10px; 
             align-items: center;
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.7);
             flex-shrink: 0;
         }
 
         .attach-btn {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.9);
             border: 1px solid var(--border);
             color: var(--text-main);
             width: 38px; height: 38px;
@@ -417,7 +411,7 @@
         }
 
         input#msg-input { 
-            flex: 1; background: rgba(255, 255, 255, 0.6); 
+            flex: 1; background: rgba(255, 255, 255, 0.85); 
             border: 1px solid var(--border); 
             padding: 10px 16px; border-radius: 50px; 
             color: var(--text-main); outline: none;
@@ -438,7 +432,7 @@
 
         .mobile-toggle-btn {
             display: none;
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.9);
             border: 1px solid var(--border);
             color: var(--primary);
             padding: 6px 10px;
@@ -449,7 +443,7 @@
         }
 
         ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 10px; }
 
         /* ================= MOBILE & TABLET ADAPTIVE OVERRIDES ================= */
         @media (max-width: 850px) {
@@ -472,7 +466,7 @@
                 height: 100%;
                 height: 100dvh;
                 z-index: 1000;
-                background: rgba(245, 247, 250, 0.98);
+                background: rgba(248, 250, 252, 0.98);
                 backdrop-filter: blur(30px);
                 -webkit-backdrop-filter: blur(30px);
                 transform: translateX(-100%);
@@ -537,6 +531,8 @@
                     <p>General Manager: <b>SHAUNAK GUDURU</b></p>
                     <p>Products Manager: <b>ZISI ZHU</b></p>
                     <p>Marketing Manager: <b>DOHUN LEE</b></p>
+                    <p>Financial Manager: <b>GEORGE ZHANG</b></p>
+                    
                 </div>
             </div>
         </div>
@@ -575,7 +571,7 @@
     </div>
 
 <script>
-    // Mobile Drawer Drawer Controls
+    // Mobile Drawer Controls
     const sidebar = document.getElementById('app-sidebar');
     const openSidebarBtn = document.getElementById('open-sidebar-btn');
     const closeSidebarBtn = document.getElementById('close-sidebar-btn');
@@ -583,7 +579,6 @@
     if (openSidebarBtn && closeSidebarBtn && sidebar) {
         openSidebarBtn.onclick = () => sidebar.classList.add('open');
         closeSidebarBtn.onclick = () => sidebar.classList.remove('open');
-        // Close sidebar when clicking outside on mobile view
         document.addEventListener('click', (e) => {
             if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !openSidebarBtn.contains(e.target)) {
                 sidebar.classList.remove('open');
@@ -627,8 +622,6 @@
     const auth = getAuth(app);
     const db = getFirestore(app);
     const storage = getStorage(app);
-
-    const spinnerSVG = `<svg class="spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48 2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48 2.83-2.83"/></svg>`;
 
     let fullName = "Customer";
     let customerPfp = "logospfd.png";
