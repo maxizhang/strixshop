@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Product Reviews</title>
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --surface: rgba(255, 255, 255, 0.25);
+            --surface-hover: rgba(255, 255, 255, 0.35);
+            --text-main: #0f172a;
+            --text-dim: #475569;
+            --border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --error: #ef4444;
+            --success: #10b981;
+            --star-inactive: #cbd5e1;
+            --star-active: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
+            background-size: 400% 400%;
+            animation: fluidBackground 18s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        @keyframes fluidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        nav {
+            background: rgba(10, 12, 18, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+        }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 16px 5%;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-box img {
+            height: 34px;
+            cursor: pointer;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+            transition: transform 0.25s ease;
+        }
+
+        .logo-box img:hover { transform: scale(1.05); }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.25s ease;
+        }
+
+        .nav-link-item:hover { color: #ffffff; }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 700;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            font-family: 'Quicksand', monospace;
+        }
+
+        .container {
+            max-width: 750px;
+            width: 90%;
+            margin: 40px auto;
+            flex: 1;
+            opacity: 0;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #1e1b4b;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: var(--text-dim);
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Quicksand', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .review-card {
+            background: var(--surface);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 28px;
+            border: 1.5px solid var(--border);
+            padding: 35px;
+            box-shadow: var(--glass-shadow);
+            margin-bottom: 50px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-family: 'Quicksand', monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        select, input, textarea {
+            width: 100%;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: var(--text-main);
+            font-family: 'Quicksand', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            border-color: var(--primary);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Star Rating Styles */
+        .star-rating-box {
+            display: flex;
+            gap: 8px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        .star {
+            color: var(--star-inactive);
+            transition: color 0.2s;
+        }
+
+        .star.selected, .star:hover, .star:hover ~ .star {
+            /* Note: standard JS controls selection styling cleanly */
+        }
+        .star.active {
+            color: var(--star-active);
+        }
+
+        /* Questions matrix block */
+        .survey-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            margin-bottom: 22px;
+        }
+
+        .survey-question {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1e1b4b;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            text-transform: none;
+            color: var(--text-main);
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            padding: 14px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 14px;
+            font-family: 'Quicksand', monospace;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-dim);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            font-family: 'Quicksand', monospace;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 600px) {
+            .review-card { padding: 20px; }
+            .radio-group { flex-direction: column; gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-main">
+        <div class="logo-box" onclick="window.location.href='home.html'">
+            <img src="logoh.png" alt="STRIX">
+        </div>
+        <div class="nav-right-actions">
+            <a href="home.html" class="nav-link-item">Home</a>
+            <div class="nav-divider"></div>
+            <span class="nav-badge-text">PRODUCT REVIEWS</span>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="header">
+        <h1>Leave a Review</h1>
+        <p>Share your experience with your purchased items</p>
+    </div>
+
+    <div class="review-card">
+        <form id="review-form">
+            <!-- 1. Select Order ID -->
+            <div class="form-group">
+                <label>Select Order ID</label>
+                <select id="order-select" required>
+                    <option value="" disabled selected>Loading your completed orders...</option>
+                </select>
+            </div>
+
+            <!-- 2. Select Product from Order -->
+            <div class="form-group">
+                <label>Select Product to Review</label>
+                <select id="product-select" required disabled>
+                    <option value="" disabled selected>-- First select an order ID --</option>
+                </select>
+            </div>
+
+            <!-- 3. Overall Rating (1-5 stars) -->
+            <div class="form-group">
+                <label>Overall Star Rating</label>
+                <div class="star-rating-box" id="star-box">
+                    <span class="star" data-value="1">★</span>
+                    <span class="star" data-value="2">★</span>
+                    <span class="star" data-value="3">★</span>
+                    <span class="star" data-value="4">★</span>
+                    <span class="star" data-value="5">★</span>
+                </div>
+                <input type="hidden" id="overall-rating" value="5" required>
+            </div>
+
+            <!-- 4-10. Survey Questions (7 quick options) -->
+            <label style="margin-bottom: 12px;">Detailed Evaluation Questions</label>
+            <div class="survey-grid">
+                <!-- Q1 -->
+                <div>
+                    <div class="survey-question">1. Did the product match its description online?</div>
+                    <div class="radio-group">
+                        <label><input type="radio" name="q1" value="Yes" required> Yes</label>
+                        <label><input type="radio" name="q1" value="Somewhat"> Somewhat</label>
+                        <label><input type="radio" name="q1" value="No"> No</label>
+                    </div>
+                </div>
+                <!-- Q2 -->
+                <div>
+                    <div class="survey-question">2. How would you rate the build quality / materials?</div>
+                    <div class="radio-group">
+                        <label><input type="radio" name="q2" value="Excellent" required> Excellent</label>
+                        <label><input type="radio" name="q2" value="Average"> Average</label>
+                        <label><input type="radio" name="q2" value="Poor"> Poor</label>
+                    </div>
+                </div>
+                <!-- Q3 -->
+                <div>
+                    <div class="survey-question">3. Was the item packaged securely for shipping?</div>
+                    <div class="radio-group">
+                        <label><input type="radio" name="q3" value="Very Secure" required> Very Secure</label>
+                        <label><input type="radio" name="q3" value="Acceptable"> Acceptable</label>
+                        <label><input type="radio" name="q3" value="Damaged"> Damaged</label>
+                    </div>
+                </div>
+                <!-- Q4 -->
+                <div>
+                    <div class="survey-question">4. How satisfied are you with the delivery speed?</div>
+                    <div class="radio-group">
+                        <label><input type="radio" name="q4" value="Fast" required> Fast</label>
+                        <label><input type="radio" name="q4" value="Average"> Average</label>
+                        <label><input type="radio" name="q4" value="Slow"> Slow</label>
+                    </div>
+                </div>
+                <!-- Q5 -->
+                <div>
+                    <div class="survey-question">5. Is this product worth the price paid?</div>
+                    <div class="radio-group">
+                        <label><input type="radio" name="q5" value="Great Value" required> Great Value</label>
+                        <label><input type="radio" name="q5" value="Fair"> Fair</label>
+                        <label><input type="radio" name="q5" value="Overpriced"> Overpriced</label>
+                    </div>
+                </div>
+                <!-- Q6 -->
+                <div>
+                    <div class="survey-question">6. Would you purchase this product again?</div>
+                    <div class="radio-group">
+                        <label><input type="radio" name="q6" value="Definitely" required> Definitely</label>
+                        <label><input type="radio" name="q6" value="Maybe"> Maybe</label>
+                        <label><input type="radio" name="q6" value="No"> No</label>
+                    </div>
+                </div>
+                <!-- Q7 -->
+                <div>
+                    <div class="survey-question">7. Would you recommend Strix Shop to a friend?</div>
+                    <div class="radio-group">
+                        <label><input type="radio" name="q7" value="Yes" required> Yes</label>
+                        <label><input type="radio" name="q7" value="Maybe"> Maybe</label>
+                        <label><input type="radio" name="q7" value="No"> No</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Written Comment -->
+            <div class="form-group">
+                <label>Additional Comments / Feedback</label>
+                <textarea id="review-comment" placeholder="Tell us what you loved or what we can improve..." required></textarea>
+            </div>
+
+            <button type="submit" id="submit-btn" class="btn-submit">Submit Product Review</button>
+        </form>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+</footer>
+
+<!-- Firebase SDK Compat -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script>
+    const firebaseConfig = { 
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU", 
+        authDomain: "strix-shop.firebaseapp.com", 
+        projectId: "strix-shop",
+        storageBucket: "strix-shop.firebasestorage.app"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    const orderSelect = document.getElementById('order-select');
+    const productSelect = document.getElementById('product-select');
+    const reviewForm = document.getElementById('review-form');
+    const starBox = document.getElementById('star-box');
+    const overallRatingInput = document.getElementById('overall-rating');
+
+    let userOrdersData = {};
+
+    // Star rating interaction logic
+    const stars = starBox.querySelectorAll('.star');
+    function updateStars(rating) {
+        stars.forEach(star => {
+            if (parseInt(star.getAttribute('data-value')) <= rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+        overallRatingInput.value = rating;
+    }
+    // Set default 5 stars
+    updateStars(5);
+
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            updateStars(parseInt(star.getAttribute('data-value')));
+        });
+    });
+
+    // Check user state and load orders
+    auth.onAuthStateChanged((user) => {
+        if (!user) {
+            alert("Please log in to submit a review.");
+            window.location.href = "home.html"; // Adjust to login/home page as appropriate
+            return;
+        }
+        loadUserOrders(user);
+    });
+
+    async function loadUserOrders(user) {
+        try {
+            // Query orders belonging to current user UID or Email
+            const snapshot = await db.collection("orders")
+                .where("uid", "==", user.uid)
+                .get();
+
+            orderSelect.innerHTML = '<option value="" disabled selected>Select an Order ID</option>';
+            userOrdersData = {};
+
+            if (snapshot.empty) {
+                orderSelect.innerHTML = '<option value="" disabled selected>No past orders found</option>';
+                return;
+            }
+
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                userOrdersData[doc.id] = data.items || []; // Assuming items array is stored in the order document
+                
+                const opt = document.createElement('option');
+                opt.value = doc.id;
+                opt.textContent = `Order #${doc.id.substring(0, 8)}... (${data.items ? data.items.length : 0} items)`;
+                orderSelect.appendChild(opt);
+            });
+        } catch (error) {
+            console.error("Error loading orders:", error);
+            orderSelect.innerHTML = '<option value="" disabled selected>Error loading orders</option>';
+        }
+    }
+
+    // Populate products dropdown when order is selected
+    orderSelect.addEventListener('change', (e) => {
+        const orderId = e.target.value;
+        const items = userOrdersData[orderId] || [];
+
+        productSelect.innerHTML = '<option value="" disabled selected>Select a product from this order</option>';
+        productSelect.disabled = false;
+
+        items.forEach((item, index) => {
+            const opt = document.createElement('option');
+            // Assuming item has a name property, fallback to index if missing
+            opt.value = item.name || `Product #${index + 1}`;
+            opt.textContent = item.name || `Product Item #${index + 1}`;
+            productSelect.appendChild(opt);
+        });
+
+        if (items.length === 0) {
+            const opt = document.createElement('option');
+            opt.value = "General Order Review";
+            opt.textContent = "General Order Review (No item list found)";
+            productSelect.appendChild(opt);
+        }
+    });
+
+    // Handle form submission
+    reviewForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const submitBtn = document.getElementById('submit-btn');
+        submitBtn.disabled = true;
+        submitBtn.innerText = "SUBMITTING...";
+
+        const orderId = orderSelect.value;
+        const productName = productSelect.value;
+        const overallRating = parseInt(overallRatingInput.value, 10);
+        const comment = document.getElementById('review-comment').value.trim();
+
+        // Collect answers to the 7 questions
+        const surveyAnswers = {
+            q1MatchDesc: document.querySelector('input[name="q1"]:checked').value,
+            q2Quality: document.querySelector('input[name="q2"]:checked').value,
+            q3Packaging: document.querySelector('input[name="q3"]:checked').value,
+            q4Delivery: document.querySelector('input[name="q4"]:checked').value,
+            q5Value: document.querySelector('input[name="q5"]:checked').value,
+            q6BuyAgain: document.querySelector('input[name="q6"]:checked').value,
+            q7Recommend: document.querySelector('input[name="q7"]:checked').value,
+        };
+
+        try {
+            await db.collection("reviews").add({
+                uid: user.uid,
+                userEmail: user.email || "Anonymous",
+                orderId: orderId,
+                productName: productName,
+                overallRating: overallRating,
+                survey: surveyAnswers,
+                comment: comment,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            alert("Thank you! Your product review has been successfully submitted.");
+            reviewForm.reset();
+            updateStars(5);
+            productSelect.disabled = true;
+            productSelect.innerHTML = '<option value="" disabled selected>-- First select an order ID --</option>';
+        } catch (error) {
+            console.error("Error saving review:", error);
+            alert("Failed to submit review: " + error.message);
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Submit Product Review";
+        }
+    });
+</script>
+</body>
+</html>
