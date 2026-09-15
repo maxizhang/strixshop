@@ -886,7 +886,7 @@ function render() {
     });
 
     if (filtered.length === 0) {
-        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: var(--text-muted); font-weight: 600;">No products found. Please check <a href="cs.html" style="color: var(--text-main); text-decoration: underline;">Customer Service</a> if you need assistance.</div>`;
+        grid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: var(--text-muted); font-weight: 600;">No products found. Please check your internet connection.</div>`;
         return;
     }
 
@@ -970,7 +970,7 @@ function openModal(id) {
             <div style="background: rgba(239, 68, 68, 0.06); border: 1px solid rgba(239, 68, 68, 0.15); padding: 12px; border-radius: var(--radius-sm); margin-bottom: 15px;">
                 <div style="color: var(--error); font-weight: 800; font-size: 11px; text-transform: uppercase; margin-bottom: 4px;">Item Out of Stock</div>
                 <div style="font-size: 12px; color: var(--text-main); font-weight: 500;">
-                    You can still order for future delivery. Reach out via <a href="${csUrl}" style="font-weight: 700; text-decoration: underline;">customer service</a>.
+                    You can still order for future delivery. Contact <a href="${csUrl}" style="font-weight: 700; text-decoration: underline; color: #000000">customer service</a> with any quesions. Standard Delivery times are between 4-6 weeks.
                 </div>
             </div>
             <p style="color: var(--text-muted); line-height: 1.6; font-size: 13px; font-weight: 500; white-space: pre-line;">${activeProduct.description || "No description available."}</p>

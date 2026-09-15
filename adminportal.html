@@ -185,6 +185,7 @@
             align-items: center;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            position: relative;
         }
 
         .admin-btn:hover {
@@ -193,6 +194,21 @@
             background: rgba(255, 255, 255, 0.85);
             color: var(--primary);
             box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
+        }
+
+        /* Notification Badge style */
+        .notification-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background: #ef4444;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
+            display: none; /* hidden by default until loaded */
         }
 
         @media (max-width: 600px) {
@@ -233,9 +249,15 @@
 
         <div class="admin-grid">
             <a href="ssc.html" class="admin-btn">STRIX SHOP CREDITS</a>
-            <a href="csa.html" class="admin-btn">CUSTOMER SUPPORT</a>
+            <a href="csa.html" class="admin-btn">
+                CUSTOMER SUPPORT
+                <span id="support-badge" class="notification-badge">0</span>
+            </a>
             <a href="productmanagement.html" class="admin-btn">INVENTORY</a>
-            <a href="tables.html" class="admin-btn">ORDER TRACKER</a>
+            <a href="tables.html" class="admin-btn">
+                ORDER TRACKER
+                <span id="order-badge" class="notification-badge">0</span>
+            </a>
             <a href="reporta.html" class="admin-btn">REVIEW REPORTS</a>
             <a href="users.html" class="admin-btn">USER FILES</a>
             <a href="r-ra.html" class="admin-btn">RETURNS/REFUNDS</a>
@@ -266,8 +288,75 @@
     auth.onAuthStateChanged((user) => {
         if (!user) {
             window.location.href = "index.html";
+        } else {
+            // Listen for Placed orders count to update order badge dynamically
+            db.collection("orders").onSnapshot((snapshot) => {
+                let placedCount = 0;
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.status && data.status.toLowerCase() === "placed") {
+                        placedCount++;
+                    }
+                });
+
+                const badge = document.getElementById('order-badge');
+                if (placedCount > 0) {
+                    badge.innerText = placedCount;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            });
+
+            // Listen for Customer Support messages across all users and tally unread items accurately matching csa.html logic[cite: 1]
+            db.collection("users").onSnapshot((userSnap) => {
+                let totalSupportNotifications = 0;
+                let processedChats = 0;
+
+                if (userSnap.empty) {
+                    updateSupportBadge(0);
+                    return;
+                }
+
+                userSnap.forEach((docSnap) => {
+                    const uid = docSnap.id;
+                    db.collection("support_chats").doc(uid).collection("messages").orderBy("timestamp", "asc").onSnapshot((msgSnap) => {
+                        let messages = [];
+                        msgSnap.forEach((mDoc) => messages.push(mDoc.data()));
+
+                        // Calculate unread count using the exact logic from csa.html[cite: 1]
+                        let count = 0;
+                        for (let i = messages.length - 1; i >= 0; i--) {
+                            const m = messages[i];
+                            if (m.acc === "admin") {
+                                break; 
+                            } else {
+                                count++;
+                            }
+                        }
+
+                        // Store individual unread count per user in a temporary map or calculate total
+                        // To keep it simple, we track per-user states here:
+                        window.supportUnreadCounts = window.supportUnreadCounts || {};
+                        window.supportUnreadCounts[uid] = count;
+
+                        let overallTotal = Object.values(window.supportUnreadCounts).reduce((a, b) => a + b, 0);
+                        updateSupportBadge(overallTotal);
+                    });
+                });
+            });
         }
     });
+
+    function updateSupportBadge(total) {
+        const supportBadge = document.getElementById('support-badge');
+        if (total > 0) {
+            supportBadge.innerText = total;
+            supportBadge.style.display = 'inline-block';
+        } else {
+            supportBadge.style.display = 'none';
+        }
+    }
 </script>
 
 </body>

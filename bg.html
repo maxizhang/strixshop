@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morphing Background</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Color-Changing Background */
+        body {
+            background: linear-gradient(-45deg, #f09e9e, #efdd94, #8fe7af, #93bcef, #cda4f6); /* Change the colors if you would like */
+            background-size: 400% 400%;
+            animation: fluidBackground 20s ease infinite; /* this changes the bg */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 30px; /* change this lower if you want the box to move down, higher to move up */
+        }
+
+        @keyframes fluidBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Liquid Glass Container at the Bottom */
+        .control-panel {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1.5px solid rgba(255, 255, 255, 0.7);
+            padding: 20px 30px;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.9);
+            width: 90%;
+            max-width: 500px;
+            display: flex;
+            gap: 24px;
+            z-index: 10;
+        }
+
+        .control-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-group label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #1e293b;
+            display: flex;
+            justify-content: space-between;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .control-group label span {
+            color: #1f3972;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+            accent-color: #1f3972;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="control-panel">
+        <div class="control-group">
+            <label for="speedRange">Speed: <span id="speedVal">20s</span></label>
+            <input type="range" id="speedRange" min="2" max="60" value="20" step="1">
+        </div>
+
+        <div class="control-group">
+            <label for="opacityRange">Opacity: <span id="opacityVal">100%</span></label>
+            <input type="range" id="opacityRange" min="10" max="100" value="100" step="5">
+        </div>
+    </div>
+
+    <script>
+        const speedRange = document.getElementById('speedRange');
+        const speedVal = document.getElementById('speedVal');
+        const opacityRange = document.getElementById('opacityRange');
+        const opacityVal = document.getElementById('opacityVal');
+
+        // Update animation duration dynamically
+        speedRange.addEventListener('input', (e) => {
+            const val = e.target.value;
+            document.body.style.animationDuration = val + 's';
+            speedVal.textContent = val + 's';
+        });
+
+        // Update background gradient opacity dynamically using CSS opacity layer/rgba trick or element style
+        opacityRange.addEventListener('input', (e) => {
+            const val = e.target.value;
+            // Adjusting background opacity via global alpha or background color overlay
+            document.body.style.opacity = val / 100;
+            opacityVal.textContent = val + '%';
+        });
+    </script>
+</body>
+</html>

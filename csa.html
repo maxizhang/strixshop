@@ -176,7 +176,7 @@
             border: 1px solid transparent; 
             background: var(--surface-card);
             position: relative;
-            height: 48px; /* Fixed height to perfectly fit ~7 items in view */
+            height: 48px;
             flex-shrink: 0;
         }
 
@@ -719,7 +719,7 @@
                 Home
             </a>
             <div class="nav-divider"></div>
-            <span class="nav-badge-text">Admin Portal</span>
+            <span class="nav-badge-text">Admin-Side Customer Support</span>
         </div>
     </div>
 </nav>
@@ -727,7 +727,7 @@
 <div class="app-layout">
     <div class="sidebar">
         <div class="sidebar-header">
-            <div class="nav-title">Support Portal</div>
+            <div class="nav-title">Customer Support</div>
         </div>
         <div class="user-list" id="user-list"></div>
     </div>
@@ -1010,6 +1010,12 @@ function loadUsers() {
             });
         });
 
+        const updateGlobalTotalUnread = () => {
+            let totalUnread = usersData.reduce((acc, curr) => acc + curr.unreadCount, 0);
+            window.totalUnreadNotifications = totalUnread;
+            localStorage.setItem('totalUnreadNotifications', totalUnread);
+        };
+
         const renderList = () => {
             usersData.sort((a, b) => {
                 if (a.unreadCount > 0 && b.unreadCount === 0) return -1;
@@ -1048,6 +1054,8 @@ function loadUsers() {
 
                 list.appendChild(div);
             });
+
+            updateGlobalTotalUnread();
         };
 
         usersData.forEach(u => {

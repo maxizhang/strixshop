@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="logospfd.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Order Management</title>
     <!-- Rounded Font: Quicksand -->
@@ -243,7 +242,7 @@
             border-radius: 12px;
             border: 2px solid rgba(239, 68, 68, 0.3);
             cursor: pointer;
-            font-weight: 700; font-size: 12px;
+            font-weight: 700; font-size: 12px; font-family: 'Quicksand', sans-serif;
             text-transform: uppercase; letter-spacing: 0.5px;
             margin-bottom: 20px; transition: all 0.2s ease;
         }
@@ -292,6 +291,53 @@
             color: var(--primary); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer;
         }
 
+        /* Bottom Right Placed Orders Counter Badge (Flashing Red Glow) */
+        @keyframes redFlashGlow {
+            0% {
+                background: rgba(239, 68, 68, 0.2);
+                border-color: rgba(239, 68, 68, 0.6);
+                box-shadow: 0 0 5px rgba(239, 68, 68, 0.4), 0 15px 35px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                background: rgba(239, 68, 68, 0.45);
+                border-color: rgba(239, 68, 68, 1);
+                box-shadow: 0 0 20px rgba(239, 68, 68, 0.8), 0 15px 35px rgba(0, 0, 0, 0.15);
+            }
+            100% {
+                background: rgba(239, 68, 68, 0.2);
+                border-color: rgba(239, 68, 68, 0.6);
+                box-shadow: 0 0 5px rgba(239, 68, 68, 0.4), 0 15px 35px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        .placed-counter-badge {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1.5px solid rgba(255, 255, 255, 0.8);
+            padding: 12px 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text-main);
+            animation: redFlashGlow 1.2s infinite ease-in-out;
+        }
+        .placed-counter-badge span {
+            background: var(--error);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
         /* Modals */
         .popup-overlay {
             display: none; position: fixed; inset: 0;
@@ -316,7 +362,7 @@
 
         @media print {
             body, html { height: auto !important; overflow: visible !important; background: white !important; }
-            nav, .browser-left, .print-btn, .sync-btn, #table-view, #discountPopup { display: none !important; }
+            nav, .browser-left, .print-btn, .sync-btn, #table-view, #discountPopup, .placed-counter-badge { display: none !important; }
             .view-content, #search-view.active { display: block !important; padding: 0 !important; }
             .browser-right { display: block !important; width: 100% !important; background: white !important; border: none !important; box-shadow: none !important; padding: 0 !important; }
             .receipt-card { background: white !important; color: black !important; box-shadow: none !important; width: 100% !important; border: none !important; padding: 0 !important; }
@@ -352,13 +398,13 @@
     <div id="search-view" class="view-content active">
         <div class="browser-left">
             <div class="glass-card">
-                <span class="card-tag" style="font-size:11px; color:var(--primary); text-transform:uppercase; font-weight:700; letter-spacing:1px; display:block; margin-bottom:10px;">Order Decryption</span>
+                <span class="card-tag" style="font-size:11px; color:var(--primary); text-transform:uppercase; font-weight:700; letter-spacing:1px; display:block; margin-bottom:10px;">Order Search</span>
                 <input type="text" id="order-search" style="width:100%; background:rgba(255,255,255,0.7); border:1px solid var(--border-subtle); padding:12px; border-radius:12px; color:var(--text-main); font-weight:600; outline:none;" placeholder="Enter Submission ID..." oninput="lookupOrder(this.value.trim())">
                 <div id="search-status" style="font-size:12px; font-weight:600; color:var(--text-dim); text-align:center; margin-top:12px;">Waiting for input...</div>
             </div>
 
             <div class="glass-card sidebar-calc-panel">
-                <span style="font-size:11px; color:var(--primary); text-transform:uppercase; font-weight:700; letter-spacing:1px; display:block;">Computation Module</span>
+                <span style="font-size:11px; color:var(--primary); text-transform:uppercase; font-weight:700; letter-spacing:1px; display:block;">Calculator</span>
                 <div class="calc-screen-wrap">
                     <input type="text" id="calcInput" class="calc-screen-input" placeholder="0" onkeydown="if(event.key==='Enter') runCalc()">
                     <div id="calcResult" class="calc-screen-output"></div>
@@ -440,6 +486,11 @@
                 <tbody id="Table-body"></tbody>
             </table>
         </div>
+    </div>
+
+    <!-- Bottom Right Placed Orders Counter Badge (Flashing Red Glow) -->
+    <div class="placed-counter-badge">
+        New Orders: <span id="placed-count">0</span>
     </div>
 
     <!-- Firebase SDK Scripts -->
@@ -564,7 +615,7 @@
                 <div class="receipt-card">
                     <div class="receipt-header"><h1>STRIX SHOP</h1><p style="color:var(--text-dim); margin-top:5px; font-weight:600;">Official Order Receipt • ID: ${id}</p></div>
                     
-                    <div class="section"><div class="receipt-title">Customer Info</div><div class="receipt-grid">
+                    <div class="section"><div class="receipt-title">Order Info</div><div class="receipt-grid">
                         <div class="box"><b>Order Date:</b> ${data.orderDate || '---'}</div>
                         <div class="box"><b>Status:</b> ${data.status || 'Placed'}</div>
                         <div class="box"><b>Source:</b> Strix Shop Web Portal</div>
@@ -607,9 +658,16 @@
             const statuses = ["Placed", "Ordered", "Shipping", "In Stock", "Delivering", "Delivered", "Cancelled"];
             db.collection("orders").orderBy("createdAt", "desc").onSnapshot(snap => {
                 body.innerHTML = "";
+                let placedCount = 0;
+                
                 snap.forEach(doc => {
                     const d = doc.data();
                     const current = d.status || "Placed";
+                    
+                    if (current.toLowerCase() === "placed") {
+                        placedCount++;
+                    }
+
                     let sClass = (current === "Delivered") ? 'status-delivered' : (current === "Cancelled" ? 'status-cancelled' : '');
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
@@ -630,6 +688,9 @@
                         
                     body.appendChild(tr);
                 });
+
+                // Update placed count counter badge
+                document.getElementById('placed-count').innerText = placedCount;
             });
         }
 
