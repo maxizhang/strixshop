@@ -131,15 +131,17 @@
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             box-shadow: var(--glass-shadow);
+            position: relative;
         }
 
         .sidebar {
             width: 280px;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.85);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
-            z-index: 10;
+            z-index: 20;
+            transition: transform 0.3s ease;
         }
 
         .sidebar-header {
@@ -259,6 +261,8 @@
             letter-spacing: 1.5px; 
             font-weight: 600;
             font-size: 0.9rem;
+            text-align: center;
+            padding: 0 20px;
         }
 
         .chat-header {
@@ -269,6 +273,32 @@
             align-items: center;
             background: rgba(255, 255, 255, 0.5);
             backdrop-filter: blur(10px);
+        }
+
+        /* Mobile Sidebar Toggle Button */
+        .sidebar-toggle-btn {
+            display: none;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 15;
         }
 
         .chat-header-info { 
@@ -706,6 +736,34 @@
 
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 10px; }
+
+        /* Mobile Responsive Sidebar Rules (Google Chat Style) */
+        @media (max-width: 850px) {
+            .app-layout {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                border-radius: 0;
+                border: none;
+            }
+            .sidebar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                transform: translateX(-100%);
+                box-shadow: 5px 0 25px rgba(0,0,0,0.15);
+            }
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+            .sidebar-overlay.active {
+                display: block;
+            }
+            .sidebar-toggle-btn {
+                display: inline-flex;
+            }
+        }
     </style>
 </head>
 <body>
@@ -725,7 +783,8 @@
 </nav>
 
 <div class="app-layout">
-    <div class="sidebar">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="nav-title">Customer Support</div>
         </div>
@@ -736,9 +795,15 @@
         <div class="placeholder" id="placeholder">Select a Customer or Admin to start...</div>
         
         <div class="chat-header" id="chat-header">
-            <div class="chat-header-info">
-                <span>Chatting with: <span id="chat-name">User</span></span>
-                <span class="chat-header-email" id="chat-email"></span>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <button class="sidebar-toggle-btn" id="sidebarToggleBtn">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    Chats
+                </button>
+                <div class="chat-header-info">
+                    <span>Chatting with: <span id="chat-name">User</span></span>
+                    <span class="chat-header-email" id="chat-email"></span>
+                </div>
             </div>
             <button class="clear-btn" id="clear-chat-trigger">Delete Records</button>
         </div>
@@ -824,6 +889,24 @@ const orderModalClose = document.getElementById('orderModalClose');
 const orderPopupBody = document.getElementById('orderPopupBody');
 const goToTrackerBtn = document.getElementById('goToTrackerBtn');
 let selectedPopupOrderId = null;
+
+// Mobile Sidebar Drawer Elements
+const sidebar = document.getElementById('sidebar');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+
+function toggleSidebar(forceClose = false) {
+    if (forceClose) {
+        sidebar.classList.remove('mobile-open');
+        sidebarOverlay.classList.remove('active');
+    } else {
+        sidebar.classList.toggle('mobile-open');
+        sidebarOverlay.classList.toggle('active');
+    }
+}
+
+sidebarToggleBtn.onclick = () => toggleSidebar();
+sidebarOverlay.onclick = () => toggleSidebar(true);
 
 // Lightbox
 function openLightbox(imgSrc) {
@@ -1052,6 +1135,11 @@ function loadUsers() {
                     activeUserElement = div;
 
                     openChat(u.id, u.name, u.email);
+
+                    // Automatically close sidebar drawer on mobile after clicking a chat
+                    if (window.innerWidth <= 850) {
+                        toggleSidebar(true);
+                    }
                 };
 
                 list.appendChild(div);
