@@ -546,11 +546,11 @@ async function renderTable(docs) {
         
         const fullName = `${u.firstName || ""} ${u.lastName || ""}`.toLowerCase();
         const email = (u.email || "").toLowerCase();
-        const username = (u.username || "").toLowerCase();
+        const firstName = (u.firstName || "").toLowerCase();
         const uid = userId.toLowerCase();
 
         // Filter condition check
-        if (searchQuery && !fullName.includes(searchQuery) && !email.includes(searchQuery) && !username.includes(searchQuery) && !uid.includes(searchQuery)) {
+        if (searchQuery && !fullName.includes(searchQuery) && !email.includes(searchQuery) && !firstName.includes(searchQuery) && !uid.includes(searchQuery)) {
             continue;
         }
 
@@ -615,7 +615,7 @@ async function openSidebar(id, u){
         "First Name": u.firstName,
         "Last Name": u.lastName,
         "Email": u.email,
-        "Username": u.username,
+        "Username": u.firstName,
         "Classification": u.acc || "customer",
         "Grade": u.grade,
         "School": u.school,
@@ -719,7 +719,7 @@ async function save(){
         "LAST NAME":"lastName",
         "CLASSIFICATION":"acc",
         "EMAIL":"email",
-        "USERNAME":"username",
+        "firstName":"firstName",
         "GRADE":"grade",
         "SCHOOL":"school",
         "AGE":"age",

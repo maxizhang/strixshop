@@ -392,7 +392,7 @@
     <div class="profile-header" id="profile-header-box">
         <div class="pfp-wrap"><img id="display-pfp" src="logospfd.png"></div>
         <div style="flex: 1;">
-            <h1 id="display-username" style="margin:0; font-size: 28px; color: #1e1b4b; transition: all 0.3s;">Syncing...</h1>
+            <h1 id="display-firstName" style="margin:0; font-size: 28px; color: #1e1b4b; transition: all 0.3s;">Syncing...</h1>
             <p id="display-email" style="margin:6px 0 0; color:var(--text-dim); font-size: 14px; font-weight: 600;"></p>
             <div id="status-badge-container" style="margin-top: 10px;"></div>
         </div>
@@ -481,7 +481,7 @@
                 const profileHeaderBox = document.getElementById('profile-header-box');
                 const tierCards = document.querySelectorAll('.tier-card');
                 const badgeContainer = document.getElementById('status-badge-container');
-                const usernameEl = document.getElementById('display-username');
+                const firstNameEl = document.getElementById('display-firstName');
                 
                 let themeClass = "";
                 let badgeHTML = "";
@@ -491,15 +491,15 @@
                     if (adminLink) adminLink.style.display = "inline-flex";
                     themeClass = "admin-theme";
                     badgeHTML = '<span style="background: rgba(255, 213, 28, 0.25); color: #854d0e; padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(255, 213, 28, 0.6); box-shadow: 0 2px 8px rgba(255, 213, 28, 0.3);">Admin</span>';
-                    usernameEl.style.textShadow = "0 2px 10px rgba(234, 179, 8, 0.3)";
+                    firstNameEl.style.textShadow = "0 2px 10px rgba(234, 179, 8, 0.3)";
                 } else if (accType.includes("premium")) {
                     themeClass = "premium-membership";
                     badgeHTML = '<span style="background: rgba(168, 85, 247, 0.2); color: #7e22ce; padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(168, 85, 247, 0.5); box-shadow: 0 2px 8px rgba(168, 85, 247, 0.25);">Premium Member</span>';
-                    usernameEl.style.textShadow = "0 2px 10px rgba(168, 85, 247, 0.3)";
+                    firstNameEl.style.textShadow = "0 2px 10px rgba(168, 85, 247, 0.3)";
                 } else if (accType.includes("pro")) {
                     themeClass = "pro-membership";
                     badgeHTML = '<span style="background: rgba(14, 165, 233, 0.2); color: #0369a1; padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; border: 1px solid rgba(14, 165, 233, 0.5); box-shadow: 0 2px 8px rgba(14, 165, 233, 0.25);">Pro Member</span>';
-                    usernameEl.style.textShadow = "0 2px 10px rgba(14, 165, 233, 0.3)";
+                    firstNameEl.style.textShadow = "0 2px 10px rgba(14, 165, 233, 0.3)";
                 } else {
                     badgeHTML = '<span style="background: rgba(100, 116, 139, 0.12); color: #475569; padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; text-transform: uppercase;">Standard Customer</span>';
                 }
@@ -515,7 +515,7 @@
                 const sscElement = document.getElementById('val-ssc');
                 if(sscElement) sscElement.innerText = (data.ssc !== undefined) ? data.ssc : "100";
                 
-                usernameEl.innerText = data.username || "Authorized Personnel";
+                firstNameEl.innerText = data.firstName || "Authorized Personnel";
                 document.getElementById('display-email').innerText = user.email || "";
                 
                 const pfpElement = document.getElementById('display-pfp');

@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Cash Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #f7f5fa;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #2d2640;
+            --text-dim: #7a7090;
+            --accent: #8e6fc2;
+            --accent-hover: #7b5ab3;
+            --lavender-border: rgba(177, 156, 217, 0.3);
+            --error: #d93838;
+            --success: #28a745;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html {
+            width: 100%; height: 100vh;
+            background: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+        }
+
+        .bg-image-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('indexbg.png');
+            background-size: cover; background-position: center;
+            opacity: 0.1; z-index: 0; pointer-events: none;
+        }
+
+        .register-layout {
+            position: relative; z-index: 10;
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            grid-template-rows: 55px 1fr 130px;
+            height: 100vh;
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .top-bar {
+            grid-column: 1 / -1;
+            background: var(--card-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--lavender-border);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            box-shadow: 0 4px 15px rgba(130, 110, 160, 0.05);
+        }
+
+        .brand-area { display: flex; align-items: center; gap: 8px; }
+        .brand-area img { height: 28px; width: 28px; object-fit: contain; }
+        .brand-area span { font-weight: 700; font-size: 1.05rem; letter-spacing: 1px; color: #3d3156; }
+
+        .search-area { flex: 1; max-width: 400px; margin: 0 20px; }
+        .search-area input {
+            width: 100%; padding: 7px 14px;
+            background: rgba(255,255,255,0.9);
+            border: 1px solid var(--lavender-border);
+            border-radius: 20px;
+            outline: none; font-family: 'Quicksand', sans-serif; font-size: 0.85rem;
+            color: var(--text-main);
+            transition: all 0.3s ease;
+        }
+        .search-area input:focus { border-color: var(--accent); box-shadow: 0 0 6px rgba(142,111,194,0.2); }
+
+        .user-time-area { font-size: 0.8rem; font-weight: 500; color: var(--text-dim); text-align: right; display: flex; gap: 15px; align-items: center; }
+
+        .cart-section {
+            grid-row: 2 / 3;
+            background: var(--card-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--lavender-border);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(130, 110, 160, 0.08);
+        }
+
+        .cart-header { padding: 12px 16px; font-weight: 700; font-size: 1rem; border-bottom: 1px solid var(--lavender-border); }
+        .cart-items { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+        
+        .cart-item-card {
+            background: rgba(255,255,255,0.7);
+            border: 1px solid var(--lavender-border);
+            border-radius: 10px;
+            padding: 8px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+        .cart-item-info { display: flex; flex-direction: column; gap: 2px; flex: 1; overflow: hidden; }
+        .cart-item-name { font-weight: 700; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .cart-item-price { font-size: 0.75rem; color: var(--text-dim); }
+        
+        .cart-item-actions { display: flex; align-items: center; gap: 8px; }
+        .cart-item-controls { display: flex; align-items: center; gap: 4px; }
+        .qty-btn {
+            background: #e8e1f5; border: none; width: 22px; height: 22px;
+            border-radius: 50%; font-weight: 700; cursor: pointer; color: var(--accent);
+            display: flex; align-items: center; justify-content: center;
+            transition: background 0.2s; font-size: 0.8rem;
+        }
+        .qty-btn:hover { background: var(--accent); color: white; }
+        .cart-item-qty { font-size: 0.85rem; font-weight: 700; min-width: 15px; text-align: center; }
+
+        .delete-btn {
+            background: transparent; border: none; cursor: pointer;
+            width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+            border-radius: 4px; transition: background 0.2s; padding: 0;
+        }
+        .delete-btn svg { width: 14px; height: 14px; fill: var(--text-dim); transition: fill 0.2s; }
+        .delete-btn:hover svg { fill: var(--error); }
+        .delete-btn:hover { background: rgba(217, 56, 56, 0.1); }
+
+        .products-section {
+            grid-row: 2 / 3;
+            background: var(--card-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--lavender-border);
+            border-radius: 16px;
+            padding: 16px;
+            overflow-y: auto;
+            box-shadow: 0 8px 25px rgba(130, 110, 160, 0.08);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--lavender-border);
+            border-radius: 14px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .product-card:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(142,111,194,0.15); border-color: var(--accent); }
+        
+        .product-img-container {
+            width: 100%; height: 110px;
+            background: #f0ebf8;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .product-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .product-title { font-weight: 700; font-size: 0.85rem; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .product-price { font-weight: 700; font-size: 0.9rem; color: var(--accent); }
+
+        .totals-section {
+            grid-row: 3 / 4;
+            background: var(--card-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--lavender-border);
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            box-shadow: 0 8px 25px rgba(130, 110, 160, 0.08);
+        }
+
+        .total-row { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 500; }
+        .total-row.final { font-weight: 700; font-size: 1rem; color: var(--accent); border-top: 1px dashed var(--lavender-border); padding-top: 4px; }
+        
+        .discount-select-row { display: flex; gap: 6px; margin-top: 2px; }
+        .discount-select-row select {
+            flex: 1; padding: 5px 8px; border: 1px solid var(--lavender-border); border-radius: 8px; font-size: 0.75rem; outline: none; background: #fff; font-family: 'Quicksand', sans-serif;
+        }
+
+        .actions-section {
+            grid-row: 3 / 4;
+            background: var(--card-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--lavender-border);
+            border-radius: 16px;
+            padding: 12px 16px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            box-shadow: 0 8px 25px rgba(130, 110, 160, 0.08);
+        }
+
+        .tool-buttons { display: flex; flex-direction: column; gap: 8px; width: 140px; }
+        .tool-btn {
+            background: #f0eaf8; border: 1px solid var(--lavender-border); color: var(--text-main);
+            padding: 8px; border-radius: 10px; font-weight: 700; font-size: 0.8rem; cursor: pointer; text-align: center;
+            transition: background 0.2s;
+        }
+        .tool-btn:hover { background: #e2d5f2; border-color: var(--accent); }
+
+        .checkout-actions { display: flex; flex-direction: column; gap: 8px; flex: 1; height: 100%; justify-content: center; }
+        .action-btn {
+            padding: 10px; border: none; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-checkout { background: linear-gradient(135deg, #a788db, #8e6fc2); color: white; box-shadow: 0 4px 15px rgba(142,111,194,0.3); }
+        .btn-checkout:hover { transform: scale(1.02); }
+        .btn-clear { background: #faeaea; color: var(--error); border: 1px solid rgba(217,56,56,0.2); }
+        .btn-clear:hover { background: #f5d6d6; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(45,38,64,0.4); backdrop-filter: blur(5px);
+            z-index: 100; display: none; align-items: center; justify-content: center;
+        }
+        .modal-card {
+            background: #fff; padding: 24px; border-radius: 20px; width: 100%; max-width: 340px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); text-align: center; display: flex; flex-direction: column; gap: 12px;
+        }
+        .modal-card h2 { font-size: 1.2rem; color: #3d3156; }
+        
+        .calc-pad {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 5px;
+        }
+        .calc-btn {
+            background: #f7f5fa; border: 1px solid var(--lavender-border); border-radius: 6px;
+            padding: 8px; font-weight: 700; font-size: 0.85rem; cursor: pointer; text-align: center;
+        }
+        .calc-btn:hover { background: #eee5fa; }
+        .calc-display {
+            grid-column: 1 / -1;
+            background: #fff; padding: 8px; border-radius: 6px; text-align: right;
+            font-family: monospace; font-size: 1rem; border: 1px solid var(--lavender-border);
+            margin-bottom: 5px;
+        }
+
+        .modal-buttons { display: flex; gap: 8px; margin-top: 5px; }
+        .modal-buttons button { flex: 1; padding: 8px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; font-size: 0.85rem; }
+        .btn-cancel { background: #eee; color: #666; }
+
+        @media(max-width: 900px) {
+            .register-layout { grid-template-columns: 1fr; grid-template-rows: auto auto auto auto; height: auto; overflow-y: auto; }
+            body, html { overflow: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-image-layer"></div>
+
+<div class="register-layout">
+    <header class="top-bar">
+        <div class="brand-area">
+            <img src="logoh.png" alt="Logo" onerror="this.src='logospfd.png'">
+            <span>STRIX SHOP</span>
+        </div>
+        <div class="search-area">
+            <input type="text" id="searchInput" placeholder="Search products by name or SKU...">
+        </div>
+        <div class="user-time-area">
+            <div id="welcomeUser">Hello, Agent</div>
+            <div id="liveDate">--/--/----</div>
+            <div id="liveClock">--:--:--</div>
+        </div>
+    </header>
+
+    <section class="cart-section">
+        <div class="cart-header">Current Cart</div>
+        <div class="cart-items" id="cartItemsContainer"></div>
+    </section>
+
+    <section class="products-section">
+        <div class="products-grid" id="productsGridContainer"></div>
+    </section>
+
+    <section class="totals-section">
+        <div class="total-row"><span>Subtotal:</span> <span id="subtotalDisplay">$0.00</span></div>
+        <div class="total-row"><span>Discount:</span> <span id="discountDisplay">-$0.00</span></div>
+        <div class="discount-select-row">
+            <select id="discountSelect">
+                <option value="none" data-name="None">No Discount</option>
+                <option value="5" data-name="5%">5% off</option>
+                <option value="10" data-name="10%">10% off</option>
+                <option value="20" data-name="20%">20% off</option>
+            </select>
+        </div>
+        <div class="total-row final"><span>Total:</span> <span id="totalDisplay">$0.00</span></div>
+    </section>
+
+    <section class="actions-section">
+        <div class="tool-buttons">
+            <button class="tool-btn" id="openCalcBtn">Calculator</button>
+        </div>
+        <div class="checkout-actions">
+            <button class="action-btn btn-checkout" id="checkoutBtn">Proceed to Checkout</button>
+            <button class="action-btn btn-clear" id="clearCartBtn">Clear Cart</button>
+        </div>
+    </section>
+</div>
+
+<div class="modal-overlay" id="calcModal">
+    <div class="modal-card">
+        <h2>Quick Calculator</h2>
+        <div class="calc-pad">
+            <div class="calc-display" id="calcDisplay">0</div>
+            <button class="calc-btn" onclick="calcClear()">C</button>
+            <button class="calc-btn" onclick="calcInput('(')">(</button>
+            <button class="calc-btn" onclick="calcInput(')')">)</button>
+            <button class="calc-btn" onclick="calcInput('/')">/</button>
+            <button class="calc-btn" onclick="calcInput('7')">7</button>
+            <button class="calc-btn" onclick="calcInput('8')">8</button>
+            <button class="calc-btn" onclick="calcInput('9')">9</button>
+            <button class="calc-btn" onclick="calcInput('*')">*</button>
+            <button class="calc-btn" onclick="calcInput('4')">4</button>
+            <button class="calc-btn" onclick="calcInput('5')">5</button>
+            <button class="calc-btn" onclick="calcInput('6')">6</button>
+            <button class="calc-btn" onclick="calcInput('-')">-</button>
+            <button class="calc-btn" onclick="calcInput('1')">1</button>
+            <button class="calc-btn" onclick="calcInput('2')">2</button>
+            <button class="calc-btn" onclick="calcInput('3')">3</button>
+            <button class="calc-btn" onclick="calcInput('+')">+</button>
+            <button class="calc-btn" onclick="calcInput('0')">0</button>
+            <button class="calc-btn" onclick="calcInput('.')">.</button>
+            <button class="calc-btn" style="grid-column: span 2; background: #e2d5f2;" onclick="calcCompute()">=</button>
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-dim); text-align: left;">
+            Hello, World!
+        </div>
+        <div class="modal-buttons">
+            <button class="btn-cancel" id="closeCalcBtn">Close</button>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
+        authDomain: "strix-shop.firebaseapp.com",
+        projectId: "strix-shop",
+        storageBucket: "strix-shop.firebasestorage.app",
+        messagingSenderId: "300414445622",
+        appId: "1:300414445622:web:97465fa5309c27b9605097"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const agentName = sessionStorage.getItem("agentName") || "Zisi";
+    document.getElementById('welcomeUser').innerText = `Hello, ${agentName}`;
+
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('liveDate').innerText = now.toLocaleDateString();
+        document.getElementById('liveClock').innerText = now.toLocaleTimeString();
+    }, 1000);
+
+    let productsList = [];
+    let cart = [];
+    let currentDiscountMultiplier = 1;
+    let currentDiscountName = "None";
+
+    async function loadProductsAndCart() {
+        try {
+            const querySnapshot = await getDocs(collection(db, "products"));
+            productsList = [];
+            querySnapshot.forEach((docSnap) => {
+                productsList.push({ id: docSnap.id, ...docSnap.data() });
+            });
+            renderProducts(productsList);
+
+            const cartDocRef = doc(db, "cartA", agentName);
+            const cartSnap = await getDoc(cartDocRef);
+
+            if (cartSnap.exists()) {
+                const cartData = cartSnap.data();
+                
+                if (cartData.items) {
+                    cart = Object.keys(cartData.items).map(itemId => {
+                        const itemInfo = cartData.items[itemId];
+                        return {
+                            id: itemId,
+                            name: itemInfo.name,
+                            price: itemInfo.price,
+                            qty: itemInfo.qty,
+                            sku: itemInfo.sku
+                        };
+                    });
+                }
+
+                if (cartData.discountName) {
+                    currentDiscountName = cartData.discountName;
+                    const selectEl = document.getElementById('discountSelect');
+                    
+                    if (currentDiscountName.includes("5%")) {
+                        selectEl.value = "5";
+                        currentDiscountMultiplier = 0.95;
+                    } else if (currentDiscountName.includes("10%")) {
+                        selectEl.value = "10";
+                        currentDiscountMultiplier = 0.90;
+                    } else if (currentDiscountName.includes("20%")) {
+                        selectEl.value = "20";
+                        currentDiscountMultiplier = 0.80;
+                    } else {
+                        selectEl.value = "none";
+                        currentDiscountMultiplier = 1;
+                    }
+                }
+
+                updateCartUI();
+            }
+        } catch (err) {
+            console.error("Error loading products or cart data:", err);
+        }
+    }
+
+    function renderProducts(items) {
+        const grid = document.getElementById('productsGridContainer');
+        grid.innerHTML = "";
+        
+        items.forEach(product => {
+            let imgSrc = "logospfd.png";
+            if (product.images && Array.isArray(product.images) && product.images.length > 0) {
+                imgSrc = product.images[0];
+            }
+
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <div class="product-img-container">
+                    <img src="${imgSrc}" alt="${product.name || 'Product'}">
+                </div>
+                <div class="product-title">${product.name || 'Unnamed Product'}</div>
+                <div class="product-price">$${Number(product.price || 0).toFixed(2)}</div>
+            `;
+            card.addEventListener('click', () => addToCart(product));
+            grid.appendChild(card);
+        });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = productsList.filter(p => 
+            (p.name && p.name.toLowerCase().includes(term)) || 
+            (p.sku && p.sku.toLowerCase().includes(term))
+        );
+        renderProducts(filtered);
+    });
+
+    function addToCart(product) {
+        const existing = cart.find(item => item.id === product.id);
+        if (existing) {
+            existing.qty += 1;
+        } else {
+            cart.push({ ...product, qty: 1 });
+        }
+        syncCartToFirebase();
+        updateCartUI();
+    }
+
+    window.adjustQty = function(id, delta) {
+        const item = cart.find(i => i.id === id);
+        if (item) {
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== id);
+            }
+        }
+        syncCartToFirebase();
+        updateCartUI();
+    }
+
+    window.removeFromCart = function(id) {
+        cart = cart.filter(i => i.id !== id);
+        syncCartToFirebase();
+        updateCartUI();
+    }
+
+    async function syncCartToFirebase() {
+        try {
+            const cartDocRef = doc(db, "cartA", agentName);
+            const subtotal = cart.reduce((sum, i) => sum + (Number(i.price || 0) * i.qty), 0);
+            const discountAmount = subtotal * (1 - currentDiscountMultiplier);
+            const total = subtotal - discountAmount;
+
+            let itemsMap = {};
+            cart.forEach(item => {
+                itemsMap[item.id] = {
+                    name: item.name || "Product",
+                    price: Number(item.price || 0),
+                    qty: item.qty,
+                    sku: item.sku || `SKU_${item.id}`
+                };
+            });
+
+            // Full overwrite without merge:true so deleted items completely clear out from Firestore
+            await setDoc(cartDocRef, {
+                agent: agentName,
+                subtotal: subtotal,
+                discountName: currentDiscountName,
+                total: total,
+                items: itemsMap, 
+                updatedAt: serverTimestamp()
+            });
+
+        } catch (err) {
+            console.error("Error syncing cart to Firebase:", err);
+        }
+    }
+
+    function updateCartUI() {
+        const container = document.getElementById('cartItemsContainer');
+        container.innerHTML = "";
+
+        let subtotal = 0;
+
+        cart.forEach(item => {
+            const itemTotal = Number(item.price || 0) * item.qty;
+            subtotal += itemTotal;
+
+            const div = document.createElement('div');
+            div.className = 'cart-item-card';
+            div.innerHTML = `
+                <div class="cart-item-info">
+                    <span class="cart-item-name">${item.name}</span>
+                    <span class="cart-item-price">$${Number(item.price).toFixed(2)} x ${item.qty}</span>
+                </div>
+                <div class="cart-item-actions">
+                    <div class="cart-item-controls">
+                        <button class="qty-btn" onclick="adjustQty('${item.id}', -1)">-</button>
+                        <span class="cart-item-qty">${item.qty}</span>
+                        <button class="qty-btn" onclick="adjustQty('${item.id}', 1)">+</button>
+                    </div>
+                    <button class="delete-btn" onclick="removeFromCart('${item.id}')" title="Delete item">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+
+        const discountAmount = subtotal * (1 - currentDiscountMultiplier);
+        const finalTotal = subtotal - discountAmount;
+
+        document.getElementById('subtotalDisplay').innerText = `$${subtotal.toFixed(2)}`;
+        document.getElementById('discountDisplay').innerText = `-$${discountAmount.toFixed(2)}`;
+        document.getElementById('totalDisplay').innerText = `$${finalTotal.toFixed(2)}`;
+    }
+
+    document.getElementById('discountSelect').addEventListener('change', (e) => {
+        const selectedOption = e.target.options[e.target.selectedIndex];
+        const val = e.target.value;
+        currentDiscountName = selectedOption.getAttribute('data-name') || "None";
+
+        if (val === '5') currentDiscountMultiplier = 0.95;
+        else if (val === '10') currentDiscountMultiplier = 0.90;
+        else if (val === '20') currentDiscountMultiplier = 0.80;
+        else currentDiscountMultiplier = 1;
+
+        syncCartToFirebase();
+        updateCartUI();
+    });
+
+    const calcModal = document.getElementById('calcModal');
+    document.getElementById('openCalcBtn').addEventListener('click', () => calcModal.style.display = 'flex');
+    document.getElementById('closeCalcBtn').addEventListener('click', () => calcModal.style.display = 'none');
+
+    window.calcInput = function(val) {
+        const display = document.getElementById('calcDisplay');
+        if (display.innerText === '0' || display.innerText === 'Error') {
+            display.innerText = val;
+        } else {
+            display.innerText += val;
+        }
+    }
+
+    window.calcClear = function() {
+        document.getElementById('calcDisplay').innerText = '0';
+    }
+
+    window.calcCompute = function() {
+        const display = document.getElementById('calcDisplay');
+        try {
+            let sumVal = cart.reduce((sum, i) => sum + (Number(i.price || 0) * i.qty), 0);
+            let expr = display.innerText.replace(/\[Sum\]/g, sumVal);
+            display.innerText = eval(expr);
+        } catch {
+            display.innerText = 'Error';
+        }
+    }
+
+    document.getElementById('checkoutBtn').addEventListener('click', async () => {
+        if (cart.length === 0) {
+            alert("Cart is empty!");
+            return;
+        }
+        await syncCartToFirebase();
+        window.location.href = "checkout.html";
+    });
+
+    document.getElementById('clearCartBtn').addEventListener('click', async () => {
+        cart = [];
+        currentDiscountMultiplier = 1;
+        currentDiscountName = "None";
+        document.getElementById('discountSelect').value = 'none';
+        await syncCartToFirebase();
+        updateCartUI();
+    });
+
+    // Run initialization loader
+    loadProductsAndCart();
+</script>
+</body>
+</html>

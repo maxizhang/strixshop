@@ -207,7 +207,7 @@
         <div class="form-group"><label>Homeroom Teacher OR Number</label><input type="text" id="homeroom" placeholder="Teacher Name or Room #" required></div>
 
         <div class="form-group">
-            <label>Use Gift Cards to Pay?</label>
+            <label>Use Gift Cards or Vouchers to Pay?</label>
             <div style="display:flex; gap: 80px; font-weight: 600; font-size: 14px;">
                 <label style="display:flex; align-items:center; gap:8px;"><input type="radio" name="giftcard" value="yes"> Yes</label>
                 <label style="display:flex; align-items:center; gap:8px;"><input type="radio" name="giftcard" value="no" checked> No</label>
@@ -236,7 +236,7 @@
         <div class="total-box">
             <div id="item-count" style="font-size:12px; font-weight:700; color:var(--text-dim);">Subtotal (0 Items)</div>
             <div class="total-amount" id="total-price">$0.00</div>
-            <div style="font-size:11px; font-weight:600; color:var(--text-dim); margin-top:4px;">If you would like a printed copy of your receipt, please contact <a href="cs.html">Customer Service</a>or send your order to customer <br>service <a href="myorders">Here</a>. Thank you for your cooperation.</div>
+            <div style="font-size:11px; font-weight:600; color:var(--text-dim); margin-top:4px;">If you would like a printed copy of your receipt, please contact <a href="cs.html">Customer Service</a>or send your order to customer <br>service <a href="myorders.html">Here</a>. Thank you for your cooperation.</div>
         </div>
         <button class="btn-continue" id="action-btn" onclick="handleAction()">Continue</button>
     </div>
@@ -263,6 +263,8 @@
     let rawItems = [];
     let groupedItems = [];
     let currentView = 'cart';
+    // Cache map to store product images fetched from products collection
+    const productImagesCache = {};
 
     auth.onAuthStateChanged((user) => {
         if (user) {
@@ -281,8 +283,9 @@
                 document.getElementById('email').value = user.email || "";
             });
 
-            db.collection("carts").doc(user.uid).collection("items").onSnapshot(snap => {
+            db.collection("carts").doc(user.uid).collection("items").onSnapshot(async snap => {
                 rawItems = snap.docs.map(doc => ({docId: doc.id, ...doc.data()}));
+                await preloadProductImages();
                 processItems(); 
             });
         } else {
@@ -290,15 +293,48 @@
         }
     });
 
+    // Fetch the 0th image from the products collection document for each unique productId
+    async function preloadProductImages() {
+        const uniqueProductIds = [...new Set(rawItems.map(item => item.productId).filter(Boolean))];
+        
+        for (const prodId of uniqueProductIds) {
+            if (!productImagesCache[prodId]) {
+                try {
+                    const prodDoc = await db.collection("products").doc(prodId).get();
+                    if (prodDoc.exists) {
+                        const prodData = prodDoc.data();
+                        // Checks if images field is an array or an object map with "0" key
+                        const imagesField = prodData.images;
+                        let imgUrl = "";
+                        if (Array.isArray(imagesField)) {
+                            imgUrl = imagesField[0] || "";
+                        } else if (imagesField && typeof imagesField === 'object') {
+                            imgUrl = imagesField["0"] || Object.values(imagesField)[0] || "";
+                        }
+                        productImagesCache[prodId] = imgUrl;
+                    } else {
+                        productImagesCache[prodId] = "";
+                    }
+                } catch (err) {
+                    console.error("Error fetching product image for ID:", prodId, err);
+                    productImagesCache[prodId] = "";
+                }
+            }
+        }
+    }
+
     function processItems() {
         const groups = {};
         rawItems.forEach(item => {
             const key = item.productId + JSON.stringify(item.selections || {});
+            // Attach resolved image from cache or fallback item image property
+            const resolvedImage = productImagesCache[item.productId] || item.image || "";
+            
             if (groups[key]) {
                 groups[key].qty += (parseInt(item.qty) || 1);
                 groups[key].docIds.push(item.docId);
             } else {
-                groups[key] = { ...item, qty: (parseInt(item.qty) || 1), docIds: [item.docId] };
+                groups[key] = { ...item, image: resolvedImage, qty: (parseInt(item.qty) || 1), docIds: [item.docId] };
             }
         });
         groupedItems = Object.values(groups);

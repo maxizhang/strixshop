@@ -321,10 +321,6 @@
             <div class="section-title">Credentials (4/7)</div>
             <div class="full-line-grid">
                 <div class="input-wrap">
-                    <span class="field-label">Username</span>
-                    <input type="text" id="username" placeholder="Username" required>
-                </div>
-                <div class="input-wrap">
                     <span class="field-label">Email</span>
                     <input type="email" id="email" placeholder="harrypotter@hogwarts.edu" required>
                 </div>
@@ -475,18 +471,63 @@
     window.addEventListener('resize', () => { resize(); initStars(); });
     resize(); initStars(); animate();
 
-    // Auto-fill Age from Date of Birth
+    // Auto-calculate Age and Grade Level based on September 1 cutoff
     const dobInput = document.getElementById('dob');
     dobInput.addEventListener('change', function() {
         const dobDate = new Date(this.value);
+        if (isNaN(dobDate.getTime())) return;
+
         const today = new Date();
         let age = today.getFullYear() - dobDate.getFullYear();
         const m = today.getMonth() - dobDate.getMonth();
         if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
             age--;
         }
-        if (!isNaN(age) && age >= 0) {
+
+        if (age >= 0) {
             document.getElementById('age').value = age;
+        }
+
+        // Calculate Grade Level with Sept 1 Cutoff
+        // School Year logic relative to September 1 cutoff:
+        // A student turning 15 by Sept 1 of the current school year is typically in Grade 9, etc.
+        // Base formulation: Grade 9 ~ age 14 turning 15 by Sept 1.
+        // Standard high school progression: Age 14-15 = Gr 9, 15-16 = Gr 10, 16-17 = Gr 11, 17-18 = Gr 12.
+        const dobYear = dobDate.getFullYear();
+        const dobMonth = dobDate.getMonth() + 1; // 1-12
+        const dobDay = dobDate.getDate();
+
+        // Determine what academic year we are currently in or entering.
+        // If today is past Sept 1, current school year started this year (e.g., Sept 2026 starts 2026-2027 school year).
+        // If today is before Sept 1, current school year started last year (e.g., Feb 2026 is still 2025-2026 school year).
+        let currentSchoolYearStart;
+        if (today.getMonth() > 8 || (today.getMonth() === 8 && today.getDate() >= 1)) {
+            currentSchoolYearStart = today.getFullYear();
+        } else {
+            currentSchoolYearStart = today.getFullYear() - 1;
+        }
+
+        // Calculate how old the student will be on September 1st of the current school year
+        // Sept 1 of currentSchoolYearStart
+        let ageBySept1 = currentSchoolYearStart - dobYear;
+        // If their birthday is after September 1, they haven't had their birthday yet by Sept 1 of that school year
+        if (dobMonth > 9 || (dobMonth === 9 && dobDay > 1)) {
+            ageBySept1--;
+        }
+
+        // Map expected age by Sept 1 to High School Grade Levels (Grades 9-12)
+        // Age 14 by Sept 1 -> Grade 9
+        // Age 15 by Sept 1 -> Grade 10
+        // Age 16 by Sept 1 -> Grade 11
+        // Age 17 by Sept 1 -> Grade 12
+        let calculatedGrade = "";
+        if (ageBySept1 === 14) calculatedGrade = "9";
+        else if (ageBySept1 === 15) calculatedGrade = "10";
+        else if (ageBySept1 === 16) calculatedGrade = "11";
+        else if (ageBySept1 === 17 || ageBySept1 >= 18) calculatedGrade = "12";
+
+        if (calculatedGrade) {
+            document.getElementById('grade').value = calculatedGrade;
         }
     });
 
@@ -618,7 +659,6 @@
             await setDoc(doc(db, "users", user.uid), {
                 firstName: document.getElementById('f-name').value,
                 lastName: document.getElementById('l-name').value,
-                username: document.getElementById('username').value,
                 email: email,
                 dob: document.getElementById('dob').value,
                 age: document.getElementById('age').value,

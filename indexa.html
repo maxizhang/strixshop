@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Register Sign In</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #f7f5fa;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #2d2640;
+            --text-dim: #7a7090;
+            --accent: #8e6fc2;
+            --accent-hover: #7b5ab3;
+            --lavender-border: rgba(177, 156, 217, 0.3);
+            --error: #d93838;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html {
+            width: 100%; height: 100vh;
+            background: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'Quicksand', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .bg-image-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0.1; z-index: 0; pointer-events: none;
+        }
+
+        .signin-container {
+            position: relative; z-index: 10;
+            background: var(--card-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--lavender-border);
+            border-radius: 24px;
+            padding: 30px;
+            width: 100%; max-width: 360px;
+            box-shadow: 0 15px 35px rgba(130, 110, 160, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand-area { display: flex; align-items: center; gap: 10px; }
+        .brand-area img { height: 40px; width: 40px; object-fit: contain; }
+        .brand-area span { font-weight: 700; font-size: 1.3rem; letter-spacing: 1px; color: #3d3156; }
+
+        .pin-display {
+            width: 100%;
+            background: #fff;
+            border: 1px solid var(--lavender-border);
+            border-radius: 14px;
+            padding: 14px;
+            font-size: 1.5rem;
+            letter-spacing: 8px;
+            text-align: center;
+            font-family: monospace;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
+        }
+
+        .key-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--lavender-border);
+            border-radius: 14px;
+            padding: 12px 0;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            color: var(--text-main);
+            box-shadow: 0 4px 10px rgba(130, 110, 160, 0.03);
+        }
+
+        .key-btn:hover { background: #eee5fa; border-color: var(--accent); transform: translateY(-2px); }
+        .key-btn:active { transform: translateY(0); }
+
+        .key-letters {
+            font-size: 0.6rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            margin-top: 2px;
+            text-transform: uppercase;
+        }
+
+        .key-action { background: #f0eaf8; color: var(--accent); font-size: 0.9rem; }
+        .key-clear { color: var(--error); background: #faeaea; }
+
+        .error-msg {
+            font-size: 0.85rem;
+            color: var(--error);
+            font-weight: 700;
+            height: 15px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-image-layer"></div>
+
+<div class="signin-container">
+    <div class="brand-area">
+        <span>STRIX SHOP</span>
+    </div>
+
+    <div style="font-size: 0.9rem; font-weight: 500; color: var(--text-dim);">Enter PIN to Sign In</div>
+
+    <input type="password" id="pinDisplay" class="pin-display" readonly maxlength="4" placeholder="••••">
+
+    <div class="error-msg" id="errorMsg"></div>
+
+    <div class="keypad">
+        <button class="key-btn" onclick="pressKey('1')">1<span class="key-letters">&nbsp;</span></button>
+        <button class="key-btn" onclick="pressKey('2')">2<span class="key-letters">abc</span></button>
+        <button class="key-btn" onclick="pressKey('3')">3<span class="key-letters">def</span></button>
+        
+        <button class="key-btn" onclick="pressKey('4')">4<span class="key-letters">ghi</span></button>
+        <button class="key-btn" onclick="pressKey('5')">5<span class="key-letters">jkl</span></button>
+        <button class="key-btn" onclick="pressKey('6')">6<span class="key-letters">mno</span></button>
+        
+        <button class="key-btn" onclick="pressKey('7')">7<span class="key-letters">pqrs</span></button>
+        <button class="key-btn" onclick="pressKey('8')">8<span class="key-letters">tuv</span></button>
+        <button class="key-btn" onclick="pressKey('9')">9<span class="key-letters">wxyz</span></button>
+        
+        <button class="key-btn key-clear" onclick="clearPin()">CLR</button>
+        <button class="key-btn" onclick="pressKey('0')">0<span class="key-letters">&nbsp;</span></button>
+        <button class="key-btn key-action" onclick="deletePin()">⌫</button>
+    </div>
+</div>
+
+<script>
+    const validPins = {
+        "9474": "Zisi",
+        "7428": "Shaunak",
+        "6294": "Maxi",
+        "3648": "Dohun"
+    };
+
+    let currentInput = "";
+
+    function pressKey(digit) {
+        if (currentInput.length < 4) {
+            currentInput += digit;
+            updateDisplay();
+            if (currentInput.length === 4) {
+                verifyPin();
+            }
+        }
+    }
+
+    function deletePin() {
+        currentInput = currentInput.slice(0, -1);
+        updateDisplay();
+        document.getElementById('errorMsg').innerText = "";
+    }
+
+    function clearPin() {
+        currentInput = "";
+        updateDisplay();
+        document.getElementById('errorMsg').innerText = "";
+    }
+
+    function updateDisplay() {
+        document.getElementById('pinDisplay').value = currentInput;
+    }
+
+    function verifyPin() {
+        if (validPins[currentInput]) {
+            // Save active PIN and agent name in sessionStorage for register use
+            sessionStorage.setItem("activePin", currentInput);
+            sessionStorage.setItem("agentName", validPins[currentInput]);
+            window.location.href = "register.html"; // Adjust to your register filename if different
+        } else {
+            document.getElementById('errorMsg').innerText = "Invalid PIN. Try Again.";
+            setTimeout(() => {
+                currentInput = "";
+                updateDisplay();
+            }, 800);
+        }
+    }
+</script>
+</body>
+</html>

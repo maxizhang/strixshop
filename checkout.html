@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="logospfd.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Checkout</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #f7f5fa;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #2d2640;
+            --text-dim: #7a7090;
+            --accent: #8e6fc2;
+            --accent-hover: #7b5ab3;
+            --lavender-border: rgba(177, 156, 217, 0.3);
+            --error: #d93838;
+            --success: #28a745;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body, html {
+            width: 100%; height: 100vh;
+            background: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+        }
+
+        .bg-image-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('indexbg.png');
+            background-size: cover; background-position: center;
+            opacity: 0.1; z-index: 0; pointer-events: none;
+        }
+
+        .checkout-layout {
+            position: relative; z-index: 10;
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            grid-template-rows: 55px 1fr;
+            height: 100vh;
+            gap: 12px;
+            padding: 12px;
+        }
+
+        .top-bar {
+            grid-column: 1 / -1;
+            background: var(--card-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--lavender-border);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0 4px 15px rgba(130, 110, 160, 0.05);
+        }
+
+        .brand-area { display: flex; align-items: center; gap: 8px; text-decoration: none; }
+        .brand-area img { height: 28px; width: 28px; object-fit: contain; }
+        .brand-area span { font-weight: 700; font-size: 1.05rem; letter-spacing: 1px; color: #3d3156; }
+
+        .back-btn {
+            background: #f0eaf8; border: 1px solid var(--lavender-border); color: var(--text-main);
+            padding: 6px 14px; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer;
+            text-decoration: none; transition: background 0.2s;
+        }
+        .back-btn:hover { background: #e2d5f2; border-color: var(--accent); }
+
+        .summary-section {
+            grid-row: 2 / 3;
+            background: var(--card-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--lavender-border);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(130, 110, 160, 0.08);
+            padding: 16px;
+            gap: 12px;
+        }
+
+        .section-title { font-weight: 700; font-size: 1rem; color: #3d3156; border-bottom: 1px solid var(--lavender-border); padding-bottom: 8px; }
+        
+        .checkout-items-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; max-height: 380px; }
+        .checkout-item {
+            background: rgba(255,255,255,0.7); border: 1px solid var(--lavender-border); border-radius: 10px;
+            padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;
+        }
+
+        .totals-box {
+            background: rgba(255,255,255,0.6); border: 1px solid var(--lavender-border); border-radius: 12px; padding: 12px;
+            display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem;
+        }
+        .total-row { display: flex; justify-content: space-between; }
+        .total-row.final { font-weight: 700; font-size: 1.05rem; color: var(--accent); border-top: 1px dashed var(--lavender-border); padding-top: 6px; }
+
+        .form-section {
+            grid-row: 2 / 3;
+            background: var(--card-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--lavender-border);
+            border-radius: 16px;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 0 8px 25px rgba(130, 110, 160, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        
+        .form-group { display: flex; flex-direction: column; gap: 4px; }
+        .form-group.full { grid-column: span 2; }
+        .form-group label { font-size: 0.75rem; font-weight: 700; color: var(--text-dim); }
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 8px 12px; border: 1px solid var(--lavender-border); border-radius: 10px;
+            font-family: 'Quicksand', sans-serif; font-size: 0.85rem; outline: none; background: #fff; color: var(--text-main);
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--accent); box-shadow: 0 0 5px rgba(142,111,194,0.2); }
+        .form-group textarea { resize: none; height: 75px; }
+
+        .policies-container {
+            display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--lavender-border); padding-top: 12px;
+        }
+        .checkbox-label {
+            display: flex; align-items: flex-start; gap: 8px; font-size: 0.78rem; cursor: pointer; font-weight: 500; line-height: 1.3;
+        }
+        .checkbox-label input { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; margin-top: 1px; flex-shrink: 0; }
+
+        .complete-btn {
+            background: linear-gradient(135deg, #a788db, #8e6fc2); color: white; border: none;
+            padding: 12px; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; text-align: center;
+            box-shadow: 0 4px 15px rgba(142,111,194,0.3); transition: transform 0.2s; margin-top: auto;
+        }
+        .complete-btn:hover { transform: scale(1.01); }
+
+        @media(max-width: 900px) {
+            .checkout-layout { grid-template-columns: 1fr; grid-template-rows: auto auto auto; height: auto; overflow-y: auto; }
+            body, html { overflow: auto; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-image-layer"></div>
+
+<div class="checkout-layout">
+    <header class="top-bar">
+        <a href="index.html" class="brand-area">
+            <img src="logoh.png" alt="Logo" onerror="this.src='logospfd.png'">
+            <span>STRIX SHOP | CHECKOUT</span>
+        </a>
+        <a href="register.html" class="back-btn">&larr; Return to Register</a>
+    </header>
+
+    <section class="summary-section">
+        <div class="section-title">Order Summary</div>
+        <div class="checkout-items-list" id="checkoutItemsList">
+            <!-- Dynamically populated cart items -->
+        </div>
+        <hr>
+        <div class="totals-box">
+            <div class="total-row"><span>Subtotal:</span> <span id="summarySubtotal">$0.00</span></div>
+            <div class="total-row"><span>Discount:</span> <span id="summaryDiscount">-$0.00</span></div>
+            <div class="total-row final"><span>Final Total:</span> <span id="summaryTotal">$0.00</span></div>
+        </div>
+    </section>
+
+    <section class="form-section">
+        <div class="section-title">Customer Details</div>
+        
+        <form id="checkoutForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="firstName">First Name *</label>
+                    <input type="text" id="firstName" required placeholder="Maxi">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name *</label>
+                    <input type="text" id="lastName" required placeholder="Zhang">
+                </div>
+                <div class="form-group full">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" required placeholder="maxizhang1128@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label for="gradeLevel">Grade Level *</label>
+                    <input type="text" id="gradeLevel" required placeholder="9">
+                </div>
+                <div class="form-group">
+                    <label for="homeroom">Homeroom Teacher OR Number *</label>
+                    <input type="text" id="homeroom" required placeholder="Teacher Name or Room #">
+                </div>
+                <div class="form-group full">
+                    <label for="useGiftCard">Use Gift Cards to Pay? *</label>
+                    <select id="useGiftCard" required>
+                        <option value="No">No</option>
+                        <option value="Yes">Yes</option>
+                    </select>
+                </div>
+                <div class="form-group full">
+                    <label for="comments">Other comments or concerns?</label>
+                    <textarea id="comments" maxlength="1000" placeholder="Max 1,000 characters..."></textarea>
+                </div>
+            </div>
+
+            <div class="policies-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="policy1" required>
+                    <span>All orders are final once placed. By submitting an order, the customer enters into a binding agreement to purchase the item(s).</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="policy2" required>
+                    <span>I understand I might be asked to pay up to 25% of the order prior to delivery, and the rest will be paid after the delivery is received.</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="policy3" required>
+                    <span>I have read and agree to the Terms and Conditions.</span>
+                </label>
+            </div>
+            <br><br>
+            <button type="submit" class="complete-btn" id="completeOrderBtn">Complete Checkout & Submit Order</button>
+        </form>
+    </section>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
+        authDomain: "strix-shop.firebaseapp.com",
+        projectId: "strix-shop",
+        storageBucket: "strix-shop.firebasestorage.app",
+        messagingSenderId: "300414445622",
+        appId: "1:300414445622:web:97465fa5309c27b9605097"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const agentName = sessionStorage.getItem("agentName") || "Zisi";
+    let cartItems = [];
+    let cartSubtotal = 0;
+    let registerDiscountAmount = 0;
+    let registerTotal = 0;
+
+    async function loadCartData() {
+        try {
+            const cartDocRef = doc(db, "cartA", agentName);
+            const cartSnap = await getDoc(cartDocRef);
+
+            if (cartSnap.exists()) {
+                const data = cartSnap.data();
+                cartSubtotal = Number(data.subtotal || 0);
+                registerTotal = Number(data.total || 0);
+                registerDiscountAmount = cartSubtotal - registerTotal;
+
+                if (data.items) {
+                    cartItems = Object.keys(data.items).map(id => ({
+                        id,
+                        ...data.items[id]
+                    }));
+                }
+                renderSummaryUI();
+            } else {
+                alert("No active cart found for agent: " + agentName);
+                window.location.href = "register.html";
+            }
+        } catch (err) {
+            console.error("Error loading cart for checkout:", err);
+        }
+    }
+
+    function renderSummaryUI() {
+        const listEl = document.getElementById('checkoutItemsList');
+        listEl.innerHTML = "";
+
+        if (cartItems.length === 0) {
+            listEl.innerHTML = `<div style="text-align: center; color: var(--text-dim); padding: 20px;">Your cart is empty.</div>`;
+            return;
+        }
+
+        cartItems.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'checkout-item';
+            div.innerHTML = `
+                <div>
+                    <strong>${item.name}</strong><br>
+                    <span style="font-size: 0.75rem; color: var(--text-dim);">$${Number(item.price).toFixed(2)} x ${item.qty}</span>
+                </div>
+                <div style="font-weight: 700;">$${(Number(item.price) * item.qty).toFixed(2)}</div>
+            `;
+            listEl.appendChild(div);
+        });
+
+        document.getElementById('summarySubtotal').innerText = `$${cartSubtotal.toFixed(2)}`;
+        document.getElementById('summaryDiscount').innerText = `-$${registerDiscountAmount.toFixed(2)}`;
+        document.getElementById('summaryTotal').innerText = `$${registerTotal.toFixed(2)}`;
+    }
+
+    // Form Submission & Order Processing
+    document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (cartItems.length === 0) {
+            alert("Cannot checkout with an empty cart!");
+            return;
+        }
+
+        const btn = document.getElementById('completeOrderBtn');
+        btn.disabled = true;
+        btn.innerText = "Processing Order...";
+
+        try {
+            const fName = document.getElementById('firstName').value.trim();
+            const lName = document.getElementById('lastName').value.trim();
+            const mail = document.getElementById('email').value.trim();
+            const gLevel = document.getElementById('gradeLevel').value.trim();
+            const hRoom = document.getElementById('homeroom').value.trim();
+            const giftCardPay = document.getElementById('useGiftCard').value.toLowerCase();
+            const orderComments = document.getElementById('comments').value.trim();
+
+            // Format order date matching "September 14, 2026"
+            const currentDate = new Date().toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Map cart items into the structured format with selections
+            const formattedItems = cartItems.map(item => ({
+                name: item.name || "",
+                price: Number(item.price || 0),
+                productId: item.id || "",
+                qty: Number(item.qty || 1),
+            }));
+
+            // Discounts array structure
+            const discountsList = registerDiscountAmount > 0 ? [{
+                amount: Number(registerDiscountAmount.toFixed(2)),
+                name: "Discount"
+            }] : [];
+
+            const orderData = {
+                createdAt: serverTimestamp(),
+                customer: `${fName} ${lName}`,
+                discounts: discountsList,
+                email: mail,
+                giftcard: giftCardPay,
+                grade: gLevel,
+                homeroom: hRoom,
+                ip: "Unavailable",
+                items: formattedItems,
+                notes: orderComments,
+                orderDate: currentDate,
+                status: "Delivered",
+                source: "In-Person",
+                total: registerTotal.toFixed(2),
+                uid: null,
+                userId: null
+            };
+
+            // Save order to 'orders' collection[cite: 1]
+            await addDoc(collection(db, "orders"), orderData);
+
+            // Clear the active cart document in Firestore
+            const cartDocRef = doc(db, "cartA", agentName);
+            await setDoc(cartDocRef, {
+                agent: agentName,
+                subtotal: 0,
+                discountName: "None",
+                total: 0,
+                items: {},
+                updatedAt: serverTimestamp()
+            });
+
+            alert("Order completed successfully!");
+            window.location.href = "tables.html";
+
+        } catch (err) {
+            console.error("Error finalizing checkout:", err);
+            alert("An error occurred while submitting the order. Please try again.");
+            btn.disabled = false;
+            btn.innerText = "Complete Checkout & Submit Order";
+        }
+    });
+
+    // Initialize loader
+    loadCartData();
+</script>
+</body>
+</html>
