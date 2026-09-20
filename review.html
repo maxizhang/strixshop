@@ -9,8 +9,8 @@
 
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
+            --primary: #484976;
+            --primary-hover: #646093;
             --surface: rgba(255, 255, 255, 0.25);
             --surface-hover: rgba(255, 255, 255, 0.35);
             --text-main: #0f172a;
@@ -210,9 +210,6 @@
             transition: color 0.2s;
         }
 
-        .star.selected, .star:hover, .star:hover ~ .star {
-            /* Note: standard JS controls selection styling cleanly */
-        }
         .star.active {
             color: var(--star-active);
         }
@@ -221,12 +218,25 @@
         .survey-grid {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 18px;
             background: rgba(255, 255, 255, 0.4);
             padding: 20px;
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.8);
             margin-bottom: 22px;
+        }
+
+        .survey-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .survey-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
         }
 
         .survey-question {
@@ -235,23 +245,43 @@
             color: #1e1b4b;
         }
 
-        .radio-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-dim);
+        /* Evenly spaced layout for the 3 options */
+        .radio-group-evenly {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            width: 100%;
         }
 
-        .radio-group label {
+        .radio-group-evenly label {
             display: flex;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid #cbd5e1;
+            padding: 10px 12px;
+            border-radius: 10px;
             cursor: pointer;
             text-transform: none;
             color: var(--text-main);
             font-family: 'Quicksand', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            text-align: center;
+            margin-bottom: 0;
+        }
+
+        .radio-group-evenly label:hover {
+            background: #ffffff;
+            border-color: var(--primary);
+        }
+
+        .radio-group-evenly input[type="radio"] {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
         }
 
         .btn-submit {
@@ -288,7 +318,8 @@
 
         @media (max-width: 600px) {
             .review-card { padding: 20px; }
-            .radio-group { flex-direction: column; gap: 8px; }
+            .radio-group-evenly { grid-template-columns: 1fr; gap: 6px; }
+            .radio-group-evenly label { justify-content: flex-start; padding: 10px 14px; }
         }
     </style>
 </head>
@@ -344,67 +375,67 @@
                 <input type="hidden" id="overall-rating" value="5" required>
             </div>
 
-            <!-- 4-10. Survey Questions (7 quick options) -->
+            <!-- 4-10. Survey Questions (7 evenly spaced options) -->
             <label style="margin-bottom: 12px;">Detailed Evaluation Questions</label>
             <div class="survey-grid">
                 <!-- Q1 -->
-                <div>
+                <div class="survey-row">
                     <div class="survey-question">1. Did the product match its description online?</div>
-                    <div class="radio-group">
+                    <div class="radio-group-evenly">
                         <label><input type="radio" name="q1" value="Yes" required> Yes</label>
                         <label><input type="radio" name="q1" value="Somewhat"> Somewhat</label>
                         <label><input type="radio" name="q1" value="No"> No</label>
                     </div>
                 </div>
                 <!-- Q2 -->
-                <div>
+                <div class="survey-row">
                     <div class="survey-question">2. How would you rate the build quality / materials?</div>
-                    <div class="radio-group">
+                    <div class="radio-group-evenly">
                         <label><input type="radio" name="q2" value="Excellent" required> Excellent</label>
                         <label><input type="radio" name="q2" value="Average"> Average</label>
                         <label><input type="radio" name="q2" value="Poor"> Poor</label>
                     </div>
                 </div>
                 <!-- Q3 -->
-                <div>
+                <div class="survey-row">
                     <div class="survey-question">3. Was the item packaged securely for shipping?</div>
-                    <div class="radio-group">
+                    <div class="radio-group-evenly">
                         <label><input type="radio" name="q3" value="Very Secure" required> Very Secure</label>
                         <label><input type="radio" name="q3" value="Acceptable"> Acceptable</label>
                         <label><input type="radio" name="q3" value="Damaged"> Damaged</label>
                     </div>
                 </div>
                 <!-- Q4 -->
-                <div>
+                <div class="survey-row">
                     <div class="survey-question">4. How satisfied are you with the delivery speed?</div>
-                    <div class="radio-group">
+                    <div class="radio-group-evenly">
                         <label><input type="radio" name="q4" value="Fast" required> Fast</label>
                         <label><input type="radio" name="q4" value="Average"> Average</label>
                         <label><input type="radio" name="q4" value="Slow"> Slow</label>
                     </div>
                 </div>
                 <!-- Q5 -->
-                <div>
+                <div class="survey-row">
                     <div class="survey-question">5. Is this product worth the price paid?</div>
-                    <div class="radio-group">
+                    <div class="radio-group-evenly">
                         <label><input type="radio" name="q5" value="Great Value" required> Great Value</label>
                         <label><input type="radio" name="q5" value="Fair"> Fair</label>
                         <label><input type="radio" name="q5" value="Overpriced"> Overpriced</label>
                     </div>
                 </div>
                 <!-- Q6 -->
-                <div>
+                <div class="survey-row">
                     <div class="survey-question">6. Would you purchase this product again?</div>
-                    <div class="radio-group">
+                    <div class="radio-group-evenly">
                         <label><input type="radio" name="q6" value="Definitely" required> Definitely</label>
                         <label><input type="radio" name="q6" value="Maybe"> Maybe</label>
                         <label><input type="radio" name="q6" value="No"> No</label>
                     </div>
                 </div>
                 <!-- Q7 -->
-                <div>
+                <div class="survey-row">
                     <div class="survey-question">7. Would you recommend Strix Shop to a friend?</div>
-                    <div class="radio-group">
+                    <div class="radio-group-evenly">
                         <label><input type="radio" name="q7" value="Yes" required> Yes</label>
                         <label><input type="radio" name="q7" value="Maybe"> Maybe</label>
                         <label><input type="radio" name="q7" value="No"> No</label>
@@ -412,10 +443,10 @@
                 </div>
             </div>
 
-            <!-- Written Comment -->
+            <!-- Written Comment (Optional) -->
             <div class="form-group">
-                <label>Additional Comments / Feedback</label>
-                <textarea id="review-comment" placeholder="Tell us what you loved or what we can improve..." required></textarea>
+                <label>Additional Comments / Feedback (Optional)</label>
+                <textarea id="review-comment" placeholder="Tell us what you loved or what we can improve..."></textarea>
             </div>
 
             <button type="submit" id="submit-btn" class="btn-submit">Submit Product Review</button>
@@ -463,7 +494,6 @@
         });
         overallRatingInput.value = rating;
     }
-    // Set default 5 stars
     updateStars(5);
 
     stars.forEach(star => {
@@ -476,7 +506,7 @@
     auth.onAuthStateChanged((user) => {
         if (!user) {
             alert("Please log in to submit a review.");
-            window.location.href = "home.html"; // Adjust to login/home page as appropriate
+            window.location.href = "home.html";
             return;
         }
         loadUserOrders(user);
@@ -484,7 +514,6 @@
 
     async function loadUserOrders(user) {
         try {
-            // Query orders belonging to current user UID or Email
             const snapshot = await db.collection("orders")
                 .where("uid", "==", user.uid)
                 .get();
@@ -499,7 +528,7 @@
 
             snapshot.forEach(doc => {
                 const data = doc.data();
-                userOrdersData[doc.id] = data.items || []; // Assuming items array is stored in the order document
+                userOrdersData[doc.id] = data.items || [];
                 
                 const opt = document.createElement('option');
                 opt.value = doc.id;
@@ -522,7 +551,6 @@
 
         items.forEach((item, index) => {
             const opt = document.createElement('option');
-            // Assuming item has a name property, fallback to index if missing
             opt.value = item.name || `Product #${index + 1}`;
             opt.textContent = item.name || `Product Item #${index + 1}`;
             productSelect.appendChild(opt);
@@ -551,7 +579,6 @@
         const overallRating = parseInt(overallRatingInput.value, 10);
         const comment = document.getElementById('review-comment').value.trim();
 
-        // Collect answers to the 7 questions
         const surveyAnswers = {
             q1MatchDesc: document.querySelector('input[name="q1"]:checked').value,
             q2Quality: document.querySelector('input[name="q2"]:checked').value,
@@ -570,7 +597,7 @@
                 productName: productName,
                 overallRating: overallRating,
                 survey: surveyAnswers,
-                comment: comment,
+                comment: comment || "No additional comments provided.",
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             });
 

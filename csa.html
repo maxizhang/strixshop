@@ -1057,7 +1057,7 @@ onAuthStateChanged(auth, async (user) => {
     const data = snap.exists() ? snap.data() : null;
 
     if (!data || data.acc !== "admin") {
-        alert("ACCESS DENIED: ADMIN PRIVILEGES REQUIRED");
+        alert("ACCESS DENIED: ADMIN REQUIRED");
         window.location.href = "home.html";
         return;
     }
