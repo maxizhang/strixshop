@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0f0c1b;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-highlight: rgba(255, 255, 255, 0.25);
+            --text-main: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.65);
+            --accent: #b19cd9;
+            --accent-hover: #c5b4e3;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --error: #ff6b6b;
+            --success: #4ade80;
+        }
+
+        body.light-mode {
+            --bg-main: #f4f3f9;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(0, 0, 0, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.9);
+            --text-main: #1a1528;
+            --text-dim: rgba(26, 21, 40, 0.6);
+            --accent: #7c5cbf;
+            --accent-hover: #6a4aad;
+            --card-bg: rgba(255, 255, 255, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif !important;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 16px 24px;
+        }
+
+        .user-greeting {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .user-greeting h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .user-greeting span {
+            font-size: 0.82rem;
+            color: var(--text-dim);
+        }
+
+        .top-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-main);
+        }
+
+        .icon-btn:hover {
+            background: var(--glass-highlight);
+        }
+
+        .icon-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .primary-btn {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            padding: 10px 18px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: none; /* Controlled by Admin check */
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.light-mode .primary-btn {
+            color: #ffffff;
+        }
+
+        .primary-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .primary-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        /* Category Cards Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .metric-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .metric-card.active-filter {
+            border-color: var(--accent);
+            background: rgba(177, 156, 217, 0.1);
+        }
+
+        .metric-title {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        /* Task Section */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 50vh;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .task-card {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .task-card:hover {
+            border-color: var(--glass-highlight);
+            background: var(--glass-bg);
+        }
+
+        .task-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .task-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .task-meta {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            display: flex;
+            gap: 16px;
+        }
+
+        .task-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75srem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-pending {
+            background: rgba(255, 107, 107, 0.15);
+            color: var(--error);
+        }
+
+        .badge-completed {
+            background: rgba(74, 222, 128, 0.15);
+            color: var(--success);
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: var(--bg-main);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 520px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-dim);
+            padding: 4px;
+        }
+        .close-btn:hover {
+            color: var(--text-main);
+        }
+        .close-btn svg {
+            width: 20px; height: 20px; fill: currentColor;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
+
+        .form-control {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 12px 14px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+        }
+
+        select.form-control option {
+            background: #1a1528;
+            color: #ffffff;
+        }
+        body.light-mode select.form-control option {
+            background: #ffffff;
+            color: #1a1528;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-main);
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            border: none;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Detail Modal Specifics */
+        .detail-row {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .detail-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-dim);
+            font-weight: 700;
+        }
+        .detail-value {
+            font-size: 0.95rem;
+        }
+        .media-preview {
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 8px;
+            border: 1px solid var(--glass-border);
+            max-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.2);
+        }
+        .media-preview img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .media-preview iframe {
+            width: 100%;
+            height: 200px;
+            border: none;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <!-- Top Navigation Bar -->
+        <div class="top-bar">
+            <div class="user-greeting">
+                <h2 id="userNameDisplay">Loading User...</h2>
+                <span id="userEmailDisplay">Authenticating...</span>
+            </div>
+            <div class="top-actions">
+                <button class="icon-btn" id="themeToggleBtn" title="Toggle Theme" onclick="toggleTheme()">
+                    <svg id="themeIcon" viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313-12.446z"/></svg>
+                </button>
+                <button class="primary-btn" id="openCreateModalBtn" onclick="openCreateModal()">
+                    <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    New Task
+                </button>
+            </div>
+        </div>
+
+        <!-- Metric Category Cards -->
+        <div class="metrics-grid">
+            <div class="metric-card active-filter" id="filterUncompleted" onclick="setFilter('uncompleted')">
+                <span class="metric-title">Uncompleted Tasks</span>
+                <span class="metric-value" id="countUncompleted">0</span>
+            </div>
+            <div class="metric-card" id="filterCompleted" onclick="setFilter('completed')">
+                <span class="metric-title">Completed Tasks</span>
+                <span class="metric-value" id="countCompleted">0</span>
+            </div>
+            <div class="metric-card" id="filterDue7Days" onclick="setFilter('due7Days')">
+                <span class="metric-title">Due in 7 Days</span>
+                <span class="metric-value" id="countDue7Days">0</span>
+            </div>
+        </div>
+
+        <!-- Task List Section -->
+        <div class="section-header">
+            <h3 id="sectionTitleHeading">Uncompleted Tasks</h3>
+        </div>
+
+        <div class="task-list" id="taskListContainer">
+            <div class="empty-state">Loading tasks...</div>
+        </div>
+    </div>
+
+    <!-- Create Task Modal (Admin Only) -->
+    <div class="modal-overlay" id="createModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Create New Assignment</h3>
+                <button class="close-btn" onclick="closeCreateModal()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+            </div>
+            <form id="createTaskForm" onsubmit="handleCreateTask(event)" style="display: flex; flex-direction: column; gap: 14px;">
+                <div class="form-group">
+                    <label>Assign To User</label>
+                    <select id="taskAssignedTo" class="form-control" required>
+                        <option value="" disabled selected>Loading available users...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Task Title</label>
+                    <input type="text" id="taskTitle" class="form-control" placeholder="Enter task title" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="taskDescription" class="form-control" rows="3" placeholder="Enter task instructions"></textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" id="taskStartDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Due Date</label>
+                        <input type="date" id="taskDueDate" class="form-control" required>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div class="form-group">
+                        <label>Due Time</label>
+                        <input type="time" id="taskDueTime" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="taskLocation" class="form-control" placeholder="Office / Remote / Room">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>YouTube Video URL (Optional)</label>
+                    <input type="url" id="taskYoutube" class="form-control" placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+                <div class="form-group">
+                    <label>Image URL (Optional)</label>
+                    <input type="url" id="taskImage" class="form-control" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" onclick="closeCreateModal()">Cancel</button>
+                    <button type="submit" class="btn-primary" id="submitTaskBtn">Publish Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- View Task Detail Modal -->
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-card" id="detailModalContent">
+            <!-- Dynamically populated -->
+        </div>
+    </div>
+
+    <!-- Firebase SDK Setup -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs, addDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyArPb4CyEgpjHSF4ePyE2NE7RY4P5GxPks",
+            authDomain: "ssap-00.firebaseapp.com",
+            projectId: "ssap-00",
+            storageBucket: "ssap-00.firebasestorage.app",
+            messagingSenderId: "914204702517",
+            appId: "1:914204702517:web:d4bd735de25e74db8e3e7c"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const ADMIN_EMAIL = "maxizhang1128@gmail.com";
+        let currentUserEmail = "";
+        let currentFilter = "uncompleted";
+        let allTasks = [];
+        let availableUsers = [];
+
+        // Theme Manager
+        window.toggleTheme = function() {
+            document.body.classList.toggle('light-mode');
+            const isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        };
+
+        if (localStorage.getItem('theme') === 'light') {
+            document.body.classList.add('light-mode');
+        }
+
+        // Auth & Initial Load State
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUserEmail = user.email || sessionStorage.getItem("activeEmail") || "";
+                document.getElementById('userNameDisplay').innerText = currentUserEmail.split('@')[0].toUpperCase();
+                document.getElementById('userEmailDisplay').innerText = currentUserEmail;
+
+                // Check Admin Privileges
+                if (currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase() || user.uid === 'o8HUHesE01MG8NjgGWDR9IZNuuI2') {
+                    document.getElementById('openCreateModalBtn').style.display = 'flex';
+                }
+
+                await fetchUsers();
+                await fetchTasks();
+            } else {
+                // Fallback check session storage if auth state lags
+                const sessionEmail = sessionStorage.getItem("activeEmail");
+                if (sessionEmail) {
+                    currentUserEmail = sessionEmail;
+                    document.getElementById('userNameDisplay').innerText = currentUserEmail.split('@')[0].toUpperCase();
+                    document.getElementById('userEmailDisplay').innerText = currentUserEmail;
+                    if (currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+                        document.getElementById('openCreateModalBtn').style.display = 'flex';
+                    }
+                    await fetchUsers();
+                    await fetchTasks();
+                } else {
+                    window.location.href = "index.html";
+                }
+            }
+        });
+
+        async function fetchUsers() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "users"));
+                availableUsers = [];
+                querySnapshot.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    if (data.email) {
+                        availableUsers.push(data.email);
+                    }
+                });
+
+                const selectEl = document.getElementById('taskAssignedTo');
+                selectEl.innerHTML = '<option value="" disabled selected>Select employee email</option>';
+                availableUsers.forEach(email => {
+                    const opt = document.createElement('option');
+                    opt.value = email;
+                    opt.textContent = email;
+                    selectEl.appendChild(opt);
+                });
+            } catch (err) {
+                console.error("Error fetching users:", err);
+            }
+        }
+
+        async function fetchTasks() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "tasks"));
+                allTasks = [];
+                querySnapshot.forEach((docSnap) => {
+                    allTasks.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                renderDashboard();
+            } catch (err) {
+                console.error("Error fetching tasks:", err);
+                document.getElementById('taskListContainer').innerHTML = `<div class="empty-state">Failed to load tasks. Please check permissions.</div>`;
+            }
+        }
+
+        window.setFilter = function(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.metric-card').forEach(el => el.classList.remove('active-filter'));
+            if (filter === 'uncompleted') document.getElementById('filterUncompleted').classList.add('active-filter');
+            if (filter === 'completed') document.getElementById('filterCompleted').classList.add('active-filter');
+            if (filter === 'due7Days') document.getElementById('filterDue7Days').classList.add('active-filter');
+
+            const headings = {
+                'uncompleted': 'Uncompleted Tasks',
+                'completed': 'Completed Tasks',
+                'due7Days': 'Due in 7 Days'
+            };
+            document.getElementById('sectionTitleHeading').innerText = headings[filter];
+            renderDashboard();
+        };
+
+        function renderDashboard() {
+            const isAdmin = currentUserEmail.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+            // Filter by user permissions unless admin
+            let userTasks = allTasks.filter(task => {
+                if (isAdmin) return true;
+                return task.assignedTo && task.assignedTo.toLowerCase() === currentUserEmail.toLowerCase();
+            });
+
+            // Calculate metric counts based on user-visible tasks
+            const uncompletedCount = userTasks.filter(t => t.status !== 'completed').length;
+            const completedCount = userTasks.filter(t => t.status === 'completed').length;
+            
+            const now = new Date();
+            const sevenDaysLater = new Date();
+            sevenDaysLater.setDate(now.getDate() + 7);
+
+            const due7DaysCount = userTasks.filter(t => {
+                if (t.status === 'completed' || !t.dueDate) return false;
+                const due = new Date(t.dueDate);
+                return due >= now && due <= sevenDaysLater;
+            }).length;
+
+            document.getElementById('countUncompleted').innerText = uncompletedCount;
+            document.getElementById('countCompleted').innerText = completedCount;
+            document.getElementById('countDue7Days').innerText = due7DaysCount;
+
+            // Apply active tab filtering
+            let filteredTasks = userTasks.filter(t => {
+                if (currentFilter === 'uncompleted') return t.status !== 'completed';
+                if (currentFilter === 'completed') return t.status === 'completed';
+                if (currentFilter === 'due7Days') {
+                    if (t.status === 'completed' || !t.dueDate) return false;
+                    const due = new Date(t.dueDate);
+                    return due >= now && due <= sevenDaysLater;
+                }
+                return true;
+            });
+
+            // Sort by due date ascending
+            filteredTasks.sort((a, b) => new Date(a.dueDate || '2099-01-01') - new Date(b.dueDate || '2099-01-01'));
+
+            const container = document.getElementById('taskListContainer');
+            if (filteredTasks.length === 0) {
+                container.innerHTML = `<div class="empty-state">No tasks found in this category.</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            filteredTasks.forEach(task => {
+                const isCompleted = task.status === 'completed';
+                const card = document.createElement('div');
+                card.className = 'task-card';
+                card.onclick = () => openDetailModal(task);
+                card.innerHTML = `
+                    <div class="task-info">
+                        <span class="task-title">${escapeHtml(task.title || 'Untitled Task')}</span>
+                        <div class="task-meta">
+                            <span>Due: ${task.dueDate || 'No date'} ${task.dueTime || ''}</span>
+                            <span>Assigned to: ${escapeHtml(task.assignedTo || 'Unassigned')}</span>
+                        </div>
+                    </div>
+                    <span class="task-badge ${isCompleted ? 'badge-completed' : 'badge-pending'}">${isCompleted ? 'Completed' : 'Pending'}</span>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Modal Controls
+        window.openCreateModal = function() {
+            document.getElementById('createModal').style.display = 'flex';
+        };
+        window.closeCreateModal = function() {
+            document.getElementById('createModal').style.display = 'none';
+            document.getElementById('createTaskForm').reset();
+        };
+
+        window.handleCreateTask = async function(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitTaskBtn');
+            submitBtn.textContent = "Publishing...";
+            submitBtn.disabled = true;
+
+            try {
+                const newTask = {
+                    assignedTo: document.getElementById('taskAssignedTo').value,
+                    title: document.getElementById('taskTitle').value,
+                    description: document.getElementById('taskDescription').value,
+                    startDate: document.getElementById('taskStartDate').value,
+                    dueDate: document.getElementById('taskDueDate').value,
+                    dueTime: document.getElementById('taskDueTime').value,
+                    location: document.getElementById('taskLocation').value || 'Remote',
+                    youtubeUrl: document.getElementById('taskYoutube').value || '',
+                    imageUrl: document.getElementById('taskImage').value || '',
+                    status: 'pending',
+                    createdAt: new Date().toISOString()
+                };
+
+                await addDoc(collection(db, "tasks"), newTask);
+                closeCreateModal();
+                await fetchTasks();
+            } catch (err) {
+                console.error("Error creating task:", err);
+                alert("Failed to create task. Check your admin permissions.");
+            } finally {
+                submitBtn.textContent = "Publish Task";
+                submitBtn.disabled = false;
+            }
+        };
+
+        function openDetailModal(task) {
+            const isCompleted = task.status === 'completed';
+            const modal = document.getElementById('detailModalContent');
+
+            let youtubeEmbed = '';
+            if (task.youtubeUrl) {
+                const videoId = extractYouTubeId(task.youtubeUrl);
+                if (videoId) {
+                    youtubeEmbed = `<div class="media-preview"><iframe src="https://www.youtube.com/embed/${videoId}" allowfullscreen></iframe></div>`;
+                }
+            }
+
+            let imageEmbed = '';
+            if (task.imageUrl) {
+                imageEmbed = `<div class="media-preview"><img src="${escapeHtml(task.imageUrl)}" alt="Task Image"></div>`;
+            }
+
+            modal.innerHTML = `
+                <div class="modal-header">
+                    <h3>Task Details</h3>
+                    <button class="close-btn" onclick="closeDetailModal()"><svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg></button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <div class="detail-row">
+                        <span class="detail-label">Title</span>
+                        <span class="detail-value" style="font-size: 1.1rem; font-weight: 600;">${escapeHtml(task.title)}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Assigned To</span>
+                        <span class="detail-value">${escapeHtml(task.assignedTo)}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Description</span>
+                        <span class="detail-value">${escapeHtml(task.description || 'No description provided.')}</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="detail-row">
+                            <span class="detail-label">Start Date</span>
+                            <span class="detail-value">${task.startDate || 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Due Date & Time</span>
+                            <span class="detail-value">${task.dueDate || 'N/A'} @ ${task.dueTime || ''}</span>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Location</span>
+                        <span class="detail-value">${escapeHtml(task.location || 'N/A')}</span>
+                    </div>
+                    ${youtubeEmbed}
+                    ${imageEmbed}
+                    <div class="modal-actions" style="margin-top: 15px;">
+                        <button type="button" class="btn-secondary" onclick="toggleTaskStatus('${task.id}', '${task.status}')">
+                            ${isCompleted ? 'Mark as Pending' : 'Mark as Completed'}
+                        </button>
+                        <button type="button" class="btn-primary" onclick="closeDetailModal()">Close</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        window.closeDetailModal = function() {
+            document.getElementById('detailModal').style.display = 'none';
+        };
+
+        window.toggleTaskStatus = async function(taskId, currentStatus) {
+            const newStatus = currentStatus === 'completed' ? 'pending' : 'completed';
+            try {
+                const taskRef = doc(db, "tasks", taskId);
+                await updateDoc(taskRef, { status: newStatus });
+                closeDetailModal();
+                await fetchTasks();
+            } catch (err) {
+                console.error("Error updating status:", err);
+                alert("Failed to update status.");
+            }
+        };
+
+        function extractYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+    </script>
+</body>
+</html>
