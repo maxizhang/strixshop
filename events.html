@@ -2,105 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="logospfd.png">
+    <link rel="icon" type="image/png" href="spfd.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Events</title>
     <!-- Rounded Font: Quicksand -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --primary: #484976;
-            --primary-hover: #4338ca;
-            --surface: rgba(255, 255, 255, 0.22);
+            --surface: rgba(255, 255, 255, 0.28);
+            --surface-hover: rgba(255, 255, 255, 0.38);
             --text-main: #0f172a;
             --text-dim: #475569;
-            --border: rgba(255, 255, 255, 0.65);
-            --border-subtle: rgba(226, 232, 240, 0.4);
-            --nav-dark: #0a0c12;
-            --glass-shadow: 0 25px 50px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --radius-main: 32px;
         }
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body { 
-            margin: 0; 
             font-family: 'Quicksand', sans-serif; 
-            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
-            background-size: 400% 400%;
-            animation: fluidBackground 18s ease infinite;
             color: var(--text-main); 
             min-height: 100vh; 
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            line-height: 1.6;
             position: relative;
         }
 
-        @keyframes fluidBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Animated Background Glowing Orbs */
-        .bg-orbs {
+        /* Background Layer with Random Image Support */
+        .bg-layer {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-            pointer-events: none;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.65;
+            z-index: -2;
+            transition: all 1s ease-in-out;
         }
 
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.5;
-            animation: floatOrb 12s ease-in-out infinite alternate;
-        }
-
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: rgba(129, 140, 248, 0.4);
-            top: -10%;
-            left: -10%;
-        }
-
-        .orb-2 {
-            width: 500px;
-            height: 500px;
-            background: rgba(167, 243, 208, 0.4);
-            bottom: -20%;
-            right: -10%;
-            animation-delay: -4s;
-        }
-
-        .orb-3 {
-            width: 350px;
-            height: 350px;
-            background: rgba(244, 114, 182, 0.25);
-            top: 40%;
-            left: 30%;
-            animation-delay: -8s;
-        }
-
-        @keyframes floatOrb {
-            0% { transform: translateY(0px) translateX(0px) scale(1); }
-            100% { transform: translateY(40px) translateX(30px) scale(1.1); }
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(240, 244, 248, 0.75), rgba(224, 231, 255, 0.75));
+            z-index: -1;
         }
 
         /* Entrance Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(24px);
             }
             to {
                 opacity: 1;
@@ -109,56 +70,53 @@
         }
 
         .animate-in {
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
         }
 
         .delay-1 { animation-delay: 0.1s; }
         .delay-2 { animation-delay: 0.2s; }
 
-        /* Bold, gray links globally */
-        a {
-            text-decoration: none;
-            font-weight: 700;
-            color: #64748b;
-            transition: color 0.2s;
-        }
-        a:hover {
-            color: #334155;
+        /* Professional Navbar */
+        nav {
+            background: rgba(0, 0, 0, 0.75);
+            height: 60px;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
         }
 
-        /* Professional Navbar */
-        nav { 
-            background: var(--nav-dark); 
-            width: 100%; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-        }
-        .nav-main { 
-            display: flex; 
-            align-items: center; 
-            padding: 14px 5%; 
-            justify-content: space-between; 
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            justify-content: space-between;
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
         }
-        .logo-box img { 
-            height: 32px; 
-            cursor: pointer; 
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
-            transition: transform 0.2s ease;
+
+        .logo-box img {
+            height: 28px;
+            cursor: pointer;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .logo-box img:hover {
-            transform: scale(1.05);
+            transform: scale(1.04);
         }
+
         .nav-right-actions {
             display: flex;
             align-items: center;
             gap: 24px;
         }
+
         .nav-link-item {
             display: flex;
             align-items: center;
@@ -167,23 +125,28 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 13px;
-            transition: color 0.2s;
+            transition: color 0.25s ease;
         }
+
         .nav-link-item svg {
             stroke: #cbd5e1;
-            transition: stroke 0.2s;
+            transition: stroke 0.25s ease;
         }
+
         .nav-link-item:hover {
             color: #ffffff;
         }
+
         .nav-link-item:hover svg {
             stroke: #ffffff;
         }
+
         .nav-divider {
             width: 1px;
             height: 20px;
             background: rgba(255, 255, 255, 0.15);
         }
+
         .nav-badge-text {
             font-size: 12px;
             font-weight: 600;
@@ -191,6 +154,7 @@
             letter-spacing: 0.5px;
         }
 
+        /* Main Container */
         .container {
             position: relative;
             z-index: 10;
@@ -200,18 +164,19 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 24px;
         }
 
         .hero {
             text-align: center;
-            padding: 20px 0 10px 0;
+            margin-bottom: 10px;
+            padding: 0 20px;
         }
 
         h1 { 
             font-size: 32px; 
             font-weight: 700; 
-            margin: 0 0 12px; 
+            margin: 0 0 10px; 
             color: #1e1b4b; 
             letter-spacing: -0.5px; 
         }
@@ -225,76 +190,81 @@
             margin: 0 auto;
         }
 
-        .wide-panel {
-            background: var(--surface);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
+        .glass-card {
+            background: var(--surface);           
             border: 1.5px solid var(--border);
-            border-radius: 32px;
+            border-radius: var(--radius-main);
             padding: 45px;
-            width: 100%;
             box-shadow: var(--glass-shadow);
             text-align: center;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s ease;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .wide-panel:hover {
-            background: rgba(255, 255, 255, 0.32);
-            transform: translateY(-6px);
-            box-shadow: 0 35px 70px rgba(97, 87, 181, 0.15), inset 0 1px 3px rgba(255, 255, 255, 0.95);
+        .glass-card:hover {
+            background: var(--surface-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
         .card-tag {
             font-size: 11px;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             color: var(--primary);
             text-transform: uppercase;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: block;
             font-weight: 700;
         }
 
-        .wide-panel h2 { 
-            font-size: 22px; 
-            font-weight: 700; 
-            margin: 0 0 12px 0; 
-            color: #1e1b4b; 
+        .glass-card h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e1b4b;
+            margin-bottom: 10px;
         }
 
-        .wide-panel p { 
-            color: var(--text-dim); 
-            line-height: 1.6; 
-            font-size: 13px; 
-            margin: 0; 
+        .glass-card p {
+            font-size: 13px;
             font-weight: 600;
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin: 0;
         }
 
         footer {
             text-align: center;
-            padding: 25px;
+            padding: 30px;
+            color: var(--text-dim);
             font-size: 12px;
             font-weight: 700;
-            color: var(--text-dim);
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             position: relative;
             z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .container { width: 95%; margin: 25px auto; }
+            .glass-card { padding: 25px; border-radius: 24px; }
+            .hero h1 { font-size: 26px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Animated background glowing orbs -->
-    <div class="bg-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
+    <!-- Background Layer & Overlay -->
+    <div class="bg-layer" id="bgLayer"></div>
+    <div class="bg-overlay"></div>
 
     <!-- Professional Navbar -->
     <nav>
         <div class="nav-main">
-            <div class="logo-box" onclick="window.location.href='home.html'"><img src="logoh.png" alt="STRIX"></div>
+            <div class="logo-box" onclick="window.location.href='events.html'">
+                <img src="logoh.png" alt="STRIX">
+            </div>
             <div class="nav-right-actions">
-                <a href="home.html" class="nav-link-item">
+                <a href="index.html" class="nav-link-item">
                     <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                     Home
                 </a>
@@ -304,28 +274,39 @@
         </div>
     </nav>
 
+    <!-- Main Content Container -->
     <div class="container">
         <div class="hero animate-in delay-1">
             <h1>Events</h1>
             <p>Check here for upcoming sales, community meetups, fundraisers, and other activities.</p>
         </div>
 
-        <div class="wide-panel animate-in delay-2">
+        <div class="glass-card animate-in delay-2">
             <span class="card-tag">Notice</span>
             <h2>There are no Events yet.</h2>
             <p>Check back later for announcements on upcoming school sales and activities.</p>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer>
         &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
     </footer>
 
+    <!-- Random Background Image Script -->
+    <script>
+        const n = Math.floor(Math.random() * 12) + 1;
+        const bgLayer = document.getElementById("bgLayer");
+        const img = new Image();
+        img.src = `bg${n}.png`;
+        img.onload = () => bgLayer.style.backgroundImage = `url('${img.src}')`;
+    </script>
+
+    <!-- Firebase Authentication Check -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
             authDomain: "strix-shop.firebaseapp.com",
@@ -338,10 +319,9 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Auth Check
         onAuthStateChanged(auth, (user) => {
             if (!user) {
-                window.location.href = "index.html";
+                window.location.href = "signin.html";
             }
         });
     </script>

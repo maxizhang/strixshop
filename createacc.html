@@ -2,85 +2,121 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="logospfd.png">
+    <link rel="icon" type="image/png" href="spfd.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Create Account</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --card-bg: rgba(15, 15, 25, 0.7);
-            --text-main: #ffffff;
-            --accent: #ffffff;
-            --input-bg: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.15);
-            --error: #ff5f5f;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --text-main: #1c263b;
+            --accent: #313b40;
+            --input-bg: rgba(0, 0, 0, 0.03);
+            --border: rgba(44, 62, 80, 0.15);
+            --error: #e74c3c;
+            --bg-color: #f8f9fa;
         }
 
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            background: #020205; color: var(--text-main);
+        body, html {
+            margin: 0; padding: 0; width: 100%; min-height: 100%;
+            background: var(--bg-color); color: var(--text-main);
             font-family: 'Quicksand', sans-serif;
             overflow-x: hidden;
         }
 
-        .bg-gif-layer {
+        .bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('indexbg.png');
             background-size: cover;
             background-position: center;
-            opacity: 0.25; 
+            opacity: 0.6;
             z-index: 0;
-        }
-
-        #bgstar {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; pointer-events: none;
+            transition: background-image 0.5s ease-in-out;
         }
 
         .container {
             position: relative;
-            display: flex; flex-direction: column; align-items: center; 
+            display: flex; flex-direction: column; align-items: center;
             min-height: 100vh; z-index: 10;
-            padding: 60px 20px;
+            padding: 50px 20px;
             box-sizing: border-box;
             max-width: 750px;
             margin: 0 auto;
         }
 
-        h2 { 
-            font-weight: 700; margin: 0 0 2rem; letter-spacing: 3px; 
-            font-size: 2.2rem; text-align: center; text-transform: uppercase; 
+        h2 {
+            font-weight: 700; margin: 0 0 6px; letter-spacing: 2px;
+            font-size: 2.2rem; text-align: center; text-transform: uppercase;
             width: 100%;
+            color: var(--text-main);
         }
 
-        /* Glassmorphism Section Boxes (Desktop) */
+        .subhead {
+            text-align: center;
+            width: 100%;
+            margin: 0 0 1.8rem;
+            font-size: 0.95rem;
+            opacity: 0.65;
+            font-weight: 500;
+        }
+
+        .progress-wrap { width: 100%; margin-bottom: 28px; }
+        .progress-track {
+            width: 100%; height: 6px; border-radius: 10px;
+            background: rgba(44, 62, 80, 0.1); overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%; width: 14.28%; background: #2c3e50;
+            border-radius: 10px; transition: width 0.4s ease;
+        }
+        .progress-label {
+            display: flex; justify-content: space-between;
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; opacity: 0.55; margin-top: 8px;
+        }
+
+        .slide-viewport { width: 100%; position: relative; overflow: hidden; }
+
         .glass-section {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            padding: 2.5rem;
-            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 1.5rem;
+            border-radius: 25px;
             width: 100%;
             border: 1px solid var(--border);
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.03);
-            margin-bottom: 25px;
+            box-sizing: border-box;
+            display: none;
+            opacity: 0;
+            transform: translateX(24px);
+            animation: slide-in 0.35s ease forwards;
+        }
+        .glass-section.active-step { display: block; }
+
+        @keyframes slide-in {
+            from { opacity: 0; transform: translateX(24px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .glass-section.slide-back { animation-name: slide-in-back; }
+        @keyframes slide-in-back {
+            from { opacity: 0; transform: translateX(-24px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .section-title {
+            font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+            color: var(--text-main); opacity: 0.6; margin: 0 0 20px 0;
+            letter-spacing: 2px; border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
             box-sizing: border-box;
         }
 
-        .section-title { 
-            font-size: 0.85rem; font-weight: 700; text-transform: uppercase; 
-            color: rgba(255,255,255,0.7); margin: 0 0 20px 0; 
-            letter-spacing: 3px; border-bottom: 1px solid var(--border); 
-            padding-bottom: 8px; 
-        }
-
-        .form-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 20px; 
-            width: 100%; 
-            box-sizing: border-box; 
-        }
-        
         .full-line-grid {
             display: flex;
             flex-direction: column;
@@ -89,330 +125,379 @@
             box-sizing: border-box;
         }
 
-        @media (max-width: 600px) { 
-            .form-grid { grid-template-columns: 1fr; } 
+        @media (max-width: 600px) {
+            .form-grid { grid-template-columns: 1fr; }
         }
 
-        .input-wrap { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 5px; 
-            width: 100%; 
-            min-width: 0; 
+        .input-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+            min-width: 0;
             overflow: hidden;
-            box-sizing: border-box; 
+            box-sizing: border-box;
         }
-        .field-label { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.7); padding-left: 15px; text-transform: uppercase; }
+        .input-wrap.no-overflow { overflow: visible; }
 
-        input, select {
-            width: 100%; 
+        .field-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            opacity: 0.6;
+            padding-left: 15px;
+            text-transform: uppercase;
+        }
+
+        input {
+            width: 100%;
             max-width: 100%;
             min-width: 0;
             height: 54px;
-            padding: 0 22px; 
+            padding: 0 22px;
             background: var(--input-bg);
             border: 1px solid var(--border);
             border-radius: 50px;
-            color: white; outline: none;
+            color: var(--text-main);
+            outline: none;
             box-sizing: border-box;
             font-family: inherit;
             font-size: 0.95rem;
-            transition: 0.4s;
+            transition: 0.3s;
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
         }
 
-        input:focus, select:focus { border-color: #fff; background: rgba(255,255,255,0.12); box-shadow: 0 0 15px rgba(255,255,255,0.1); }
-        select option { background: #0a0a15; color: white; }
+        input::placeholder { color: rgba(44, 62, 80, 0.4); }
+        input:focus {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.15);
+        }
 
-        a { color: white; text-decoration: underline; text-underline-offset: 3px; opacity: 0.8; transition: 0.3s; }
-        a:hover { opacity: 1; }
+        /* Hide native browser password reveal/clear icons (Edge, Chrome) so only our custom eye button shows */
+        input[type="password"]::-ms-reveal,
+        input[type="password"]::-ms-clear { display: none; }
+        input::-webkit-credentials-auto-fill-button,
+        input::-webkit-strong-password-auto-fill-button { visibility: hidden; pointer-events: none; position: absolute; right: 0; }
 
-        .checkbox-group { display: flex; align-items: flex-start; gap: 12px; margin: 15px 0; cursor: pointer; font-size: 0.85rem; line-height: 1.5; }
+        a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; font-weight: 500; transition: 0.3s; }
+        a:hover { opacity: 0.8; }
+
+        /* Select buttons (replaces dropdowns) */
+        .select-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .select-btn {
+            padding: 13px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            background: var(--input-bg);
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.25s;
+            box-sizing: border-box;
+        }
+        .select-btn:hover { background: rgba(255, 255, 255, 0.9); border-color: var(--accent); }
+        .select-btn.active {
+            background: #2c3e50;
+            color: #ffffff;
+            border-color: #2c3e50;
+            box-shadow: 0 4px 12px rgba(44, 62, 80, 0.25);
+        }
+
+        .select-buttons.stacked {
+            flex-direction: column;
+        }
+        .select-buttons.stacked .select-btn {
+            text-align: left;
+            border-radius: 16px;
+            padding: 14px 20px;
+            width: 100%;
+        }
+
+        .shake { animation: shake 0.35s; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
+        }
+        .select-buttons.invalid .select-btn { border-color: var(--error); }
+        .password-wrap.invalid input { border-color: var(--error); }
+
+        .field-error {
+            color: var(--error);
+            font-size: 0.72rem;
+            font-weight: 500;
+            padding-left: 15px;
+            min-height: 1em;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 15px 0;
+            cursor: pointer;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: var(--text-main);
+        }
         .checkbox-group input { width: auto; height: auto; margin-top: 4px; cursor: pointer; padding: 0; appearance: auto; -webkit-appearance: checkbox; }
 
-        button {
+        button.primary-btn, button#submitBtn {
             width: 100%; padding: 18px;
-            background: #ffffff; color: #000;
+            background: #2c3e50; color: #ffffff;
             border: none; border-radius: 50px;
             font-weight: 700; cursor: pointer; font-size: 1.1rem;
             letter-spacing: 1px; transition: 0.3s;
             box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(44, 62, 80, 0.2);
         }
+        button.primary-btn:hover, button#submitBtn:hover { background: #34495e; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(44, 62, 80, 0.3); }
+        button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
 
-        button:hover { background: #e0e0e0; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,255,255,0.2); }
-        button:disabled { opacity: 0.3; cursor: not-allowed; transform: none; box-shadow: none; }
-
-        .error-box { 
-            color: var(--error); font-size: 0.9rem; text-align: center; 
-            margin: 15px 0; min-height: 1.2em; font-weight: 500; 
+        .error-box {
+            color: var(--error); font-size: 0.9rem; text-align: center;
+            margin: 15px 0; min-height: 1.2em; font-weight: 500;
             width: 100%;
         }
-        
-        .success-overlay { 
-            position: fixed; inset: 0; background: #020205; z-index: 100; 
-            display: none; flex-direction: column; align-items: center; 
-            justify-content: center; text-align: center; 
+
+        .success-overlay {
+            position: fixed; inset: 0; background: #ffffff; z-index: 100;
+            display: none; flex-direction: column; align-items: center;
+            justify-content: center; text-align: center;
+            color: var(--text-main);
         }
 
-        input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(1); cursor: pointer; }
-
-        /* Password container layout */
-        .password-wrap {
-            position: relative;
-            width: 100%;
-        }
-        .password-wrap input {
-            padding-right: 55px;
-        }
+        .password-wrap { position: relative; width: 100%; }
+        .password-wrap input { padding-right: 55px; }
         .eye-btn {
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            width: auto;
-            height: auto;
-            margin: 0;
-            opacity: 0.7;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
+            position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; cursor: pointer; padding: 0;
+            width: auto; height: auto; margin: 0; opacity: 0.6; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-main);
         }
-        .eye-btn:hover {
-            opacity: 1;
-            background: none;
-            box-shadow: none;
-            transform: translateY(-50%);
-        }
+        .eye-btn:hover { opacity: 1; background: none; box-shadow: none; transform: translateY(-50%); }
 
-        /* Mobile Step Wizard & Glassmorphic Light Mobile Styles */
-        .mobile-nav {
-            display: none;
+        .nav-controls {
+            display: flex;
             gap: 15px;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 24px;
         }
-
-        @media (max-width: 600px) {
-            .glass-section {
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
-                backdrop-filter: none !important;
-                padding: 0 !important;
-                margin-bottom: 20px;
-                display: none;
-            }
-            .glass-section.active-step {
-                display: block;
-            }
-            .mobile-nav {
-                display: flex;
-            }
-            /* Light glassmorphic styling for inputs on phones */
-            input, select {
-                background: rgba(255, 255, 255, 0.12) !important;
-                border: 1px solid rgba(255, 255, 255, 0.35) !important;
-                backdrop-filter: blur(15px);
-                -webkit-backdrop-filter: blur(15px);
-                color: #ffffff;
-            }
-            input:focus, select:focus {
-                background: rgba(255, 255, 255, 0.2) !important;
-                border-color: #ffffff !important;
-                box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
-            }
-            .section-title {
-                color: rgba(255, 255, 255, 0.9);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.25);
-            }
+        .nav-controls button { padding: 16px; font-size: 1rem; }
+        .skip-link {
+            text-align: center;
+            width: 100%;
+            margin-top: 14px;
+            font-size: 0.8rem;
+            opacity: 0.55;
         }
+        .skip-link a { color: var(--text-main); }
     </style>
 </head>
 <body>
 
-<div class="bg-gif-layer"></div>
-<canvas id="bgstar"></canvas>
+<div class="bg-layer" id="bg-layer"></div>
 
 <div class="container">
+
     <h2>Create Your Account</h2>
-    
+    <p class="subhead">One step at a time — takes about a minute</p>
+
+    <div class="progress-wrap">
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="progress-label"><span id="progress-text">Step 1 of 7</span><span id="progress-percent">14%</span></div>
+    </div>
+
     <form id="reg-form" style="width: 100%;">
-        
-        <div class="glass-section active-step" data-step="1">
-            <div class="section-title">Identity (1/7)</div>
-            <div class="form-grid">
-                <div class="input-wrap">
-                    <span class="field-label">First Name</span>
-                    <input type="text" id="f-name" placeholder="E.g. Harry" required>
-                </div>
-                <div class="input-wrap">
-                    <span class="field-label">Last Name</span>
-                    <input type="text" id="l-name" placeholder="E.g. Potter" required>
-                </div>
-                <div class="input-wrap">
-                    <span class="field-label">Date of Birth</span>
-                    <input type="date" id="dob" required>
-                </div>
-                <div class="input-wrap">
-                    <span class="field-label">Current Age</span>
-                    <input type="number" id="age" min="12" max="120" required>
-                </div>
-            </div>
-        </div>
 
-        <div class="glass-section" data-step="2">
-            <div class="section-title">Gender and Pronouns (2/7)</div>
-            <div class="form-grid">
-                <div class="input-wrap">
-                    <span class="field-label">Gender</span>
-                    <select id="gender" required>
-                        <option value="" disabled selected>Select</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="input-wrap">
-                    <span class="field-label">Pronouns</span>
-                    <select id="pronouns">
-                        <option value="" disabled selected>Select</option>
-                        <option value="he/him">He/Him</option>
-                        <option value="she/her">She/Her</option>
-                        <option value="they/them">They/Them</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-            </div>
-        </div>
+        <div class="slide-viewport">
 
-        <div class="glass-section" data-step="3">
-            <div class="section-title">School and Grade Level (3/7)</div>
-            <div class="form-grid">
-                <div class="input-wrap">
-                    <span class="field-label">Grade Level</span>
-                    <select id="grade" required>
-                        <option value="" disabled selected>Select (9-12)</option>
-                        <option value="9">Grade 9</option>
-                        <option value="10">Grade 10</option>
-                        <option value="11">Grade 11</option>
-                        <option value="12">Grade 12</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="input-wrap">
-                    <span class="field-label">School</span>
-                    <select id="school">
-                        <option value="Conestoga High School">Conestoga High School</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="glass-section" data-step="4">
-            <div class="section-title">Credentials (4/7)</div>
-            <div class="full-line-grid">
-                <div class="input-wrap">
-                    <span class="field-label">Email</span>
-                    <input type="email" id="email" placeholder="harrypotter@hogwarts.edu" required>
-                </div>
-                <div class="input-wrap">
-                    <span class="field-label">Password</span>
-                    <div class="password-wrap">
-                        <input type="password" id="pass" placeholder="Min 8 characters" required minlength="8">
-                        <button type="button" class="eye-btn" onclick="togglePassword('pass', this)" aria-label="Toggle password visibility">
-                            <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                        </button>
+            <div class="glass-section active-step" data-step="1">
+                <div class="section-title">Identity</div>
+                <div class="form-grid">
+                    <div class="input-wrap">
+                        <span class="field-label">First Name</span>
+                        <input type="text" id="f-name" placeholder="E.g. Harry" required>
                     </div>
-                    <span class="field-label" style="font-size: 0.65rem; color: rgba(255,255,255,0.4);">* Stored securely via Firebase Auth.</span>
-                </div>
-                <div class="input-wrap">
-                    <span class="field-label">Confirm Password</span>
-                    <div class="password-wrap">
-                        <input type="password" id="pass-confirm" placeholder="Repeat Passcode" required minlength="8">
-                        <button type="button" class="eye-btn" onclick="togglePassword('pass-confirm', this)" aria-label="Toggle confirm password visibility">
-                            <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                        </button>
+                    <div class="input-wrap">
+                        <span class="field-label">Last Name</span>
+                        <input type="text" id="l-name" placeholder="E.g. Potter" required>
+                    </div>
+                    <div class="input-wrap">
+                        <span class="field-label">Date of Birth</span>
+                        <input type="date" id="dob" required>
+                    </div>
+                    <div class="input-wrap">
+                        <span class="field-label">Current Age</span>
+                        <input type="number" id="age" min="12" max="120" required>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="glass-section" data-step="5">
-            <div class="section-title">Profile Picture <strong>(Optional 5/7)</strong></div>
-            <div class="full-line-grid">
-                <div class="input-wrap">
-                    <span class="field-label">Profile Image Link</span>
-                    <input type="url" id="pfp" placeholder="Paste URL (optional)">
+            <div class="glass-section" data-step="2">
+                <div class="section-title">Gender and Pronouns</div>
+                <div class="full-line-grid">
+                    <div class="input-wrap no-overflow">
+                        <span class="field-label">Gender</span>
+                        <div class="select-buttons" data-field="gender" data-required="true">
+                            <button type="button" class="select-btn" data-value="other">Other</button>
+                            <button type="button" class="select-btn" data-value="female">Female</button>
+                            <button type="button" class="select-btn" data-value="male">Male</button>
+                        </div>
+                        <span class="field-error" id="gender-error"></span>
+                        <input type="hidden" id="gender">
+                    </div>
+                    <div class="input-wrap no-overflow">
+                        <span class="field-label">Pronouns</span>
+                        <div class="select-buttons" data-field="pronouns">
+                            <button type="button" class="select-btn" data-value="other">Other</button>
+                            <button type="button" class="select-btn" data-value="she/her">She/Her</button>
+                            <button type="button" class="select-btn" data-value="he/him">He/Him</button>
+                            <button type="button" class="select-btn" data-value="they/them">They/Them</button>
+                        </div>
+                        <input type="hidden" id="pronouns">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="glass-section" data-step="6">
-            <div class="section-title">Account Recovery <strong>(Optional 6/7)</strong></div>
-            <div class="full-line-grid">
-                <div class="input-wrap">
-                    <span class="field-label">Security Question</span>
-                    <select id="sec-question">
-                        <option value="" disabled selected>Select a question for account recovery in the future.</option>
-                        <option>What is your favorite color?</option>
-                        <option>What city were you born in?</option>
-                        <option>What is your pet's name?</option>
-                        <option>What is your favorite movie?</option>
-                        <option>What is your favorite book?</option>
-                    </select>
-                </div>
-                <div class="input-wrap">
-                    <span class="field-label">Security Answer</span>
-                    <input type="text" id="sec-answer" placeholder="Your Answer">
-                </div>
-                <div class="input-wrap">
-                    <span class="field-label">Recovery Email</span>
-                    <input type="email" id="recovery-email" placeholder="Personal email (optional)">
+            <div class="glass-section" data-step="3">
+                <div class="section-title">School and Grade Level</div>
+                <div class="full-line-grid">
+                    <div class="input-wrap no-overflow">
+                        <span class="field-label">Grade Level</span>
+                        <div class="select-buttons" data-field="grade" data-required="true">
+                            <button type="button" class="select-btn" data-value="9">Grade 9</button>
+                            <button type="button" class="select-btn" data-value="10">Grade 10</button>
+                            <button type="button" class="select-btn" data-value="11">Grade 11</button>
+                            <button type="button" class="select-btn" data-value="12">Grade 12</button>
+                            <button type="button" class="select-btn" data-value="other">Other</button>
+                        </div>
+                        <span class="field-error" id="grade-error"></span>
+                        <input type="hidden" id="grade">
+                    </div>
+                    <div class="input-wrap no-overflow">
+                        <span class="field-label">School</span>
+                        <div class="select-buttons" data-field="school">
+                            <button type="button" class="select-btn active" data-value="Conestoga High School">Conestoga High School</button>
+                            <button type="button" class="select-btn" data-value="Other">Other</button>
+                        </div>
+                        <input type="hidden" id="school" value="Conestoga High School">
+                    </div>
                 </div>
             </div>
+
+            <div class="glass-section" data-step="4">
+                <div class="section-title">Credentials</div>
+                <div class="full-line-grid">
+                    <div class="input-wrap">
+                        <span class="field-label">Email</span>
+                        <input type="email" id="email" placeholder="harrypotter@hogwarts.edu" required>
+                    </div>
+                    <div class="input-wrap">
+                        <span class="field-label">Password</span>
+                        <div class="password-wrap">
+                            <input type="password" id="pass" placeholder="Min 8 characters" required minlength="8" autocomplete="new-password">
+                            <button type="button" class="eye-btn" onclick="togglePassword('pass', this)" aria-label="Toggle password visibility">
+                                <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                        <span class="field-label" style="font-size: 0.65rem; opacity: 0.5;">* Stored securely via Firebase Auth.</span>
+                    </div>
+                    <div class="input-wrap">
+                        <span class="field-label">Confirm Password</span>
+                        <div class="password-wrap">
+                            <input type="password" id="pass-confirm" placeholder="Repeat Passcode" required minlength="8" autocomplete="new-password">
+                            <button type="button" class="eye-btn" onclick="togglePassword('pass-confirm', this)" aria-label="Toggle confirm password visibility">
+                                <svg class="eye-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                        <span class="field-error" id="pass-match-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-section" data-step="5">
+                <div class="section-title">Profile Picture <strong>(Optional)</strong></div>
+                <div class="full-line-grid">
+                    <div class="input-wrap">
+                        <span class="field-label">Profile Image Link</span>
+                        <input type="url" id="pfp" placeholder="Paste URL (optional)">
+                    </div>
+                </div>
+                <div class="skip-link">You can skip this and add it later.</div>
+            </div>
+
+            <div class="glass-section" data-step="6">
+                <div class="section-title">Account Recovery <strong>(Optional)</strong></div>
+                <div class="full-line-grid">
+                    <div class="input-wrap no-overflow">
+                        <span class="field-label">Security Question</span>
+                        <div class="select-buttons stacked" data-field="sec-question">
+                            <button type="button" class="select-btn" data-value="What is your favorite color?">What is your favorite color?</button>
+                            <button type="button" class="select-btn" data-value="What city were you born in?">What city were you born in?</button>
+                            <button type="button" class="select-btn" data-value="What is your pet's name?">What is your pet's name?</button>
+                            <button type="button" class="select-btn" data-value="What is your favorite movie?">What is your favorite movie?</button>
+                            <button type="button" class="select-btn" data-value="What is your favorite book?">What is your favorite book?</button>
+                        </div>
+                        <input type="hidden" id="sec-question">
+                    </div>
+                    <div class="input-wrap">
+                        <span class="field-label">Security Answer</span>
+                        <input type="text" id="sec-answer" placeholder="Your Answer">
+                    </div>
+                    <div class="input-wrap">
+                        <span class="field-label">Recovery Email</span>
+                        <input type="email" id="recovery-email" placeholder="Personal email (optional)">
+                    </div>
+                </div>
+                <div class="skip-link">You can skip this and add it later.</div>
+            </div>
+
+            <div class="glass-section" data-step="7">
+                <div class="section-title">Compliance</div>
+                <label class="checkbox-group">
+                    <input type="checkbox" id="check-terms" required>
+                    <span>I verify that I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a>.</span>
+                </label>
+                <label class="checkbox-group">
+                    <input type="checkbox" id="check-privacy" required>
+                    <span>I agree to the <a href="privacypolicy.html" target="_blank">Privacy Policy</a>.</span>
+                </label>
+                <label class="checkbox-group">
+                    <input type="checkbox" id="check-return" required>
+                    <span>I agree to the <a href="returnpolicy.html" target="_blank">Return Policy</a>.</span>
+                </label>
+                <label class="checkbox-group">
+                    <input type="checkbox" id="check-coc" required>
+                    <span>I agree to the <a href="usercoc.html" target="_blank">User Code of Conduct</a>.</span>
+                </label>
+                <label class="checkbox-group">
+                    <input type="checkbox" id="check-bot" required>
+                    <span>I am an authorized human and not a robot.</span>
+                </label>
+
+                <div id="error-msg" class="error-box"></div>
+
+                <button type="submit" id="submitBtn">Generate Account</button>
+            </div>
+
         </div>
 
-        <div class="glass-section" data-step="7">
-            <div class="section-title">Compliance (7/7)</div>
-            <label class="checkbox-group">
-                <input type="checkbox" id="check-terms" required>
-                <span>I verify that I agree to the <a href="terms.html" target="_blank">Terms and Conditions</a>.</span>
-            </label>
-            <label class="checkbox-group">
-                <input type="checkbox" id="check-privacy" required>
-                <span>I agree to the <a href="privacypolicy.html" target="_blank">Privacy Policy</a>.</span>
-            </label>
-            <label class="checkbox-group">
-                <input type="checkbox" id="check-return" required>
-                <span>I agree to the <a href="returnpolicy.html" target="_blank">Return Policy</a>.</span>
-            </label>
-            <label class="checkbox-group">
-                <input type="checkbox" id="check-coc" required>
-                <span>I agree to the <a href="usercoc.html" target="_blank">User Code of Conduct</a>.</span>
-            </label>
-            <label class="checkbox-group">
-                <input type="checkbox" id="check-bot" required>
-                <span>I am an authorized human and not a robot.</span>
-            </label>
-
-            <div id="error-msg" class="error-box"></div>
-
-            <button type="submit" id="submitBtn">Generate Account</button>
+        <div class="nav-controls">
+            <button type="button" id="prevBtn" class="primary-btn" style="background: #e0e0e0; color: #2c3e50; display: none;">Back</button>
+            <button type="button" id="nextBtn" class="primary-btn">Next</button>
         </div>
 
-        <div class="mobile-nav">
-            <button type="button" id="prevBtn" style="background: rgba(255,255,255,0.15); color: white; display: none;">Back</button>
-            <button type="button" id="nextBtn" style="background: rgba(255,255,255,0.9); color: black;">Next</button>
-        </div>
     </form>
 </div>
 
@@ -422,54 +507,58 @@
 </div>
 
 <script>
+    // Random Background Picker (bg1.png to bg12.png)
+    const randomBgIndex = Math.floor(Math.random() * 12) + 1;
+    document.getElementById('bg-layer').style.backgroundImage = `url('bg${randomBgIndex}.png')`;
+
     // Password visibility toggle function using SVG paths
     window.togglePassword = function(fieldId, btn) {
         const inputField = document.getElementById(fieldId);
         const svgIcon = btn.querySelector('.eye-icon');
-        
+
         if (inputField.type === "password") {
             inputField.type = "text";
-            // Eye-off SVG paths
             svgIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
         } else {
             inputField.type = "password";
-            // Eye-on SVG paths
             svgIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
         }
     };
+
+    // Select-buttons: click-to-choose, replaces <select> dropdowns
+    function setSelectValue(fieldId, value) {
+        const hidden = document.getElementById(fieldId);
+        if (!hidden) return;
+        hidden.value = value;
+        const group = document.querySelector(`.select-buttons[data-field="${fieldId}"]`);
+        if (group) {
+            group.classList.remove('invalid');
+            group.querySelectorAll('.select-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.value === value);
+            });
+        }
+        const errEl = document.getElementById(fieldId + '-error');
+        if (errEl) errEl.textContent = '';
+    }
+    window.setSelectValue = setSelectValue;
+
+    document.querySelectorAll('.select-buttons').forEach(group => {
+        const fieldId = group.dataset.field;
+        const buttons = group.querySelectorAll('.select-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => setSelectValue(fieldId, btn.dataset.value));
+        });
+        // Default to the first option so every field always has a value
+        if (buttons.length) {
+            setSelectValue(fieldId, buttons[0].dataset.value);
+        }
+    });
 </script>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    // Stars Background
-    const canvas = document.getElementById('bgstar');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    class Star {
-        constructor() {
-            this.x = Math.random() * canvas.width;
-            this.y = Math.random() * canvas.height;
-            this.size = Math.random() * 1.5;
-            this.alpha = Math.random();
-            this.blink = Math.random() * 0.02;
-        }
-        draw() {
-            this.alpha += this.blink;
-            if (this.alpha > 1 || this.alpha < 0) this.blink = -this.blink;
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-        }
-    }
-    function initStars() { stars = []; for(let i=0; i<200; i++) stars.push(new Star()); }
-    function animate() { ctx.clearRect(0,0,canvas.width, canvas.height); stars.forEach(s => s.draw()); requestAnimationFrame(animate); }
-    window.addEventListener('resize', () => { resize(); initStars(); });
-    resize(); initStars(); animate();
 
     // Auto-calculate Age and Grade Level based on September 1 cutoff
     const dobInput = document.getElementById('dob');
@@ -488,18 +577,10 @@
             document.getElementById('age').value = age;
         }
 
-        // Calculate Grade Level with Sept 1 Cutoff
-        // School Year logic relative to September 1 cutoff:
-        // A student turning 15 by Sept 1 of the current school year is typically in Grade 9, etc.
-        // Base formulation: Grade 9 ~ age 14 turning 15 by Sept 1.
-        // Standard high school progression: Age 14-15 = Gr 9, 15-16 = Gr 10, 16-17 = Gr 11, 17-18 = Gr 12.
         const dobYear = dobDate.getFullYear();
-        const dobMonth = dobDate.getMonth() + 1; // 1-12
+        const dobMonth = dobDate.getMonth() + 1;
         const dobDay = dobDate.getDate();
 
-        // Determine what academic year we are currently in or entering.
-        // If today is past Sept 1, current school year started this year (e.g., Sept 2026 starts 2026-2027 school year).
-        // If today is before Sept 1, current school year started last year (e.g., Feb 2026 is still 2025-2026 school year).
         let currentSchoolYearStart;
         if (today.getMonth() > 8 || (today.getMonth() === 8 && today.getDate() >= 1)) {
             currentSchoolYearStart = today.getFullYear();
@@ -507,68 +588,64 @@
             currentSchoolYearStart = today.getFullYear() - 1;
         }
 
-        // Calculate how old the student will be on September 1st of the current school year
-        // Sept 1 of currentSchoolYearStart
         let ageBySept1 = currentSchoolYearStart - dobYear;
-        // If their birthday is after September 1, they haven't had their birthday yet by Sept 1 of that school year
         if (dobMonth > 9 || (dobMonth === 9 && dobDay > 1)) {
             ageBySept1--;
         }
 
-        // Map expected age by Sept 1 to High School Grade Levels (Grades 9-12)
-        // Age 14 by Sept 1 -> Grade 9
-        // Age 15 by Sept 1 -> Grade 10
-        // Age 16 by Sept 1 -> Grade 11
-        // Age 17 by Sept 1 -> Grade 12
         let calculatedGrade = "";
         if (ageBySept1 === 14) calculatedGrade = "9";
         else if (ageBySept1 === 15) calculatedGrade = "10";
         else if (ageBySept1 === 16) calculatedGrade = "11";
         else if (ageBySept1 === 17 || ageBySept1 >= 18) calculatedGrade = "12";
 
-        if (calculatedGrade) {
-            document.getElementById('grade').value = calculatedGrade;
+        if (calculatedGrade && window.setSelectValue) {
+            window.setSelectValue('grade', calculatedGrade);
         }
     });
 
-    // Mobile Step-by-Step Navigation Logic
+    // Slide-based navigation — one step visible at a time, on every screen size
     let currentStep = 1;
     const totalSteps = 7;
     const sections = document.querySelectorAll('.glass-section');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+    const progressPercent = document.getElementById('progress-percent');
 
-    function updateStepView() {
-        if (window.innerWidth <= 600) {
-            sections.forEach((sec, idx) => {
-                if (idx + 1 === currentStep) {
-                    sec.classList.add('active-step');
-                } else {
-                    sec.classList.remove('active-step');
-                }
-            });
-
-            prevBtn.style.display = currentStep > 1 ? 'block' : 'none';
-            if (currentStep === totalSteps) {
-                nextBtn.style.display = 'none';
-            } else {
-                nextBtn.style.display = 'block';
-            }
-        } else {
-            // Desktop view: show all sections
-            sections.forEach(sec => sec.classList.add('active-step'));
-            prevBtn.style.display = 'none';
-            nextBtn.style.display = 'none';
-        }
+    function updateProgress() {
+        const pct = Math.round((currentStep / totalSteps) * 100);
+        progressFill.style.width = pct + '%';
+        progressText.textContent = `Step ${currentStep} of ${totalSteps}`;
+        progressPercent.textContent = pct + '%';
     }
 
-    window.addEventListener('resize', updateStepView);
-    updateStepView();
+    function showStep(direction) {
+        sections.forEach((sec, idx) => {
+            sec.classList.remove('active-step', 'slide-back');
+            if (idx + 1 === currentStep) {
+                sec.classList.add('active-step');
+                if (direction === 'back') sec.classList.add('slide-back');
+                sec.style.animation = 'none';
+                void sec.offsetWidth;
+                sec.style.animation = '';
+            }
+        });
+
+        prevBtn.style.display = currentStep > 1 ? 'block' : 'none';
+        nextBtn.style.display = currentStep === totalSteps ? 'none' : 'block';
+        updateProgress();
+    }
+
+    showStep();
 
     nextBtn.addEventListener('click', () => {
         const currentSection = document.querySelector(`.glass-section[data-step="${currentStep}"]`);
-        const inputs = currentSection.querySelectorAll('input[required], select[required]');
         let valid = true;
+
+        // Native required inputs (text, date, number, email, password)
+        const inputs = currentSection.querySelectorAll('input[required]');
         inputs.forEach(input => {
             if (!input.checkValidity()) {
                 input.reportValidity();
@@ -576,9 +653,43 @@
             }
         });
 
+        // Required select-button groups
+        const requiredGroups = currentSection.querySelectorAll('.select-buttons[data-required="true"]');
+        requiredGroups.forEach(group => {
+            const fieldId = group.dataset.field;
+            const hidden = document.getElementById(fieldId);
+            if (!hidden.value) {
+                valid = false;
+                group.classList.add('invalid', 'shake');
+                setTimeout(() => group.classList.remove('shake'), 350);
+                const errEl = document.getElementById(fieldId + '-error');
+                if (errEl) errEl.textContent = 'Please make a selection.';
+            }
+        });
+
+        // Passwords must match before leaving the Credentials step
+        if (currentStep === 4) {
+            const passField = document.getElementById('pass');
+            const confirmField = document.getElementById('pass-confirm');
+            const passWrap = confirmField.closest('.password-wrap');
+            const matchErr = document.getElementById('pass-match-error');
+
+            if (passField.checkValidity() && confirmField.checkValidity()) {
+                if (passField.value !== confirmField.value) {
+                    valid = false;
+                    passWrap.classList.add('invalid', 'shake');
+                    setTimeout(() => passWrap.classList.remove('shake'), 350);
+                    matchErr.textContent = 'Passwords do not match.';
+                } else {
+                    passWrap.classList.remove('invalid');
+                    matchErr.textContent = '';
+                }
+            }
+        }
+
         if (valid && currentStep < totalSteps) {
             currentStep++;
-            updateStepView();
+            showStep('forward');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     });
@@ -586,7 +697,7 @@
     prevBtn.addEventListener('click', () => {
         if (currentStep > 1) {
             currentStep--;
-            updateStepView();
+            showStep('back');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     });
@@ -620,6 +731,16 @@
 
         if (password !== confirmPassword) {
             errorMsg.innerText = "Passcodes do not match.";
+            return;
+        }
+
+        if (!document.getElementById('gender').value) {
+            errorMsg.innerText = "Please select a gender.";
+            return;
+        }
+
+        if (!document.getElementById('grade').value) {
+            errorMsg.innerText = "Please select a grade level.";
             return;
         }
 
@@ -692,7 +813,7 @@
 
             await signOut(auth);
             document.getElementById('success-screen').style.display = 'flex';
-            setTimeout(() => { window.location.href = "index.html"; }, 2500);
+            setTimeout(() => { window.location.href = "signin.html"; }, 2500);
 
         } catch (err) {
             console.error(err);
