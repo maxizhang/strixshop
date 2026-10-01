@@ -2,11 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="logospfd.png" onerror="this.href='https://via.placeholder.com/32'">
+    <link rel="icon" type="image/png" href="spfd.png" onerror="this.href='https://via.placeholder.com/32'">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Cart and Checkout</title>
     <!-- Rounded Font: Quicksand -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <!--Email Sender-->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -19,14 +22,15 @@
     <style>
         :root {
             --primary: #484976;
-            --primary-hover: #4338ca;
-            --surface: rgba(255, 255, 255, 0.4);
+            --primary-hover: #4f4c74;
+            --surface: rgba(255, 255, 255, 0.32);
+            --surface-hover: rgba(255, 255, 255, 0.42);
             --text-main: #0f172a;
-            --text-dim: #64748b;
-            --border: rgba(255, 255, 255, 0.45);
+            --text-dim: #475569;
+            --border: rgba(255, 255, 255, 0.6);
             --border-subtle: rgba(226, 232, 240, 0.5);
-            --nav-dark: #0a0c12;
-            --glass-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --radius-main: 32px;
         }
 
         * { box-sizing: border-box; }
@@ -34,57 +38,136 @@
         body { 
             margin: 0; 
             font-family: 'Quicksand', sans-serif; 
-            background: linear-gradient(-45deg, #f09e9e, #efdd94, #8fe7af, #93bcef, #cda4f6);
-            background-size: 500% 500%;
-            animation: fluidBackground 20s ease infinite;
             color: var(--text-main); 
             min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
             overflow-x: hidden;
+            position: relative;
         }
 
-        @keyframes fluidBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Background Layer with Random Image Support */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.65;
+            z-index: -2;
+            transition: all 1s ease-in-out;
         }
 
-        a { text-decoration: none; font-weight: 700; color: #64748b; transition: color 0.2s; }
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(240, 244, 248, 0.75), rgba(224, 231, 255, 0.75));
+            z-index: -1;
+        }
+
+        a { text-decoration: none; font-weight: 700; color: var(--text-dim); transition: color 0.2s; }
         a:hover { color: #334155; }
 
-        nav { 
-            background: var(--nav-dark); 
-            width: 100%; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
+        /* NAVIGATION BAR */
+        nav {
+            background: rgba(0, 0, 0, 0.75);
+            height: 60px;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
         }
-        .nav-main { display: flex; align-items: center; padding: 14px 5%; justify-content: space-between; max-width: 1400px; margin: 0 auto; }
-        .logo-box img { height: 32px; cursor: pointer; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); }
-        .nav-right-actions { display: flex; align-items: center; gap: 24px; }
-        .nav-link-item { display: flex; align-items: center; gap: 8px; color: #cbd5e1; font-weight: 700; font-size: 13px; transition: color 0.2s; }
-        .nav-link-item svg { stroke: #cbd5e1; transition: stroke 0.2s; }
-        .nav-link-item:hover { color: #ffffff; }
-        .nav-link-item:hover svg { stroke: #ffffff; }
-        .nav-divider { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); }
-        .nav-badge-text { font-size: 12px; font-weight: 600; color: #94a3b8; letter-spacing: 0.5px; }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-box img {
+            height: 28px;
+            cursor: pointer;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.04);
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
 
         .container {
             position: relative;
             z-index: 10;
             background: var(--surface);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 3px solid var(--border);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
             width: 90%;
             max-width: 880px;
             margin: 50px auto;
-            border-radius: 32px;
+            border-radius: var(--radius-main);
             box-shadow: var(--glass-shadow);
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            flex: 1;
+            transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .container:hover {
+            background: var(--surface-hover);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
         header { padding: 35px 40px 15px; }
@@ -136,30 +219,129 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
         input:read-only { background: rgba(226, 232, 240, 0.35); color: var(--text-dim); cursor: pointer; border-color: rgba(226, 232, 240, 0.6); }
 
+        /* Grade Selection Button Styles */
+        .grade-btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .grade-btn {
+            flex: 1;
+            min-width: 60px;
+            padding: 14px;
+            border: 1px solid var(--border-subtle);
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .grade-btn:hover {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: var(--primary);
+        }
+        .grade-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+
         .checkbox-label { display: flex; gap: 12px; color: #334155; font-size: 13px; font-weight: 600; line-height: 1.4; margin-bottom: 16px; cursor: pointer; }
         .checkbox-label input { width: auto; margin-top: 3px; accent-color: var(--primary); }
 
-        .footer { padding: 25px 40px 35px; display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.3); backdrop-filter: blur(15px); border-top: 2px solid var(--border); }
+        .footer { padding: 25px 40px 35px; display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); border-top: 1px solid rgba(255, 255, 255, 0.2); }
         .total-amount { font-size: 30px; font-weight: 700; color: #1e1b4b; }
-        .btn-continue { background: var(--primary); color: white; border: none; padding: 16px 45px; border-radius: 14px; font-weight: 700; font-size: 15px; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3); }
-        .btn-continue:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(79, 70, 229, 0.4); }
+        .btn-continue { background: #475569; color: white; border: none; padding: 16px 45px; border-radius: 16px; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 20px rgba(71, 85, 105, 0.25); }
+        .btn-continue:hover { transform: translateY(-2px); }
         .btn-continue:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; transform: none; }
+
+        /* Sign In Overlay styling matching wishlist.html pattern */
+        .signin-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(15, 23, 42, 0.28);
+            backdrop-filter: blur(18px) saturate(130%);
+            -webkit-backdrop-filter: blur(18px) saturate(130%);
+            animation: overlayIn .3s ease both;
+        }
+        .signin-overlay.active { display: flex; }
+        .signin-overlay-card {
+            width: min(430px, 100%);
+            padding: 34px 30px 29px;
+            text-align: center;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 25px 80px rgba(15, 23, 42, 0.18);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            animation: overlayCardIn .35s cubic-bezier(.2,.8,.2,1) both;
+        }
+        .signin-lock {
+            width: 62px; height: 62px;
+            margin: 0 auto 17px;
+            display: grid; place-items: center;
+            border-radius: 50%;
+            color: #1f2937;
+            background: rgba(255,255,255,.68);
+            border: 1px solid rgba(255,255,255,.95);
+            box-shadow: 0 10px 25px rgba(15,23,42,.07);
+        }
+        .signin-overlay-card h2 { font-size: 21px; line-height: 1.3; font-weight: 900; margin-bottom: 10px; color: #1f2937; }
+        .signin-overlay-card p { color: #6b7280; font-size: 13px; line-height: 1.6; font-weight: 600; margin-bottom: 22px; }
+        .signin-overlay-btn {
+            display: block; width: 100%; padding: 12px 18px; border-radius: 13px;
+            background: #111827; color: #fff; text-decoration: none; font-size: 13px; font-weight: 900;
+            transition: .2s ease; box-shadow: 0 9px 25px rgba(17,24,39,.16);
+        }
+        .signin-overlay-btn:hover { transform: translateY(-1px); background: #1f2937; }
+        .signin-overlay-back { display: inline-block; margin-top: 15px; color: #6b7280; text-decoration: none; font-size: 12px; font-weight: 800; }
+        .signin-overlay-back:hover { color: #1f2937; }
+
+        @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes overlayCardIn { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: none; } }
+
+        /* FOOTER BRANDING */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.15);
+        }
     </style>
 </head>
 <body>
 
+<div class="bg-layer" id="bgLayer"></div>
+<div class="bg-overlay"></div>
+
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='home.html'">
+        <div class="logo-box" onclick="window.location.href='index.html'">
             <img src="logoh.png" alt="STRIX" onerror="this.src='https://via.placeholder.com/100x32?text=STRIX'">
         </div>
         <div class="nav-right-actions">
-            <a href="home.html" class="nav-link-item">
+            <a href="index.html" class="nav-link-item">
                 <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 Home
             </a>
             <div class="nav-divider"></div>
-            <span class="nav-badge-text">Secure Checkout</span>
+            <span class="nav-badge-text">Cart & Checkout</span>
         </div>
     </div>
 </nav>
@@ -167,9 +349,9 @@
 <div class="container" id="main-app-container">
     <header>
         <h1 id="page-title">Your Cart</h1>
-        <h2>Please contact <a href="cs.html">Customer Service</a> if you would like to find a past receipt.</h2>
+        <h2>Please contact <a href="cs.html">Customer Support</a> if you would like to find a past receipt.</h2>
         <p>If you are under 18, you may purchase only under the supervision of a parent or guardian.</p>
-        <p>Discounts will be applied when your order is processed. It will not show up yet. If you think there is an error, please contact Customer Service. Thank you. </p>
+        <p>Discounts will be applied when your order is processed. It will not show up yet. If you think there is an error, please contact Customer Support. Thank you. </p>
         <div class="tabs">
             <div class="tab active" id="tab-cart" onclick="switchView('cart')">1. Order Summary</div>
             <div class="tab" id="tab-checkout" onclick="switchView('checkout')">2. Checkout Details</div>
@@ -192,16 +374,17 @@
         
         <div class="form-group"><label>Email Address</label><input type="email" id="email" placeholder="harrypotter@hogwarts.edu" required></div>
         
+        <!-- Updated Grade Level Button Group -->
         <div class="form-group">
             <label>Grade Level</label>
-            <select id="grade" required>
-                <option value="" disabled selected>Select Grade</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="Other">Other</option>
-            </select>
+            <div class="grade-btn-group">
+                <button type="button" class="grade-btn" data-grade="9" onclick="selectGrade('9', this)">9</button>
+                <button type="button" class="grade-btn" data-grade="10" onclick="selectGrade('10', this)">10</button>
+                <button type="button" class="grade-btn" data-grade="11" onclick="selectGrade('11', this)">11</button>
+                <button type="button" class="grade-btn" data-grade="12" onclick="selectGrade('12', this)">12</button>
+                <button type="button" class="grade-btn" data-grade="Other" onclick="selectGrade('Other', this)">Other</button>
+            </div>
+            <input type="hidden" id="grade" required>
         </div>
 
         <div class="form-group"><label>Homeroom Teacher OR Number</label><input type="text" id="homeroom" placeholder="Teacher Name or Room #" required></div>
@@ -236,7 +419,7 @@
         <div class="total-box">
             <div id="item-count" style="font-size:12px; font-weight:700; color:var(--text-dim);">Subtotal (0 Items)</div>
             <div class="total-amount" id="total-price">$0.00</div>
-            <div style="font-size:11px; font-weight:600; color:var(--text-dim); margin-top:4px;">If you would like a printed copy of your receipt, please contact <a href="cs.html">Customer Service</a>or send your order to customer <br>service <a href="myorders.html">Here</a>. Thank you for your cooperation.</div>
+            <div style="font-size:11px; font-weight:600; color:var(--text-dim); margin-top:4px;">If you would like a printed copy of your receipt, please contact <a href="cs.html">Customer Support</a> or send your order to customer <br>service <a href="myorders.html">Here</a>. Thank you for your cooperation.</div>
         </div>
         <button class="btn-continue" id="action-btn" onclick="handleAction()">Continue</button>
     </div>
@@ -244,11 +427,40 @@
 
 <div id="receipt-container" style="display:none;"></div>
 
+<!-- Sign In Overlay Popup for Unsigned Users matching wishlist.html -->
+<div id="signinOverlay" class="signin-overlay" aria-hidden="true">
+    <div class="signin-overlay-card">
+        <div class="signin-lock">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+                <rect x="4" y="10" width="16" height="11" rx="2"></rect>
+                <path d="M12 14v3"></path>
+            </svg>
+        </div>
+        <h2>Sorry, please sign in to use this feature.</h2>
+        <p>You need a Strix Shop account to view and manage your cart.</p>
+        <a href="signin.html" class="signin-overlay-btn">Sign In / Register</a>
+        <a href="products.html" class="signin-overlay-back">Continue Browsing</a>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+</footer>
+
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
 <script>
+    // Random Background Image Loader matching About/Careers design
+    const n = Math.floor(Math.random() * 12) + 1;
+    const bgLayer = document.getElementById("bgLayer");
+    const img = new Image();
+    img.src = `bg${n}.png`;
+    img.onload = () => bgLayer.style.backgroundImage = `url('${img.src}')`;
+
     const firebaseConfig = { 
         apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU", 
         authDomain: "strix-shop.firebaseapp.com", 
@@ -263,18 +475,37 @@
     let rawItems = [];
     let groupedItems = [];
     let currentView = 'cart';
-    // Cache map to store product images fetched from products collection
     const productImagesCache = {};
 
+    // Grade selection handler function
+    function selectGrade(gradeValue, buttonElement) {
+        const buttons = document.querySelectorAll('.grade-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        buttonElement.classList.add('active');
+        document.getElementById('grade').value = gradeValue;
+    }
+
     auth.onAuthStateChanged((user) => {
+        const overlay = document.getElementById("signinOverlay");
+
         if (user) {
+            overlay.classList.remove("active");
+            overlay.setAttribute("aria-hidden", "true");
+
             db.collection("users").doc(user.uid).get().then(doc => {
                 if (doc.exists) {
                     const userData = doc.data();
                     document.getElementById('fname').value = userData.firstName || userData.fname || "";
                     document.getElementById('lname').value = userData.lastName || userData.lname || "";
                     document.getElementById('email').value = user.email || userData.email || "";
-                    document.getElementById('grade').value = userData.grade || "";
+                    
+                    const gradeValue = userData.grade || "";
+                    document.getElementById('grade').value = gradeValue;
+                    if (gradeValue) {
+                        const matchingBtn = document.querySelector(`.grade-btn[data-grade="${gradeValue}"]`);
+                        if (matchingBtn) matchingBtn.classList.add('active');
+                    }
+
                     document.getElementById('homeroom').value = userData.homeroom || "";
                 } else {
                     document.getElementById('email').value = user.email || "";
@@ -289,11 +520,19 @@
                 processItems(); 
             });
         } else {
-            window.location.href = "index.html";
+            setTimeout(() => {
+                if (auth.currentUser) return;
+
+                overlay.classList.add("active");
+                overlay.setAttribute("aria-hidden", "false");
+
+                rawItems = [];
+                groupedItems = [];
+                renderCart();
+            }, 300);
         }
     });
 
-    // Fetch the 0th image from the products collection document for each unique productId
     async function preloadProductImages() {
         const uniqueProductIds = [...new Set(rawItems.map(item => item.productId).filter(Boolean))];
         
@@ -303,7 +542,6 @@
                     const prodDoc = await db.collection("products").doc(prodId).get();
                     if (prodDoc.exists) {
                         const prodData = prodDoc.data();
-                        // Checks if images field is an array or an object map with "0" key
                         const imagesField = prodData.images;
                         let imgUrl = "";
                         if (Array.isArray(imagesField)) {
@@ -327,7 +565,6 @@
         const groups = {};
         rawItems.forEach(item => {
             const key = item.productId + JSON.stringify(item.selections || {});
-            // Attach resolved image from cache or fallback item image property
             const resolvedImage = productImagesCache[item.productId] || item.image || "";
             
             if (groups[key]) {
@@ -599,7 +836,7 @@
         const giftcard = document.querySelector('input[name="giftcard"]:checked').value;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if(!firstName || !lastName || !email || !homeroom || !grade) return alert("Please fill all required fields.");
+        if(!firstName || !lastName || !email || !homeroom || !grade) return alert("Please fill all required fields, including your grade level.");
         if(!emailRegex.test(email)) return alert("Invalid email address.");
         if(!document.getElementById('check-binding').checked || !document.getElementById('check-deposit').checked || !document.getElementById('check-terms').checked) return alert("Please agree to all terms.");
 
