@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Report Portal</title>
-    <link rel="icon" type="image/png" href="logospfd.png">
+    <link rel="icon" type="image/png" href="spfd.png">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
@@ -294,7 +294,7 @@
             font-family: 'Quicksand', monospace;
             border-top: 1px solid rgba(255, 255, 255, 0.3);
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+
         }
 
         @media (max-width: 600px) {
@@ -316,11 +316,11 @@
 
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='home.html'">
+        <div class="logo-box" onclick="window.location.href='index.html'">
             <img src="logoh.png" alt="STRIX">
         </div>
         <div class="nav-right-actions">
-            <a href="home.html" class="nav-link-item">
+            <a href="index.html" class="nav-link-item">
                 <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 Home
             </a>
@@ -358,7 +358,7 @@
                 <select id="category" required>
                     <option value="" disabled selected>Select Classification</option>
                     <option value="Team Member">Report Team Member</option>
-                    <option value="Customer Service">Customer Service</option>
+                    <option value="Customer Support">Customer Support</option>
                     <option value="Product Issue">Product Issue</option>
                     <option value="Technical Bug">System Bug</option>
                     <option value="Suspicious Activity">Suspicious Activity</option>
@@ -458,7 +458,7 @@
             reportForm.reset();
 
             setTimeout(() => {
-                window.location.href = "home.html";
+                window.location.href = "index.html";
             }, 2000);
 
         } catch (error) {

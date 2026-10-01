@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | My Account</title>
-    <link rel="icon" type="image/png" href="logospfd.png">
+    <link rel="icon" type="image/png" href="spfd.png">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #555383;
             --primary-hover: #5b5978;
-            --surface: rgba(255, 255, 255, 0.18);
+            --surface: rgba(255, 255, 255, 0.28);
+            --surface-hover: rgba(255, 255, 255, 0.38);
             --text-main: #0f172a;
             --text-dim: #475569;
-            --border: rgba(255, 255, 255, 0.55);
+            --border: rgba(255, 255, 255, 0.6);
             --nav-dark: #0a0c12;
             --accent: #6f8bb9;
             --admin-gold: rgb(255, 213, 28);
@@ -22,61 +23,73 @@
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            margin: 0;
             font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
-            background-size: 400% 400%;
-            animation: fluidBackground 20s ease infinite;
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
         }
 
-        @keyframes fluidBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        #bgstar {
+        /* Background Layer with Random Image Support */
+        .bg-layer {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.65;
+            z-index: -2;
+            transition: all 1s ease-in-out;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(240, 244, 248, 0.75), rgba(224, 231, 255, 0.75));
+            z-index: -1;
         }
 
         /* Professional Navbar */
         nav {
-            background: var(--nav-dark);
+            background: rgba(0, 0, 0, 0.75);
+            height: 60px;
             width: 100%;
             position: sticky;
             top: 0;
             z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
         }
 
         .nav-main {
             display: flex;
             align-items: center;
-            padding: 14px 5%;
+            padding: 0 5%;
             justify-content: space-between;
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .logo-box img {
-            height: 32px;
+            height: 28px;
             cursor: pointer;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.04);
         }
 
         .nav-right-actions {
@@ -99,6 +112,7 @@
         .nav-link-item svg {
             stroke: #cbd5e1;
             transition: stroke 0.2s;
+            flex-shrink: 0;
         }
 
         .nav-link-item:hover {
@@ -246,7 +260,7 @@
         }
 
         .vault-card:hover {
-            background: rgba(255, 255, 255, 0.35);
+            background: var(--surface-hover);
         }
 
         .card-title {
@@ -290,11 +304,18 @@
             gap: 16px;
             background: var(--surface);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 18px 30px;
             border-radius: 20px;
             border: 1.5px solid var(--border);
             box-shadow: var(--glass-shadow);
             flex-wrap: wrap;
+            transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .quick-nav-bar:hover {
+            background: var(--surface-hover);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
         .quick-nav-btn {
@@ -331,13 +352,34 @@
             transform: scale(1.1);
         }
 
-        .bottom-bar {
+        footer {
             text-align: center;
-            padding: 15px;
+            padding: 30px;
             color: var(--text-dim);
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 1px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Mobile Adjustments for Navbar text hiding and icon centering */
+        @media (max-width: 768px) {
+            .nav-link-item .nav-text {
+                display: none;
+            }
+            .nav-link-item {
+                padding: 6px;
+                gap: 0;
+            }
+            #admin-link {
+                padding: 6px;
+            }
+            .nav-right-actions {
+                gap: 12px;
+            }
         }
 
         @media (max-width: 900px) {
@@ -367,21 +409,32 @@
 </head>
 <body>
 
-<canvas id="bgstar"></canvas>
+<!-- Background Layer & Overlay -->
+<div class="bg-layer" id="bgLayer"></div>
+<div class="bg-overlay"></div>
 
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='home.html'">
+        <div class="logo-box" onclick="window.location.href='myacc.html'">
             <img src="logoh.png" alt="STRIX">
         </div>
         <div class="nav-right-actions">
-            <a href="home.html" class="nav-link-item">
+            <a href="index.html" class="nav-link-item">
                 <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                Home
+                <span class="nav-text">Home</span>
             </a>
-            <a href="products.html" class="nav-link-item">Products</a>
-            <a href="cart.html" class="nav-link-item">Cart</a>
-            <a href="adminportal.html" id="admin-link" class="nav-link-item" style="display:none;">Admin Terminal</a>
+            <a href="products.html" class="nav-link-item">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                <span class="nav-text">Products</span>
+            </a>
+            <a href="cart.html" class="nav-link-item">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+                <span class="nav-text">Cart</span>
+            </a>
+            <a href="adminportal.html" id="admin-link" class="nav-link-item" style="display:none;">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <span class="nav-text">Admin Terminal</span>
+            </a>
             <div class="nav-divider"></div>
             <span class="nav-badge-text">Account</span>
         </div>
@@ -390,7 +443,7 @@
 
 <div class="container">
     <div class="profile-header" id="profile-header-box">
-        <div class="pfp-wrap"><img id="display-pfp" src="logospfd.png"></div>
+        <div class="pfp-wrap"><img id="display-pfp" src="spfd.png"></div>
         <div style="flex: 1;">
             <h1 id="display-firstName" style="margin:0; font-size: 28px; color: #1e1b4b; transition: all 0.3s;">Syncing...</h1>
             <p id="display-email" style="margin:6px 0 0; color:var(--text-dim); font-size: 14px; font-weight: 600;"></p>
@@ -426,9 +479,9 @@
         </div>
     </div>
 
-    <!-- Quick Navigation Toolbar with SVG Icons -->
+    <!-- Quick Navigation Toolbar with Glow and SVG Icons -->
     <div class="quick-nav-bar">
-        <a href="home.html" class="quick-nav-btn">
+        <a href="index.html" class="quick-nav-btn">
             <svg width="16" height="16" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
             Home
         </a>
@@ -445,11 +498,20 @@
             My Orders
         </a>
     </div>
-
-    <div class="bottom-bar">
-        &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
-    </div>
 </div>
+
+<footer>
+    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+</footer>
+
+<!-- Random Background Image Loader Script -->
+<script>
+    const n = Math.floor(Math.random() * 12) + 1;
+    const bgLayer = document.getElementById("bgLayer");
+    const img = new Image();
+    img.src = `bg${n}.png`;
+    img.onload = () => bgLayer.style.backgroundImage = `url('${img.src}')`;
+</script>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -519,7 +581,7 @@
                 document.getElementById('display-email').innerText = user.email || "";
                 
                 const pfpElement = document.getElementById('display-pfp');
-                pfpElement.src = data.pfp || "logospfd.png";
+                pfpElement.src = data.pfp || "spfd.png";
                 
                 document.getElementById('val-fullname').innerText = `${data.firstName || ''} ${data.lastName || ''}`.trim() || '---';
                 document.getElementById('val-dob').innerText = data.dob || '---';
@@ -533,56 +595,9 @@
                 document.getElementById('val-timestamp').innerText = data.createdAt ? data.createdAt.toDate().toLocaleString() : 'UNDEFINED';
             }
         } else { 
-            window.location.href = "index.html"; 
+            window.location.href = "signin.html"; 
         }
     });
-
-    const canvas = document.getElementById('bgstar');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-
-    function resize() { 
-        canvas.width = window.innerWidth; 
-        canvas.height = window.innerHeight; 
-    }
-
-    class Star {
-        constructor() { 
-            this.x = Math.random() * canvas.width; 
-            this.y = Math.random() * canvas.height; 
-            this.size = Math.random() * 1.5; 
-            this.alpha = Math.random(); 
-            this.blink = Math.random() * 0.02; 
-        }
-        draw() {
-            this.alpha += this.blink; 
-            if (this.alpha > 1 || this.alpha < 0) this.blink = -this.blink;
-            ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`; 
-            ctx.beginPath(); 
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); 
-            ctx.fill();
-        }
-    }
-
-    function initStars() { 
-        stars = []; 
-        for(let i=0; i<150; i++) stars.push(new Star()); 
-    }
-
-    function animate() { 
-        ctx.clearRect(0, 0, canvas.width, canvas.height); 
-        stars.forEach(s => s.draw()); 
-        requestAnimationFrame(animate); 
-    }
-
-    window.addEventListener('resize', () => { 
-        resize(); 
-        initStars(); 
-    });
-
-    resize(); 
-    initStars(); 
-    animate();
 </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="logospfd.png">
+    <link rel="icon" type="image/png" href="spfd.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1048,7 +1048,7 @@
                 <div class="footer-col">
                     <h4>COMMUNITY</h4>
                     <a href="events.html">Events</a>
-                    <a href="customerstories.html">Customer Stories</a>
+                    <a href="stories.html">Customer Stories</a>
                     <a href="socialmedia.html">Social Media</a>
                     <a href="review.html">Review</a>
                     <a href="bg.html">Background</a>
@@ -1096,25 +1096,6 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-
-        auth.onAuthStateChanged((user) => {
-            const cartCountEl = document.querySelector(".cart-count");
-            const userEmailEl = document.getElementById("sidebarUserEmail");
-
-            if (user) {
-                if (userEmailEl) userEmailEl.textContent = user.email;
-
-                db.collection("carts").doc(user.uid).collection("items")
-                    .onSnapshot((snapshot) => {
-                        if (cartCountEl) cartCountEl.textContent = snapshot.size || 0;
-                    }, (err) => {
-                        console.error("Error listening to cart:", err);
-                    });
-            } else {
-                if (userEmailEl) userEmailEl.textContent = "Not signed in";
-                window.location.href = "index.html";
-            }
-        });
 
         // Uptime Counter
         const startDate = new Date('2026-08-28T00:00:00').getTime();
@@ -1218,7 +1199,7 @@
         const user = auth.currentUser;
 
         if (!user) {
-            window.location.href = "index.html";
+            window.location.href = "signin.html";
             return;
         }
 
@@ -1256,7 +1237,7 @@
         }
 
         auth.signOut().then(() => {
-            window.location.href = "index.html";
+            window.location.href = "signin.html";
         });
     }
 </script>

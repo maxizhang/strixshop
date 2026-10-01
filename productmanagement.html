@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="logospfd.png">
+    <link rel="icon" type="image/png" href="spfd.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Project Management</title>
     
@@ -12,7 +12,7 @@
     <style>
         :root {
             --primary: #484976;
-            --primary-hover: #4338ca;
+            --primary-hover: #4f4c74;
             --surface: rgba(255, 255, 255, 0.18);
             --text-main: #0f172a;
             --text-dim: #475569;
@@ -86,10 +86,10 @@
             flex-grow: 1; 
             display: flex; 
             background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
+
             border-radius: 12px; 
             border: 1px solid rgba(255, 255, 255, 0.6); 
-            max-width: 700px; 
+            max-width: 450px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         
@@ -105,6 +105,29 @@
         }
         .search-engine input::placeholder { color: var(--text-dim); }
 
+        /* Navbar Controls */
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-sort-select {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .nav-sort-select:focus {
+            border-color: var(--primary);
+        }
+
         .btn-new { 
             background: var(--primary); 
             color: white; 
@@ -115,6 +138,7 @@
             font-size: 0.75rem; 
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+            white-space: nowrap;
         }
         .btn-new:hover { background: var(--primary-hover); transform: translateY(-1px); }
 
@@ -125,6 +149,7 @@
             border-bottom: 1px solid var(--border); 
             padding: 12px 5%; 
             display: flex; 
+            align-items: center;
             gap: 10px; 
             overflow-x: auto; 
             scrollbar-width: none; 
@@ -168,8 +193,23 @@
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
-        .img-preview { width: 100%; height: 200px; background: rgba(255, 255, 255, 0.4); overflow: hidden; border-bottom: 1px solid var(--border); }
+        .img-preview { width: 100%; height: 200px; background: rgba(255, 255, 255, 0.4); overflow: hidden; border-bottom: 1px solid var(--border); position: relative; }
         .img-preview img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .featured-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f59e0b;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            letter-spacing: 0.5px;
+        }
 
         .item-content { padding: 20px; display: flex; flex-direction: column; flex: 1; }
         .item-cat { 
@@ -237,6 +277,58 @@
         input, textarea, select { width: 100%; background: rgba(255, 255, 255, 0.6); border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 16px; color: var(--text-main); font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: 0.9rem; }
         input:focus, textarea:focus, select:focus { border-color: var(--primary); background: rgba(255, 255, 255, 0.95); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
 
+        /* Toggle Field Styling */
+        .checkbox-field {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.6);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+        }
+        .checkbox-field label {
+            margin-bottom: 0;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
         .media-matrix { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 420px; margin: 0 auto; }
         .slot { aspect-ratio: 1; background: rgba(255, 255, 255, 0.5); border: 1.5px dashed var(--border); border-radius: 16px; position: relative; cursor: pointer; overflow: hidden; display: flex; align-items: center; justify-content: center; color: var(--text-dim); font-weight: 700; cursor: grab; user-select: none; }
         .slot:hover { border-color: var(--primary); background: rgba(255, 255, 255, 0.8); color: var(--primary); }
@@ -266,12 +358,29 @@
 
 <nav>
     <div class="nav-main">
-        <a href="home.html" class="logo-box" target="_self">
+        <a href="index.html" class="logo-box" target="_self">
             <img src="logoh.png" alt="STRIX">
         </a>
         <div class="search-engine">
             <input type="text" id="M-search" placeholder="Filter inventory..." oninput="renderGrid()">
         </div>
+        
+        <div class="nav-controls">
+            <select class="nav-sort-select" id="sort-filter" onchange="renderGrid()">
+                <option value="default">Sort: Default</option>
+                <option value="featured-first">Sort: Featured First</option>
+                <option value="featured-only">Filter: Featured Only</option>
+                <option value="alpha-asc">Sort: Name (A to Z)</option>
+                <option value="alpha-desc">Sort: Name (Z to A)</option>
+                <option value="price-asc">Sort: Price (Low to High)</option>
+                <option value="price-desc">Sort: Price (High to Low)</option>
+                <option value="in-stock">Filter: In Stock</option>
+                <option value="out-of-stock">Filter: Out of Stock</option>
+                <option value="instock-first">Sort: In Stock First</option>
+                <option value="outofstock-first">Sort: Out of Stock First</option>
+            </select>
+        </div>
+
         <button class="btn-new" onclick="openNewEditor()">+ ADD NEW PRODUCT</button>
     </div>
 </nav>
@@ -326,6 +435,17 @@
                     <option value="OTHER">OTHER</option>
                 </select>
             </div>
+            
+            <div class="field">
+                <div class="checkbox-field">
+                    <label for="f-featured">Featured Item</label>
+                    <label class="switch">
+                        <input type="checkbox" id="f-featured">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px">
                 <div class="field"><label>Price ($)</label><input type="number" id="f-price" step="0.01" oninput="runBI()"></div>
                 <div class="field"><label>Stock</label><input type="number" id="f-stock"></div>
@@ -387,14 +507,14 @@
 
     auth.onAuthStateChanged(async (user) => {
         if (!user) {
-            window.location.href = "index.html";
+            window.location.href = "signin.html";
             return;
         }
 
         const docSnap = await db.collection("users").doc(user.uid).get();
 
         if (!docSnap.exists) {
-            window.location.href = "home.html";
+            window.location.href = "index.html";
             return;
         }
 
@@ -426,10 +546,11 @@
     function renderGrid() {
         const grid = document.getElementById('main-grid');
         const qInput = document.getElementById('M-search');
+        const sortVal = document.getElementById('sort-filter').value;
         const q = qInput ? qInput.value.toLowerCase() : "";
         grid.innerHTML = "";
 
-        items.filter(i => {
+        let list = items.filter(i => {
             const searchableText = [
                 i.name || "",
                 i.description || "",
@@ -438,15 +559,49 @@
 
             const mQ = q === "" || fuzzyMatch(searchableText, q);
             const mC = currentFilter === "all" || i.category === currentFilter;
+            
+            // Dropdown based filter handling
+            let mDropdownFilter = true;
+            if (sortVal === "featured-only") {
+                mDropdownFilter = i.featuredstatus === true;
+            } else if (sortVal === "in-stock") {
+                mDropdownFilter = (Number(i.stock) || 0) > 0;
+            } else if (sortVal === "out-of-stock") {
+                mDropdownFilter = (Number(i.stock) || 0) <= 0;
+            }
 
-            return mQ && mC;
-        }).forEach(i => {
+            return mQ && mC && mDropdownFilter;
+        });
+
+        // Sorting Logic
+        if (sortVal === "featured-first") {
+            list.sort((a, b) => (b.featuredstatus === true ? 1 : 0) - (a.featuredstatus === true ? 1 : 0));
+        } else if (sortVal === "alpha-asc") {
+            list.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+        } else if (sortVal === "alpha-desc") {
+            list.sort((a, b) => (b.name || "").localeCompare(a.name || ""));
+        } else if (sortVal === "price-asc") {
+            list.sort((a, b) => Number(a.price || 0) - Number(b.price || 0));
+        } else if (sortVal === "price-desc") {
+            list.sort((a, b) => Number(b.price || 0) - Number(a.price || 0));
+        } else if (sortVal === "instock-first") {
+            list.sort((a, b) => (Number(b.stock || 0) > 0 ? 1 : 0) - (Number(a.stock || 0) > 0 ? 1 : 0));
+        } else if (sortVal === "outofstock-first") {
+            list.sort((a, b) => (Number(a.stock || 0) > 0 ? 1 : 0) - (Number(b.stock || 0) > 0 ? 1 : 0));
+        }
+
+        list.forEach(i => {
             const card = document.createElement('div');
             card.className = 'item-card';
             card.onclick = (e) => { if(!e.target.closest('.stk-btn')) editItem(i.uid); };
 
+            const isFeatured = i.featuredstatus === true;
+
             card.innerHTML = `
-                <div class="img-preview"><img src="${i.images?.[0] || 'https://via.placeholder.com/200?text=No+Image'}"></div>
+                <div class="img-preview">
+                    ${isFeatured ? '<span class="featured-badge">Featured</span>' : ''}
+                    <img src="${i.images?.[0] || 'https://via.placeholder.com/200?text=No+Image'}">
+                </div>
                 <div class="item-content">
                     <div class="item-cat">${i.category}</div>
                     <h4 class="item-name">${i.name}</h4>
@@ -564,6 +719,7 @@
             name: document.getElementById('f-name').value,
             price: Number(document.getElementById('f-price').value) || 0,
             category: document.getElementById('f-cat').value,
+            featuredstatus: document.getElementById('f-featured').checked,
             description: document.getElementById('f-desc').value,
             stock: Number(document.getElementById('f-stock').value) || 0,
             stars: Number(document.getElementById('f-stars').value) || 0,
@@ -611,6 +767,7 @@
         resetForm();
         document.getElementById('modal-title').innerText = "NEW PRODUCT";
         document.getElementById('delete-btn-ui').style.display = 'none';
+        document.getElementById('f-featured').checked = false;
         document.getElementById('overlay').classList.add('visible');
         setTimeout(() => document.getElementById('side-panel').classList.add('active'), 10);
         renderMedia();
@@ -624,6 +781,7 @@
         document.getElementById('delete-btn-ui').style.display = 'block';
         document.getElementById('f-name').value = i.name || "";
         document.getElementById('f-cat').value = i.category || "SCHOOL SUPPLIES";
+        document.getElementById('f-featured').checked = i.featuredstatus || false;
         document.getElementById('f-price').value = i.price || 0;
         document.getElementById('f-desc').value = i.description || "";
         document.getElementById('f-stock').value = i.stock || 0;
@@ -665,7 +823,8 @@
     }
     function resetForm() { 
         document.getElementById('p-id').value = ""; 
-        document.querySelectorAll('.modal-content input, .modal-content textarea').forEach(i => i.value = ""); 
+        document.querySelectorAll('.modal-content input[type="text"], .modal-content input[type="number"], .modal-content textarea').forEach(i => i.value = ""); 
+        document.getElementById('f-featured').checked = false;
         document.getElementById('attr-stack').innerHTML = ""; 
         mediaState = []; 
     }

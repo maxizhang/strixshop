@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Product Reviews</title>
-    <link rel="icon" type="image/png" href="logospfd.png">
+    <link rel="icon" type="image/png" href="spfd.png">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
@@ -327,11 +327,11 @@
 
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='home.html'">
+        <div class="logo-box" onclick="window.location.href='index.html'">
             <img src="logoh.png" alt="STRIX">
         </div>
         <div class="nav-right-actions">
-            <a href="home.html" class="nav-link-item">Home</a>
+            <a href="index.html" class="nav-link-item">Home</a>
             <div class="nav-divider"></div>
             <span class="nav-badge-text">PRODUCT REVIEWS</span>
         </div>
@@ -506,7 +506,7 @@
     auth.onAuthStateChanged((user) => {
         if (!user) {
             alert("Please log in to submit a review.");
-            window.location.href = "home.html";
+            window.location.href = "index.html";
             return;
         }
         loadUserOrders(user);

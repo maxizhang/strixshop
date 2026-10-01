@@ -1,318 +1,1011 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="logospfd.png">
+    <link rel="icon" type="image/png" href="spfd.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strix Shop | Sign In</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Strix Shop | Home</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDKs v10.8.0 -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
     <style>
         :root {
-            --overlay: rgba(10, 15, 25, 0.8);
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --text-main: #ffffff;
-            --text-dim: rgba(255, 255, 255, 0.6);
-            --error: #ff5f5f;
-            --success: #5fff8d;
+            --color-text-main: #0f172a;
+            --color-glass-bg: rgba(255, 255, 255, 0.82);
+            --color-glass-border: rgba(255, 255, 255, 0.95);
+            --shadow-glass: 0 16px 40px 0 rgba(31, 38, 135, 0.07);
+            --radius-main: 22px;
         }
 
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            background: #050505; 
-            color: var(--text-main);
+        * { box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(120deg, #a5b6e7, #bca6e1, #ce80b0, #ce8080, #ffe4ab, #c8e0b8, #a9d4bd, #a5b6e7, #bca6e1, #ce80b0);
+            background-size: 400% 400%;
+            background-attachment: fixed;
+            animation: fluidMorph 12s ease infinit;
+            color: var(--color-text-main);
             font-family: 'Quicksand', sans-serif;
-            overflow: hidden;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
         }
 
-        .bg-image-layer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('indexbg.png');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.85; 
-            z-index: 0;
+        @keyframes fluidMorph {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        #starfield {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;
+        .glass-card {
+            background: var(--color-glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--color-glass-border);
+            box-shadow: var(--shadow-glass);
+            border-radius: var(--radius-main);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+
+        .glass-card-dark {
+            background: rgba(30, 41, 59, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+            border-radius: var(--radius-main);
+        }
+
+        .hr{
+            border: none;
+            height: 300px;
+            background: #fcfbfb;  
+        }
+
+        .banner-slide {
+            opacity: 0;
+            transform: scale(1.018) translateY(3px);
+            filter: blur(6px);
+            transition:
+                opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform, filter;
             pointer-events: none;
         }
 
-        .overlay-shield {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 20%, var(--overlay) 100%);
-            z-index: 2;
+        .banner-slide.slide-active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+            z-index: 10;
+            pointer-events: auto;
         }
 
-        .container {
-            position: relative;
-            display: flex; justify-content: center; align-items: center; 
-            height: 100vh; z-index: 10;
+        .banner-slide img {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translateZ(0);
         }
 
-        .login-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(8px);
-            padding: 3rem 2.5rem;
-            border-radius: 40px;
-            width: 60%;
-            max-width: 800px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
-            transition: all 0.5s ease;
+        #categoryCarouselContainer .banner-slide {
+            transform: scale(1.005);
+            filter: blur(5px);
+            transition:
+                opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        h1 { margin: 0; font-size: 2.2rem; font-weight: 700; letter-spacing: 2px; }
-        .version { font-size: 0.7rem; color: var(--text-dim); margin-bottom: 2rem; display: block; font-weight: 300; }
-
-        input {
-            width: 100%; padding: 15px 22px; margin: 12px 0;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50px;
-            color: white; outline: none;
-            box-sizing: border-box;
-            font-family: 'Quicksand', sans-serif;
-            transition: all 0.3s ease;
+        #categoryCarouselContainer .banner-slide.slide-active {
+            transform: scale(1);
+            filter: blur(0);
         }
 
-        input:focus { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.5); }
-        input::placeholder { color: #ffffff; opacity: 0.7; }
-
-        button {
-            width: 100%; padding: 15px; margin-top: 1.5rem;
-            background: #ffffff; color: #3a3455;
-            border: none; border-radius: 50px;
-            font-weight: 700; font-size: 1rem;
-            cursor: pointer; transition: transform 0.2s;
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.3); }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(109, 133, 188, 0.5);
+            border-radius: 4px;
         }
 
-        button:hover { background: #f0f0f0; transform: scale(1.02); }
-
-        #error-display { color: var(--error); font-size: 0.85rem; margin-top: 10px; min-height: 1.2rem; }
-
-        .transition-msg {
-            color: var(--success);
-            font-size: 1.2rem;
-            font-weight: 500;
-            margin-top: 2rem;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .links-container {
-            margin-top: 25px;
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .toggle-link {
-            font-size: 0.85rem;
-            color: var(--text-dim); 
-            cursor: pointer; 
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .toggle-link:hover { color: var(--text-main); }
-
-        .divider {
-            color: rgba(255, 255, 255, 0.2);
-            font-size: 0.85rem;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        #signinPrompt { position: fixed; right: 24px; bottom: 24px; z-index: 9990; width: min(390px, calc(100vw - 44px)); display: none; }
+        #signinPrompt.show { display: block; animation: noticeIn .35s cubic-bezier(.2,.8,.2,1); }
+        @keyframes noticeIn { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
     </style>
 </head>
-<body>
 
-<div class="bg-image-layer"></div>
-<canvas id="starfield"></canvas>
-<div class="overlay-shield"></div>
+<body class="p-3 md:p-5 text-slate-900 selection:bg-purple-200 selection:text-purple-900">
 
-<div class="container">
-    <div class="login-card" id="cardContainer">
-        <h1>STRIX SHOP</h1>
-        <span class="version">v.5.1.67.33.2.18</span>
-        
-        <form id="loginForm">
-            <input type="email" id="email" placeholder="Email Address" required>
-            <input type="password" id="password" placeholder="Password" required>
-            
-            <div id="error-display"></div>
-
-            <button type="submit" id="mainBtn">Sign In</button>
-        </form>
-
-        <div class="links-container">
-            <a href="createacc.html" class="toggle-link">Create Account</a>
-            <span class="divider">|</span>
-            <a href="mailto:hello.strix@outlook.com" class="toggle-link">Having trouble signing in?</a>
+    <div id="signinPrompt" aria-live="polite">
+        <div class="glass-card p-5 border border-white/80 shadow-2xl">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-user"></i></div>
+                <div class="flex-1">
+                    <div class="font-extrabold text-slate-900">Welcome to Strix Shop!</div>
+                    <p class="text-xs font-semibold text-slate-600 mt-1 leading-relaxed">Would you like to sign in or create an account?</p>
+                </div>
+                <button onclick="closeSigninPrompt()" class="text-slate-500 hover:text-slate-900" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="grid grid-cols-2 gap-2 mt-4">
+                <button onclick="window.location.href='signin.html'" class="bg-slate-900 text-white rounded-xl py-2.5 text-xs font-extrabold hover:bg-slate-800 transition">Yes</button>
+                <button onclick="closeSigninPrompt()" class="bg-white/80 border border-white rounded-xl py-2.5 text-xs font-extrabold text-slate-700 hover:bg-white transition">No, thanks</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <header class="max-w-[1650px] mx-auto mb-5">
+        <div class="glass-card px-5 py-3.5 flex flex-wrap items-center justify-between gap-4">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="bg-slate-900 p-2 px-3 rounded-2xl border border-white/20 shadow-md group-hover:scale-105 transition-transform duration-300">
+                    <img src="logoh.png" alt="STRIX SHOP" class="h-8 w-auto object-contain filter brightness-0 invert">
+                </div>
+            </a>
 
-    // Firebase Configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
-        authDomain: "strix-shop.firebaseapp.com",
-        projectId: "strix-shop",
-        storageBucket: "strix-shop.firebasestorage.app",
-        messagingSenderId: "300414445622",
-        appId: "1:300414445622:web:97465fa5309c27b9605097"
-    };
+            <!-- Simplified Underline Search Bar with Animated Placeholder -->
+            <div class="flex-1 max-w-xl mx-2 relative">
+                <div class="flex items-center border-b-2 border-slate-900/80 bg-transparent px-2 py-1 transition focus-within:border-indigo-600">
+                    <input type="text" id="mainSearchInput" placeholder=""
+                           class="w-full bg-transparent text-xs font-bold text-slate-900 placeholder-slate-600 focus:outline-none">
+                    <button onclick="handleSearch()" class="text-slate-900 hover:text-indigo-600 transition ml-2 flex-shrink-0">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </button>
+                </div>
+            </div>
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+            <div class="flex items-center gap-3 text-xs font-bold">
+                <a href="cs.html" class="glass-card px-4 py-2 rounded-xl hover:bg-white transition flex items-center gap-2 text-slate-800 shadow-sm">
+                    <i class="fa-solid fa-headset text-rose-500"></i>
+                    <span class="hidden sm:inline">Customer Support</span>
+                </a>
 
-    let lastWriteTimestamp = 0;
+                <a href="signin.html" id="authLink" class="glass-card px-4 py-2 rounded-xl hover:bg-white transition text-slate-800 shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-user text-amber-500"></i>
+                    <span id="authText">Register | Sign in</span>
+                </a>
 
-    // Fetch User IP Address safely
-    async function getClientIP() {
-        try {
-            const response = await fetch('https://api.ipify.org?format=json');
-            const data = await response.json();
-            return data.ip;
-        } catch (error) {
-            console.warn("IP fetch blocked or failed, continuing without IP:", error);
-            return "Unavailable";
-        }
-    }
+                <a href="cart.html" class="glass-card p-2 px-3 rounded-xl hover:bg-white transition relative text-slate-800 shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping text-emerald-500"></i>
+                    <span>Cart</span>
+                </a>
+                
+                <a href="wishlist.html" class="glass-card px-4 py-2 rounded-xl hover:bg-white transition text-slate-800 shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-indigo-500"></i>
+                    <span>Wishlist</span>
+                </a>
+            </div>
+        </div>
+    </header>
 
-    // Trigger Transition Visual Feedback
-    function showTransitionState(messageText) {
-        const cardContainer = document.getElementById('cardContainer');
-        cardContainer.innerHTML = `
-            <h1>STRIX SHOP</h1>
-            <span class="version">v.5.1.67.33.2.18</span>
-            <div class="transition-msg">${messageText}</div>
-        `;
-    }
+    <main class="max-w-[1650px] mx-auto space-y-6">
 
-    // Record Entry/Exit Event in Firestore under "entryexit" collection with 2-sec lockout
-    async function recordEntryExit(user, type) {
-        const nowMs = Date.now();
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-5">
+            <div class="glass-card p-4 flex flex-col gap-2">
+                <div class="font-extrabold text-[11px] uppercase tracking-wider text-slate-600 mb-1 px-2">
+                    Categories
+                </div>
+                <div id="categorySidebarList" class="flex flex-col gap-1.5">
+                    <a href="products.html" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Browse All</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=SCHOOL%20SUPPLIES" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>School Supplies</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=TOYS%20AND%20GAMES" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Toys &amp; Games</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=MATERIALS" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Materials</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=DÉCOR%20%2F%20SEASONAL" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Décor / Seasonal</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=ELECTRONICS" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Electronics</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=KEYCHAINS" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Keychains</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=ACCESSORIES" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Accessories</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=GIFT%20CARDS" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Gift Cards</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=OTHER" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Other</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3 glass-card p-4 flex flex-col justify-between relative overflow-hidden group">
+                <div class="flex items-center justify-between gap-3 mb-3 z-20 relative">
+                </div>
+
+                <div id="heroCarouselContainer" class="relative w-full h-[320px] md:h-[390px] rounded-2xl overflow-hidden shadow-inner bg-slate-900"></div>
+
+                <button onclick="prevHeroSlide()" class="absolute left-7 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-800 shadow-md transition opacity-80 group-hover:opacity-100 z-20">
+                    <i class="fa-solid fa-chevron-left text-sm text-slate-700"></i>
+                </button>
+                <button onclick="nextHeroSlide()" class="absolute right-7 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-800 shadow-md transition opacity-80 group-hover:opacity-100 z-20">
+                    <i class="fa-solid fa-chevron-right text-sm text-slate-700"></i>
+                </button>
+
+                <div class="flex items-center justify-between mt-3 px-2">
+                    <div id="heroDots" class="flex items-center gap-2"></div>
+                    <div id="currentDateDisplay" class="text-xs text-slate-700 font-bold bg-white/70 px-3 py-1 rounded-full border border-white/80"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card p-4 grid grid-cols-5 md:grid-cols-10 gap-3 text-center">
+            <a href="products.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-store text-lg text-rose-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Products</span>
+            </a>
+            <a href="cs.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-headset text-lg text-amber-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Support</span>
+            </a>
+            <a href="terms.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-file-contract text-lg text-yellow-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Terms</span>
+            </a>
+            <a href="events.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-calendar-days text-lg text-emerald-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Events</span>
+            </a>
+            <a href="strixnews.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-newspaper text-lg text-teal-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Newsletter</span>
+            </a>
+            <a href="myacc.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-user-gear text-lg text-cyan-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Account</span>
+            </a>
+            <a href="myorders.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-box-archive text-lg text-blue-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Orders</span>
+            </a>
+            <a href="cart.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-cart-shopping text-lg text-indigo-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Cart</span>
+            </a>
+            <a href="giftcards.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-gift text-lg text-purple-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Gift Cards</span>
+            </a>
+            <a href="mailto:hello.strix@outlook.com" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-envelope text-lg text-pink-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Email Us</span>
+            </a>
+        </div>
+
+        <div class="glass-card p-6 space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-300/60 pb-3">
+                <h2 class="font-extrabold text-xl tracking-tight text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-fire text-amber-500"></i>
+                    <span>Featured Products</span>
+                </h2>
+                <a href="products.html" class="text-xs font-bold text-slate-800 hover:text-indigo-600 transition">View All Products &rarr;</a>
+            </div>
+            <div id="trendingProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+        </div>
+
         
-        if (nowMs - lastWriteTimestamp < 2000) {
-            console.warn("Timestamp blocked: A record was created less than 2 seconds ago.");
-            return false;
-        }
-        
-        lastWriteTimestamp = nowMs;
+        <div class="glass-card p-5 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-300/60 pb-3">
+                <h2 class="font-extrabold text-base tracking-tight text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-images text-slate-700"></i>
+                    <span>Featured Gallery Showcase</span>
+                </h2>
+                <span class="text-xs text-slate-600 font-semibold">Hello World</span>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="displayImagesContainer"></div>
+        </div>
 
-        const userRecordRef = doc(db, "entryexit", user.uid);
-        const now = new Date();
-        
-        const dateStr = now.toISOString().split('T')[0];
-        const timeStr = now.toTimeString().split(' ')[0];
-        const ipAddress = await getClientIP();
+        <div class="glass-card p-4 flex items-center justify-center">
+            <div class="flex items-center w-full max-w-xl bg-white/90 border border-white rounded-full px-4 py-2 shadow-inner">
+                <input type="text" id="middleSearchInput" placeholder="Search..."
+                       class="flex-1 bg-transparent text-xs font-semibold text-slate-800 focus:outline-none">
+                <button onclick="handleMiddleSearch()" class="text-slate-800 hover:text-indigo-600 pl-2 font-bold text-xs flex items-center gap-1">
+                    <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                </button>
+            </div>
+        </div>
 
-        const entryRecord = {
-            date: dateStr,
-            time: timeStr,
-            fullTimestamp: now.toISOString(),
-            ipAddress: ipAddress,
-            eventAction: type // "manual-entry", "automatic-entry", or "exit"
+        <div class="glass-card p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <h2 class="font-extrabold text-2xl tracking-tight text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-shapes text-slate-700"></i>
+                    <span>Select a Category to Shop</span>
+                </h2>
+            </div>
+            <div class="relative flex items-center justify-center">
+                <button onclick="prevCatSlide()" class="absolute left-2 z-10 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-md transition text-slate-800">
+                    <i class="fa-solid fa-chevron-left text-slate-700"></i>
+                </button>
+                <div id="categoryCarouselContainer" class="w-full max-w-4xl h-[260px] md:h-[320px] rounded-2xl overflow-hidden relative shadow-md"></div>
+                <button onclick="nextCatSlide()" class="absolute right-2 z-10 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-md transition text-slate-800">
+                    <i class="fa-solid fa-chevron-right text-slate-700"></i>
+                </button>
+            </div>
+            <div id="categoryCarouselDots" class="flex items-center justify-center gap-2 pt-2"></div>
+        </div>
+
+        <div class="fixed bottom-6 left-6 z-40 flex items-center gap-3">
+            <a
+                href="cs.html"
+                class="w-14 h-14 bg-black/60 text-white rounded-full shadow-2xl backdrop-blur-xl flex items-center justify-center hover:scale-110 hover:bg-black/70 border border-white/50 transition duration-300"
+                title="Customer Support"
+                aria-label="Customer Support"
+            >
+                <i class="fa-solid fa-comment-dots text-2xl text-white"></i>
+            </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="glass-card p-6 space-y-3">
+                <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2 border-b border-slate-300/60 pb-2">
+                    <i class="fa-solid fa-graduation-cap text-slate-700"></i>
+                    <span>Teacher Discounts</span>
+                </h3>
+                <p class="text-xs text-slate-700 font-medium leading-relaxed">
+                    All public school teachers in PA shall receive a 10% discount on their orders at Strix Shop. Teachers teaching in TESD shall receive a 20% discount.
+                </p>
+            </div>
+            <div class="glass-card p-6 space-y-3">
+                <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2 border-b border-slate-300/60 pb-2">
+                    <i class="fa-solid fa-bullseye text-slate-700"></i>
+                    <span>Strix Shop's Mission</span>
+                </h3>
+                <p class="text-xs text-slate-700 font-medium leading-relaxed">
+                    We hope to revolutionize the shopping experience of users by providing users with a safe, private, secure shopping experience, with no hidden fees or terms, with real customer support, with simple website navigation, and with accurate representation of products with good quality.
+                </p>
+            </div>
+        </div>
+
+        <footer class="glass-card p-8 space-y-8 relative overflow-hidden">
+            <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-xs">
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-orange-500 pl-2">STRIX SHOP</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="about.html" class="hover:text-indigo-600 transition">About Strix</a></li>
+                        <li><a href="giftcards.html" class="hover:text-indigo-600 transition">Gift Cards</a></li>
+                        <li><a href="departments.html" class="hover:text-indigo-600 transition">Departments</a></li>
+                        <li><a href="products.html" class="hover:text-indigo-600 transition">Products</a></li>
+                        <li><a href="careers.html" class="hover:text-indigo-600 transition">Careers</a></li>
+                        <li><a href="mr.html" class="hover:text-indigo-600 transition">Market Research</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-yellow-400 pl-2">SUPPORT</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="cs.html" class="hover:text-indigo-600 transition">Contact Support</a></li>
+                        <li><a href="help.html" class="hover:text-indigo-600 transition">Help Center</a></li>
+                        <li><a href="report.html" class="hover:text-indigo-600 transition">Report an Issue</a></li>
+                        <li><a href="faqs.html" class="hover:text-indigo-600 transition">FAQs</a></li>
+                        <li><a href="r-r.html" class="hover:text-indigo-600 transition">Returns/Refunds</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-green-500 pl-2">LEGAL</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="terms.html" class="hover:text-indigo-600 transition">Terms &amp; Conditions</a></li>
+                        <li><a href="privacypolicy.html" class="hover:text-indigo-600 transition">Privacy Policy</a></li>
+                        <li><a href="returnpolicy.html" class="hover:text-indigo-600 transition">Return Policy</a></li>
+                        <li><a href="ethicscode.html" class="hover:text-indigo-600 transition">Ethics Code</a></li>
+                        <li><a href="usercoc.html" class="hover:text-indigo-600 transition">Code of Conduct</a></li>
+                        <li><a href="emphandbook.html" class="hover:text-indigo-600 transition">Handbook</a></li>
+                        <li><a href="revisions.html" class="hover:text-indigo-600 transition">Revisions</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-teal-500 pl-2">WORK AT STRIX</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="careers.html" class="hover:text-indigo-600 transition">Strix Shop Jobs</a></li>
+                        <li><a href="strixnews.html" class="hover:text-indigo-600 transition">Strix News Team</a></li>
+                        <li><a href="strixstudio.html" class="hover:text-indigo-600 transition">Strix Studio Crew</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-xs pt-4">
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-blue-500 pl-2">PARTNERS</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="collaborations.html" class="hover:text-indigo-600 transition">Collaborations</a></li>
+                        <li><a href="timeline.html" class="hover:text-indigo-600 transition">Our Timeline</a></li>
+                        <li><a href="sponsors.html" class="hover:text-indigo-600 transition">Sponsors</a></li>
+                        <li><a href="donations.html" class="hover:text-indigo-600 transition">Donations</a></li>
+                        <li><a href="partnerships.html" class="hover:text-indigo-600 transition">Partnerships</a></li>
+                        <li><a href="projects.html" class="hover:text-indigo-600 transition">Projects</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-purple-500 pl-2">COMPANY</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="ourteam.html" class="hover:text-indigo-600 transition">Our Team</a></li>
+                        <li><a href="strixnews.html" class="hover:text-indigo-600 transition">Newsletter</a></li>
+                        <li><a href="invest.html" class="hover:text-indigo-600 transition">Invest in Strix</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-fuchsia-500 pl-2">COMMUNITY</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="events.html" class="hover:text-indigo-600 transition">Events</a></li>
+                        <li><a href="stories.html" class="hover:text-indigo-600 transition">Customer Stories</a></li>
+                        <li><a href="socialmedia.html" class="hover:text-indigo-600 transition">Social Media</a></li>
+                        <li><a href="review.html" class="hover:text-indigo-600 transition">Leave a Review</a></li>
+                        <li><a href="bg.html" class="hover:text-indigo-600 transition">Background</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-rose-500 pl-2">ACCOUNT</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="myacc.html" class="hover:text-indigo-600 transition">My Account</a></li>
+                        <li><a href="cart.html" class="hover:text-indigo-600 transition">View Cart</a></li>
+                        <li><a href="myorders.html" class="hover:text-indigo-600 transition">My Orders</a></li>
+                        <li><a href="signin.html" class="hover:text-indigo-600 transition">Sign In</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="relative z-10 pt-6 border-t border-slate-900/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-bold text-slate-700">
+                <div><span>&copy; 2026 STRIX SHOP, ALL RIGHTS RESERVED.</span></div>
+                <div class="flex items-center gap-3">
+                    <span>Follow us:</span>
+                    <div class="flex items-center gap-2 text-sm">
+                        <a href="socialmedia.html" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center hover:scale-110 transition" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="socialmedia.html" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center hover:scale-110 transition" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="socialmedia.html" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center hover:scale-110 transition" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="glass-card p-4 flex flex-col items-center justify-center text-center space-y-2">
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-600">Days since Release</div>
+                <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-slate-800">
+                    <span class="bg-white/80 px-2 py-1 rounded-lg border border-white" id="uptimeDays">0</span>d
+                    <span class="bg-white/80 px-2 py-1 rounded-lg border border-white" id="uptimeHours">00</span>h
+                    <span class="bg-white/80 px-2 py-1 rounded-lg border border-white" id="uptimeMinutes">00</span>m
+                    <span class="bg-white/80 px-2 py-1 rounded-lg border border-white" id="uptimeSeconds">00</span>s
+                </div>
+            </div>
+
+            <div class="glass-card p-4 flex flex-col items-center justify-center text-center space-y-2">
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-600">My Account</div>
+                <div class="flex flex-wrap justify-center gap-1.5">
+                    <a href="wishlist.html" class="text-[11px] font-bold bg-white/80 px-2.5 py-1 rounded-lg hover:bg-white transition text-slate-700">Wishlist</a>
+                    <a href="cart.html" class="text-[11px] font-bold bg-white/80 px-2.5 py-1 rounded-lg hover:bg-white transition text-slate-700">Cart</a>
+                    <a href="myorders.html" class="text-[11px] font-bold bg-white/80 px-2.5 py-1 rounded-lg hover:bg-white transition text-slate-700">Orders</a>
+                </div>
+            </div>
+
+            <div class="glass-card p-4 flex flex-col items-center justify-center text-center space-y-2">
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-600">Operating Version</div>
+                <div class="text-xs font-extrabold text-slate-800 bg-white/80 px-3 py-1 rounded-xl border border-white">
+                    Version 6.1.1
+                </div>
+            </div>
+
+            <div class="glass-card p-4 flex flex-col items-center justify-center text-center space-y-2">
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-600">Customer Support</div>
+                <div class="flex flex-wrap justify-center gap-1.5">
+                    <a href="cs.html" class="text-[11px] font-bold bg-white/80 px-2.5 py-1 rounded-lg hover:bg-white transition text-slate-700">Help Center</a>
+                    <a href="mailto:hello.strix@outlook.com" class="text-[11px] font-bold bg-white/80 px-2.5 py-1 rounded-lg hover:bg-white transition text-slate-700">Email Us</a>
+                </div>
+            </div>
+
+            <div class="glass-card p-4 flex flex-col items-center justify-center text-center">
+                <button id="accountAction" onclick="handleSignOut()" class="w-full text-center bg-white/80 hover:bg-rose-50 hover:text-rose-600 border border-rose-200 text-rose-500 font-extrabold text-xs py-2.5 px-4 rounded-xl transition shadow-sm">
+                    Sign Out
+                </button>
+            </div>
+
+            <br><br><br>
+        </div>
+    </main>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
+            authDomain: "strix-shop.firebaseapp.com",
+            projectId: "strix-shop",
+            storageBucket: "strix-shop.firebasestorage.app",
+            messagingSenderId: "300414445622",
+            appId: "1:300414445622:web:97465fa5309c27b9605097"
         };
-        
-        try {
-            await setDoc(userRecordRef, {
-                userId: user.uid,
-                email: user.email,
-                records: arrayUnion(entryRecord)
-            }, { merge: true });
-            console.log("Entry/Exit record successfully saved to Firestore!");
-            return true;
-        } catch (error) {
-            console.error("CRITICAL Firestore Error:", error.code, error.message);
-            return false;
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
         }
-    }
 
-    // Check 48-Hour Rule on Auth State Change
-    onAuthStateChanged(auth, async (user) => {
-        if (user) {
-            const userRecordRef = doc(db, "entryexit", user.uid);
-            try {
-                const docSnap = await getDoc(userRecordRef);
-                if (docSnap.exists()) {
-                    const data = docSnap.data();
-                    if (data.records && data.records.length > 0) {
-                        const lastRecord = data.records[data.records.length - 1];
-                        
-                        // Rule Check: Auto sign-in only if last action was a manual entry
-                        if (lastRecord.eventAction === "manual-entry") {
-                            const lastSignInTime = new Date(lastRecord.fullTimestamp).getTime();
-                            const currentTime = new Date().getTime();
-                            const hoursDifference = (currentTime - lastSignInTime) / (1000 * 60 * 60);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
 
-                            if (hoursDifference <= 48) {
-                                showTransitionState("Welcome Back, Signing In");
-                                await recordEntryExit(user, "automatic-entry");
-                                setTimeout(() => {
-                                    window.location.href = "home.html";
-                                }, 1500);
-                                return;
-                            }
-                        }
+        // 7 Banner images with empty alt attributes
+        const bannerImages = [
+            { img: "bannerimage1.png", alt: "" },
+            { img: "bannerimage2.png", alt: "" },
+            { img: "bannerimage3.png", alt: "" },
+            { img: "bannerimage4.png", alt: "" },
+            { img: "bannerimage5.png", alt: "" },
+            { img: "bannerimage6.png", alt: "" },
+            { img: "bannerimage7.png", alt: "" }
+        ];
+
+        const allBgImages = [
+            "bg1.png", "bg2.png", "bg3.png", "bg4.png",
+            "bg5.png", "bg6.png", "bg7.png", "bg8.png",
+            "bg9.png", "bg10.png", "bg11.png", "bg12.png"
+        ];
+
+const categoryData = [
+    { name: "School Supplies", img: "cat1.png", query: "SCHOOL SUPPLIES" },
+    { name: "Toys & Games", img: "cat2.png", query: "TOYS AND GAMES" },
+    { name: "Materials", img: "cat3.png", query: "MATERIALS" },
+    { name: "Décor / Seasonal", img: "cat4.png", query: "DÉCOR / SEASONAL" },
+    { name: "Electronics", img: "cat5.png", query: "ELECTRONICS" },
+    { name: "Keychains", img: "cat6.png", query: "KEYCHAINS" },
+    { name: "Accessories", img: "cat7.png", query: "ACCESSORIES" },
+    { name: "Gift Cards", img: "cat8.png", query: "GIFT CARDS" },
+    { name: "Other", img: "cat9.png", query: "OTHER" }
+];
+        let currentHeroIndex = 0;
+        let currentCatIndex = 0;
+        let heroTimer = null;
+
+        let currentUser = null;
+        let signinPromptTimer = null;
+        let authStateResolved = false;
+
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .catch(error => console.warn("Could not set Firebase Auth persistence:", error));
+
+        // Listen for user auth status & fetch firstName from Firestore
+        auth.onAuthStateChanged(user => {
+            authStateResolved = true;
+            currentUser = user || null;
+
+            clearTimeout(signinPromptTimer);
+            signinPromptTimer = null;
+
+            if (user) {
+                // Fetch user document from Firestore to retrieve `firstName`
+                db.collection("users").doc(user.uid).get().then(doc => {
+                    let firstName = "";
+                    if (doc.exists && doc.data().firstName) {
+                        firstName = doc.data().firstName;
+                    } else {
+                        firstName = getFirstNameFallback(user);
                     }
+                    updateAuthUI(user, firstName);
+                }).catch(err => {
+                    console.warn("Could not fetch user document:", err);
+                    updateAuthUI(user, getFirstNameFallback(user));
+                });
+
+                closeSigninPrompt(false);
+            } else {
+                updateAuthUI(null);
+                scheduleSigninPrompt();
+            }
+        });
+
+        function updateAuthUI(user, firstName = "") {
+            const authText = document.getElementById("authText");
+            const authLink = document.getElementById("authLink");
+
+            if (user) {
+                authText.innerText = `Hello, ${firstName || "User"}`;
+                authLink.href = "myacc.html";
+            } else {
+                authText.innerText = "Register | Sign in";
+                authLink.href = "signin.html";
+            }
+
+            const accountAction = document.getElementById("accountAction");
+            if (accountAction) {
+                if (user) {
+                    accountAction.textContent = "Sign Out";
+                    accountAction.onclick = handleSignOut;
+                    accountAction.classList.remove("hidden");
+                } else {
+                    accountAction.textContent = "Sign In / Register";
+                    accountAction.onclick = () => { window.location.href = "signin.html"; };
+                    accountAction.classList.remove("hidden");
                 }
-            } catch (error) {
-                console.error("Error checking entry history:", error);
             }
         }
-    });
 
-    // Login Form Submission Handler (Manual/Physical Entry)
-    const loginForm = document.getElementById('loginForm');
-    const errorDisplay = document.getElementById('error-display');
-
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        errorDisplay.innerText = "";
-        
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        try {
-            const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            showTransitionState("Sign-in Successful! Loading portal...");
-            await recordEntryExit(userCredential.user, "manual-entry");
-            setTimeout(() => {
-                window.location.href = "home.html";
-            }, 1500);
-        } catch (err) {
-            console.error("Auth Error:", err.code);
-            if (err.code === 'auth/invalid-email') errorDisplay.innerText = "Invalid email format.";
-            else if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') errorDisplay.innerText = "Incorrect email or password.";
-            else errorDisplay.innerText = "Error: " + err.message;
+        function getFirstNameFallback(user) {
+            if (user.displayName && user.displayName.trim()) {
+                return user.displayName.trim().split(/\s+/)[0];
+            }
+            if (user.email && user.email.includes("@")) {
+                const namePart = user.email.split("@")[0];
+                return namePart.charAt(0).toUpperCase() + namePart.slice(1);
+            }
+            return "User";
         }
-    });
 
-    // Background Starfield Animation
-    const canvas = document.getElementById('starfield');
-    const ctx = canvas.getContext('2d');
-    let stars = [];
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    class Star {
-        constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.size = Math.random() * 1.2; this.speed = Math.random() * 0.15; }
-        update() { this.y -= this.speed; if (this.y < 0) { this.y = canvas.height; this.x = Math.random() * canvas.width; } }
-        draw() { ctx.fillStyle = "rgba(255, 255, 255, 0.4)"; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
+        // Trigger prompt after 3 seconds if not signed in
+        function scheduleSigninPrompt() {
+            clearTimeout(signinPromptTimer);
+            signinPromptTimer = null;
+
+            if (!authStateResolved || currentUser) return;
+            if (sessionStorage.getItem("strix_signin_prompt_dismissed") === "1") return;
+
+            signinPromptTimer = setTimeout(() => {
+                if (authStateResolved && !currentUser && sessionStorage.getItem("strix_signin_prompt_dismissed") !== "1") {
+                    showSigninPrompt();
+                }
+            }, 3000);
+        }
+
+        function showSigninPrompt() {
+            if (!authStateResolved || currentUser) return;
+            if (sessionStorage.getItem("strix_signin_prompt_dismissed") === "1") return;
+            const prompt = document.getElementById("signinPrompt");
+            if (prompt) prompt.classList.add("show");
+        }
+
+        function closeSigninPrompt(markDismissed = true) {
+            clearTimeout(signinPromptTimer);
+            signinPromptTimer = null;
+            const prompt = document.getElementById("signinPrompt");
+            if (prompt) prompt.classList.remove("show");
+
+            if (markDismissed) {
+                sessionStorage.setItem("strix_signin_prompt_dismissed", "1");
+            }
+        }
+
+        function handleSignOut() {
+            sessionStorage.removeItem("strix_signin_prompt_dismissed");
+            auth.signOut().then(() => {
+                window.location.reload();
+            }).catch(error => {
+                console.error("Sign out failed:", error);
+            });
+        }
+
+        // Typing animation for main search bar placeholder
+        const searchItems = ["pencils...", "pens...", "erasers...", "highlighters...", "notebooks...", "stuffed animals...", "keychains...", "sticky notes...", "cards...", "bags...", "pencil cases...", "decorations...", "stickers...", "water bottles...", "headphones...", "phone accessories...", "toys...", "games..."];
+        let itemIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typePlaceholderAnimation() {
+            const input = document.getElementById("mainSearchInput");
+            if (!input) return;
+
+            const currentItem = searchItems[itemIndex];
+            const prefix = "Search for ";
+
+            if (isDeleting) {
+                charIndex--;
+            } else {
+                charIndex++;
+            }
+
+            input.setAttribute("placeholder", prefix + currentItem.substring(0, charIndex));
+
+            let speed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIndex === currentItem.length) {
+                speed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                itemIndex = (itemIndex + 1) % searchItems.length;
+                speed = 300;
+            }
+
+            setTimeout(typePlaceholderAnimation, speed);
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            });
+
+            document.getElementById("currentDateDisplay").innerText = `Today is ${dateStr}`;
+
+            renderHeroCarousel();
+            renderRandomDisplayImages();
+            loadFirestoreProducts();
+            renderCategoryCarousel();
+            startUptimeCounter();
+            typePlaceholderAnimation();
+        });
+
+        function renderHeroCarousel() {
+            const container = document.getElementById("heroCarouselContainer");
+            const dotsContainer = document.getElementById("heroDots");
+
+            if (!container.dataset.ready) {
+                container.innerHTML = bannerImages.map((b, idx) => `
+                    <div class="banner-slide absolute inset-0 ${idx === currentHeroIndex ? "slide-active" : ""}" data-hero-index="${idx}">
+                        <img src="${b.img}" alt="${b.alt}" class="w-full h-full object-cover">
+                    </div>
+                `).join("");
+                container.dataset.ready = "1";
+            }
+
+            container.querySelectorAll("[data-hero-index]").forEach((slide, idx) => {
+                slide.classList.toggle("slide-active", idx === currentHeroIndex);
+            });
+
+            dotsContainer.innerHTML = bannerImages.map((_, idx) => `
+                <button onclick="setHeroSlide(${idx})"
+                        aria-label="Go to banner ${idx + 1}"
+                        class="h-2 rounded-full transition-all ${idx === currentHeroIndex ? "w-6 bg-slate-800" : "w-2 bg-slate-400/60"}">
+                </button>
+            `).join("");
+
+            resetHeroTimer();
+        }
+
+        function setHeroSlide(idx) {
+            if (idx === currentHeroIndex) return;
+            currentHeroIndex = idx;
+            renderHeroCarousel();
+        }
+
+        function prevHeroSlide() {
+            currentHeroIndex = (currentHeroIndex - 1 + bannerImages.length) % bannerImages.length;
+            renderHeroCarousel();
+        }
+
+        function nextHeroSlide() {
+            currentHeroIndex = (currentHeroIndex + 1) % bannerImages.length;
+            renderHeroCarousel();
+        }
+
+        function resetHeroTimer() {
+            clearInterval(heroTimer);
+            heroTimer = setInterval(() => {
+                currentHeroIndex = (currentHeroIndex + 1) % bannerImages.length;
+                renderHeroCarousel();
+            }, 5000);
+        }
+
+        function renderRandomDisplayImages() {
+            const container = document.getElementById("displayImagesContainer");
+            const shuffled = [...allBgImages].sort(() => 0.5 - Math.random());
+            const selected4 = shuffled.slice(0, 4);
+
+            container.innerHTML = selected4.map(imgSrc => `
+                <div class="glass-card p-2 rounded-2xl overflow-hidden group shadow-sm hover:scale-[1.02] transition">
+                    <div class="w-full h-40 rounded-xl overflow-hidden relative">
+                        <img src="${imgSrc}" alt="Gallery Display"
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function loadFirestoreProducts() {
+            db.collection("products")
+                .where("featuredstatus", "==", true)
+                .get()
+                .then(snapshot => {
+                    const fetchedProducts = [];
+
+                    snapshot.forEach(doc => {
+                        fetchedProducts.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                    });
+
+                    renderProducts(fetchedProducts);
+                })
+                .catch(error => {
+                    console.error("Could not load products:", error);
+                    renderProducts([]);
+                });
+        }
+
+        // Pure Display & Redirect Products List (No cart/wishlist buttons)
+function renderProducts(list) {
+    const container = document.getElementById("trendingProductsGrid");
+
+    if (!list || list.length === 0) {
+        container.innerHTML = `
+            <div class="col-span-full text-center py-8 text-slate-500 text-xs font-bold">No featured products found</div>
+        `;
+        return;
     }
-    for (let i = 0; i < 120; i++) stars.push(new Star());
-    function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { s.update(); s.draw(); }); requestAnimationFrame(animate); }
-    window.addEventListener('resize', resize);
-    resize(); animate();
-</script>
+
+    container.innerHTML = list.slice(0, 8).map(p => {
+        const rawTitle = p.title || p.name || "---";
+        
+        // Target images[0] from Firestore document
+        const productImage = (Array.isArray(p.images) && p.images.length > 0)
+            ? p.images[0]
+            : (p.image || p.imageUrl || p.img || p.photoUrl || p.photo || "");
+
+        const safeImage = String(productImage)
+            .replace(/\\/g, "\\\\")
+            .replace(/'/g, "\\'");
+
+        const price = Number(p.price || 0);
+        const searchUrl = `products.html?search=${encodeURIComponent(rawTitle)}`;
+
+        return `
+            <div onclick="window.location.href='${searchUrl}'"
+                 class="glass-card p-4 flex flex-col justify-between space-y-3 group border border-white cursor-pointer hover:scale-[1.02] transition">
+
+                <div class="w-full h-44 rounded-xl overflow-hidden relative bg-white/50">
+                    ${safeImage
+                        ? `<img src="${safeImage}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">`
+                        : `<div class="w-full h-full flex items-center justify-center text-slate-400"><i class="fa-regular fa-image text-3xl"></i></div>`}
+                </div>
+
+                <div class="space-y-1">
+                    <span class="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider">
+                        ${escapeHtml(p.category || (p.attributes && p.attributes.category) || "---")}
+                    </span>
+                    <h3 class="font-extrabold text-xs text-slate-900 truncate group-hover:text-indigo-600 transition">
+                        ${escapeHtml(rawTitle)}
+                    </h3>
+                </div>
+
+                <div class="flex items-center justify-between pt-2 border-t border-slate-900/10">
+                    <span class="font-extrabold text-sm text-slate-900">
+                        $${price.toFixed(2)}
+                    </span>
+                    <span class="text-[11px] font-extrabold text-indigo-600 group-hover:translate-x-1 transition flex items-center gap-1">
+                        View Item <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </span>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function renderCategoryCarousel() {
+            const container = document.getElementById("categoryCarouselContainer");
+            const dotsContainer = document.getElementById("categoryCarouselDots");
+
+            if (!container.dataset.ready) {
+                container.innerHTML = categoryData.map((cat, idx) => `
+                    <div class="banner-slide absolute inset-0 ${idx === currentCatIndex ? "slide-active" : ""} flex items-center justify-center" data-cat-index="${idx}">
+                        <img src="${cat.img}" alt="${cat.name}" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/30 to-transparent"></div>
+
+                        <div class="relative z-20 text-center space-y-3 p-6">
+                            <h3 class="text-white font-extrabold text-2xl md:text-3xl drop-shadow-md">
+                                ${cat.name}
+                            </h3>
+
+                        <a href="products.html?category=${encodeURIComponent(cat.query)}"
+                        class="inline-block bg-white text-slate-900 hover:bg-slate-100 font-extrabold px-6 py-2 rounded-full text-xs shadow-lg transition">
+                            Shop ${cat.name}
+                        </a>
+                        </div>
+                    </div>
+                `).join("");
+                container.dataset.ready = "1";
+            }
+
+            container.querySelectorAll("[data-cat-index]").forEach((slide, idx) => {
+                slide.classList.toggle("slide-active", idx === currentCatIndex);
+            });
+
+            dotsContainer.innerHTML = categoryData.map((_, idx) => `
+                <button onclick="setCatSlide(${idx})"
+                        aria-label="Go to category ${idx + 1}"
+                        class="h-2 rounded-full transition-all ${idx === currentCatIndex ? "w-6 bg-slate-800" : "w-2 bg-slate-400/60"}">
+                </button>
+            `).join("");
+        }
+
+        function setCatSlide(idx) {
+            currentCatIndex = idx;
+            renderCategoryCarousel();
+        }
+
+        function prevCatSlide() {
+            currentCatIndex = (currentCatIndex - 1 + categoryData.length) % categoryData.length;
+            renderCategoryCarousel();
+        }
+
+        function nextCatSlide() {
+            currentCatIndex = (currentCatIndex + 1) % categoryData.length;
+            renderCategoryCarousel();
+        }
+
+        function performSearch(inputId) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const query = input.value.trim();
+            if (!query) return;
+            window.location.href = `products.html?search=${encodeURIComponent(query)}`;
+        }
+
+        function handleSearch() {
+            performSearch("mainSearchInput");
+        }
+
+        function handleBannerSearch() {
+            performSearch("bannerSearchInput");
+        }
+
+        function handleMiddleSearch() {
+            performSearch("middleSearchInput");
+        }
+
+        function handleCatSearch() {
+            performSearch("catSearchInput");
+        }
+
+        document.addEventListener("keydown", event => {
+            if (event.key !== "Enter") return;
+
+            if (document.activeElement === document.getElementById("mainSearchInput")) {
+                handleSearch();
+            } else if (document.activeElement === document.getElementById("bannerSearchInput")) {
+                handleBannerSearch();
+            } else if (document.activeElement === document.getElementById("middleSearchInput")) {
+                handleMiddleSearch();
+            } else if (document.activeElement === document.getElementById("catSearchInput")) {
+                handleCatSearch();
+            }
+        });
+
+        function startUptimeCounter() {
+            const startDate = new Date("2026-08-28T00:00:00").getTime();
+
+            function update() {
+                const now = Date.now();
+                const diff = now - startDate;
+
+                if (diff < 0) return;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById("uptimeDays").innerText = days;
+                document.getElementById("uptimeHours").innerText = String(hours).padStart(2, "0");
+                document.getElementById("uptimeMinutes").innerText = String(minutes).padStart(2, "0");
+                document.getElementById("uptimeSeconds").innerText = String(seconds).padStart(2, "0");
+            }
+
+            setInterval(update, 1000);
+            update();
+        }
+    </script>
 </body>
 </html>

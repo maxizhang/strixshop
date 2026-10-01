@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Personnel Database</title>
-    <link rel="icon" type="image/png" href="logospfd.png">
+    <link rel="icon" type="image/png" href="spfd.png">
     <!-- Rounded Font: Quicksand -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --primary: #484976;
-            --primary-hover: #4338ca;
+            --primary-hover: #4f4c74;
             --surface: rgba(255, 255, 255, 0.75);
             --surface-card: rgba(255, 255, 255, 0.6);
             --text-main: #0f172a;
@@ -371,9 +371,9 @@
 
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='home.html'"><img src="logoh.png" alt="STRIX"></div>
+        <div class="logo-box" onclick="window.location.href='index.html'"><img src="logoh.png" alt="STRIX"></div>
         <div class="nav-right-actions">
-<button class="btn" style="flex: 0 0 auto; padding: 10px 14px; background: var(--primary); color: #fff; border-radius: 12px; font-size: 12px; cursor: pointer; white-space: nowrap;" onclick="copyAllEmails()">Copy All Emails</button>            <a href="home.html" class="nav-link-item">
+<button class="btn" style="flex: 0 0 auto; padding: 10px 14px; background: var(--primary); color: #fff; border-radius: 12px; font-size: 12px; cursor: pointer; white-space: nowrap;" onclick="copyAllEmails()">Copy All Emails</button>            <a href="index.html" class="nav-link-item">
                 <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 Home
             </a>
@@ -456,14 +456,14 @@ let allUsersCache = []; // Cache snapshot docs for fast searching
 
 firebase.auth().onAuthStateChanged(async u => {
     if (!u) {
-        window.location.href = "index.html";
+        window.location.href = "signin.html";
         return;
     }
 
     const me = await db.collection("users").doc(u.uid).get();
 
     if (!me.exists) {
-        window.location.href = "home.html";
+        window.location.href = "index.html";
         return;
     }
 
@@ -473,7 +473,7 @@ firebase.auth().onAuthStateChanged(async u => {
     const canModify = currentUserData.acc === "admin";
 
     if (!canView) {
-        window.location.href = "home.html";
+        window.location.href = "index.html";
         return;
     }
 

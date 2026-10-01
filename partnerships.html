@@ -2,48 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strix Shop | Partnerships</title>
-    <link rel="icon" type="image/png" href="logospfd.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Strix Shop | Customer Support</title>
+    <link rel="icon" type="image/png" href="spfd.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #484976;
-            --primary-hover: #4338ca;
-            --surface: rgba(255, 255, 255, 0.18);
+            --surface: rgba(255, 255, 255, 0.22);
+            --surface-hover: rgba(255, 255, 255, 0.34);
             --text-main: #0f172a;
             --text-dim: #475569;
-            --border: rgba(255, 255, 255, 0.55);
-            --nav-dark: #0a0c12;
-            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --border: rgba(255, 255, 255, 0.45);
+            --radius-main: 0px;
         }
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            overflow: hidden;
         }
 
         body {
-            margin: 0;
-            font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
-            background-size: 400% 400%;
-            animation: fluidBackground 20s ease infinite;
             color: var(--text-main);
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
+            position: relative;
         }
 
-        @keyframes fluidBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Background Layer & Overlay */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.65;
+            z-index: -2;
+            transition: all 1s ease-in-out;
         }
 
-        /* Gradual Appearance Animations */
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(240, 244, 248, 0.75), rgba(224, 231, 255, 0.75));
+            z-index: -1;
+        }
+
+        /* Entrance Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -55,55 +70,53 @@
             }
         }
 
-        .header-section {
+        .animate-in {
             animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .partnership-card:nth-child(1) {
             opacity: 0;
-            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
         }
 
-        .partnership-card:nth-child(2) {
-            opacity: 0;
-            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
-        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
 
-        .form-section {
-            opacity: 0;
-            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
-        }
-
-        /* Professional Navbar */
+        /* Navigation Bar */
         nav {
-            background: var(--nav-dark);
+            background: rgba(0, 0, 0, 0.75);
+            height: 60px;
             width: 100%;
             position: sticky;
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            flex: 0 0 60px;
         }
 
         .nav-main {
             display: flex;
             align-items: center;
-            padding: 14px 5%;
+            padding: 0 5%;
             justify-content: space-between;
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .logo-box img {
-            height: 32px;
+            height: 28px;
             cursor: pointer;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.04);
         }
 
         .nav-right-actions {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
         }
 
         .nav-link-item {
@@ -114,12 +127,12 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 13px;
-            transition: color 0.2s;
+            transition: color 0.25s ease;
         }
 
         .nav-link-item svg {
             stroke: #cbd5e1;
-            transition: stroke 0.2s;
+            transition: stroke 0.25s ease;
         }
 
         .nav-link-item:hover {
@@ -143,240 +156,899 @@
             letter-spacing: 0.5px;
         }
 
-        /* Container & Layout */
-        .container {
+        /* App Layout */
+        .app-layout {
             position: relative;
-            z-index: 10;
-            max-width: 1000px;
-            width: 90%;
-            margin: 40px auto;
+            z-index: 5;
+            width: 100%;
             flex: 1;
+            min-height: 0;
             display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-
-        .header-section {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .header-section h1 {
-            font-size: 32px;
-            color: #1e1b4b;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        .partnership-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-
-        .partnership-card {
+            overflow: hidden;
             background: var(--surface);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
-            border-radius: 28px;
-            border: 1.5px solid var(--border);
-            padding: 32px;
-            box-shadow: var(--glass-shadow);
+        }
+
+        .sidebar {
+            width: 320px;
+            flex: 0 0 320px;
+            min-height: 0;
             display: flex;
             flex-direction: column;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            border-right: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.12);
         }
 
-        .partnership-card:hover {
-            background: rgba(255, 255, 255, 0.28);
-            transform: translateY(-4px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        .sidebar-header {
+            min-height: 66px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
         }
 
-        .card-label {
-            font-family: 'Quicksand', monospace;
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: var(--primary);
-            text-transform: uppercase;
+        .sidebar-subtitle {
+            font-size: 1.05rem;
             font-weight: 700;
-            background: rgba(79, 70, 229, 0.1);
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(79, 70, 229, 0.15);
-            display: inline-block;
-            margin-bottom: 16px;
-            align-self: flex-start;
-        }
-
-        .partnership-card h2 {
-            font-size: 20px;
             color: #1e1b4b;
-            margin-bottom: 12px;
-            font-weight: 700;
         }
 
-        .partnership-card p {
-            font-size: 14px;
-            color: var(--text-dim);
-            line-height: 1.6;
-            margin: 0;
-            font-weight: 500;
-        }
-
-        .link-group {
-            margin-top: 24px;
+        .info-pane {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 16px;
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .text-link {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 13px;
-            transition: color 0.2s;
-            display: inline-flex;
-            align-items: center;
+        .info-card {
+            padding: 16px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            background: rgba(255, 255, 255, 0.35);
+            box-shadow: 0 8px 24px rgba(72, 73, 118, 0.04);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .text-link:hover {
-            color: var(--primary-hover);
+        .info-card:hover {
+            background: var(--surface-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        .info-card h4 {
+            margin-bottom: 8px;
+            color: #1e1b4b;
+            font-size: 0.74rem;
+            letter-spacing: 0.9px;
+            font-weight: 700;
+        }
+
+        .info-card p {
+            color: var(--text-dim);
+            font-size: 0.84rem;
+            line-height: 1.45;
+            font-weight: 600;
+        }
+
+        .info-card p + p {
+            margin-top: 4px;
+        }
+
+        .info-card a {
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .info-card a:hover {
             text-decoration: underline;
         }
 
-        .form-section {
-            background: var(--surface);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border-radius: 28px;
-            border: 1.5px solid var(--border);
-            padding: 36px;
-            box-shadow: var(--glass-shadow);
+        .main-chat {
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.02);
         }
 
-        .form-header {
-            margin-bottom: 24px;
-            text-align: center;
+        .chat-header {
+            min-height: 66px;
+            flex: 0 0 66px;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
 
-        .form-header h2 {
-            font-size: 22px;
+        #display-name {
+            min-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            font-size: 0.98rem;
+            font-weight: 700;
             color: #1e1b4b;
-            margin-bottom: 8px;
+        }
+
+        .channel-id {
+            color: var(--text-dim);
+            font-size: 0.72rem;
             font-weight: 700;
         }
 
-        .form-header p {
-            font-size: 14px;
-            color: var(--text-dim);
-            margin: 0;
-            font-weight: 500;
+        #messages-container {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 24px clamp(16px, 4vw, 40px);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            -webkit-overflow-scrolling: touch;
         }
 
-        .form-wrapper {
+        .date-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
             width: 100%;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            margin: 12px 0;
+        }
+
+        .date-divider:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 1px;
             background: rgba(255, 255, 255, 0.5);
         }
 
-        .form-wrapper iframe {
-            width: 100%;
-            height: 600px;
-            border: none;
-            display: block;
-        }
-
-        footer {
-            text-align: center;
-            padding: 25px;
+        .date-divider span {
+            position: relative;
+            padding: 4px 12px;
+            border: 1px solid var(--border);
+            border-radius: 99px;
+            background: rgba(255, 255, 255, 0.65);
             color: var(--text-dim);
-            font-size: 12px;
+            font-size: 0.68rem;
             font-weight: 700;
-            letter-spacing: 1px;
         }
 
-        @media (max-width: 768px) {
-            .partnership-grid {
-                grid-template-columns: 1fr;
+        .msg-wrapper {
+            max-width: min(76%, 620px);
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+
+        .msg-mine {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .msg-other {
+            align-self: flex-start;
+        }
+
+        .msg-system {
+            align-self: center;
+            width: min(720px, 92%);
+            max-width: 92%;
+            justify-content: center;
+            margin: 6px 0;
+        }
+
+        .chat-pfp {
+            width: 32px;
+            height: 32px;
+            flex: 0 0 32px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .bubble-wrap {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .msg-mine .bubble-wrap { align-items: flex-end; }
+        .msg-other .bubble-wrap, .msg-system .bubble-wrap { align-items: flex-start; }
+        .msg-system .bubble-wrap { width: 100%; align-items: center; }
+
+        .agent-name-tag {
+            margin: 0 8px 4px;
+            color: var(--text-dim);
+            font-size: 0.68rem;
+            font-weight: 700;
+        }
+
+        .msg-system .agent-name-tag {
+            color: var(--primary);
+            letter-spacing: 0.6px;
+        }
+
+        .bubble {
+            max-width: 100%;
+            padding: 11px 15px;
+            border: 1.5px solid var(--border);
+            border-radius: 18px;
+            font-size: 0.88rem;
+            line-height: 1.48;
+            font-weight: 600;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        .msg-mine .bubble {
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), #333456);
+            border-bottom-right-radius: 5px;
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 22px rgba(72, 73, 118, 0.15);
+        }
+
+        .msg-other .bubble {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.6);
+            border-bottom-left-radius: 5px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .msg-system .bubble {
+            width: 100%;
+            text-align: center;
+            color: var(--primary);
+            background: rgba(72, 73, 118, 0.06);
+            border: 1.5px dashed rgba(72, 73, 118, 0.25);
+            border-radius: 15px;
+        }
+
+        .time {
+            margin: 4px 7px 0;
+            color: var(--text-dim);
+            font-size: 0.62rem;
+            font-weight: 700;
+        }
+
+        .media-bubble-box {
+            max-width: min(320px, 100%);
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1.5px solid var(--border);
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            cursor: pointer;
+        }
+
+        .msg-mine .media-bubble-box {
+            border-bottom-right-radius: 5px;
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .msg-other .media-bubble-box {
+            border-bottom-left-radius: 5px;
+        }
+
+        .media-bubble-box img, .media-bubble-box video {
+            display: block;
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+        }
+
+        .chat-product-box {
+            width: min(330px, 100%);
+            min-width: 220px;
+            margin-bottom: 4px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            border-radius: 13px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .msg-mine .chat-product-box {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .chat-product-img {
+            width: 46px;
+            height: 46px;
+            flex: 0 0 46px;
+            object-fit: cover;
+            border-radius: 9px;
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .chat-product-info {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .chat-product-tag {
+            color: var(--primary);
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 0.65px;
+            text-transform: uppercase;
+        }
+
+        .msg-mine .chat-product-tag { color: rgba(255, 255, 255, 0.8); }
+
+        .chat-product-name {
+            color: var(--text-main);
+            font-size: 0.8rem;
+            font-weight: 700;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .msg-mine .chat-product-name { color: #fff; }
+
+        .chat-product-meta {
+            color: var(--text-dim);
+            font-size: 0.67rem;
+            font-weight: 700;
+        }
+
+        .msg-mine .chat-product-meta { color: rgba(255, 255, 255, 0.8); }
+
+        .input-area {
+            flex: 0 0 auto;
+            padding: 14px 20px max(14px, env(safe-area-inset-bottom));
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .attach-btn, .send-btn {
+            height: 44px;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: transform 0.18s, background 0.18s;
+        }
+
+        .attach-btn {
+            width: 44px;
+            flex: 0 0 44px;
+            display: grid;
+            place-items: center;
+            border: 1.5px solid var(--border);
+            background: rgba(255, 255, 255, 0.65);
+            color: var(--primary);
+        }
+
+        .send-btn {
+            min-width: 82px;
+            flex: 0 0 auto;
+            padding: 0 18px;
+            border: 0;
+            color: #fff;
+            background: var(--primary);
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 18px rgba(72, 73, 118, 0.2);
+        }
+
+        .attach-btn:hover, .send-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .attach-btn:disabled {
+            opacity: 0.5;
+            cursor: wait;
+        }
+
+        #msg-input {
+            flex: 1;
+            min-width: 0;
+            height: 44px;
+            padding: 0 16px;
+            border-radius: 14px;
+            border: 1.5px solid var(--border);
+            outline: none;
+            background: rgba(255, 255, 255, 0.65);
+            color: var(--text-main);
+            font-size: 0.88rem;
+            font-weight: 600;
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.8);
+        }
+
+        #msg-input:focus {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(72, 73, 118, 0.5);
+            box-shadow: 0 0 0 4px rgba(72, 73, 118, 0.1);
+        }
+
+        .mobile-toggle-btn {
+            display: none;
+            border: 1.5px solid var(--border);
+            background: rgba(255, 255, 255, 0.65);
+            color: var(--primary);
+            border-radius: 11px;
+            padding: 7px 10px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .image-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(9, 11, 22, 0.8);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+        }
+
+        .image-modal.active { display: flex; }
+
+        .image-modal-content {
+            position: relative;
+            max-width: 94vw;
+            max-height: 90vh;
+        }
+
+        .image-modal-content img {
+            display: block;
+            max-width: 100%;
+            max-height: 84vh;
+            object-fit: contain;
+            border-radius: 17px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: -45px;
+            right: 0;
+            width: 34px;
+            height: 34px;
+            border: 1.5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            cursor: pointer;
+        }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { border-radius: 99px; background: rgba(72, 73, 118, 0.2); }
+
+        @media(max-width: 900px) {
+            .nav-main { width: calc(100% - 28px); }
+            .sidebar {
+                position: fixed;
+                top: 60px;
+                right: 0;
+                bottom: 0;
+                width: min(320px, 88vw);
+                z-index: 50;
+                transform: translateX(102%);
+                transition: transform 0.25s;
+                background: rgba(240, 244, 248, 0.95);
+                box-shadow: -20px 0 45px rgba(20, 25, 50, 0.15);
+                backdrop-filter: blur(32px);
+                -webkit-backdrop-filter: blur(32px);
             }
+            .sidebar.open { transform: translateX(0); }
+            .mobile-toggle-btn { display: inline-flex; align-items: center; justify-content: center; }
+            .chat-header { padding: 0 16px; }
+            .msg-wrapper { max-width: 86%; }
+        }
+
+        @media(max-width: 560px) {
+            nav { height: 56px; }
+            .sidebar { top: 56px; }
+            .nav-badge-text, .nav-divider { display: none; }
+            .nav-right-actions { gap: 9px; }
+            .logo-box img { height: 25px; }
+            .chat-header { min-height: 56px; flex-basis: 56px; padding: 0 12px; }
+            .channel-id { font-size: 0.64rem; }
+            #messages-container { padding: 16px 12px; gap: 10px; }
+            .msg-wrapper { max-width: 91%; gap: 7px; }
+            .chat-pfp { width: 28px; height: 28px; flex-basis: 28px; }
+            .bubble { padding: 10px 13px; font-size: 0.84rem; }
+            .input-area { gap: 8px; padding: 12px 14px; }
+            .attach-btn, .send-btn, #msg-input { height: 44px; }
+            .attach-btn { width: 44px; flex-basis: 44px; }
+            .send-btn { min-width: 72px; padding: 0 12px; }
+            #msg-input { padding: 0 13px; }
+            .chat-product-box { min-width: 0; width: 100%; }
         }
     </style>
 </head>
-
 <body>
 
-<nav>
-    <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='home.html'">
-            <img src="logoh.png" alt="STRIX">
+    <div class="bg-layer" id="bgLayer"></div>
+    <div class="bg-overlay"></div>
+
+    <nav>
+        <div class="nav-main">
+            <div class="logo-box" onclick="window.location.reload()">
+                <img src="logoh.png" alt="STRIX">
+            </div>
+            <div class="nav-right-actions">
+                <a href="index.html" class="nav-link-item">
+                    <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                    Home
+                </a>
+                <div class="nav-divider"></div>
+                <span class="nav-badge-text">Customer Support</span>
+            </div>
         </div>
-        <div class="nav-right-actions">
-            <a href="home.html" class="nav-link-item">
-                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                Home
-            </a>
-            <div class="nav-divider"></div>
-            <span class="nav-badge-text">PARTNERSHIPS</span>
-        </div>
-    </div>
-</nav>
+    </nav>
 
-<div class="container">
-
-    <div class="header-section">
-        <h1>Partner With Strix Shop</h1>
-        <p style="color: var(--text-dim); font-weight: 600; font-size: 14px;">
-            Collaborate with Strix Shop through product sales, sponsorships, and community initiatives.
-        </p>
-    </div>
-
-    <div class="partnership-grid">
-
-        <div class="partnership-card">
-            <div class="card-label">Selling Program</div>
-            <h2>Sell Your Products</h2>
-            <p>
-                Have a product you want to sell through Strix Shop? Submit a proposal using the application form below. Our team will review your product, discuss pricing, and contact you regarding approval and logistics.
-            </p>
-        </div>
-
-        <div class="partnership-card">
-            <div class="card-label">Collaborations</div>
-            <h2>Other Partnership Opportunities</h2>
-            <p>
-                We are also open to sponsorships, marketing collaborations, fundraising events, and community projects that create a positive impact.
-            </p>
-            <div class="link-group">
-                <a href="collaborations.html" class="text-link">View Community Collaborations &rarr;</a>
-                <a href="cs.html" class="text-link">Contact Customer Support &rarr;</a>
+    <div class="app-layout animate-in delay-1">
+        <div class="sidebar" id="app-sidebar">
+            <div class="sidebar-header">
+                <div><div class="sidebar-subtitle">Information</div></div>
+                <button type="button" class="mobile-toggle-btn" id="close-sidebar-btn">Close</button>
+            </div>
+            <div class="info-pane">
+                <div class="info-card">
+                    <h4>LEGAL DOCS</h4>
+                    <p><a href="privacypolicy.html" target="_blank">Privacy Policy</a></p>
+                    <p><a href="terms.html" target="_blank">Terms & Conditions</a></p>
+                    <p><a href="returnpolicy.html" target="_blank">Return Policy</a></p>
+                    <p><a href="usercoc.html" target="_blank">User Code of Conduct</a></p>
+                </div>
+                <div class="info-card">
+                    <h4>HOURS</h4>
+                    <p><b>Mon - Fri:</b> 8:00 PM - 9:00 PM</p>
+                </div>
+                <div class="info-card">
+                    <h4>No Reply?</h4>
+                    <p>Don't worry! We will reply soon. Responses typically within 24 hours.</p>
+                </div>
+                <div class="info-card">
+                    <h4><span style="color: var(--primary);">STRIX SHOP CREW</span></h4>
+                    <p>Owner & CEO: <b>MAXI ZHANG</b></p>
+                    <p>General Manager: <b>SHAUNAK GUDURU</b></p>
+                    <p>Products Manager: <b>ZISI ZHU</b></p>
+                    <p>Marketing Manager: <b>DOHUN LEE</b></p>
+                    <p>Financial Manager: <b>GEORGE ZHANG</b></p>
+                </div>
             </div>
         </div>
 
+        <div class="main-chat animate-in delay-2">
+            <div class="chat-header">
+                <div style="display: flex; align-items: center; gap: 10px; min-width: 0;">
+                    <button type="button" class="mobile-toggle-btn" id="open-sidebar-btn">Menu</button>
+                    <div id="display-name" style="font-weight: 700; font-size: 1rem; color: #1e1b4b; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Loading...</div>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-dim); font-weight: 700; flex-shrink: 0;">ID: <span id="chan-id">...</span></div>
+            </div>
+            
+            <div id="messages-container"></div>
+
+            <form class="input-area" id="chat-form">
+                <input type="file" id="file-input" accept="image/*,video/*" style="display: none;">
+                <button type="button" class="attach-btn" id="attach-btn" title="Attach Media">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57a4 4 0 1 1 5.66 5.66l-8.59 8.58a2 2 0 0 1-2.83-2.83l7.88-7.88"/>
+                    </svg>
+                </button>
+                <input type="text" id="msg-input" placeholder="Type a message..." autocomplete="off">
+                <button type="submit" class="send-btn">SEND</button>
+            </form>
+        </div>
     </div>
 
-    <div class="form-section">
-        <div class="form-header">
-            <div class="card-label">Application Form</div>
-            <h2>Vendor Submission Portal</h2>
-            <p>Complete the form below to apply for a partnership with Strix Shop.</p>
-        </div>
-
-        <div class="form-wrapper">
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSciZfGR3IH5j8yt5RYMao3eGmZZnkBiOmNJ7g5uIPpm0cZZhw/viewform?embedded=true">
-                Loading…
-            </iframe>
+    <div class="image-modal" id="imageModal">
+        <div class="image-modal-content">
+            <button class="image-modal-close" id="modalCloseBtn">✕</button>
+            <img id="modalImage" src="" alt="Enlarged view">
         </div>
     </div>
 
-</div>
+<script>
+    const n = Math.floor(Math.random() * 12) + 1;
+    const bgLayer = document.getElementById("bgLayer");
+    const img = new Image();
+    img.src = `bg${n}.png`;
+    img.onload = () => bgLayer.style.backgroundImage = `url('${img.src}')`;
 
-<footer>
-    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
-</footer>
+    const sidebar = document.getElementById('app-sidebar');
+    const openSidebarBtn = document.getElementById('open-sidebar-btn');
+    const closeSidebarBtn = document.getElementById('close-sidebar-btn');
 
+    if (openSidebarBtn && closeSidebarBtn && sidebar) {
+        openSidebarBtn.onclick = () => sidebar.classList.add('open');
+        closeSidebarBtn.onclick = () => sidebar.classList.remove('open');
+        document.addEventListener('click', (e) => {
+            if (sidebar.classList.contains('open') && !sidebar.contains(e.target) && !openSidebarBtn.contains(e.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+    }
+
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+    function openImageModal(imgSrc) {
+        modalImage.src = imgSrc;
+        imageModal.classList.add('active');
+    }
+
+    function closeImageModal() {
+        imageModal.classList.remove('active');
+        modalImage.src = '';
+    }
+
+    modalCloseBtn.onclick = closeImageModal;
+    imageModal.onclick = (e) => { if (e.target === imageModal) closeImageModal(); };
+</script>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import{getFirestore,doc,getDoc,collection,query,orderBy,limit,onSnapshot,getDocs,addDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const firebaseConfig={apiKey:"AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",authDomain:"strix-shop.firebaseapp.com",projectId:"strix-shop",storageBucket:"strix-shop.appspot.com"};
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+
+let fullName="Customer",customerPfp="default.png",currentUid=null,hasAutoSentProduct=false,hasAutoSentOrder=false;
+const autoReplyTimers=new Map();
+
+onAuthStateChanged(auth,async user=>{
+    if(!user){window.location.href="signin.html";return}
+    currentUid=user.uid;
+    try{
+        const u=await getDoc(doc(db,"users",user.uid));
+        if(u.exists()){
+            const d=u.data();
+            fullName=`${d.firstName||""} ${d.lastName||""}`.trim()||"Customer";
+            customerPfp=d.pfp||customerPfp;
+        }
+    }catch(e){console.error("Profile error:",e)}
+    document.getElementById("display-name").textContent=fullName.toUpperCase();
+    document.getElementById("chan-id").textContent=user.uid.substring(0,8).toUpperCase();
+    if(!hasAutoSentProduct){hasAutoSentProduct=true;await checkAndAutoSendProductReference(user.uid)}
+    if(!hasAutoSentOrder){hasAutoSentOrder=true;await checkAndAutoSendOrderReference(user.uid)}
+    loadMessages(user.uid);
+});
+
+async function checkAndAutoSendProductReference(uid){
+    const productId=new URLSearchParams(location.search).get("product_id");
+    if(!productId)return;
+    try{
+        const p=await getDoc(doc(db,"products",productId));
+        if(!p.exists())return;
+        const d=p.data(),ref=await addDoc(collection(db,"support_chats",uid,"messages"),{
+            text:`Inquiring about: ${d.name||"Product"}`,
+            productReference:{productId,name:d.name||"Product",price:Number(d.price||0),sku:d.sku||productId.substring(0,8).toUpperCase(),image:d.images?.[0]||""},
+            senderId:uid,senderName:fullName,senderPfp:customerPfp,acc:"customer",clientTimestamp:Date.now(),timestamp:serverTimestamp()
+        });
+        startAutoSystemReplyTimer(uid,ref.id);
+        history.replaceState({},document.title,location.pathname);
+    }catch(e){console.error("Product reference error:",e)}
+}
+
+async function checkAndAutoSendOrderReference(uid){
+    const orderId=new URLSearchParams(location.search).get("orderId");
+    if(!orderId)return;
+    try{
+        const o=await getDoc(doc(db,"orders",orderId));
+        if(!o.exists())return;
+        const d=o.data(),ref=await addDoc(collection(db,"support_chats",uid,"messages"),{
+            text:`Help needed with Order #${orderId}`,
+            orderReference:{id:orderId,date:d.orderDate||"Recent",status:d.status||"Placed",total:Number(d.total||0),items:d.items||[]},
+            senderId:uid,senderName:fullName,senderPfp:customerPfp,acc:"customer",clientTimestamp:Date.now(),timestamp:serverTimestamp()
+        });
+        startAutoSystemReplyTimer(uid,ref.id);
+        history.replaceState({},document.title,location.pathname);
+    }catch(e){console.error("Order reference error:",e)}
+}
+
+function startAutoSystemReplyTimer(uid,messageId){
+    if(autoReplyTimers.has(messageId))clearTimeout(autoReplyTimers.get(messageId));
+    const timer=setTimeout(async()=>{
+        try{
+            const ref=collection(db,"support_chats",uid,"messages"),snap=await getDocs(ref);
+            let customer=null,agentReplied=false,systemAlready=false,recentSystemReply=false;
+            const now=Date.now();
+            snap.forEach(s=>{
+                const d=s.data();
+                if(s.id===messageId)customer=d;
+                if(d.acc==="system"||d.isSystemMessage){
+                    if(d.autoReplyFor===messageId)systemAlready=true;
+                    const sysTime=d.timestamp?.toMillis?.()||Number(d.clientTimestamp||0)||now;
+                    if(now-sysTime<120000){
+                        recentSystemReply=true;
+                    }
+                }
+            });
+            if(!customer){autoReplyTimers.delete(messageId);return}
+            const customerTime=customer.timestamp?.toMillis?.()||0;
+            const clientTime=Number(customer.clientTimestamp||0);
+            snap.forEach(s=>{
+                const d=s.data();
+                if(d.acc!=="admin"||!d.timestamp)return;
+                const t=d.timestamp.toMillis?.()||0;
+                if(customerTime&&t>customerTime)agentReplied=true;
+                else if(!customerTime&&clientTime&&Number(d.clientTimestamp||0)>clientTime)agentReplied=true;
+            });
+            if(!agentReplied&&!systemAlready&&!recentSystemReply){
+                await addDoc(ref,{
+                    acc:"system",senderName:"System Automatic Reply",
+                    text:"No customer support agent has responded within 5 seconds. Please remain on this page or check back later. Responses typically arrive within 24 hours.",
+                    isSystemMessage:true,autoReplyFor:messageId,timestamp:serverTimestamp()
+                });
+            }
+        }catch(e){console.error("SAP error:",e)}
+        autoReplyTimers.delete(messageId);
+    },5000);
+    autoReplyTimers.set(messageId,timer);
+}
+
+function loadMessages(uid){
+    let isInitialLoad = true;
+    const q=query(collection(db,"support_chats",uid,"messages"),orderBy("timestamp","asc"),limit(100));
+    onSnapshot(q,snapshot=>{
+        const cont=document.getElementById("messages-container");
+        cont.innerHTML="";
+        if(snapshot.empty){
+            cont.innerHTML=`<div style="margin:auto;text-align:center;color:#475569;max-width:420px;padding:30px"><h3 style="color:#1e1b4b;margin-bottom:6px">How can we help?</h3><p style="font-size:.84rem;line-height:1.5;font-weight:600">Send us a message and the Strix Shop support team will see it here.</p></div>`;
+            return;
+        }
+        let lastDate="";
+        snapshot.forEach(s=>{
+            const m=s.data(),system=m.acc==="system"||m.isSystemMessage,mine=!system&&(m.acc==="customer"||m.senderId===auth.currentUser?.uid);
+            const date=m.timestamp?.toDate?m.timestamp.toDate():new Date(Number(m.clientTimestamp||Date.now()));
+            const key=date.toDateString();
+            if(key!==lastDate){
+                lastDate=key;
+                const divider=document.createElement("div");divider.className="date-divider";
+                const span=document.createElement("span"),today=new Date().toDateString(),yest=new Date(Date.now()-86400000).toDateString();
+                span.textContent=key===today?"Today":key===yest?"Yesterday":date.toLocaleDateString("en-US",{month:"short",day:"numeric"});
+                divider.appendChild(span);cont.appendChild(divider);
+            }
+            const wrap=document.createElement("div");
+            wrap.className=`msg-wrapper ${system?"msg-system":mine?"msg-mine":"msg-other"}`;
+            const bubbleWrap=document.createElement("div");bubbleWrap.className="bubble-wrap";
+            const name=document.createElement("div");name.className="agent-name-tag";
+            name.textContent=system?"AUTOMATED SYSTEM":mine?fullName:(m.senderName||"Support Agent");
+
+            bubbleWrap.appendChild(name);
+
+            if(m.productReference){
+                const p=m.productReference,bubble=document.createElement("div");bubble.className="bubble";
+                const box=document.createElement("div");box.className="chat-product-box";
+                const im=document.createElement("img");im.className="chat-product-img";im.src=p.image||"default.png";im.alt="";
+                const info=document.createElement("div");info.className="chat-product-info";
+                const tag=document.createElement("span");tag.className="chat-product-tag";tag.textContent=`SKU: ${p.sku||"N/A"}`;
+                const nm=document.createElement("span");nm.className="chat-product-name";nm.textContent=p.name||"Product";
+                const meta=document.createElement("span");meta.className="chat-product-meta";meta.textContent=`$${Number(p.price||0).toFixed(2)}`;
+                info.append(tag,nm,meta);box.append(im,info);bubble.appendChild(box);
+                bubbleWrap.appendChild(bubble);
+            }
+            if(m.orderReference){
+                const o=m.orderReference,bubble=document.createElement("div");bubble.className="bubble";
+                const box=document.createElement("div");box.className="chat-product-box";box.style.cssText="flex-direction:column;align-items:flex-start;gap:3px";
+                const tag=document.createElement("span");tag.className="chat-product-tag";tag.textContent="ORDER REFERENCE";
+                const nm=document.createElement("span");nm.className="chat-product-name";nm.textContent=`Order #${o.id}`;
+                const meta=document.createElement("span");meta.className="chat-product-meta";meta.textContent=`Status: ${o.status||"Placed"} • Total: $${Number(o.total||0).toFixed(2)}`;
+                box.append(tag,nm,meta);bubble.appendChild(box);
+                bubbleWrap.appendChild(bubble);
+            }
+            if(m.text){
+                const bubble=document.createElement("div");bubble.className="bubble";
+                const text=document.createElement("div");text.textContent=m.text;bubble.appendChild(text);
+                bubbleWrap.appendChild(bubble);
+            }
+            if(m.mediaUrl){
+                const mediaBox=document.createElement("div");mediaBox.className="media-bubble-box";
+                if(m.mediaType==="video"){
+                    const v=document.createElement("video");v.src=m.mediaUrl;v.controls=true;v.preload="metadata";mediaBox.appendChild(v);
+                }else{
+                    const im=document.createElement("img");im.src=m.mediaUrl;im.alt="Attachment";im.onclick=()=>window.openImageModal(m.mediaUrl);mediaBox.appendChild(im);
+                }
+                bubbleWrap.appendChild(mediaBox);
+            }
+
+            const time=document.createElement("div");time.className="time";time.textContent=m.timestamp?.toDate?date.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"---";
+            bubbleWrap.appendChild(time);
+
+            if(!system){const pfp=document.createElement("img");pfp.className="chat-pfp";pfp.src=mine?customerPfp:(m.senderPfp||"default.png");pfp.alt="";wrap.appendChild(pfp)}
+            wrap.appendChild(bubbleWrap);cont.appendChild(wrap);
+        });
+
+        if(isInitialLoad){
+            cont.scrollTop = cont.scrollHeight;
+            isInitialLoad = false;
+        } else {
+            cont.scrollTop = cont.scrollHeight;
+        }
+    },e=>console.error("Message listener error:",e));
+}
+
+function compressImage(file,maxWidth=1000,quality=.68){
+    return new Promise((resolve,reject)=>{
+        if(!file.type.startsWith("image/"))return reject(new Error("Not an image."));
+        const reader=new FileReader();
+        reader.onload=e=>{
+            const im=new Image();
+            im.onload=()=>{
+                let w=im.width,h=im.height;
+                if(w>maxWidth){h=Math.round(h*maxWidth/w);w=maxWidth}
+                const c=document.createElement("canvas");c.width=w;c.height=h;
+                c.getContext("2d").drawImage(im,0,0,w,h);
+                resolve(c.toDataURL("image/jpeg",quality));
+            };
+            im.onerror=()=>reject(new Error("Could not read image."));im.src=e.target.result;
+        };
+        reader.onerror=()=>reject(new Error("Could not read file."));reader.readAsDataURL(file);
+    });
+}
+function fileAsDataURL(file){
+    return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=()=>reject(new Error("Could not read file."));r.readAsDataURL(file)});
+}
+
+const fileInput=document.getElementById("file-input"),attachBtn=document.getElementById("attach-btn");
+attachBtn.onclick=()=>fileInput.click();
+fileInput.onchange=async e=>{
+    const file=e.target.files[0];if(!file||!currentUid)return;
+    try{
+        attachBtn.disabled=true;
+        const mediaType=file.type.startsWith("video/")?"video":"image";
+        const mediaUrl=mediaType==="image"?await compressImage(file):await fileAsDataURL(file);
+        const ref=await addDoc(collection(db,"support_chats",currentUid,"messages"),{
+            mediaUrl,mediaType,senderId:currentUid,senderName:fullName,senderPfp:customerPfp,acc:"customer",clientTimestamp:Date.now(),timestamp:serverTimestamp()
+        });
+        startAutoSystemReplyTimer(currentUid,ref.id);
+        fileInput.value="";
+    }catch(e){alert("Failed to attach file: "+e.message)}
+    finally{attachBtn.disabled=false}
+};
+
+document.getElementById("chat-form").onsubmit=async e=>{
+    e.preventDefault();
+    const input=document.getElementById("msg-input"),text=input.value.trim();
+    if(!text||!currentUid)return;
+    input.value="";
+    try{
+        const ref=await addDoc(collection(db,"support_chats",currentUid,"messages"),{
+            text,senderId:currentUid,senderName:fullName,senderPfp:customerPfp,acc:"customer",clientTimestamp:Date.now(),timestamp:serverTimestamp()
+        });
+        startAutoSystemReplyTimer(currentUid,ref.id);
+    }catch(e){console.error("Send error:",e);input.value=text}
+};
+</script>
 </body>
 </html>

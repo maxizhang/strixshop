@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Admin Returns Management</title>
-    <link rel="icon" type="image/png" href="logospfd.png">
+    <link rel="icon" type="image/png" href="spfd.png">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #484976;
-            --primary-hover: #4338ca;
+            --primary-hover: #4f4c74;
             --surface: rgba(255, 255, 255, 0.4);
             --text-main: #0f172a;
             --text-dim: #64748b;
@@ -266,11 +266,11 @@
 
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='home.html'">
+        <div class="logo-box" onclick="window.location.href='index.html'">
             <img src="logoh.png" alt="STRIX">
         </div>
         <div class="nav-right-actions">
-            <a href="home.html" class="nav-link-item">Home</a>
+            <a href="index.html" class="nav-link-item">Home</a>
             <div class="nav-divider"></div>
             <span class="nav-badge-text">REVIEW RETURNS AND REFUNDS</span>
         </div>
@@ -335,7 +335,7 @@
     auth.onAuthStateChanged(user => {
         if (!user) {
             alert("Please sign in.");
-            window.location.href = "index.html";
+            window.location.href = "signin.html";
             return;
         }
 
@@ -346,7 +346,7 @@
 
             if (!isMaster && !isAgentOrAdmin) {
                 alert("Unauthorized access. Admin privileges required.");
-                window.location.href = "home.html";
+                window.location.href = "index.html";
                 return;
             }
 
@@ -354,7 +354,7 @@
         }).catch(() => {
             if (user.uid !== "PNssYZn1wNUGjmzeAq1eHz2QHKf1") {
                 alert("Unauthorized access.");
-                window.location.href = "home.html";
+                window.location.href = "index.html";
             } else {
                 loadRequests();
             }

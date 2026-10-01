@@ -1,7 +1,7 @@
 {
   "name": "Employee Task Portal",
   "short_name": "Tasks",
-  "start_url": "index.html",
+  "start_url": "signin.html",
   "display": "standalone",
   "background_color": "#0f0c1b",
   "theme_color": "#0f0c1b",
