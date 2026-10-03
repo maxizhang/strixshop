@@ -417,7 +417,7 @@
 
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='index.html'">
+        <div class="logo-box" onclick="window.location.href='r-r.html'">
             <img src="logoh.png" alt="STRIX">
         </div>
         <div class="nav-right-actions">
@@ -426,7 +426,7 @@
                 Home
             </a>
             <div class="nav-divider"></div>
-            <span class="nav-badge-text">RETURNS & REFUNDS PORTAL</span>
+            <span class="nav-badge-text">Returns / Refunds Request</span>
         </div>
     </div>
 </nav>
@@ -536,161 +536,290 @@
     const db = firebase.firestore();
     const auth = firebase.auth();
 
-    auth.onAuthStateChanged((user) => {
+    let currentDraftId = null;
+    let saveTimer = null;
+    let saving = false;
+    let uploadedFileUrls = [];
+    let currentUser = null;
+
+    const form = document.getElementById('return-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const saveIndicator = document.createElement('div');
+    saveIndicator.id = 'firebase-save-status';
+    saveIndicator.style.cssText = 'text-align:center;font-size:12px;font-weight:700;color:#64748b;margin-top:10px;min-height:18px;';
+    submitBtn.insertAdjacentElement('afterend', saveIndicator);
+
+    function setSaveStatus(text, color = '#64748b') {
+        saveIndicator.textContent = text;
+        saveIndicator.style.color = color;
+    }
+
+    function getFormData() {
+        return {
+            uid: currentUser?.uid || null,
+            customerName: document.getElementById('cust-name').value.trim(),
+            email: document.getElementById('cust-email').value.trim(),
+            orderId: document.getElementById('order-id').value || '',
+            reason: document.getElementById('return-reason').value || '',
+            details: document.getElementById('return-details').value.trim(),
+            policyAgreed: document.getElementById('check-policy').checked,
+            fileUrls: uploadedFileUrls,
+            draft: true,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+    }
+
+    async function saveDraft(showStatus = true) {
+        if (!currentUser || saving) return;
+        saving = true;
+        if (showStatus) setSaveStatus('Saving…');
+
+        try {
+            const data = getFormData();
+            const draftRef = db.collection('rrR').doc(`draft_${currentUser.uid}`);
+            currentDraftId = draftRef.id;
+            await draftRef.set(data, { merge: true });
+            if (showStatus) setSaveStatus('Saved to Firebase', '#15803d');
+        } catch (error) {
+            console.error('Draft save error:', error);
+            if (showStatus) setSaveStatus('Could not save yet', '#b91c1c');
+        } finally {
+            saving = false;
+        }
+    }
+
+    function queueSave() {
+        clearTimeout(saveTimer);
+        setSaveStatus('Saving…');
+        saveTimer = setTimeout(() => saveDraft(true), 500);
+    }
+
+    async function loadDraft(uid) {
+        try {
+            const ref = db.collection('rrR').doc(`draft_${uid}`);
+            const snap = await ref.get();
+            if (!snap.exists) return;
+
+            const data = snap.data();
+            currentDraftId = ref.id;
+            uploadedFileUrls = Array.isArray(data.fileUrls) ? data.fileUrls : [];
+
+            if (data.customerName !== undefined) document.getElementById('cust-name').value = data.customerName;
+            if (data.email !== undefined) document.getElementById('cust-email').value = data.email;
+            if (data.orderId !== undefined) document.getElementById('order-id').value = data.orderId;
+            if (data.reason !== undefined) document.getElementById('return-reason').value = data.reason;
+            if (data.details !== undefined) document.getElementById('return-details').value = data.details;
+            if (data.policyAgreed !== undefined) document.getElementById('check-policy').checked = !!data.policyAgreed;
+
+            if (uploadedFileUrls.length) {
+                const display = document.getElementById('file-name-display');
+                display.innerText = `${uploadedFileUrls.length} uploaded image(s)`;
+                display.style.color = '#0f172a';
+                display.style.fontWeight = '700';
+            }
+            setSaveStatus('Saved to Firebase', '#15803d');
+        } catch (error) {
+            console.error('Draft load error:', error);
+        }
+    }
+
+    auth.onAuthStateChanged(async (user) => {
         if (!user) {
-            window.location.href = "signin.html";
+            window.location.href = 'signin.html';
             return;
         }
+
+        currentUser = user;
 
         if (user.email) {
             document.getElementById('cust-email').value = user.email;
         }
 
-        db.collection("users").doc(user.uid).get().then(doc => {
-            if (doc.exists) {
-                const data = doc.data();
-                const fullName = `${data.firstName || data.fname || ""} ${data.lastName || data.lname || ""}`.trim();
-                if(fullName) {
-                    document.getElementById('cust-name').value = fullName;
-                }
+        try {
+            const userDoc = await db.collection('users').doc(user.uid).get();
+            if (userDoc.exists) {
+                const data = userDoc.data();
+                const fullName = `${data.firstName || data.fname || ''} ${data.lastName || data.lname || ''}`.trim();
+                if (fullName) document.getElementById('cust-name').value = fullName;
             }
-        }).catch(() => {});
+        } catch (error) {
+            console.error('User profile load error:', error);
+        }
 
-        // Fetch user orders to populate the Order ID dropdown
-        loadUserOrders(user.uid);
+        await loadDraft(user.uid);
+        await loadUserOrders(user.uid);
+        queueSave();
     });
 
-    function loadUserOrders(uid) {
+    async function loadUserOrders(uid) {
         const orderSelect = document.getElementById('order-id');
         orderSelect.innerHTML = '<option value="" disabled selected>Select an order</option>';
 
-        db.collection("orders")
-          .where("uid", "==", uid)
-          .get()
-          .then((querySnapshot) => {
-              if (querySnapshot.empty) {
-                  orderSelect.innerHTML = '<option value="" disabled selected>No orders found in your account</option>';
-                  return;
-              }
+        try {
+            const querySnapshot = await db.collection('orders').where('uid', '==', uid).get();
+            if (querySnapshot.empty) {
+                orderSelect.innerHTML = '<option value="" disabled selected>No orders found in your account</option>';
+                return;
+            }
 
-              // Sort orders client-side by date if createdAt exists
-              const orders = [];
-              querySnapshot.forEach((doc) => {
-                  orders.push({ id: doc.id, ...doc.data() });
-              });
+            const orders = [];
+            querySnapshot.forEach(doc => orders.push({ id: doc.id, ...doc.data() }));
+            orders.sort((a, b) => {
+                const ad = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
+                const bd = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;
+                return bd - ad;
+            });
 
-              orders.forEach((order) => {
-                  const option = document.createElement('option');
-                  option.value = order.id;
-                  let dateStr = "";
-                  if (order.createdAt && order.createdAt.toDate) {
-                      dateStr = ` - ${order.createdAt.toDate().toLocaleDateString()}`;
-                  }
-                  option.textContent = `Order ID: ${order.id}${dateStr}`;
-                  orderSelect.appendChild(option);
-              });
-          })
-          .catch((error) => {
-              console.error("Error loading orders: ", error);
-              orderSelect.innerHTML = '<option value="" disabled selected>Error loading orders</option>';
-          });
+            orders.forEach(order => {
+                const option = document.createElement('option');
+                option.value = order.id;
+                let dateStr = '';
+                if (order.createdAt?.toDate) dateStr = ` - ${order.createdAt.toDate().toLocaleDateString()}`;
+                option.textContent = `Order ID: ${order.id}${dateStr}`;
+                orderSelect.appendChild(option);
+            });
+
+            const savedOrder = (await db.collection('rrR').doc(`draft_${uid}`).get()).data()?.orderId;
+            if (savedOrder && [...orderSelect.options].some(o => o.value === savedOrder)) {
+                orderSelect.value = savedOrder;
+            }
+        } catch (error) {
+            console.error('Error loading orders:', error);
+            orderSelect.innerHTML = '<option value="" disabled selected>Error loading orders</option>';
+        }
+    }
+
+    async function uploadSelectedFiles(input) {
+        const display = document.getElementById('file-name-display');
+        if (!currentUser) return;
+
+        if (!input.files || input.files.length === 0) {
+            display.innerText = uploadedFileUrls.length ? `${uploadedFileUrls.length} uploaded image(s)` : 'Choose up to 3 image files...';
+            queueSave();
+            return;
+        }
+
+        if (input.files.length > 3) {
+            alert('You can only upload a maximum of 3 files.');
+            input.value = '';
+            display.innerText = 'Choose up to 3 image files...';
+            return;
+        }
+
+        try {
+            display.innerText = 'Uploading images…';
+            display.style.color = '#0f172a';
+            display.style.fontWeight = '700';
+            setSaveStatus('Uploading images…');
+
+            const newUrls = [];
+            for (let i = 0; i < input.files.length; i++) {
+                const file = input.files[i];
+                if (!file.type.startsWith('image/')) throw new Error('Only image files are allowed.');
+                const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+                const storageRef = firebase.storage().ref(`return_images/${currentUser.uid}/${Date.now()}_${i}_${safeName}`);
+                const snapshot = await storageRef.put(file);
+                newUrls.push(await snapshot.ref.getDownloadURL());
+            }
+
+            uploadedFileUrls = newUrls;
+            display.innerText = `${newUrls.length} image(s) saved`;
+            await saveDraft(true);
+        } catch (error) {
+            console.error('Image upload error:', error);
+            display.innerText = 'Upload failed — please try again';
+            setSaveStatus('Image upload failed', '#b91c1c');
+        }
     }
 
     function updateFileName(input) {
-        const display = document.getElementById('file-name-display');
-        if (input.files && input.files.length > 0) {
-            if (input.files.length > 3) {
-                alert("You can only upload a maximum of 3 files.");
-                input.value = "";
-                display.innerText = "Choose up to 3 image files...";
-                display.style.color = "var(--text-dim)";
-                display.style.fontWeight = "600";
-                return;
-            }
-            display.innerText = `${input.files.length} file(s) selected`;
-            display.style.color = "#0f172a";
-            display.style.fontWeight = "700";
-        } else {
-            display.innerText = "Choose up to 3 image files...";
-            display.style.color = "var(--text-dim)";
-            display.style.fontWeight = "600";
-        }
+        uploadSelectedFiles(input);
     }
+
+    form.querySelectorAll('input, select, textarea').forEach(field => {
+        const eventName = field.type === 'file' ? 'change' : (field.type === 'checkbox' || field.tagName === 'SELECT' ? 'change' : 'input');
+        field.addEventListener(eventName, () => {
+            if (field.type !== 'file') queueSave();
+        });
+    });
+
+    window.addEventListener('beforeunload', () => {
+        if (!currentUser) return;
+        const payload = getFormData();
+        localStorage.setItem(`strix_return_backup_${currentUser.uid}`, JSON.stringify({
+            ...payload,
+            updatedAt: Date.now()
+        }));
+    });
 
     async function handleReturnSubmit(event) {
         event.preventDefault();
 
-        if (!auth.currentUser) {
-            alert("You must be signed in to submit a return request.");
+        if (!currentUser) {
+            alert('You must be signed in to submit a return request.');
             return;
         }
 
-        const name = document.getElementById('cust-name').value.trim();
-        const email = document.getElementById('cust-email').value.trim();
-        const orderId = document.getElementById('order-id').value;
-        const reason = document.getElementById('return-reason').value;
-        const details = document.getElementById('return-details').value.trim();
-        const fileInput = document.getElementById('return-file');
-        const agreed = document.getElementById('check-policy').checked;
+        clearTimeout(saveTimer);
 
-        if(!name || !email || !orderId || !reason || !details) {
-            alert("Please fill out all required fields.");
+        const data = getFormData();
+        if (!data.customerName || !data.email || !data.orderId || !data.reason || !data.details) {
+            alert('Please fill out all required fields.');
             return;
         }
 
-        if(!agreed) {
-            alert("You must agree to the Return Policy conditions.");
+        if (!data.policyAgreed) {
+            alert('You must agree to the Return Policy conditions.');
             return;
         }
 
-        const submitBtn = document.getElementById('submit-btn');
         submitBtn.disabled = true;
-        submitBtn.innerText = "Uploading images & submitting...";
-
-        let imageUrls = [];
+        submitBtn.innerText = 'Submitting…';
+        setSaveStatus('Saving final request…');
 
         try {
-            if (fileInput.files && fileInput.files.length > 0) {
-                if (fileInput.files.length > 3) {
-                    alert("Maximum 3 files allowed.");
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = "Submit Return Request";
-                    return;
-                }
-
-                for (let i = 0; i < fileInput.files.length; i++) {
-                    const file = fileInput.files[i];
-                    const storageRef = firebase.storage().ref(`return_images/${auth.currentUser.uid}/${Date.now()}_${file.name}`);
-                    
-                    const snapshot = await storageRef.put(file);
-                    const downloadURL = await snapshot.ref.getDownloadURL();
-                    imageUrls.push(downloadURL);
-                }
-            }
-
-            const returnData = {
-                uid: auth.currentUser.uid,
-                customerName: name,
-                email: email,
-                orderId: orderId,
-                reason: reason,
-                details: details,
-                fileUrls: imageUrls,
-                status: "Pending Review",
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            const finalData = {
+                uid: currentUser.uid,
+                customerName: data.customerName,
+                email: data.email,
+                orderId: data.orderId,
+                reason: data.reason,
+                details: data.details,
+                fileUrls: uploadedFileUrls,
+                policyAgreed: true,
+                status: 'Pending Review',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                source: 'returns-refunds-portal'
             };
 
-            await db.collection("rrR").add(returnData);
-            alert("Your return/refund request has been successfully submitted! We will review your case shortly.");
-            document.getElementById('return-form').reset();
-            document.getElementById('file-name-display').innerText = "Choose up to 3 image files...";
+            const requestRef = await db.collection('rrR').add(finalData);
+
+            // Preserve the complete submitted data in the user's draft record as well,
+            // marked as submitted, so no field disappears after submission.
+            await db.collection('rrR').doc(`draft_${currentUser.uid}`).set({
+                ...finalData,
+                submittedRequestId: requestRef.id,
+                draft: false,
+                submittedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+
+            localStorage.removeItem(`strix_return_backup_${currentUser.uid}`);
+            setSaveStatus('Submitted and saved to Firebase', '#15803d');
+            alert('Your return/refund request has been successfully submitted! We will review your case shortly.');
+
+            form.reset();
+            uploadedFileUrls = [];
+            document.getElementById('file-name-display').innerText = 'Choose up to 3 image files...';
             submitBtn.disabled = false;
-            submitBtn.innerText = "Submit Return Request";
-            loadUserOrders(auth.currentUser.uid);
+            submitBtn.innerText = 'Submit Return Request';
+            await loadUserOrders(currentUser.uid);
         } catch (error) {
-            alert("Error submitting request: " + error.message);
+            console.error('Submission error:', error);
+            alert('Error submitting request: ' + error.message);
+            setSaveStatus('Submission failed — your saved fields remain in Firebase', '#b91c1c');
             submitBtn.disabled = false;
-            submitBtn.innerText = "Submit Return Request";
+            submitBtn.innerText = 'Submit Return Request';
         }
     }
 </script>
