@@ -148,6 +148,117 @@
         .png-total-row.final { font-size: 12px; font-weight: bold; margin-top: 2mm; }
         .png-agreement { font-size: 7.5px; margin: 1mm 0; }
         .png-footer { text-align: center; font-size: 7.5px; margin-top: 4mm; }
+        @media (max-width: 600px) {
+            body {
+                min-width: 0;
+            }
+
+            .nav-main {
+                padding: 10px 12px;
+                gap: 10px;
+            }
+
+            .logo-box img {
+                height: 28px;
+            }
+
+            .nav-right-actions {
+                gap: 7px;
+                min-width: 0;
+            }
+
+            .nav-link-item {
+                font-size: 10px;
+                white-space: nowrap;
+            }
+
+            .view-content {
+                padding: 12px 3%;
+            }
+
+            #search-view {
+                gap: 10px;
+            }
+
+            .browser-left,
+            .browser-right {
+                width: 100%;
+            }
+
+            .glass-card,
+            .browser-right {
+                border-radius: 20px;
+                border-width: 2px;
+            }
+
+            .browser-right {
+                padding: 12px;
+                min-height: 0;
+            }
+
+            .receipt-card {
+                padding: 15px;
+                border-radius: 16px;
+            }
+
+            .receipt-header h1 {
+                font-size: 20px;
+            }
+
+            .receipt-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .receipt-actions {
+                position: static;
+                width: 100%;
+                justify-content: stretch;
+                margin-bottom: 10px;
+            }
+
+            .receipt-actions button {
+                flex: 1;
+                min-height: 40px;
+            }
+
+            .total-price {
+                font-size: 26px;
+            }
+
+            #table-view {
+                padding: 12px 2%;
+            }
+
+            .table-wrap {
+                border-radius: 18px;
+                border-width: 2px;
+                padding: 5px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table {
+                min-width: 760px;
+            }
+
+            th {
+                padding: 12px 9px;
+                font-size: 9px;
+            }
+
+            td {
+                padding: 11px 9px;
+                font-size: 11px;
+            }
+
+            .placed-counter-badge {
+                bottom: 10px;
+                right: 10px;
+                padding: 9px 13px;
+                font-size: 11px;
+            }
+        }
+
         @media print {
             body, html { height: auto !important; overflow: visible !important; background: white !important; }
             nav, .browser-left, .receipt-actions, .sync-btn, #table-view, #discountPopup, .placed-counter-badge { display: none !important; }
@@ -302,6 +413,16 @@
                 const docSnap = await db.collection("users").doc(user.uid).get();
                 if (!docSnap.exists || !["agent", "admin"].includes((currentUserData = docSnap.data()).acc)) return window.location.href = "index.html";
                 loadTable();
+
+                const params = new URLSearchParams(window.location.search);
+                const orderId = params.get("orderId");
+                if (orderId) {
+                    const searchInput = document.getElementById("order-search");
+                    if (searchInput) {
+                        searchInput.value = orderId;
+                        setTimeout(() => lookupOrder(orderId), 100);
+                    }
+                }
             } catch (e) { console.error(e); }
         });
 
