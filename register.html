@@ -1082,6 +1082,85 @@ textarea:focus-visible {
     font-weight: 800;
 }
 
+@media(max-width: 650px) {
+    #checkoutScreen .checkout-layout {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        min-height: 100%;
+        padding: 7px;
+        gap: 7px;
+        overflow-y: auto;
+    }
+
+    #checkoutScreen .checkout-layout > .top-bar {
+        flex: 0 0 auto;
+        width: 100%;
+    }
+
+    #checkoutScreen .summary-section,
+    #checkoutScreen .form-section {
+        width: 100%;
+        min-height: auto;
+        overflow: visible;
+        padding: 12px;
+    }
+
+    #checkoutScreen .summary-section {
+        max-height: 320px;
+    }
+
+    #checkoutScreen .checkout-items-list {
+        max-height: 180px;
+        overflow-y: auto;
+    }
+
+    #checkoutScreen .form-section {
+        padding-bottom: 16px;
+    }
+
+    #checkoutScreen #checkoutForm {
+        overflow: visible;
+        gap: 9px;
+    }
+
+    #checkoutScreen .form-grid {
+        grid-template-columns: 1fr;
+        gap: 9px;
+    }
+
+    #checkoutScreen .form-group.full {
+        grid-column: auto;
+    }
+
+    #checkoutScreen .form-group input,
+    #checkoutScreen .form-group select,
+    #checkoutScreen .form-group textarea {
+        font-size: 16px;
+        min-height: 44px;
+    }
+
+    #checkoutScreen .form-group textarea {
+        min-height: 90px;
+        height: 90px;
+    }
+
+    #checkoutScreen #completeOrderBtn {
+        min-height: 48px;
+        height: 48px;
+        font-size: .86rem;
+    }
+
+    #checkoutScreen .choice-row {
+        gap: 5px;
+    }
+
+    #checkoutScreen .choice-btn {
+        min-height: 42px;
+        font-size: .76rem;
+    }
+}
+
 /* Mobile Keyboard */
 .mobile-search-keyboard {
     display: none;
@@ -3097,13 +3176,8 @@ document.getElementById("checkoutForm").addEventListener("submit", async e => {
         clearCustomerUI();
         updateCartUI();
 
-        showScreen("registerScreen");
-        const searchInput = document.getElementById("searchInput");
-        searchInput.value = orderRef.id;
-        filterAndRenderProducts();
-        searchInput.focus();
         hideLoader();
-        alert(`Order completed successfully! Order ID: ${orderRef.id}`);
+        window.location.href = `tables.html?orderId=${encodeURIComponent(orderRef.id)}`;
     } catch (err) {
         console.error("Error finalizing checkout:", err);
         alert("An error occurred while submitting the order. Please try again.");
