@@ -599,7 +599,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     // Auto-calculate Age and Grade Level based on September 1 cutoff
@@ -755,6 +755,7 @@
 
     const regForm = document.getElementById('reg-form');
     const errorMsg = document.getElementById('error-msg');
+    const submitBtn = document.getElementById('submitBtn');
 
     regForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -792,6 +793,9 @@
 
             if (authMethod === 'email') {
                 await createUserWithEmailAndPassword(auth, email, password);
+            } else if (authMethod === 'google') {
+                const provider = new GoogleAuthProvider();
+                await signInWithPopup(auth, provider);
             }
 
             document.getElementById('success-screen').style.display = 'flex';
