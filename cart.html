@@ -21,16 +21,18 @@
 
     <style>
         :root {
-            --primary: #484976;
-            --primary-hover: #4f4c74;
-            --surface: rgba(255, 255, 255, 0.32);
-            --surface-hover: rgba(255, 255, 255, 0.42);
+            --primary: #303d58;
+            --primary-hover: #5d6c8d;
+            --surface: rgba(255, 255, 255, 0.45);
+            --surface-hover: rgba(255, 255, 255, 0.55);
             --text-main: #0f172a;
             --text-dim: #475569;
+            --link-color: #303d58;
+            --link-hover: #5d6c8d;
             --border: rgba(255, 255, 255, 0.6);
-            --border-subtle: rgba(226, 232, 240, 0.5);
+            --border-subtle: rgba(226, 232, 240, 0.6);
             --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
-            --radius-main: 32px;
+            --radius-main: 28px;
         }
 
         * { box-sizing: border-box; }
@@ -64,8 +66,22 @@
             z-index: -1;
         }
 
-        a { text-decoration: none; font-weight: 700; color: var(--text-dim); transition: color 0.2s; }
-        a:hover { color: #334155; }
+        a { 
+            text-decoration: none; 
+            font-weight: 700; 
+            color: inherit; 
+            transition: color 0.2s, opacity 0.2s; 
+        }
+        
+        .inline-link {
+            color: var(--link-color);
+            text-decoration: none;
+            text-decoration-thickness: 1.5px;
+            text-underline-offset: 3px;
+        }
+        .inline-link:hover {
+            color: var(--link-hover);
+        }
 
         /* NAVIGATION BAR */
         nav {
@@ -75,8 +91,6 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-
-
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
@@ -155,14 +169,14 @@
             border: 1.5px solid var(--border);
             width: 90%;
             max-width: 880px;
-            margin: 50px auto;
+            margin: 40px auto;
             border-radius: var(--radius-main);
             box-shadow: var(--glass-shadow);
             overflow: hidden;
             display: flex;
             flex-direction: column;
             flex: 1;
-            transition: background 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .container:hover {
@@ -171,92 +185,92 @@
         }
 
         header { padding: 35px 40px 15px; }
-        h1 { font-size: 32px; font-weight: 700; margin: 0 0 10px; color: #1e1b4b; letter-spacing: -0.5px; }
-        h2 { font-size: 15px; font-weight: 600; margin: 0 0 10px; color: #312e81; line-height: 1.5; }
-        p { font-size: 12px; font-weight: 600; margin: 0 0 10px; color: var(--text-dim); line-height: 1.5; }
+        h1 { font-size: 28px; font-weight: 700; margin: 0 0 8px; color: #1e1b4b; letter-spacing: -0.5px; }
+        h2 { font-size: 14px; font-weight: 600; margin: 0 0 12px; color: var(--text-dim); line-height: 1.5; }
+        p.info-note { font-size: 12px; font-weight: 600; margin: 0 0 8px; color: #64748b; line-height: 1.5; }
 
-        .tabs { display: flex; background: rgba(241, 245, 249, 0.4); padding: 6px; border-radius: 14px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.3); }
-        .tab { flex: 1; text-align: center; padding: 12px; font-weight: 700; font-size: 13px; cursor: pointer; border-radius: 10px; color: var(--text-dim); transition: all 0.3s ease; }
-        .tab.active { background: #ffffff; color: var(--primary); box-shadow: 0 4px 15px rgba(79, 70, 229, 0.1); }
+        .tabs { display: flex; background: rgba(226, 232, 240, 0.5); padding: 4px; border-radius: 14px; margin-top: 15px; margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.4); }
+        .tab { flex: 1; text-align: center; padding: 10px 14px; font-weight: 700; font-size: 13px; cursor: pointer; border-radius: 10px; color: var(--text-dim); transition: all 0.25s ease; }
+        .tab.active { background: #ffffff; color: var(--primary); box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); }
 
         #cart-view, #checkout-view { padding: 0 40px 30px; }
         #checkout-view { display: none; }
 
-        .cart-item { display: flex; align-items: center; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--border-subtle); }
-        .cart-item img { width: 120px; height: 75px; object-fit: cover; border-radius: 12px; background: #e2e8f0; flex-shrink: 0; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .cart-item { display: flex; align-items: center; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--border-subtle); }
+        .cart-item img { width: 100px; height: 68px; object-fit: cover; border-radius: 10px; background: #e2e8f0; flex-shrink: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
         .item-info { flex: 1; }
 
-        .qty-control { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-        .qty-btn { width: 26px; height: 26px; border: 1px solid var(--border-subtle); background: #ffffff; border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
-        .qty-btn:hover { background: #f1f5f9; }
+        .qty-control { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+        .qty-btn { width: 26px; height: 26px; border: 1px solid var(--border-subtle); background: rgba(255, 255, 255, 0.8); border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+        .qty-btn:hover { background: #ffffff; }
         .qty-num { font-size: 13px; font-weight: 700; min-width: 20px; text-align: center; }
 
         .trash-btn {
             background: url('trashicon.png') no-repeat center;
             background-size: contain;
             border: none;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             cursor: pointer;
             transition: transform 0.2s;
             flex-shrink: 0;
-            opacity: 1;
+            opacity: 0.8;
         }
-        .trash-btn:hover { transform: scale(1.15); opacity: 1; }
+        .trash-btn:hover { transform: scale(1.1); opacity: 1; }
 
-        #empty-msg { text-align: center; padding: 60px 20px; }
-        .continue-shopping-img { width: 200px; margin-bottom: 20px; cursor: pointer; border-radius:12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); transition: transform 0.2s; }
+        #empty-msg { text-align: center; padding: 50px 20px; }
+        .continue-shopping-img { width: 180px; margin-bottom: 16px; cursor: pointer; border-radius:12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); transition: transform 0.2s; }
         .continue-shopping-img:hover { transform: translateY(-2px); }
 
-        .form-group { margin-bottom: 22px; }
+        .form-group { margin-bottom: 20px; }
         label { display: block; font-weight: 700; font-size: 11px; margin-bottom: 8px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.8px; }
         
         input, select, textarea { 
-            width: 100%; padding: 14px; border: 1px solid var(--border-subtle); border-radius: 14px; 
-            font-family: inherit; font-size: 14px; font-weight: 600; box-sizing: border-box; 
-            background: rgba(255, 255, 255, 0.5); transition: border-color 0.2s, box-shadow 0.2s;
+            width: 100%; padding: 12px 14px; border: 1px solid var(--border-subtle); border-radius: 12px; 
+            font-family: inherit; font-size: 13px; font-weight: 600; box-sizing: border-box; 
+            background: rgba(255, 255, 255, 0.6); transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         }
-        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
-        input:read-only { background: rgba(226, 232, 240, 0.35); color: var(--text-dim); cursor: pointer; border-color: rgba(226, 232, 240, 0.6); }
+        input:focus, select:focus, textarea:focus { outline: none; background: rgba(255, 255, 255, 0.9); border-color: var(--primary); box-shadow: 0 0 0 3px rgba(48, 61, 88, 0.12); }
+        input:read-only { background: rgba(226, 232, 240, 0.4); color: var(--text-dim); cursor: default; border-color: rgba(226, 232, 240, 0.6); }
 
         /* Grade Selection Button Styles */
         .grade-btn-group {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
         .grade-btn {
             flex: 1;
-            min-width: 60px;
-            padding: 14px;
+            min-width: 50px;
+            padding: 10px 14px;
             border: 1px solid var(--border-subtle);
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 10px;
             font-family: inherit;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--text-main);
             cursor: pointer;
             transition: all 0.2s ease;
         }
         .grade-btn:hover {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             border-color: var(--primary);
         }
         .grade-btn.active {
             background: var(--primary);
             color: #ffffff;
             border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+            box-shadow: 0 4px 10px rgba(48, 61, 88, 0.2);
         }
 
-        .checkbox-label { display: flex; gap: 12px; color: #334155; font-size: 13px; font-weight: 600; line-height: 1.4; margin-bottom: 16px; cursor: pointer; }
-        .checkbox-label input { width: auto; margin-top: 3px; accent-color: var(--primary); }
+        .checkbox-label { display: flex; gap: 10px; color: var(--text-main); font-size: 12px; font-weight: 600; line-height: 1.5; margin-bottom: 14px; cursor: pointer; }
+        .checkbox-label input { width: auto; margin-top: 2px; accent-color: var(--primary); }
 
-        .footer { padding: 25px 40px 35px; display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); border-top: 1px solid rgba(255, 255, 255, 0.2); }
-        .total-amount { font-size: 30px; font-weight: 700; color: #1e1b4b; }
-        .btn-continue { background: #475569; color: white; border: none; padding: 16px 45px; border-radius: 16px; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 8px 20px rgba(71, 85, 105, 0.25); }
-        .btn-continue:hover { transform: translateY(-2px); }
+        .footer { padding: 20px 40px 25px; display: flex; align-items: center; justify-content: space-between; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px); border-top: 1px solid rgba(255, 255, 255, 0.3); }
+        .total-amount { font-size: 26px; font-weight: 700; color: #1e1b4b; }
+        .btn-continue { background: var(--primary); color: white; border: none; padding: 14px 40px; border-radius: 12px; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 6px 16px rgba(48, 61, 88, 0.2); }
+        .btn-continue:hover { background: var(--primary-hover); transform: translateY(-1px); }
         .btn-continue:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; transform: none; }
 
         /* Sign In Overlay styling matching wishlist.html pattern */
@@ -315,7 +329,7 @@
             position: relative;
             z-index: 10;
             text-align: center;
-            padding: 30px;
+            padding: 24px;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-dim);
             font-size: 12px;
@@ -349,9 +363,9 @@
 <div class="container" id="main-app-container">
     <header>
         <h1 id="page-title">Your Cart</h1>
-        <h2>Please contact <a href="cs.html">Customer Support</a> if you would like to find a past receipt.</h2>
-        <p>If you are under 18, you may purchase only under the supervision of a parent or guardian.</p>
-        <p>Discounts will be applied when your order is processed. It will not show up yet. If you think there is an error, please contact Customer Support. Thank you. </p>
+        <h2>Please contact <a href="cs.html" class="inline-link">Customer Support</a> if you would like to find a past receipt.</h2>
+        <p class="info-note">If you are under 18, you may purchase only under the supervision of a parent or guardian.</p>
+        <p class="info-note">Discounts will be applied when your order is processed. It will not show up yet. If you think there is an error, please contact Customer Support. Thank you.</p>
         <div class="tabs">
             <div class="tab active" id="tab-cart" onclick="switchView('cart')">1. Order Summary</div>
             <div class="tab" id="tab-checkout" onclick="switchView('checkout')">2. Checkout Details</div>
@@ -391,7 +405,7 @@
 
         <div class="form-group">
             <label>Use Gift Cards or Vouchers to Pay?</label>
-            <div style="display:flex; gap: 80px; font-weight: 600; font-size: 14px;">
+            <div style="display:flex; gap: 80px; font-weight: 600; font-size: 13px;">
                 <label style="display:flex; align-items:center; gap:8px;"><input type="radio" name="giftcard" value="yes"> Yes</label>
                 <label style="display:flex; align-items:center; gap:8px;"><input type="radio" name="giftcard" value="no" checked> No</label>
             </div>
@@ -411,7 +425,7 @@
 
         <label class="checkbox-label">
             <input type="checkbox" id="check-terms" required>
-            <span>I have read and agree to the Terms and Conditions.</span>
+            <span>I have read and agree to the <a href="terms.html" class="inline-link" target="_blank">Terms and Conditions</a>.</span>
         </label>
     </div>
 
@@ -419,7 +433,7 @@
         <div class="total-box">
             <div id="item-count" style="font-size:12px; font-weight:700; color:var(--text-dim);">Subtotal (0 Items)</div>
             <div class="total-amount" id="total-price">$0.00</div>
-            <div style="font-size:11px; font-weight:600; color:var(--text-dim); margin-top:4px;">If you would like a printed copy of your receipt, please contact <a href="cs.html">Customer Support</a> or send your order to customer <br>service <a href="myorders.html">Here</a>. Thank you for your cooperation.</div>
+            <div style="font-size:11px; font-weight:600; color:var(--text-dim); margin-top:4px;">If you would like a printed copy of your receipt, please contact <a href="cs.html" class="inline-link">Customer Support</a> or send your order to customer service <a href="myorders.html" class="inline-link">Here</a>. Thank you for your cooperation.</div>
         </div>
         <button class="btn-continue" id="action-btn" onclick="handleAction()">Continue</button>
     </div>
@@ -438,8 +452,8 @@
                 <path d="M12 14v3"></path>
             </svg>
         </div>
-        <h2>Sorry, please sign in to use this feature.</h2>
-        <p>You need a Strix Shop account to view and manage your cart.</p>
+        <h2>Sorry, please sign in.</h2>
+        <p>You need a Strix Shop account to view your cart.</p>
         <a href="signin.html" class="signin-overlay-btn">Sign In / Register</a>
         <a href="products.html" class="signin-overlay-back">Continue Browsing</a>
     </div>
