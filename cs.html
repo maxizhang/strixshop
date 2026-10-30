@@ -645,6 +645,57 @@
             cursor: pointer;
         }
 
+        /* Sign In Overlay styling matching cart.html & wishlist.html */
+        .signin-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(15, 23, 42, 0.28);
+            backdrop-filter: blur(18px) saturate(130%);
+            -webkit-backdrop-filter: blur(18px) saturate(130%);
+            animation: overlayIn .3s ease both;
+        }
+        .signin-overlay.active { display: flex; }
+        .signin-overlay-card {
+            width: min(430px, 100%);
+            padding: 34px 30px 29px;
+            text-align: center;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 25px 80px rgba(15, 23, 42, 0.18);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            animation: overlayCardIn .35s cubic-bezier(.2,.8,.2,1) both;
+        }
+        .signin-lock {
+            width: 62px; height: 62px;
+            margin: 0 auto 17px;
+            display: grid; place-items: center;
+            border-radius: 50%;
+            color: #1f2937;
+            background: rgba(255,255,255,.68);
+            border: 1px solid rgba(255,255,255,.95);
+            box-shadow: 0 10px 25px rgba(15,23,42,.07);
+        }
+        .signin-overlay-card h2 { font-size: 21px; line-height: 1.3; font-weight: 900; margin-bottom: 10px; color: #1f2937; }
+        .signin-overlay-card p { color: #6b7280; font-size: 13px; line-height: 1.6; font-weight: 600; margin-bottom: 22px; }
+        .signin-overlay-btn {
+            display: block; width: 100%; padding: 12px 18px; border-radius: 13px;
+            background: #111827; color: #fff; text-decoration: none; font-size: 13px; font-weight: 900;
+            transition: .2s ease; box-shadow: 0 9px 25px rgba(17,24,39,.16);
+        }
+        .signin-overlay-btn:hover { transform: translateY(-1px); background: #1f2937; }
+        .signin-overlay-back { display: inline-block; margin-top: 15px; color: #6b7280; text-decoration: none; font-size: 12px; font-weight: 800; }
+        .signin-overlay-back:hover { color: #1f2937; }
+
+        @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes overlayCardIn { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: none; } }
+
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-thumb { border-radius: 99px; background: rgba(72, 73, 118, 0.2); }
 
@@ -776,6 +827,24 @@
         </div>
     </div>
 
+    <!-- Sign In Overlay Popup for Unsigned Users matching cart.html & wishlist.html -->
+    <div id="signinOverlay" class="signin-overlay" aria-hidden="true">
+        <div class="signin-overlay-card">
+            <div class="signin-lock">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 10V7a5 5 0 0 1 10 0v3"></path>
+                    <rect x="4" y="10" width="16" height="11" rx="2"></rect>
+                    <path d="M12 14v3"></path>
+                </svg>
+            </div>
+            <h2>Sorry, please sign in.</h2>
+            <p>You need a Strix Shop account to access Customer Support.</p>
+            <a href="signin.html" class="signin-overlay-btn">Sign In / Register</a>
+            <a href="index.html" class="signin-overlay-back">Return Home</a>
+        </div>
+    </div>
+
 <script>
     const n = Math.floor(Math.random() * 12) + 1;
     const bgLayer = document.getElementById("bgLayer");
@@ -818,7 +887,7 @@
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import{getFirestore,doc,getDoc,collection,query,orderBy,limit,onSnapshot,getDocs,addDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import{getFirestore,doc,getDoc,collection,query,orderBy,onSnapshot,getDocs,setDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig={apiKey:"AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",authDomain:"strix-shop.firebaseapp.com",projectId:"strix-shop",storageBucket:"strix-shop.appspot.com"};
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
@@ -827,7 +896,21 @@ let fullName="Customer",customerPfp="default.png",currentUid=null,hasAutoSentPro
 const autoReplyTimers=new Map();
 
 onAuthStateChanged(auth,async user=>{
-    if(!user){window.location.href="signin.html";return}
+    const overlay = document.getElementById("signinOverlay");
+
+    if(!user){
+        if(overlay){
+            overlay.classList.add("active");
+            overlay.setAttribute("aria-hidden", "false");
+        }
+        return;
+    }
+
+    if(overlay){
+        overlay.classList.remove("active");
+        overlay.setAttribute("aria-hidden", "true");
+    }
+
     currentUid=user.uid;
     try{
         const u=await getDoc(doc(db,"users",user.uid));
@@ -844,18 +927,38 @@ onAuthStateChanged(auth,async user=>{
     loadMessages(user.uid);
 });
 
+async function sendSupportMessage(uid, messageData, senderType, dataType) {
+    const messagesRef = collection(db, "support_chats", uid, "messages");
+    const snap = await getDocs(messagesRef);
+    const count = snap.size + 1;
+
+    const cNum = count % 10000;
+    const c = String(cNum).padStart(4, '0');
+    const d = Math.floor(count / 10000);
+
+    const customId = `${senderType}${dataType}${c}${d}`;
+
+    await setDoc(doc(db, "support_chats", uid, "messages", customId), {
+        ...messageData,
+        seq: count,
+        messageId: customId,
+        timestamp: serverTimestamp()
+    });
+    return { id: customId };
+}
+
 async function checkAndAutoSendProductReference(uid){
     const productId=new URLSearchParams(location.search).get("product_id");
     if(!productId)return;
     try{
         const p=await getDoc(doc(db,"products",productId));
         if(!p.exists())return;
-        const d=p.data(),ref=await addDoc(collection(db,"support_chats",uid,"messages"),{
+        const d=p.data(),res=await sendSupportMessage(uid,{
             text:`Inquiring about: ${d.name||"Product"}`,
             productReference:{productId,name:d.name||"Product",price:Number(d.price||0),sku:d.sku||productId.substring(0,8).toUpperCase(),image:d.images?.[0]||""},
-            senderId:uid,senderName:fullName,senderPfp:customerPfp,acc:"customer",clientTimestamp:Date.now(),timestamp:serverTimestamp()
-        });
-        startAutoSystemReplyTimer(uid,ref.id);
+            senderId:uid,senderName:fullName,senderPfp:customerPfp,acc:"customer",clientTimestamp:Date.now()
+        },"C","X");
+        startAutoSystemReplyTimer(uid,res.id);
         history.replaceState({},document.title,location.pathname);
     }catch(e){console.error("Product reference error:",e)}
 }
@@ -866,12 +969,12 @@ async function checkAndAutoSendOrderReference(uid){
     try{
         const o=await getDoc(doc(db,"orders",orderId));
         if(!o.exists())return;
-        const d=o.data(),ref=await addDoc(collection(db,"support_chats",uid,"messages"),{
+        const d=o.data(),res=await sendSupportMessage(uid,{
             text:`Help needed with Order #${orderId}`,
             orderReference:{id:orderId,date:d.orderDate||"Recent",status:d.status||"Placed",total:Number(d.total||0),items:d.items||[]},
-            senderId:uid,senderName:fullName,senderPfp:customerPfp,acc:"customer",clientTimestamp:Date.now(),timestamp:serverTimestamp()
-        });
-        startAutoSystemReplyTimer(uid,ref.id);
+            senderId:uid,senderName:fullName,senderPfp:customerPfp,acc:"customer",clientTimestamp:Date.now()
+        },"C","X");
+        startAutoSystemReplyTimer(uid,res.id);
         history.replaceState({},document.title,location.pathname);
     }catch(e){console.error("Order reference error:",e)}
 }
@@ -905,11 +1008,11 @@ function startAutoSystemReplyTimer(uid,messageId){
                 else if(!customerTime&&clientTime&&Number(d.clientTimestamp||0)>clientTime)agentReplied=true;
             });
             if(!agentReplied&&!systemAlready&&!recentSystemReply){
-                await addDoc(ref,{
+                await sendSupportMessage(uid,{
                     acc:"system",senderName:"System Automatic Reply",
                     text:"No customer support agent has responded yet. A notification has been sent to customer support. Please remain on this page or check back later. Responses typically arrive within 24 hours. Expect a reply by 8:00 p.m.",
-                    isSystemMessage:true,autoReplyFor:messageId,timestamp:serverTimestamp()
-                });
+                    isSystemMessage:true,autoReplyFor:messageId
+                },"S","X");
             }
         }catch(e){console.error("SAP error:",e)}
         autoReplyTimers.delete(messageId);
@@ -919,7 +1022,7 @@ function startAutoSystemReplyTimer(uid,messageId){
 
 function loadMessages(uid){
     let isInitialLoad = true;
-    const q=query(collection(db,"support_chats",uid,"messages"),orderBy("timestamp","asc"),limit(100));
+    const q=query(collection(db,"support_chats",uid,"messages"),orderBy("seq","asc"));
     onSnapshot(q,snapshot=>{
         const cont=document.getElementById("messages-container");
         cont.innerHTML="";
@@ -1028,10 +1131,10 @@ fileInput.onchange=async e=>{
         attachBtn.disabled=true;
         const mediaType=file.type.startsWith("video/")?"video":"image";
         const mediaUrl=mediaType==="image"?await compressImage(file):await fileAsDataURL(file);
-        const ref=await addDoc(collection(db,"support_chats",currentUid,"messages"),{
-            mediaUrl,mediaType,senderId:currentUid,senderName:fullName,senderPfp:customerPfp,acc:"customer",clientTimestamp:Date.now(),timestamp:serverTimestamp()
-        });
-        startAutoSystemReplyTimer(currentUid,ref.id);
+        const res=await sendSupportMessage(currentUid,{
+            mediaUrl,mediaType,senderId:currentUid,senderName:fullName,senderPfp:customerPfp,acc:"customer",clientTimestamp:Date.now()
+        },"C","P");
+        startAutoSystemReplyTimer(currentUid,res.id);
         fileInput.value="";
     }catch(e){alert("Failed to attach file: "+e.message)}
     finally{attachBtn.disabled=false}
@@ -1043,10 +1146,10 @@ document.getElementById("chat-form").onsubmit=async e=>{
     if(!text||!currentUid)return;
     input.value="";
     try{
-        const ref=await addDoc(collection(db,"support_chats",currentUid,"messages"),{
-            text,senderId:currentUid,senderName:fullName,senderPfp:customerPfp,acc:"customer",clientTimestamp:Date.now(),timestamp:serverTimestamp()
-        });
-        startAutoSystemReplyTimer(currentUid,ref.id);
+        const res=await sendSupportMessage(currentUid,{
+            text,senderId:currentUid,senderName:fullName,senderPfp:customerPfp,acc:"customer",clientTimestamp:Date.now()
+        },"C","X");
+        startAutoSystemReplyTimer(currentUid,res.id);
     }catch(e){console.error("Send error:",e);input.value=text}
 };
 </script>

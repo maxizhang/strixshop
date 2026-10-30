@@ -1,42 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="spfd.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Home</title>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDKs v10.8.0 -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
     <style>
         :root {
             --color-text-main: #0f172a;
-            --color-text-muted: #53627c;
-            --color-accent-blue: #6d85bc;
-            --color-accent-purple: #8664bc;
-            --color-logo-bg: linear-gradient(135deg, #393661 0%, #403e7f 100%);
             --color-glass-bg: rgba(255, 255, 255, 0.82);
             --color-glass-border: rgba(255, 255, 255, 0.95);
             --shadow-glass: 0 16px 40px 0 rgba(31, 38, 135, 0.07);
-            --shadow-glow: 0 10px 30px rgba(109, 133, 188, 0.2);
             --radius-main: 22px;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; }
 
         body {
-            background: linear-gradient(120deg, #ce8080, #ffe4ab, #c8e0b8, #a9d4bd, #a5b6e7, #bca6e1, #ce80b0);
-            background-size: 500% 500%;
-            animation: fluidMorph 10s ease infinite;
+            background: linear-gradient(120deg, #a5b6e7, #bca6e1, #ce80b0, #ce8080, #ffe4ab, #c8e0b8, #a9d4bd);
+            background-size: 400% 400%;
+            background-attachment: fixed;
+            animation: fluidMorph 12s ease infinite;
             color: var(--color-text-main);
             font-family: 'Quicksand', sans-serif;
             min-height: 100vh;
-            display: flex;
-            padding: 16px;
-            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
         }
 
         @keyframes fluidMorph {
@@ -45,1202 +44,968 @@
             100% { background-position: 0% 50%; }
         }
 
-        .app-container {
-            display: flex;
-            width: 100%;
-            max-width: 1650px;
-            margin: 0 auto;
-            gap: 20px;
-            position: relative;
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            width: 290px;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .logo-box {
-            background: var(--color-logo-bg);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 25px rgba(102, 122, 167, 0.15);
-            border-radius: var(--radius-main);
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 85px;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .logo-box:hover {
-            transform: translateY(-2px);
-        }
-
-        .logo-box img {
-            height: 34px;
-            filter: brightness(0) invert(1);
-            object-fit: contain;
-        }
-
-        .tabs-sidebar {
+        .glass-card {
             background: var(--color-glass-bg);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--color-glass-border);
             box-shadow: var(--shadow-glass);
             border-radius: var(--radius-main);
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            flex-grow: 1;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
         }
 
-        .sidebar-title {
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--color-text-muted);
-            margin: 2px 0 4px 6px;
-        }
-
-        .nav-tab {
-            display: flex;
-            align-items: center;
-            padding: 10px 14px;
-            background: rgba(255, 255, 255, 0.55);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 12px;
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--color-text-main);
-            text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .nav-tab:hover {
-            background: #ffffff;
-            transform: translateX(6px);
-            box-shadow: var(--shadow-glow);
-            border-color: rgba(109, 133, 188, 0.3);
-            color: var(--color-accent-blue);
-        }
-
-        /* MAIN WRAPPER */
-        .main-wrapper {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            opacity: 100%;
-            min-width: 0;
-        }
-
-        .top-icons-bar {
-            background: var(--color-glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--color-glass-border);
-            box-shadow: var(--shadow-glass);
+        .glass-card-dark {
+            background: rgba(30, 41, 59, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
             border-radius: var(--radius-main);
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            height: 85px;
-            opacity: 80%;
         }
 
-        .mobile-menu-toggle {
-            display: none;
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid var(--color-glass-border);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            color: var(--color-text-main);
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu-toggle:hover {
-            background: #ffffff;
-            box-shadow: var(--shadow-glow);
-        }
-
-        .search-bar {
-            flex-grow: 1;
-            max-width: 700px;
-            display: flex;
-            align-items: center;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid var(--color-glass-border);
-            border-radius: 50px;
-            padding: 5px 6px 5px 20px;
-            transition: all 0.3s ease;
-        }
-
-        .search-bar:focus-within {
-            box-shadow: var(--shadow-glow);
-            background: #ffffff;
-            transform: scale(1.01);
-        }
-
-        .search-bar input {
+        .hr{
             border: none;
-            background: transparent;
-            width: 100%;
-            outline: none;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 0.85rem;
-            color: var(--color-text-main);
-        }
-
-        .search-btn {
-            background: linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-purple));
-            border: none;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .search-btn:hover {
-            transform: rotate(15deg) scale(1.08);
-        }
-
-        .nav-right-icons {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .user-welcome {
-            font-size: 0.82rem;
-            color: var(--color-text-muted);
-            text-decoration: none;
-        }
-
-        .user-welcome b {
-            color: var(--color-text-main);
-        }
-
-        .cart-icon {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 44px;
-            height: 44px;
-            background: rgba(255, 255, 255, 0.75);
-            border: 1px solid var(--color-glass-border);
-            border-radius: 50%;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .cart-icon:hover {
-            background: #ffffff;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-glow);
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            background: linear-gradient(135deg, var(--color-accent-blue), var(--color-accent-purple));
-            color: white;
-            padding: 2px 7px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            font-weight: 800;
-        }
-
-        /* BANNERS SECTION */
-        .images-section {
-            background: var(--color-glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--color-glass-border);
-            box-shadow: var(--shadow-glass);
-            border-radius: var(--radius-main);
-            position: relative;
-            width: 100%;
-            aspect-ratio: 115 / 30;
-            overflow: hidden;
+            height: 300px;
+            background: #fcfbfb;  
         }
 
         .banner-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
             opacity: 0;
-            transform: scale(1.03);
-            pointer-events: none; 
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            display: block;
+            transform: scale(1.018) translateY(3px);
+            filter: blur(6px);
+            transition:
+                opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: opacity, transform, filter;
+            pointer-events: none;
         }
 
-        .banner-slide.active {
+        .banner-slide.slide-active {
             opacity: 1;
-            transform: scale(1);
-            pointer-events: auto; 
+            transform: scale(1) translateY(0);
+            filter: blur(0);
+            z-index: 10;
+            pointer-events: auto;
         }
 
         .banner-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translateZ(0);
         }
 
-        .slider-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--color-glass-border);
-            color: var(--color-text-main);
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 10;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.8;
+        #categoryCarouselContainer .banner-slide {
+            transform: scale(1.005);
+            filter: blur(5px);
+            transition:
+                opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+                filter 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .slider-arrow:hover {
-            background: #ffffff;
-            transform: translateY(-50%) scale(1.08);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-            opacity: 1;
+        #categoryCarouselContainer .banner-slide.slide-active {
+            transform: scale(1);
+            filter: blur(0);
         }
 
-        .prev { left: 16px; }
-        .next { right: 16px; }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.3); }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(109, 133, 188, 0.5);
+            border-radius: 4px;
         }
 
-        .section-title {
-            font-size: 1.15rem;
-            font-weight: 800;
-            color: var(--color-text-main);
-            letter-spacing: -0.5px;
-        }
-
-        .info-section {
-            background: var(--color-glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--color-glass-border);
-            box-shadow: var(--shadow-glass);
-            border-radius: var(--radius-main);
-            padding: 28px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px;
-        }
-
-        .category-block {
-            background: rgba(255, 255, 255, 0.65);
-            border: 1px solid var(--color-glass-border);
-            border-radius: 18px;
-            padding: 24px 20px;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
-        .category-block:hover {
-            background: #ffffff;
-            transform: translateY(-4px);
-            box-shadow: 0 16px 25px rgba(0,0,0,0.05);
-            border-color: rgba(109, 133, 188, 0.3);
-        }
-
-        .category-block h2 {
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-            font-weight: 800;
-            color: var(--color-text-main);
-        }
-
-        .category-block p {
-            color: var(--color-text-muted);
-            font-size: 0.82rem;
-            line-height: 1.5;
-        }
-
-        .resource-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-            gap: 16px;
-        }
-
-        .resource-card {
-            background: rgba(255, 255, 255, 0.55);
-            border: 1px solid var(--color-glass-border);
-            border-radius: 14px;
-            padding: 16px;
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .resource-card:hover {
-            background: #ffffff;
-            transform: translateY(-3px);
-            border-color: rgba(109, 133, 188, 0.3);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.03);
-        }
-
-        .resource-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #e4ebfb, #f3eafa);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            color: var(--color-accent-blue);
-        }
-
-        .resource-info h3 {
-            font-size: 0.86rem;
-            font-weight: 700;
-            margin-bottom: 3px;
-        }
-
-        .resource-info p {
-            font-size: 0.76rem;
-            color: var(--color-text-muted);
-            line-height: 1.35;
-        }
-
-
-        /* UPTIME WIDGET */
-        .strix-uptime-widget {
-            background: rgba(255, 255, 255, 0.45);
-            border: 1px solid var(--color-glass-border);
-            border-radius: 14px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .uptime-header {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-family: 'Quicksand', monospace;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--color-accent-blue);
-        }
-
-        .pulse-dot {
-            width: 6px;
-            height: 6px;
-            background-color: #22c55e;
-            border-radius: 50%;
-            animation: pulseAnimation 2s infinite;
-        }
-
-        @keyframes pulseAnimation {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 4px rgba(34, 197, 94, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-        }
-
-        .uptime-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 5px;
-        }
-
-        .uptime-box {
-            background: rgba(255, 255, 255, 0.75);
-            border: 1px solid var(--color-glass-border);
-            border-radius: 8px;
-            padding: 6px 2px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .uptime-num {
-            font-family: 'Quicksand', monospace;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--color-text-main);
-        }
-
-        .uptime-label {
-            font-size: 0.5rem;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: var(--color-text-muted);
-        }
-
-        /* ACCOUNT WIDGET */
-        .sidebar-account-widget {
-            background: rgba(255, 255, 255, 0.45);
-            border: 1px solid var(--color-glass-border);
-            border-radius: 14px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .sidebar-account-header {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            color: var(--color-accent-blue);
-        }
-
-        .sidebar-account-email {
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--color-text-main);
-            word-break: break-all;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 6px 8px;
-            border-radius: 8px;
-            border: 1px solid var(--color-glass-border);
-        }
-
-        .sidebar-account-actions {
-            display: flex;
-            gap: 6px;
-        }
-
-        .sidebar-acc-btn {
-            flex: 1;
-            text-align: center;
-            padding: 6px 0;
-            background: rgba(255, 255, 255, 0.85);
-            border: 1px solid var(--color-glass-border);
-            border-radius: 8px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: var(--color-text-main);
-            text-decoration: none;
-            transition: all 0.25s ease;
-        }
-
-        .sidebar-acc-btn:hover {
-            background: #ffffff;
-            color: var(--color-accent-blue);
-            box-shadow: var(--shadow-glow);
-        }
-
-        /* PORTAL NAV GRID */
-        .nav-portal-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            justify-content: space-around;
-            align-items: center;
-        }
-
-        .portal-icon-btn {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 52px;
-            height: 52px;
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid var(--color-glass-border);
-            border-radius: 16px;
-            color: #0f172a;
-            text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-
-        .portal-icon-btn:hover {
-            background: #ffffff;
-            transform: translateY(-4px) scale(1.06);
-            box-shadow: 0 10px 20px rgba(109, 133, 188, 0.15);
-            color: var(--color-accent-purple);
-        }
-
-        .portal-icon-btn::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: -34px;
-            left: 50%;
-            transform: translateX(-50%) translateY(4px);
-            background: #1e293b;
-            color: #ffffff;
-            font-size: 0.72rem;
-            font-weight: 600;
-            padding: 5px 10px;
-            border-radius: 6px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 20;
-        }
-
-        .portal-icon-btn:hover::after {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        /* FOOTER */
-        .footer-section {
-            background: var(--color-glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--color-glass-border);
-            box-shadow: var(--shadow-glass);
-            border-radius: var(--radius-main);
-            padding: 36px;
-        }
-
-        .footer-grid-2x4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 30px 24px;
-        }
-
-        .footer-col h4 {
-            font-size: 0.72rem;
-            font-weight: 800;
-            letter-spacing: 1.2px;
-            margin-bottom: 14px;
-            color: var(--color-text-main);
-            text-transform: uppercase;
-            position: relative;
-            padding-left: 10px;
-        }
-
-        .footer-col h4::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; bottom: 0;
-            width: 3px;
-            border-radius: 3px;
-            background: linear-gradient(180deg, var(--color-accent-blue), var(--color-accent-purple));
-        }
-
-        .footer-col a {
-            display: block;
-            color: var(--color-text-muted);
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-bottom: 8px;
-            transition: all 0.25s ease;
-        }
-
-        .footer-col a:hover {
-            color: var(--color-accent-blue);
-            transform: translateX(4px);
-        }
-
-        .bottom-bar {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(15, 23, 42, 0.06);
-            color: var(--color-text-muted);
-            font-size: 0.72rem;
-            font-weight: 600;
-        }
-
-        @media (max-width: 1100px) {
-            .footer-grid-2x4 { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        /* MOBILE RESPONSIVE STYLES */
-        @media (max-width: 900px) {
-            body { padding: 10px; }
-            .mobile-menu-toggle { display: flex; }
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: -320px;
-                width: 290px;
-                height: 100vh;
-                z-index: 1100;
-                background: rgba(255, 255, 255, 0.96);
-                backdrop-filter: blur(25px);
-                -webkit-backdrop-filter: blur(25px);
-                box-shadow: 10px 0 30px rgba(0, 0, 0, 0.15);
-                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                overflow-y: auto;
-                padding: 16px;
-                display: flex;
-                flex-direction: column;
-                gap: 16px;
-            }
-            .sidebar.open { transform: translateX(320px); }
-            .sidebar-overlay {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.35);
-                backdrop-filter: blur(4px);
-                z-index: 1050;
-                opacity: 0;
-                transition: opacity 0.3s ease;
-            }
-            .sidebar-overlay.active { display: block; opacity: 1; }
-            .top-icons-bar { padding: 10px 14px; height: auto; flex-wrap: wrap; }
-            .search-bar { order: 3; width: 100%; max-width: 100%; }
-            .footer-grid-2x4 { grid-template-columns: 1fr; gap: 16px; }
-        }
+        #signinPrompt { position: fixed; right: 24px; bottom: 24px; z-index: 9990; width: min(390px, calc(100vw - 44px)); display: none; }
+        #signinPrompt.show { display: block; animation: noticeIn .35s cubic-bezier(.2,.8,.2,1); }
+        @keyframes noticeIn { from { opacity: 0; transform: translateY(18px) scale(.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
     </style>
-
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
-<body>
 
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<body class="p-3 md:p-5 text-slate-900 selection:bg-purple-200 selection:text-purple-900">
 
-<div class="app-container">
-    <aside class="sidebar" id="appSidebar">
-        <div class="logo-box">
-            <img src="logoh.png" alt="STRIX">
+    <div id="signinPrompt" aria-live="polite">
+        <div class="glass-card p-5 border border-white/80 shadow-2xl">
+            <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-user"></i></div>
+                <div class="flex-1">
+                    <div class="font-extrabold text-slate-900">Welcome to Strix Shop!</div>
+                    <p class="text-xs font-semibold text-slate-600 mt-1 leading-relaxed">Would you like to sign in or create an account?</p>
+                </div>
+                <button onclick="closeSigninPrompt()" class="text-slate-500 hover:text-slate-900" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="grid grid-cols-2 gap-2 mt-4">
+                <button onclick="window.location.href='signin.html'" class="bg-slate-900 text-white rounded-xl py-2.5 text-xs font-extrabold hover:bg-slate-800 transition">Yes</button>
+                <button onclick="closeSigninPrompt()" class="bg-white/80 border border-white rounded-xl py-2.5 text-xs font-extrabold text-slate-700 hover:bg-white transition">No, thanks</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="max-w-[1650px] mx-auto mb-5">
+        <div class="glass-card px-5 py-3.5 flex flex-wrap items-center justify-between gap-4">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="bg-slate-900 p-2 px-3 rounded-2xl border border-white/20 shadow-md group-hover:scale-105 transition-transform duration-300">
+                    <img src="logoh.png" alt="STRIX SHOP" class="h-8 w-auto object-contain filter brightness-0 invert">
+                </div>
+            </a>
+
+            <!-- Simplified Underline Search Bar with Animated Placeholder -->
+            <div class="flex-1 max-w-xl mx-2 relative">
+                <div class="flex items-center border-b-2 border-slate-900/80 bg-transparent px-2 py-1 transition focus-within:border-indigo-600">
+                    <input type="text" id="mainSearchInput" placeholder=""
+                           class="w-full bg-transparent text-xs font-bold text-slate-900 placeholder-slate-600 focus:outline-none">
+                    <button onclick="handleSearch()" class="text-slate-900 hover:text-indigo-600 transition ml-2 flex-shrink-0">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3 text-xs font-bold">
+                <a href="cs.html" class="glass-card px-4 py-2 rounded-xl hover:bg-white transition flex items-center gap-2 text-slate-800 shadow-sm">
+                    <i class="fa-solid fa-headset text-rose-500"></i>
+                    <span class="hidden sm:inline">Customer Support</span>
+                </a>
+
+                <a href="signin.html" id="authLink" class="glass-card px-4 py-2 rounded-xl hover:bg-white transition text-slate-800 shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-user text-amber-500"></i>
+                    <span id="authText">Register | Sign in</span>
+                </a>
+
+                <a href="cart.html" class="glass-card p-2 px-3 rounded-xl hover:bg-white transition relative text-slate-800 shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping text-emerald-500"></i>
+                    <span>Cart</span>
+                </a>
+                
+                <a href="wishlist.html" class="glass-card px-4 py-2 rounded-xl hover:bg-white transition text-slate-800 shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-indigo-500"></i>
+                    <span>Wishlist</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1650px] mx-auto space-y-6">
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-5">
+            <div class="glass-card p-4 flex flex-col gap-2">
+                <div class="font-extrabold text-[11px] uppercase tracking-wider text-slate-600 mb-1 px-2">
+                    Categories
+                </div>
+                <div id="categorySidebarList" class="flex flex-col gap-1.5">
+                    <a href="products.html" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Browse All</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=SCHOOL%20SUPPLIES" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>School Supplies</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=TOYS%20AND%20GAMES" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Toys &amp; Games</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=MATERIALS" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Materials</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=DÉCOR%20%2F%20SEASONAL" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Décor / Seasonal</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=ELECTRONICS" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Electronics</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=KEYCHAINS" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Keychains</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=ACCESSORIES" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Accessories</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=GIFT%20CARDS" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Gift Cards</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                    <a href="products.html?category=OTHER" class="text-left px-3.5 py-2 rounded-xl text-xs font-bold text-slate-700 bg-white/60 hover:bg-white hover:text-indigo-600 border border-white/80 transition flex items-center justify-between group">
+                        <span>Other</span><i class="fa-solid fa-chevron-right text-[10px] text-slate-400 group-hover:translate-x-1 transition"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3 glass-card p-4 flex flex-col justify-between relative overflow-hidden group">
+                <div class="flex items-center justify-between gap-3 mb-3 z-20 relative">
+                </div>
+
+                <div id="heroCarouselContainer" class="relative w-full h-[320px] md:h-[390px] rounded-2xl overflow-hidden shadow-inner bg-slate-900"></div>
+
+                <button onclick="prevHeroSlide()" class="absolute left-7 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-800 shadow-md transition opacity-80 group-hover:opacity-100 z-20">
+                    <i class="fa-solid fa-chevron-left text-sm text-slate-700"></i>
+                </button>
+                <button onclick="nextHeroSlide()" class="absolute right-7 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center text-slate-800 shadow-md transition opacity-80 group-hover:opacity-100 z-20">
+                    <i class="fa-solid fa-chevron-right text-sm text-slate-700"></i>
+                </button>
+
+                <div class="flex items-center justify-between mt-3 px-2">
+                    <div id="heroDots" class="flex items-center gap-2"></div>
+                    <div id="currentDateDisplay" class="text-xs text-slate-700 font-bold bg-white/70 px-3 py-1 rounded-full border border-white/80"></div>
+                </div>
+            </div>
         </div>
 
-        <nav class="tabs-sidebar">
-            <span class="sidebar-title">Categories</span>
-            <a href="products.html" class="nav-tab">Browse All</a>    
-            <a href="products.html?category=SCHOOL SUPPLIES" class="nav-tab">School Supplies</a>
-            <a href="products.html?category=TOYS AND GAMES" class="nav-tab">Toys & Games</a>
-            <a href="products.html?category=MATERIALS" class="nav-tab">Materials</a>
-            <a href="products.html?category=DÉCOR / SEASONAL" class="nav-tab">Décor / Seasonal</a>
-            <a href="products.html?category=ELECTRONICS" class="nav-tab">Electronics</a>
-            <a href="products.html?category=KEYCHAINS" class="nav-tab">Keychains</a>
-            <a href="products.html?category=ACCESSORIES" class="nav-tab">Accessories</a>
-            <a href="products.html?category=GIFT CARDS" class="nav-tab">Gift Cards</a>
-            <a href="products.html?category=OTHER" class="nav-tab">Other</a>
-<br>
-            <div class="sidebar-account-widget">
-                <div class="sidebar-account-header">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    <span>My Account</span>
-                </div>
-                <div class="sidebar-account-email" id="sidebarUserEmail">Checking session...</div>
-                <div class="sidebar-account-actions">
-                    <a href="myacc.html" class="sidebar-acc-btn">Profile</a>
-                    <a href="myorders.html" class="sidebar-acc-btn">Orders</a>
-                    <a href="#" class="sidebar-acc-btn" onclick="logout()">Sign Out</a>
-                </div>
+        <div class="glass-card p-4 grid grid-cols-5 md:grid-cols-10 gap-3 text-center">
+            <a href="products.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-store text-lg text-rose-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Products</span>
+            </a>
+            <a href="cs.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-headset text-lg text-amber-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Support</span>
+            </a>
+            <a href="terms.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-file-contract text-lg text-yellow-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Terms</span>
+            </a>
+            <a href="events.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-calendar-days text-lg text-emerald-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Events</span>
+            </a>
+            <a href="strixnews.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-newspaper text-lg text-teal-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Newsletter</span>
+            </a>
+            <a href="myacc.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-user-gear text-lg text-cyan-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Account</span>
+            </a>
+            <a href="myorders.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-box-archive text-lg text-blue-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Orders</span>
+            </a>
+            <a href="cart.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-cart-shopping text-lg text-indigo-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Cart</span>
+            </a>
+            <a href="giftcards.html" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-gift text-lg text-purple-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Gift Cards</span>
+            </a>
+            <a href="mailto:hello.strix@outlook.com" class="flex flex-col items-center gap-1.5 p-2 rounded-2xl hover:bg-white/80 transition cursor-pointer border border-transparent hover:border-white/80 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-white shadow flex items-center justify-center"><i class="fa-solid fa-envelope text-lg text-pink-500"></i></div>
+                <span class="text-[11px] font-bold text-slate-800">Email Us</span>
+            </a>
+        </div>
+
+        <div class="glass-card p-6 space-y-5">
+            <div class="flex items-center justify-between border-b border-slate-300/60 pb-3">
+                <h2 class="font-extrabold text-xl tracking-tight text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-fire text-amber-500"></i>
+                    <span>Featured Products</span>
+                </h2>
+                <a href="products.html" class="text-xs font-bold text-slate-800 hover:text-indigo-600 transition">View All Products &rarr;</a>
             </div>
-<br>
-            <div class="strix-uptime-widget">
-                <div class="uptime-header">
-                    <span class="pulse-dot"></span>
-                    <span>Days since Strix Shop Release</span>
-                </div>
-                <div class="uptime-grid">
-                    <div class="uptime-box">
-                        <span class="uptime-num" id="uptimeDays">0</span>
-                        <span class="uptime-label">Days</span>
-                    </div>
-                    <div class="uptime-box">
-                        <span class="uptime-num" id="uptimeHours">00</span>
-                        <span class="uptime-label">Hours</span>
-                    </div>
-                    <div class="uptime-box">
-                        <span class="uptime-num" id="uptimeMinutes">00</span>
-                        <span class="uptime-label">Mins</span>
-                    </div>
-                    <div class="uptime-box">
-                        <span class="uptime-num" id="uptimeSeconds">00</span>
-                        <span class="uptime-label">Secs</span>
-                    </div>
-                </div>
+            <div id="trendingProductsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+        </div>
+
+        
+        <div class="glass-card p-5 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-300/60 pb-3">
+                <h2 class="font-extrabold text-base tracking-tight text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-images text-slate-700"></i>
+                    <span>Featured Gallery Showcase</span>
+                </h2>
+                <span class="text-xs text-slate-600 font-semibold">Hello World</span>
             </div>
-<br>
-            <div class="sidebar-account-widget">
-                <div class="sidebar-account-header">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"></path></circle></svg>
-                    <span>Operating Version</span>
-                </div>
-                <div class="sidebar-account-email" id="sidebarVersion">Version 5.1.67.33.2.18</div>
-            </div>
-<br>
-            <div class="sidebar-account-widget">
-                <div class="sidebar-account-header">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
-                    <span>Customer Support</span>
-                </div>
-                <div class="sidebar-account-email" id="sidebarUserEmail">Ask anything. We are here to help.</div>
-                <div class="sidebar-account-actions">
-                    <a href="cs.html" class="sidebar-acc-btn">Customer Support</a>
-                    <a href="mailto:hello.strix@outlook.com" class="sidebar-acc-btn">Email Us</a>
-                </div>
-            </div>
-        </nav>
-    </aside>
-    
-    <div class="main-wrapper">
-        <header class="top-icons-bar">
-            <button class="mobile-menu-toggle" id="menuToggle" aria-label="Open Navigation Menu">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
-            <div class="search-bar">
-                <input id="searchInput" type="text" placeholder="Search school supplies, electronics, and more...">
-                <button class="search-btn" id="searchBtn" aria-label="Search">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="displayImagesContainer"></div>
+        </div>
+
+        <div class="glass-card p-4 flex items-center justify-center">
+            <div class="flex items-center w-full max-w-xl bg-white/90 border border-white rounded-full px-4 py-2 shadow-inner">
+                <input type="text" id="middleSearchInput" placeholder="Search..."
+                       class="flex-1 bg-transparent text-xs font-semibold text-slate-800 focus:outline-none">
+                <button onclick="handleMiddleSearch()" class="text-slate-800 hover:text-indigo-600 pl-2 font-bold text-xs flex items-center gap-1">
+                    <i class="fa-solid fa-magnifying-glass text-sm"></i>
                 </button>
             </div>
-            <div class="nav-right-icons">
-                <a href="myacc.html" class="user-welcome">Hello, Welcome to <b>StrixShop</b></a>
-                <a href="cart.html" class="cart-icon" aria-label="Cart">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    <span class="cart-count">0</span>
-                </a>
-            </div>
-        </header>
+        </div>
 
-        <section class="images-section">
-            <div class="hero-slider" id="slider">
-                <div class="banner-slide active">
-                    <img src="bannerimage1.png" alt="Welcome to Strix Shop">
+        <div class="glass-card p-6 space-y-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <h2 class="font-extrabold text-2xl tracking-tight text-slate-800 flex items-center gap-2">
+                    <i class="fa-solid fa-shapes text-slate-700"></i>
+                    <span>Select a Category to Shop</span>
+                </h2>
+            </div>
+            <div class="relative flex items-center justify-center">
+                <button onclick="prevCatSlide()" class="absolute left-2 z-10 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-md transition text-slate-800">
+                    <i class="fa-solid fa-chevron-left text-slate-700"></i>
+                </button>
+                <div id="categoryCarouselContainer" class="w-full max-w-4xl h-[260px] md:h-[320px] rounded-2xl overflow-hidden relative shadow-md"></div>
+                <button onclick="nextCatSlide()" class="absolute right-2 z-10 w-10 h-10 rounded-full bg-white/90 hover:bg-white flex items-center justify-center shadow-md transition text-slate-800">
+                    <i class="fa-solid fa-chevron-right text-slate-700"></i>
+                </button>
+            </div>
+            <div id="categoryCarouselDots" class="flex items-center justify-center gap-2 pt-2"></div>
+        </div>
+
+        <div class="fixed bottom-6 left-6 z-40 flex items-center gap-3">
+            <a
+                href="cs.html"
+                class="w-14 h-14 bg-black/60 text-white rounded-full shadow-2xl backdrop-blur-xl flex items-center justify-center hover:scale-110 hover:bg-black/70 border border-white/50 transition duration-300"
+                title="Customer Support"
+                aria-label="Customer Support"
+            >
+                <i class="fa-solid fa-comment-dots text-2xl text-white"></i>
+            </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="glass-card p-6 space-y-3">
+                <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2 border-b border-slate-300/60 pb-2">
+                    <i class="fa-solid fa-graduation-cap text-slate-700"></i>
+                    <span>Teacher Discounts</span>
+                </h3>
+                <p class="text-xs text-slate-700 font-medium leading-relaxed">
+                    All public school teachers in PA shall receive a 10% discount on their orders at Strix Shop. Teachers teaching in TESD shall receive a 20% discount.
+                </p>
+            </div>
+            <div class="glass-card p-6 space-y-3">
+                <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2 border-b border-slate-300/60 pb-2">
+                    <i class="fa-solid fa-bullseye text-slate-700"></i>
+                    <span>Strix Shop's Mission</span>
+                </h3>
+                <p class="text-xs text-slate-700 font-medium leading-relaxed">
+                    We hope to revolutionize the shopping experience of users by providing users with a safe, private, secure shopping experience, with no hidden fees or terms, with real customer support, with simple website navigation, and with accurate representation of products with good quality.
+                </p>
+            </div>
+        </div>
+
+        <footer class="glass-card p-8 space-y-8 relative overflow-hidden">
+            <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-xs">
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-orange-500 pl-2">STRIX SHOP</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="about.html" class="hover:text-indigo-600 transition">About Strix</a></li>
+                        <li><a href="giftcards.html" class="hover:text-indigo-600 transition">Gift Cards</a></li>
+                        <li><a href="departments.html" class="hover:text-indigo-600 transition">Departments</a></li>
+                        <li><a href="products.html" class="hover:text-indigo-600 transition">Products</a></li>
+                        <li><a href="careers.html" class="hover:text-indigo-600 transition">Careers</a></li>
+                        <li><a href="mr.html" class="hover:text-indigo-600 transition">Market Research</a></li>
+                    </ul>
                 </div>
-                <div class="banner-slide">
-                    <img src="bannerimage2.png" alt="New Online Portal">
+
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-yellow-400 pl-2">SUPPORT</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="cs.html" class="hover:text-indigo-600 transition">Contact Support</a></li>
+                        <li><a href="help.html" class="hover:text-indigo-600 transition">Help Center</a></li>
+                        <li><a href="report.html" class="hover:text-indigo-600 transition">Report an Issue</a></li>
+                        <li><a href="faqs.html" class="hover:text-indigo-600 transition">FAQs</a></li>
+                        <li><a href="r-r.html" class="hover:text-indigo-600 transition">Returns/Refunds</a></li>
+                    </ul>
                 </div>
-                <a href="partnerships.html" class="banner-slide">
-                    <img src="bannerimage3.png" alt="Sell at Strix Shop">
-                </a>
-                <div class="banner-slide">
-                    <img src="bannerimage4.png" alt="Welcome to New Strix Shop">
+
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-green-500 pl-2">LEGAL</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="terms.html" class="hover:text-indigo-600 transition">Terms &amp; Conditions</a></li>
+                        <li><a href="privacypolicy.html" class="hover:text-indigo-600 transition">Privacy Policy</a></li>
+                        <li><a href="returnpolicy.html" class="hover:text-indigo-600 transition">Return Policy</a></li>
+                        <li><a href="ethicscode.html" class="hover:text-indigo-600 transition">Ethics Code</a></li>
+                        <li><a href="usercoc.html" class="hover:text-indigo-600 transition">Code of Conduct</a></li>
+                        <li><a href="emphandbook.html" class="hover:text-indigo-600 transition">Handbook</a></li>
+                        <li><a href="revisions.html" class="hover:text-indigo-600 transition">Revisions</a></li>
+                    </ul>
                 </div>
-                <div class="banner-slide">
-                    <img src="bannerimage5.png" alt="20% Voucher">
+
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-teal-500 pl-2">WORK AT STRIX</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="careers.html" class="hover:text-indigo-600 transition">Strix Shop Jobs</a></li>
+                        <li><a href="strixnews.html" class="hover:text-indigo-600 transition">Strix News Team</a></li>
+                        <li><a href="strixstudio.html" class="hover:text-indigo-600 transition">Strix Studio Crew</a></li>
+                    </ul>
                 </div>
-                <div class="banner-slide">
-                    <img src="bannerimage6.png" alt="Explore New Website">
-                </div>
-                <a href="cs.html" class="banner-slide">
-                    <img src="bannerimage7.png" alt="Advertise Here">
-                </a>
             </div>
 
-            <button class="slider-arrow prev" onclick="changeSlide(-1)" aria-label="Previous Slide">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            </button>
-            <button class="slider-arrow next" onclick="changeSlide(1)" aria-label="Next Slide">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </button>
-        </section>
+            <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-xs pt-4">
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-blue-500 pl-2">PARTNERS</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="collaborations.html" class="hover:text-indigo-600 transition">Collaborations</a></li>
+                        <li><a href="timeline.html" class="hover:text-indigo-600 transition">Our Timeline</a></li>
+                        <li><a href="sponsors.html" class="hover:text-indigo-600 transition">Sponsors</a></li>
+                        <li><a href="donations.html" class="hover:text-indigo-600 transition">Donations</a></li>
+                        <li><a href="vend.html" class="hover:text-indigo-600 transition">Partnerships</a></li>
+                        <li><a href="projects.html" class="hover:text-indigo-600 transition">Projects</a></li>
+                    </ul>
+                </div>
 
-        <section class="info-section">
-            <div class="resource-card">
-                <div class="resource-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"></path><circle cx="18" cy="16" r="1"></circle></svg>
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-purple-500 pl-2">COMPANY</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="ourteam.html" class="hover:text-indigo-600 transition">Our Team</a></li>
+                        <li><a href="strixnews.html" class="hover:text-indigo-600 transition">Newsletter</a></li>
+                        <li><a href="invest.html" class="hover:text-indigo-600 transition">Invest in Strix</a></li>
+                    </ul>
                 </div>
-                <div class="resource-info">
-                    <h3>Grand Opening Discount!</h3>
-                    <p>With a physical voucher, get 20% off of your first purchase!</p>
-                </div>
-            </div>
-        </section>
 
-        <section class="info-section">
-            <nav class="nav-portal-grid">
-                <a href="products.html" class="portal-icon-btn" data-tooltip="Products" aria-label="Products">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-                </a>
-                <a href="cs.html" class="portal-icon-btn" data-tooltip="Customer Support" aria-label="Customer Support">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
-                </a>
-                <a href="terms.html" class="portal-icon-btn" data-tooltip="Terms & Conditions" aria-label="Terms & Conditions">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-                </a>
-                <a href="events.html" class="portal-icon-btn" data-tooltip="Events" aria-label="Events">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                </a>
-                <a href="strixnews.html" class="portal-icon-btn" data-tooltip="Newsletter" aria-label="Newsletter">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                </a>
-                <a href="myacc.html" class="portal-icon-btn" data-tooltip="My Account" aria-label="My Account">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                </a>
-                <a href="myorders.html" class="portal-icon-btn" data-tooltip="My Orders" aria-label="My Orders">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
-                </a>
-                <a href="cart.html" class="portal-icon-btn" data-tooltip="My Cart" aria-label="My Cart">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                </a>
-                <a href="mailto:maxizhang.strix@outlook.com" class="portal-icon-btn" data-tooltip="Email Us" aria-label="Email Us">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                </a>
-            </nav>
-        </section>
-                
-        <section class="info-section">
-            <div>
-                <div class="section-header">
-                    <h2 class="section-title">STRIX</h2>
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-fuchsia-500 pl-2">COMMUNITY</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="events.html" class="hover:text-indigo-600 transition">Events</a></li>
+                        <li><a href="stories.html" class="hover:text-indigo-600 transition">Customer Stories</a></li>
+                        <li><a href="socialmedia.html" class="hover:text-indigo-600 transition">Social Media</a></li>
+                        <li><a href="review.html" class="hover:text-indigo-600 transition">Leave a Review</a></li>
+                        <li><a href="bg.html" class="hover:text-indigo-600 transition">Background</a></li>
+                    </ul>
                 </div>
-                <div class="category-grid">
-                    <div class="category-block">
-                        <h2>STRIXStudio</h2>
-                        <p>Creates high-quality media, interactive digital content, and performances for YouTube and public streaming.</p>
-                    </div>
-                    <div class="category-block">
-                        <h2>STRIXNews</h2>
-                        <p>Delivers Local, National, and International student and tech news directly to your feed instantly.</p>
-                    </div>
-                    <div class="category-block">
-                        <h2>STRIXShop</h2>
-                        <p>Provides students with top-grade educational materials, hardware, and props at unbeatable costs.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div style="margin-top: 6px;">
-                <div class="section-header">
-                    <h2 class="section-title">Student Hub & Quick References</h2>
-                </div>
-                <div class="resource-grid">
-                    <div class="resource-card">
-                        <div class="resource-icon">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-                        </div>
-                        <div class="resource-info">
-                            <h3>In School Delivery</h3>
-                            <p>Free hand-to-hand delivery for all registered student accounts.</p>
-                        </div>
-                    </div>
-                    <div class="resource-card">
-                        <div class="resource-icon">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                        </div>
-                        <div class="resource-info">
-                            <h3>Student Discounts</h3>
-                            <p>Save money by using vouchers, gift cards, and Strix Shop credits</p>
-                        </div>
-                    </div>
-                    <div class="resource-card">
-                        <div class="resource-icon">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                        </div>
-                        <div class="resource-info">
-                            <h3>Shipping Times</h3>
-                            <p>Deliveries for in-stock items arrive within 3 business days; pre-orders in 4-6 weeks.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <footer class="footer-section">
-            <div class="footer-grid-2x4">
-                <div class="footer-col">
-                    <h4>STRIX SHOP</h4>
-                    <a href="about.html">About Strix</a>
-                    <a href="giftcards.html">Gift Cards</a>
-                    <a href="departments.html">Other Departments</a>
-                    <a href="products.html">Products</a>
-                    <a href="careers.html">Careers</a>
-                    <a href="mr.html">Market Research</a>
-                </div>
-                <div class="footer-col">
-                    <h4>SUPPORT</h4>
-                    <a href="cs.html">Contact Support</a>
-                    <a href="help.html">Help Center</a>
-                    <a href="report.html">Report an Issue</a>
-                    <a href="faqs.html">FAQs</a>
-                    <a href="r-r.html">Returns/Refunds Request Form</a>
-                </div>
-                <div class="footer-col">
-                    <h4>LEGAL & DOCUMENTS</h4>
-                    <a href="terms.html">Terms & Conditions</a>
-                    <a href="privacypolicy.html">Privacy Policy</a>
-                    <a href="returnpolicy.html">Return Policy</a>
-                    <a href="ethicscode.html">Ethics Code</a>
-                    <a href="usercoc.html">Code of Conduct</a>
-                    <a href="emphandbook.html">Employee Handbook</a>
-                    <a href="revisions.html">Document Revisions</a>
-                </div>
-                <div class="footer-col">
-                    <h4>WORK AT STRIX</h4>
-                    <a href="careers.html">Strix Shop Jobs</a>
-                    <a href="strixnews.html">Strix News Team</a>
-                    <a href="strixstudio.html">Strix Studio Crew</a>
-                </div>
-                <div class="footer-col">
-                    <h4>PARTNERS & NETWORK</h4>
-                    <a href="collaborations.html">Collaborations</a>
-                    <a href="timeline.html">Our Timeline</a>
-                    <a href="sponsors.html">Sponsors</a>
-                    <a href="donations.html">Donations</a>
-                    <a href="partnerships.html">Partnerships</a>
-                    <a href="projects.html">Projects</a>
-                </div>
-                <div class="footer-col">
-                    <h4>COMPANY</h4>
-                    <a href="ourteam.html">Our Team</a>
-                    <a href="strixnews.html">Newsletter</a>
-                    <a href="invest.html">Invest in Strix</a>
-                </div>
-                <div class="footer-col">
-                    <h4>COMMUNITY</h4>
-                    <a href="events.html">Events</a>
-                    <a href="stories.html">Customer Stories</a>
-                    <a href="socialmedia.html">Social Media</a>
-                    <a href="review.html">Review</a>
-                    <a href="bg.html">Background</a>
-                </div>
-                <div class="footer-col">
-                    <h4>ACCOUNT</h4>
-                    <a href="myacc.html">My Account</a>
-                    <a href="cart.html">View Cart</a>
-                    <a href="myorders.html">My Orders</a>
-                    <a href="#" onclick="logout()">Sign Out</a>
+                <div class="space-y-2.5">
+                    <div class="font-extrabold text-slate-900 uppercase tracking-wider text-[11px] border-l-4 border-rose-500 pl-2">ACCOUNT</div>
+                    <ul class="space-y-1.5 text-slate-700 font-semibold">
+                        <li><a href="myacc.html" class="hover:text-indigo-600 transition">My Account</a></li>
+                        <li><a href="cart.html" class="hover:text-indigo-600 transition">View Cart</a></li>
+                        <li><a href="myorders.html" class="hover:text-indigo-600 transition">My Orders</a></li>
+                        <li><a href="signin.html" class="hover:text-indigo-600 transition">Sign In</a></li>
+                    </ul>
                 </div>
             </div>
-            <div class="bottom-bar">
-                &copy; 2026 STRIX SHOP, ALL RIGHTS RESERVED.
+
+            <div class="relative z-10 pt-6 border-t border-slate-900/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-bold text-slate-700">
+                <div><span>&copy; 2026 STRIX SHOP, ALL RIGHTS RESERVED.</span></div>
+                <div class="flex items-center gap-3">
+                    <span>Follow us:</span>
+                    <div class="flex items-center gap-2 text-sm">
+                        <a href="socialmedia.html" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center hover:scale-110 transition" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="socialmedia.html" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center hover:scale-110 transition" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="socialmedia.html" class="w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center hover:scale-110 transition" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
             </div>
         </footer>
-    </div>
-</div>
 
-<script>
-    let lastWriteTimestamp = 0;
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="glass-card p-4 flex flex-col items-center justify-center text-center space-y-2">
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-600">Days since Release</div>
+                <div class="flex items-center gap-1.5 text-xs font-mono font-bold text-slate-800">
+                    <span class="bg-white/80 px-2 py-1 rounded-lg border border-white" id="uptimeDays">0</span>d
+                    <span class="bg-white/80 px-2 py-1 rounded-lg border border-white" id="uptimeHours">00</span>h
+                    <span class="bg-white/80 px-2 py-1 rounded-lg border border-white" id="uptimeMinutes">00</span>m
+                    <span class="bg-white/80 px-2 py-1 rounded-lg border border-white" id="uptimeSeconds">00</span>s
+                </div>
+            </div>
 
-    async function getClientIP() {
-        try {
-            const response = await fetch('https://api.ipify.org?format=json');
-            const data = await response.json();
-            return data.ip;
-        } catch (error) {
-            console.warn("IP fetch blocked or failed:", error);
-            return "Unavailable";
-        }
-    }
+            <div class="glass-card p-4 flex flex-col items-center justify-center text-center space-y-2">
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-600">My Account</div>
+                <div class="flex flex-wrap justify-center gap-1.5">
+                    <a href="wishlist.html" class="text-[11px] font-bold bg-white/80 px-2.5 py-1 rounded-lg hover:bg-white transition text-slate-700">Wishlist</a>
+                    <a href="cart.html" class="text-[11px] font-bold bg-white/80 px-2.5 py-1 rounded-lg hover:bg-white transition text-slate-700">Cart</a>
+                    <a href="myorders.html" class="text-[11px] font-bold bg-white/80 px-2.5 py-1 rounded-lg hover:bg-white transition text-slate-700">Orders</a>
+                </div>
+            </div>
 
-    window.addEventListener('DOMContentLoaded', () => {
+            <div class="glass-card p-4 flex flex-col items-center justify-center text-center space-y-2">
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-600">Operating Version</div>
+                <div class="text-xs font-extrabold text-slate-800 bg-white/80 px-3 py-1 rounded-xl border border-white">
+                    Version 6.1.1
+                </div>
+            </div>
+
+            <div class="glass-card p-4 flex flex-col items-center justify-center text-center space-y-2">
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-slate-600">Customer Support</div>
+                <div class="flex flex-wrap justify-center gap-1.5">
+                    <a href="cs.html" class="text-[11px] font-bold bg-white/80 px-2.5 py-1 rounded-lg hover:bg-white transition text-slate-700">Help Center</a>
+                    <a href="mailto:hello.strix@outlook.com" class="text-[11px] font-bold bg-white/80 px-2.5 py-1 rounded-lg hover:bg-white transition text-slate-700">Email Us</a>
+                </div>
+            </div>
+
+            <div class="glass-card p-4 flex flex-col items-center justify-center text-center">
+                <button id="accountAction" onclick="handleSignOut()" class="w-full text-center bg-white/80 hover:bg-rose-50 hover:text-rose-600 border border-rose-200 text-rose-500 font-extrabold text-xs py-2.5 px-4 rounded-xl transition shadow-sm">
+                    Sign Out
+                </button>
+            </div>
+
+            <br><br><br>
+        </div>
+    </main>
+
+    <script>
         const firebaseConfig = {
             apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
             authDomain: "strix-shop.firebaseapp.com",
             projectId: "strix-shop",
             storageBucket: "strix-shop.firebasestorage.app",
             messagingSenderId: "300414445622",
-            appId: "1:300414445622:web:97465fa5309c27b9605097",
-            measurementId: "G-L1QFZG26YE"
+            appId: "1:300414445622:web:97465fa5309c27b9605097"
         };
 
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
         const db = firebase.firestore();
+        const auth = firebase.auth();
 
-        // Uptime Counter
-        const startDate = new Date('2026-08-28T00:00:00').getTime();
+        // 7 Banner images with empty alt attributes
+        const bannerImages = [
+            { img: "bannerimage1.png", alt: "" },
+            { img: "bannerimage2.png", alt: "" },
+            { img: "bannerimage3.png", alt: "" },
+            { img: "bannerimage4.png", alt: "" },
+            { img: "bannerimage5.png", alt: "" },
+            { img: "bannerimage6.png", alt: "" },
+            { img: "bannerimage7.png", alt: "" }
+        ];
 
-        function updateUptime() {
-            const now = new Date().getTime();
-            const diff = now - startDate;
+        const allBgImages = [
+            "bg1.png", "bg2.png", "bg3.png", "bg4.png",
+            "bg5.png", "bg6.png", "bg7.png", "bg8.png",
+            "bg9.png", "bg10.png", "bg11.png", "bg12.png"
+        ];
 
-            if (diff >= 0) {
+const categoryData = [
+    { name: "School Supplies", img: "cat1.png", query: "SCHOOL SUPPLIES" },
+    { name: "Toys & Games", img: "cat2.png", query: "TOYS AND GAMES" },
+    { name: "Materials", img: "cat3.png", query: "MATERIALS" },
+    { name: "Décor / Seasonal", img: "cat4.png", query: "DÉCOR / SEASONAL" },
+    { name: "Electronics", img: "cat5.png", query: "ELECTRONICS" },
+    { name: "Keychains", img: "cat6.png", query: "KEYCHAINS" },
+    { name: "Accessories", img: "cat7.png", query: "ACCESSORIES" },
+    { name: "Gift Cards", img: "cat8.png", query: "GIFT CARDS" },
+    { name: "Other", img: "cat9.png", query: "OTHER" }
+];
+        let currentHeroIndex = 0;
+        let currentCatIndex = 0;
+        let heroTimer = null;
+
+        let currentUser = null;
+        let signinPromptTimer = null;
+        let authStateResolved = false;
+
+        auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .catch(error => console.warn("Could not set Firebase Auth persistence:", error));
+
+        // Listen for user auth status & fetch firstName from Firestore
+        auth.onAuthStateChanged(user => {
+            authStateResolved = true;
+            currentUser = user || null;
+
+            clearTimeout(signinPromptTimer);
+            signinPromptTimer = null;
+
+            if (user) {
+                // Fetch user document from Firestore to retrieve `firstName`
+                db.collection("users").doc(user.uid).get().then(doc => {
+                    let firstName = "";
+                    if (doc.exists && doc.data().firstName) {
+                        firstName = doc.data().firstName;
+                    } else {
+                        firstName = getFirstNameFallback(user);
+                    }
+                    updateAuthUI(user, firstName);
+                }).catch(err => {
+                    console.warn("Could not fetch user document:", err);
+                    updateAuthUI(user, getFirstNameFallback(user));
+                });
+
+                closeSigninPrompt(false);
+            } else {
+                updateAuthUI(null);
+                scheduleSigninPrompt();
+            }
+        });
+
+        function updateAuthUI(user, firstName = "") {
+            const authText = document.getElementById("authText");
+            const authLink = document.getElementById("authLink");
+
+            if (user) {
+                authText.innerText = `Hello, ${firstName || "User"}`;
+                authLink.href = "myacc.html";
+            } else {
+                authText.innerText = "Register | Sign in";
+                authLink.href = "signin.html";
+            }
+
+            const accountAction = document.getElementById("accountAction");
+            if (accountAction) {
+                if (user) {
+                    accountAction.textContent = "Sign Out";
+                    accountAction.onclick = handleSignOut;
+                    accountAction.classList.remove("hidden");
+                } else {
+                    accountAction.textContent = "Sign In / Register";
+                    accountAction.onclick = () => { window.location.href = "signin.html"; };
+                    accountAction.classList.remove("hidden");
+                }
+            }
+        }
+
+        function getFirstNameFallback(user) {
+            if (user.displayName && user.displayName.trim()) {
+                return user.displayName.trim().split(/\s+/)[0];
+            }
+            if (user.email && user.email.includes("@")) {
+                const namePart = user.email.split("@")[0];
+                return namePart.charAt(0).toUpperCase() + namePart.slice(1);
+            }
+            return "User";
+        }
+
+        // Trigger prompt after 3 seconds if not signed in
+        function scheduleSigninPrompt() {
+            clearTimeout(signinPromptTimer);
+            signinPromptTimer = null;
+
+            if (!authStateResolved || currentUser) return;
+            if (sessionStorage.getItem("strix_signin_prompt_dismissed") === "1") return;
+
+            signinPromptTimer = setTimeout(() => {
+                if (authStateResolved && !currentUser && sessionStorage.getItem("strix_signin_prompt_dismissed") !== "1") {
+                    showSigninPrompt();
+                }
+            }, 3000);
+        }
+
+        function showSigninPrompt() {
+            if (!authStateResolved || currentUser) return;
+            if (sessionStorage.getItem("strix_signin_prompt_dismissed") === "1") return;
+            const prompt = document.getElementById("signinPrompt");
+            if (prompt) prompt.classList.add("show");
+        }
+
+        function closeSigninPrompt(markDismissed = true) {
+            clearTimeout(signinPromptTimer);
+            signinPromptTimer = null;
+            const prompt = document.getElementById("signinPrompt");
+            if (prompt) prompt.classList.remove("show");
+
+            if (markDismissed) {
+                sessionStorage.setItem("strix_signin_prompt_dismissed", "1");
+            }
+        }
+
+        function handleSignOut() {
+            sessionStorage.removeItem("strix_signin_prompt_dismissed");
+            auth.signOut().then(() => {
+                window.location.reload();
+            }).catch(error => {
+                console.error("Sign out failed:", error);
+            });
+        }
+
+        // Typing animation for main search bar placeholder
+        const searchItems = ["pencils...", "pens...", "erasers...", "highlighters...", "notebooks...", "stuffed animals...", "keychains...", "sticky notes...", "cards...", "bags...", "pencil cases...", "decorations...", "stickers...", "water bottles...", "headphones...", "phone accessories...", "toys...", "games..."];
+        let itemIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typePlaceholderAnimation() {
+            const input = document.getElementById("mainSearchInput");
+            if (!input) return;
+
+            const currentItem = searchItems[itemIndex];
+            const prefix = "Search for ";
+
+            if (isDeleting) {
+                charIndex--;
+            } else {
+                charIndex++;
+            }
+
+            input.setAttribute("placeholder", prefix + currentItem.substring(0, charIndex));
+
+            let speed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIndex === currentItem.length) {
+                speed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                itemIndex = (itemIndex + 1) % searchItems.length;
+                speed = 300;
+            }
+
+            setTimeout(typePlaceholderAnimation, speed);
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const now = new Date();
+            const dateStr = now.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            });
+
+            document.getElementById("currentDateDisplay").innerText = `Today is ${dateStr}`;
+
+            renderHeroCarousel();
+            renderRandomDisplayImages();
+            loadFirestoreProducts();
+            renderCategoryCarousel();
+            startUptimeCounter();
+            typePlaceholderAnimation();
+        });
+
+        function renderHeroCarousel() {
+            const container = document.getElementById("heroCarouselContainer");
+            const dotsContainer = document.getElementById("heroDots");
+
+            if (!container.dataset.ready) {
+                container.innerHTML = bannerImages.map((b, idx) => `
+                    <div class="banner-slide absolute inset-0 ${idx === currentHeroIndex ? "slide-active" : ""}" data-hero-index="${idx}">
+                        <img src="${b.img}" alt="${b.alt}" class="w-full h-full object-cover">
+                    </div>
+                `).join("");
+                container.dataset.ready = "1";
+            }
+
+            container.querySelectorAll("[data-hero-index]").forEach((slide, idx) => {
+                slide.classList.toggle("slide-active", idx === currentHeroIndex);
+            });
+
+            dotsContainer.innerHTML = bannerImages.map((_, idx) => `
+                <button onclick="setHeroSlide(${idx})"
+                        aria-label="Go to banner ${idx + 1}"
+                        class="h-2 rounded-full transition-all ${idx === currentHeroIndex ? "w-6 bg-slate-800" : "w-2 bg-slate-400/60"}">
+                </button>
+            `).join("");
+
+            resetHeroTimer();
+        }
+
+        function setHeroSlide(idx) {
+            if (idx === currentHeroIndex) return;
+            currentHeroIndex = idx;
+            renderHeroCarousel();
+        }
+
+        function prevHeroSlide() {
+            currentHeroIndex = (currentHeroIndex - 1 + bannerImages.length) % bannerImages.length;
+            renderHeroCarousel();
+        }
+
+        function nextHeroSlide() {
+            currentHeroIndex = (currentHeroIndex + 1) % bannerImages.length;
+            renderHeroCarousel();
+        }
+
+        function resetHeroTimer() {
+            clearInterval(heroTimer);
+            heroTimer = setInterval(() => {
+                currentHeroIndex = (currentHeroIndex + 1) % bannerImages.length;
+                renderHeroCarousel();
+            }, 5000);
+        }
+
+        function renderRandomDisplayImages() {
+            const container = document.getElementById("displayImagesContainer");
+            const shuffled = [...allBgImages].sort(() => 0.5 - Math.random());
+            const selected4 = shuffled.slice(0, 4);
+
+            container.innerHTML = selected4.map(imgSrc => `
+                <div class="glass-card p-2 rounded-2xl overflow-hidden group shadow-sm hover:scale-[1.02] transition">
+                    <div class="w-full h-40 rounded-xl overflow-hidden relative">
+                        <img src="${imgSrc}" alt="Gallery Display"
+                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function loadFirestoreProducts() {
+            db.collection("products")
+                .where("featuredstatus", "==", true)
+                .get()
+                .then(snapshot => {
+                    const fetchedProducts = [];
+
+                    snapshot.forEach(doc => {
+                        fetchedProducts.push({
+                            id: doc.id,
+                            ...doc.data()
+                        });
+                    });
+
+                    renderProducts(fetchedProducts);
+                })
+                .catch(error => {
+                    console.error("Could not load products:", error);
+                    renderProducts([]);
+                });
+        }
+
+        // Pure Display & Redirect Products List (No cart/wishlist buttons)
+function renderProducts(list) {
+    const container = document.getElementById("trendingProductsGrid");
+
+    if (!list || list.length === 0) {
+        container.innerHTML = `
+            <div class="col-span-full text-center py-8 text-slate-500 text-xs font-bold">No featured products found</div>
+        `;
+        return;
+    }
+
+    container.innerHTML = list.slice(0, 8).map(p => {
+        const rawTitle = p.title || p.name || "---";
+        
+        // Target images[0] from Firestore document
+        const productImage = (Array.isArray(p.images) && p.images.length > 0)
+            ? p.images[0]
+            : (p.image || p.imageUrl || p.img || p.photoUrl || p.photo || "");
+
+        const safeImage = String(productImage)
+            .replace(/\\/g, "\\\\")
+            .replace(/'/g, "\\'");
+
+        const price = Number(p.price || 0);
+        const searchUrl = `products.html?search=${encodeURIComponent(rawTitle)}`;
+
+        return `
+            <div onclick="window.location.href='${searchUrl}'"
+                 class="glass-card p-4 flex flex-col justify-between space-y-3 group border border-white cursor-pointer hover:scale-[1.02] transition">
+
+                <div class="w-full h-44 rounded-xl overflow-hidden relative bg-white/50">
+                    ${safeImage
+                        ? `<img src="${safeImage}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">`
+                        : `<div class="w-full h-full flex items-center justify-center text-slate-400"><i class="fa-regular fa-image text-3xl"></i></div>`}
+                </div>
+
+                <div class="space-y-1">
+                    <span class="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider">
+                        ${escapeHtml(p.category || (p.attributes && p.attributes.category) || "---")}
+                    </span>
+                    <h3 class="font-extrabold text-xs text-slate-900 truncate group-hover:text-indigo-600 transition">
+                        ${escapeHtml(rawTitle)}
+                    </h3>
+                </div>
+
+                <div class="flex items-center justify-between pt-2 border-t border-slate-900/10">
+                    <span class="font-extrabold text-sm text-slate-900">
+                        $${price.toFixed(2)}
+                    </span>
+                    <span class="text-[11px] font-extrabold text-indigo-600 group-hover:translate-x-1 transition flex items-center gap-1">
+                        View Item <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                    </span>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function renderCategoryCarousel() {
+            const container = document.getElementById("categoryCarouselContainer");
+            const dotsContainer = document.getElementById("categoryCarouselDots");
+
+            if (!container.dataset.ready) {
+                container.innerHTML = categoryData.map((cat, idx) => `
+                    <div class="banner-slide absolute inset-0 ${idx === currentCatIndex ? "slide-active" : ""} flex items-center justify-center" data-cat-index="${idx}">
+                        <img src="${cat.img}" alt="${cat.name}" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/30 to-transparent"></div>
+
+                        <div class="relative z-20 text-center space-y-3 p-6">
+                            <h3 class="text-white font-extrabold text-2xl md:text-3xl drop-shadow-md">
+                                ${cat.name}
+                            </h3>
+
+                        <a href="products.html?category=${encodeURIComponent(cat.query)}"
+                        class="inline-block bg-white text-slate-900 hover:bg-slate-100 font-extrabold px-6 py-2 rounded-full text-xs shadow-lg transition">
+                            Shop ${cat.name}
+                        </a>
+                        </div>
+                    </div>
+                `).join("");
+                container.dataset.ready = "1";
+            }
+
+            container.querySelectorAll("[data-cat-index]").forEach((slide, idx) => {
+                slide.classList.toggle("slide-active", idx === currentCatIndex);
+            });
+
+            dotsContainer.innerHTML = categoryData.map((_, idx) => `
+                <button onclick="setCatSlide(${idx})"
+                        aria-label="Go to category ${idx + 1}"
+                        class="h-2 rounded-full transition-all ${idx === currentCatIndex ? "w-6 bg-slate-800" : "w-2 bg-slate-400/60"}">
+                </button>
+            `).join("");
+        }
+
+        function setCatSlide(idx) {
+            currentCatIndex = idx;
+            renderCategoryCarousel();
+        }
+
+        function prevCatSlide() {
+            currentCatIndex = (currentCatIndex - 1 + categoryData.length) % categoryData.length;
+            renderCategoryCarousel();
+        }
+
+        function nextCatSlide() {
+            currentCatIndex = (currentCatIndex + 1) % categoryData.length;
+            renderCategoryCarousel();
+        }
+
+        function performSearch(inputId) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const query = input.value.trim();
+            if (!query) return;
+            window.location.href = `products.html?search=${encodeURIComponent(query)}`;
+        }
+
+        function handleSearch() {
+            performSearch("mainSearchInput");
+        }
+
+        function handleBannerSearch() {
+            performSearch("bannerSearchInput");
+        }
+
+        function handleMiddleSearch() {
+            performSearch("middleSearchInput");
+        }
+
+        function handleCatSearch() {
+            performSearch("catSearchInput");
+        }
+
+        document.addEventListener("keydown", event => {
+            if (event.key !== "Enter") return;
+
+            if (document.activeElement === document.getElementById("mainSearchInput")) {
+                handleSearch();
+            } else if (document.activeElement === document.getElementById("bannerSearchInput")) {
+                handleBannerSearch();
+            } else if (document.activeElement === document.getElementById("middleSearchInput")) {
+                handleMiddleSearch();
+            } else if (document.activeElement === document.getElementById("catSearchInput")) {
+                handleCatSearch();
+            }
+        });
+
+        function startUptimeCounter() {
+            const startDate = new Date("2026-08-28T00:00:00").getTime();
+
+            function update() {
+                const now = Date.now();
+                const diff = now - startDate;
+
+                if (diff < 0) return;
+
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-                const daysEl = document.getElementById('uptimeDays');
-                const hoursEl = document.getElementById('uptimeHours');
-                const minsEl = document.getElementById('uptimeMinutes');
-                const secsEl = document.getElementById('uptimeSeconds');
-
-                if (daysEl) daysEl.textContent = days;
-                if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
-                if (minsEl) minsEl.textContent = String(minutes).padStart(2, '0');
-                if (secsEl) secsEl.textContent = String(seconds).padStart(2, '0');
+                document.getElementById("uptimeDays").innerText = days;
+                document.getElementById("uptimeHours").innerText = String(hours).padStart(2, "0");
+                document.getElementById("uptimeMinutes").innerText = String(minutes).padStart(2, "0");
+                document.getElementById("uptimeSeconds").innerText = String(seconds).padStart(2, "0");
             }
+
+            setInterval(update, 1000);
+            update();
         }
-
-        setInterval(updateUptime, 1000);
-        updateUptime();
-
-
-        // Mobile Sidebar Drawer Toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const appSidebar = document.getElementById('appSidebar');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-        function toggleMobileMenu() {
-            appSidebar.classList.toggle('open');
-            sidebarOverlay.classList.toggle('active');
-        }
-
-        if (menuToggle && appSidebar && sidebarOverlay) {
-            menuToggle.addEventListener('click', toggleMobileMenu);
-            sidebarOverlay.addEventListener('click', toggleMobileMenu);
-        }
-    });
-
-    // Hero Slider Functionality
-    let currentSlideIndex = 0;
-    const slides = document.querySelectorAll('.banner-slide');
-    const autoSlideInterval = 4000;
-    let slideTimer;
-
-    function showSlide(index) {
-        if (!slides.length) return;
-        if (index >= slides.length) currentSlideIndex = 0;
-        else if (index < 0) currentSlideIndex = slides.length - 1;
-        else currentSlideIndex = index;
-
-        slides.forEach(slide => slide.classList.remove('active'));
-        slides[currentSlideIndex].classList.add('active');
-        
-        resetTimer();
-    }
-
-    function changeSlide(step) {
-        showSlide(currentSlideIndex + step);
-    }
-
-    function resetTimer() {
-        clearInterval(slideTimer);
-        slideTimer = setInterval(() => {
-            changeSlide(1);
-        }, autoSlideInterval);
-    }
-
-    if (slides.length > 0) {
-        resetTimer();
-    }
-
-    // Search functionality
-    const searchInput = document.getElementById("searchInput");
-    const searchBtn = document.getElementById("searchBtn");
-
-    function runSearch() {
-        const query = searchInput.value.trim();
-        if (!query) return;
-        window.location.href = `products.html?search=${encodeURIComponent(query)}`;
-    }
-
-    if (searchBtn && searchInput) {
-        searchBtn.addEventListener("click", runSearch);
-        searchInput.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") runSearch();
-        });
-    }
-
-    // Updated logout routine recording exit events into the "entryexit" collection with 2-second rate limit
-    async function logout() {
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        const user = auth.currentUser;
-
-        if (!user) {
-            window.location.href = "signin.html";
-            return;
-        }
-
-        const nowMs = Date.now();
-        if (nowMs - lastWriteTimestamp < 2000) {
-            console.warn("Timestamp blocked: An action was recorded less than 2 seconds ago.");
-            return;
-        }
-        lastWriteTimestamp = nowMs;
-
-        const now = new Date();
-        const dateStr = now.toISOString().split('T')[0];
-        const timeStr = now.toTimeString().split(' ')[0];
-        const ipAddress = await getClientIP();
-
-        const exitRecord = {
-            date: dateStr,
-            time: timeStr,
-            fullTimestamp: now.toISOString(),
-            ipAddress: ipAddress,
-            eventAction: "exit"
-        };
-
-        const userRecordRef = db.collection("entryexit").doc(user.uid);
-
-        try {
-            await userRecordRef.set({
-                userId: user.uid,
-                email: user.email,
-                records: firebase.firestore.FieldValue.arrayUnion(exitRecord)
-            }, { merge: true });
-            console.log("Exit record successfully saved to Firestore!");
-        } catch (error) {
-            console.error("CRITICAL Firestore Error during exit recording:", error);
-        }
-
-        auth.signOut().then(() => {
-            window.location.href = "signin.html";
-        });
-    }
-</script>
-
+    </script>
 </body>
 </html>

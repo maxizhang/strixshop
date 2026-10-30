@@ -242,13 +242,6 @@
         .divider::before { margin-right: .75em; }
         .divider::after { margin-left: .75em; }
 
-        .shake { animation: shake 0.35s; }
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-6px); }
-            75% { transform: translateX(6px); }
-        }
-
         .field-error {
             color: var(--error);
             font-size: 0.72rem;
@@ -363,7 +356,7 @@
                 </div>
             </div>
 
-            <!-- Step 2: Sign-In Method (Google First or Email) -->
+            <!-- Step 2: Sign-In Method -->
             <div class="glass-section" data-step="2">
                 <div class="section-title">Sign-In Method</div>
                 <div class="full-line-grid">
@@ -390,7 +383,7 @@
                 </div>
             </div>
 
-            <!-- Step 3: Gender, Pronouns, School & Grade -->
+            <!-- Step 3: Gender & Grade Level -->
             <div class="glass-section" data-step="3">
                 <div class="section-title">Profile & Details</div>
                 <div class="full-line-grid">
@@ -551,11 +544,17 @@
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-            // Pre-fill email field if available from Google
             if (user.email) {
                 document.getElementById('email').value = user.email;
             }
-            // Advance to next step automatically
+            if (user.displayName) {
+                const nameParts = user.displayName.split(' ');
+                if (nameParts[0]) document.getElementById('f-name').value = nameParts[0];
+                if (nameParts[1]) document.getElementById('l-name').value = nameParts[1];
+            }
+            if (user.photoURL) {
+                document.getElementById('pfp').value = user.photoURL;
+            }
             currentStep++;
             showStep('forward');
         } catch (error) {
@@ -618,7 +617,7 @@
         }
     });
 
-    // Final Form Submission Handler
+    // Final Form Submission Handler with Firestore Sync
     const regForm = document.getElementById('reg-form');
     regForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -632,9 +631,34 @@
             document.getElementById('submitBtn').disabled = true;
             document.getElementById('submitBtn').innerText = "Creating Account...";
 
-            // If user hasn't authenticated via Google yet, register with email/password
+            let user;
+            // Register or fetch user
             if (!auth.currentUser && email && password) {
-                await createUserWithEmailAndPassword(auth, email, password);
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                user = userCredential.user;
+            } else {
+                user = auth.currentUser;
+            }
+
+            if (user) {
+                // Collect form fields to write into Firestore database
+                const userData = {
+                    firstName: document.getElementById('f-name').value.trim(),
+                    lastName: document.getElementById('l-name').value.trim(),
+                    dob: document.getElementById('dob').value,
+                    age: document.getElementById('age').value ? Number(document.getElementById('age').value) : null,
+                    email: user.email,
+                    gender: document.getElementById('gender').value,
+                    grade: document.getElementById('grade').value,
+                    pfp: document.getElementById('pfp').value.trim() || "default.png",
+                    securityQuestion: document.getElementById('sec-question').value,
+                    securityAnswer: document.getElementById('sec-answer').value.trim(),
+                    acc: "customer",
+                    createdAt: serverTimestamp()
+                };
+
+                // Sync data fields into the Firestore users collection under the user UID document
+                await setDoc(doc(db, "users", user.uid), userData);
             }
 
             document.getElementById('success-screen').style.display = 'flex';

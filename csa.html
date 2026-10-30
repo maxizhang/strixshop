@@ -1214,7 +1214,7 @@
 
             usersData.forEach(u => {
                 if (!chatListeners[u.id]) {
-                    const q = db.collection("support_chats").doc(u.id).collection("messages").orderBy("timestamp", "asc");
+                    const q = db.collection("support_chats").doc(u.id).collection("messages").orderBy("seq", "asc");
                     chatListeners[u.id] = q.onSnapshot((msgSnap) => {
                         let messages = [];
                         msgSnap.forEach(mDoc => messages.push(mDoc.data()));
@@ -1249,6 +1249,26 @@
         });
     }
 
+    async function sendAdminSupportMessage(uid, messageData, senderType, dataType) {
+        const messagesRef = db.collection("support_chats").doc(uid).collection("messages");
+        const snap = await messagesRef.get();
+        const count = snap.size + 1;
+
+        const cNum = count % 10000;
+        const c = String(cNum).padStart(4, '0');
+        const d = Math.floor(count / 10000);
+
+        const customId = `${senderType}${dataType}${c}${d}`;
+
+        await messagesRef.doc(customId).set({
+            ...messageData,
+            seq: count,
+            messageId: customId,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        return { id: customId };
+    }
+
     function openChat(uid, name, email) {
         activeClient = uid;
 
@@ -1262,7 +1282,7 @@
 
         if (noAgentTimer) clearTimeout(noAgentTimer);
 
-        const q = db.collection("support_chats").doc(uid).collection("messages").orderBy("timestamp", "asc");
+        const q = db.collection("support_chats").doc(uid).collection("messages").orderBy("seq", "asc");
 
         q.onSnapshot((snap) => {
             const container = document.getElementById("messages-container");
@@ -1371,10 +1391,6 @@
 
             if (noAgentTimer) clearTimeout(noAgentTimer);
 
-            // Updated Condition:
-            // 1. If the last message was sent by the customer (acc !== "admin" and acc !== "system")
-            // 2. No admin has replied in 10 seconds
-            // 3. No SAP has been sent out in the past 2 minutes
             if (messagesList.length > 0) {
                 const lastMsg = messagesList[messagesList.length - 1];
                 const lastWasCustomer = lastMsg.acc !== "admin" && lastMsg.acc !== "system";
@@ -1382,14 +1398,13 @@
                 if (lastWasCustomer) {
                     noAgentTimer = setTimeout(async () => {
                         try {
-                            const currentSnap = await db.collection("support_chats").doc(uid).collection("messages").orderBy("timestamp", "asc").get();
+                            const currentSnap = await db.collection("support_chats").doc(uid).collection("messages").orderBy("seq", "asc").get();
                             
                             let freshMessages = [];
                             currentSnap.forEach(doc => freshMessages.push(doc.data()));
 
                             if (freshMessages.length === 0) return;
 
-                            // Re-verify the absolute latest message is still from the customer and no admin replied in between
                             const absoluteLatest = freshMessages[freshMessages.length - 1];
                             const stillLastWasCustomer = absoluteLatest.acc !== "admin" && absoluteLatest.acc !== "system";
                             
@@ -1400,12 +1415,10 @@
                                     break;
                                 }
                                 if (freshMessages[i].acc !== "admin" && freshMessages[i].acc !== "system") {
-                                    // hit customer message before any admin message
                                     break;
                                 }
                             }
 
-                            // Check if an SAP was sent out in the past 2 minutes (120,000 ms)
                             const nowTime = Date.now();
                             const twoMinutesMs = 2 * 60 * 1000;
                             let sapSentRecently = false;
@@ -1420,18 +1433,17 @@
                             });
 
                             if (stillLastWasCustomer && !adminHasRepliedSince && !sapSentRecently) {
-                                await db.collection("support_chats").doc(uid).collection("messages").add({
+                                await sendAdminSupportMessage(uid, {
                                     acc: "system",
                                     senderName: "System Automatic Reply (SAP)",
                                     text: "Unfortunately, our customer support agents are not available immediately. Please come back and check again in 10 minutes, or within 24 hours. Please expect a reply by 8:00 pm",
-                                    isSystemMessage: true,
-                                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                                });
+                                    isSystemMessage: true
+                                }, "S", "X");
                             }
                         } catch (err) {
                             console.error("Error posting system message:", err);
                         }
-                    }, 10000); // 10 seconds delay
+                    }, 10000);
                 }
             }
         });
@@ -1448,15 +1460,14 @@
     document.getElementById('send-rating-request').onclick = async () => {
         if (!activeClient) return;
         try {
-            await db.collection("support_chats").doc(activeClient).collection("messages").add({
+            await sendAdminSupportMessage(activeClient, {
                 text: "Please rate the satisfaction of your experience.",
                 type: "rating_request",
                 rating: 0,
                 acc: "admin",
                 senderName: adminProfile.name,
-                senderPfp: adminProfile.pfp,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
+                senderPfp: adminProfile.pfp
+            }, "A", "X");
         } catch (err) { console.error(err); }
     };
 
@@ -1468,13 +1479,12 @@
         
         input.value = "";
         try {
-            await db.collection("support_chats").doc(activeClient).collection("messages").add({
+            await sendAdminSupportMessage(activeClient, {
                 text: val,
                 acc: "admin",
                 senderName: adminProfile.name,
-                senderPfp: adminProfile.pfp,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
+                senderPfp: adminProfile.pfp
+            }, "A", "X");
         } catch (err) { console.error(err); }
     };
 </script>

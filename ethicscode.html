@@ -550,15 +550,6 @@
         messagingSenderId: "300414445622",
         appId: "1:300414445622:web:97465fa5309c27b9605097"
     };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    onAuthStateChanged(auth, (user) => {
-        if (!user) {
-            window.location.href = "signin.html";
-        }
-    });
 </script>
 </body>
 </html>
