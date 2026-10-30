@@ -2,81 +2,124 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="spfd.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Terms & Conditions</title>
-    <link rel="icon" type="image/png" href="spfd.png">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --primary: #484976;
-            --primary-hover: #4f4c74;
-            --surface: rgba(255, 255, 255, 0.18);
+            --surface: rgba(255, 255, 255, 0.28);
+            --surface-hover: rgba(255, 255, 255, 0.38);
             --text-main: #0f172a;
             --text-dim: #475569;
-            --border: rgba(255, 255, 255, 0.55);
-            --nav-dark: #0a0c12;
+            --border: rgba(255, 255, 255, 0.6);
             --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --radius-main: 32px;
         }
 
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
         html {
             scroll-behavior: smooth;
         }
 
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
-            background-size: 400% 400%;
-            animation: fluidBackground 20s ease infinite;
-            color: var(--text-main);
-            min-height: 100vh;
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            color: var(--text-main); 
+            min-height: 100vh; 
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
             line-height: 1.7;
+            position: relative;
         }
 
-        @keyframes fluidBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Background Layer with Random Image Support */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.65;
+            z-index: -2;
+            transition: all 1s ease-in-out;
         }
 
-        /* Professional Navbar */
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(240, 244, 248, 0.75), rgba(224, 231, 255, 0.75));
+            z-index: -1;
+        }
+
+        /* Entrance Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        /* Navigation Bar */
         nav {
-            background: var(--nav-dark);
+            background: rgba(0, 0, 0, 0.75);
+            height: 60px;
             width: 100%;
             position: sticky;
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
         }
 
         .nav-main {
             display: flex;
             align-items: center;
-            padding: 14px 5%;
+            padding: 0 5%;
             justify-content: space-between;
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .logo-box img {
-            height: 32px;
+            height: 28px;
             cursor: pointer;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.04);
         }
 
         .nav-right-actions {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
         }
 
         .nav-link-item {
@@ -87,12 +130,12 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 13px;
-            transition: color 0.2s;
+            transition: color 0.25s ease;
         }
 
         .nav-link-item svg {
             stroke: #cbd5e1;
-            transition: stroke 0.2s;
+            transition: stroke 0.25s ease;
         }
 
         .nav-link-item:hover {
@@ -114,115 +157,139 @@
             font-weight: 600;
             color: #94a3b8;
             letter-spacing: 0.5px;
-            font-family: 'Quicksand', monospace;
         }
 
-        /* Header Section */
-        .header {
-            text-align: center;
-            padding: 50px 20px 30px;
-            max-width: 900px;
-            margin: auto;
-        }
-
-        .header h1 {
-            font-size: 32px;
-            color: #1e1b4b;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        .header p {
-            color: var(--text-dim);
-            font-size: 13px;
-            font-family: 'Quicksand', monospace;
-            font-weight: 600;
-        }
-
-        /* Container & Sections */
+        /* Main Container & Header */
         .container {
-            max-width: 900px;
+            position: relative;
+            z-index: 10;
             width: 90%;
-            margin: 0 auto 60px;
+            max-width: 880px;
+            margin: 50px auto;
+            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 24px;
         }
 
-        .section {
+        .hero {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        h1 { 
+            font-size: 32px; 
+            font-weight: 700; 
+            margin: 0 0 10px; 
+            color: #1e1b4b; 
+            letter-spacing: -0.5px; 
+        }
+
+        .hero p {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dim);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
             background: var(--surface);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
-            border-radius: 28px;
             border: 1.5px solid var(--border);
-            padding: 32px;
+            border-radius: var(--radius-main);
+            padding: 35px;
             box-shadow: var(--glass-shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .section:hover {
-            background: rgba(255, 255, 255, 0.28);
+        .glass-card:hover {
+            background: var(--surface-hover);
+            transform: translateY(-4px);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
-        .section h2 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #1e1b4b;
-            font-weight: 700;
-            text-transform: uppercase;
+        .card-tag {
+            font-family: 'Quicksand', monospace;
+            font-size: 11px;
             letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            color: var(--primary);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+            font-weight: 700;
         }
 
-        .section p, .section li {
-            color: var(--text-dim);
-            font-size: 14px;
-            margin-bottom: 12px;
+        .glass-card h2 { 
+            font-size: 18px; 
+            font-weight: 700; 
+            margin: 0 0 15px 0; 
+            color: #1e1b4b; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .glass-card p, .glass-card li { 
+            color: var(--text-dim); 
+            line-height: 1.7; 
+            font-size: 14px; 
+            margin-bottom: 12px; 
             font-weight: 500;
         }
 
-        .section ul {
+        .glass-card ul {
             margin-left: 20px;
             margin-bottom: 15px;
         }
 
-        .section b, .section strong {
+        .glass-card b, .glass-card strong {
             color: var(--text-main);
             font-weight: 700;
         }
 
-        .section a {
+        .glass-card a {
             color: var(--primary);
             text-decoration: none;
             font-weight: 700;
             transition: color 0.2s;
         }
 
-        .section a:hover {
-            color: var(--primary-hover);
+        .glass-card a:hover {
+            color: #4338ca;
             text-decoration: underline;
         }
 
         footer {
             text-align: center;
             padding: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-dim);
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 1px;
-            background: rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .container { width: 95%; margin: 25px auto; }
+            .glass-card { padding: 25px; border-radius: 24px; }
+            .hero h1 { font-size: 26px; }
         }
     </style>
 </head>
 <body>
 
+<div class="bg-layer" id="bgLayer"></div>
+<div class="bg-overlay"></div>
+
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='index.html'">
+        <div class="logo-box" onclick="window.location.href='terms.html'">
             <img src="logoh.png" alt="STRIX">
         </div>
         <div class="nav-right-actions">
@@ -231,217 +298,179 @@
                 Home
             </a>
             <div class="nav-divider"></div>
-            <span class="nav-badge-text">TERMS & CONDITIONS</span>
+            <span class="nav-badge-text">Terms & Conditions</span>
         </div>
     </div>
 </nav>
 
-<div class="header">
-    <h1>Terms and Conditions</h1>
-    <p>Version 2 | Last Edited September 9th, 2026 | Effective September 9th, 2026/p>
-</div>
-
 <div class="container">
+    <div class="hero animate-in delay-1">
+        <h1>Terms and Conditions</h1>
+        <p>Version 2 | Last Edited September 9th, 2026 | Effective September 9th, 2026</p>
+    </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-2">
         <h2>1. Acceptance of Terms and Binding Agreement</h2>
-        <p>This agreement is between Strix Shop and the Customer.
-        <br><br>
-        By accessing, browsing, or using the Strix Shop web portal (referred to as the "Website"), placing an order, completing a payment, or participating in any activity hosted by Strix Shop (collectively, the "Services"), the User (referred to as "Customer", "Buyer", or "You") confirms that he/she has read, fully understood, and agreed to be legally bound by these Terms and Conditions (referred to as the "Terms", "Agreement", “Terms and Conditions” or "Strix Shop Terms and Conditions").
-        <br><br>
-        This document forms a legal contract between the Customer and Strix Shop. If the customer is a minor, a parent or guardian should review these Terms for the customer. If you or your legal guardian do not agree with any part of these rules, your only option is to stop using the Website and all associated Services immediately.
-        <br><br>
-        Strix Shop reserves the right to change, modify, add, or remove parts of these Terms at any time without direct prior notice. However, Strix Shop will make reasonable efforts to share updates by posting notices or emailing registered users.
-        <br><br>
-        Your continued use of our Website or Services shows your acceptance of any updated Terms.</p>
+        <p>This agreement is between Strix Shop and the Customer.</p>
+        <p>By accessing, browsing, or using the Strix Shop web portal (referred to as the "Website"), placing an order, completing a payment, or participating in any activity hosted by Strix Shop (collectively, the "Services"), the User (referred to as "Customer", "Buyer", or "You") confirms that he/she has read, fully understood, and agreed to be legally bound by these Terms and Conditions (referred to as the "Terms", "Agreement", “Terms and Conditions” or "Strix Shop Terms and Conditions").</p>
+        <p>This document forms a legal contract between the Customer and Strix Shop. If the customer is a minor, a parent or guardian should review these Terms for the customer. If you or your legal guardian do not agree with any part of these rules, your only option is to stop using the Website and all associated Services immediately.</p>
+        <p>Strix Shop reserves the right to change, modify, add, or remove parts of these Terms at any time without direct prior notice. However, Strix Shop will make reasonable efforts to share updates by posting notices or emailing registered users.</p>
+        <p>Your continued use of our Website or Services shows your acceptance of any updated Terms.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-2">
         <h2>2. Eligibility, Minors, and COPPA Compliance</h2>
-        <p>In compliance with online privacy and consumer laws in the United States, including the Children's Online Privacy Protection Act (COPPA), access to the Website is restricted based on the age of the User.
-        <br><br>
-        Anyone under the age of fourteen (14) is not allowed to register an account, submit personal information, or make purchases on the Website under any circumstances.
-        <br><br>
-        If you are under eighteen (18) but older than fourteen (14), you must have permission and active supervision from a parent or legal guardian to use the Services. By allowing a minor to use the Website, the parent or guardian accepts full financial and legal responsibility for all actions and orders made by the minor.
-        <br><br>
-        To the fullest extent allowed by law, Strix Shop is not responsible for unauthorized purchases or agreements made by minors using adult accounts or payment methods. Strix Shop assumes all payments are made using authorized funds with the permission of the main account holder.</p>
+        <p>In compliance with online privacy and consumer laws in the United States, including the Children's Online Privacy Protection Act (COPPA), access to the Website is restricted based on the age of the User.</p>
+        <p>Anyone under the age of fourteen (14) is not allowed to register an account, submit personal information, or make purchases on the Website under any circumstances.</p>
+        <p>If you are under eighteen (18) but older than fourteen (14), you must have permission and active supervision from a parent or legal guardian to use the Services. By allowing a minor to use the Website, the parent or guardian accepts full financial and legal responsibility for all actions and orders made by the minor.</p>
+        <p>To the fullest extent allowed by law, Strix Shop is not responsible for unauthorized purchases or agreements made by minors using adult accounts or payment methods. Strix Shop assumes all payments are made using authorized funds with the permission of the main account holder.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-3">
         <h2>3. Account Security, Privacy, and Data Utilization</h2>
-        <p>The Customer is fully responsible for keeping his/her account login information and password confidential.
-        <br><br>
-        You agree that all activities, communications, or purchases made under your account will be directly tied to you. If you suspect or discover unauthorized access or a security breach on your account, you must notify <a href="cs.html">Strix Shop Customer Support</a> right away.
-        <br><br>
-        To provide our Services, Strix Shop may collect, store, and process necessary personal information, such as full legal names, email addresses, ip addresses and ages. For details, please view our <a href="privacypolicy">Privacy Policy</a>.
-        <br><br>
-        Strix Shop agrees not to sell, rent, or share your personal data with third-party marketing companies without your consent, unless required by a court of law with competent juristiction.
-        <br><br>
-        We only use your data for essential operational needs:
-        <br> - Delivering orders and fulfilling requested services.
-        <br> - Reviewing basic store usage to manage inventory.
-        <br> - Maintaining account security and resolving customer support issues.</p>
+        <p>The Customer is fully responsible for keeping his/her account login information and password confidential.</p>
+        <p>You agree that all activities, communications, or purchases made under your account will be directly tied to you. If you suspect or discover unauthorized access or a security breach on your account, you must notify <a href="cs.html">Strix Shop Customer Support</a> right away.</p>
+        <p>To provide our Services, Strix Shop may collect, store, and process necessary personal information, such as full legal names, email addresses, ip addresses and ages. For details, please view our <a href="privacypolicy">Privacy Policy</a>.</p>
+        <p>Strix Shop agrees not to sell, rent, or share your personal data with third-party marketing companies without your consent, unless required by a court of law with competent juristiction.</p>
+        <p>We only use your data for essential operational needs:</p>
+        <ul>
+            <li>Delivering orders and fulfilling requested services.</li>
+            <li>Reviewing basic store usage to manage inventory.</li>
+            <li>Maintaining account security and resolving customer support issues.</li>
+        </ul>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-3">
         <h2>4. Intellectual Property and Proprietary Rights</h2>
-        <p>All content on or accessible through the Website—including graphics, logos, code, software, written text, media, STRIXNews articles, and STRIXStudio content—is owned by Strix Shop, its affiliates, or its licensors. This material is protected under United States copyright laws and international intellectual property laws.
-        <br><br>
-        Copying, modifying, distributing, displaying publicly, or using automated tools (like web scrapers or bots) on the Website without permission is a direct violation of this Agreement. Violations may result in account termination and legal action.</p>
+        <p>All content on or accessible through the Website—including graphics, logos, code, software, written text, media, STRIXNews articles, and STRIXStudio content—is owned by Strix Shop, its affiliates, or its licensors. This material is protected under United States copyright laws and international intellectual property laws.</p>
+        <p>Copying, modifying, distributing, displaying publicly, or using automated tools (like web scrapers or bots) on the Website without permission is a direct violation of this Agreement. Violations may result in account termination and legal action.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>5. Digital Goods Licensing Agreement</h2>
-        <p>Any digital files, software, or media bought and downloaded from Strix Shop are licensed to you, not sold. Ownership of all intellectual property stays with Strix Shop.
-        <br><br>
-        Once payment is confirmed, Strix Shop grants the Customer a <strong>single-user, limited, non-transferable, and personal license</strong> to download and use the digital product for personal, non-commercial purposes only.
-        <br><br>
-        You agree not to copy, share, re-sell, or upload these digital files to file-sharing networks, public cloud drives, or other websites. Doing so will cancel your license without a refund and may lead to legal consequences.</p>
+        <p>Any digital files, software, or media bought and downloaded from Strix Shop are licensed to you, not sold. Ownership of all intellectual property stays with Strix Shop.</p>
+        <p>Once payment is confirmed, Strix Shop grants the Customer a <b>single-user, limited, non-transferable, and personal license</b> to download and use the digital product for personal, non-commercial purposes only.</p>
+        <p>You agree not to copy, share, re-sell, or upload these digital files to file-sharing networks, public cloud drives, or other websites. Doing so will cancel your license without a refund and may lead to legal consequences.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>6. Product Descriptions and Disclaimers of Merchantability</h2>
-        <p>Strix Shop tries to describe and display items as accurately as possible. However, due to standard manufacturing variations, product dimensions may differ slightly. A size variation of up to five percent (5%) from stated measurements is considered normal and is not considered a defect.
-        <br><br>
-        Additionally, colors, textures, and finishes may look slightly different in person due to photo lighting or computer screen settings. Display props shown in product photos are not included unless listed in the product description.
-        <br><br>
-        <strong>DISCLAIMER OF WARRANTIES:</strong> ALL PRODUCTS ARE PROVIDED "AS IS" AND "AS AVAILABLE." TO THE MAXIMUM EXTENT PERMITTED BY LAW, STRIX SHOP DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING ANY GUARANTEES OF QUALITY, FITNESS FOR A SPECIFIC PURPOSE, OR ACCURACY.</p>
+        <p>Strix Shop tries to describe and display items as accurately as possible. However, due to standard manufacturing variations, product dimensions may differ slightly. A size variation of up to five percent (5%) from stated measurements is considered normal and is not considered a defect.</p>
+        <p>Additionally, colors, textures, and finishes may look slightly different in person due to photo lighting or computer screen settings. Display props shown in product photos are not included unless listed in the product description.</p>
+        <p><b>DISCLAIMER OF WARRANTIES:</b> ALL PRODUCTS ARE PROVIDED "AS IS" AND "AS AVAILABLE." TO THE MAXIMUM EXTENT PERMITTED BY LAW, STRIX SHOP DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING ANY GUARANTEES OF QUALITY, FITNESS FOR A SPECIFIC PURPOSE, OR ACCURACY.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>7. Shipping, Delivery Logistics, and Late Fees</h2>
-        <p>Standard delivery times for pre-ordered items usually take four (4) to six (6) weeks, but these dates are estimates and not guarantees. Shipping speed can be affected by carrier delays, customs checks, or supply issues.
-        <br><br>
-        Responsibility for the items transfers to the Customer once the customer confirms delivery. Strix Shop is not responsible for packages that are stolen, lost, or delivered to an incorrect address entered during checkout.
-        <br><br>
-        If an order requires local pickup or post-delivery payment, failing to pay or pick up the goods within seven (7) business days of notification will result in a late fee of $1.00 USD per day. Total late fees are capped at a maximum of $15.00 USD per order and will never exceed the original item price. The purpose of this fee is not to punish users, but rather to maximize your purchase success and minimize our shop's losses.</p>
+        <p>Standard delivery times for pre-ordered items usually take four (4) to six (6) weeks, but these dates are estimates and not guarantees. Shipping speed can be affected by carrier delays, customs checks, or supply issues.</p>
+        <p>Responsibility for the items transfers to the Customer once the customer confirms delivery. Strix Shop is not responsible for packages that are stolen, lost, or delivered to an incorrect address entered during checkout.</p>
+        <p>If an order requires local pickup or post-delivery payment, failing to pay or pick up the goods within seven (7) business days of notification will result in a late fee of $1.00 USD per day. Total late fees are capped at a maximum of $15.00 USD per order and will never exceed the original item price. The purpose of this fee is not to punish users, but rather to maximize your purchase success and minimize our shop's losses.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>8. Order Adjudication, Refusal of Service, and Force Majeure</h2>
-        <p>Strix Shop reserves the right to accept, adjust, or decline any order submitted through the Website for reasons such as suspected fraud, out-of-stock items, or shipping issues.
-        <br><br>
-        We also reserve the right to limit item quantities per customer to prevent bulk reselling or unfair stock hoarding.
-        <br><br>
-        If we need to adjust your order, we will contact you to compromise on a solution together. For cancellations, you will be informed, but there is no guarantee of a compromise being made.
-        <br><br>
-        System errors, database glitches, or pricing bugs that cause items to display incorrect prices (including $0.00) are not valid offers. Orders made under these incorrect prices will be canceled. Users who report these technical glitches may receive promotional store credit at our discretion.
-        <br><br>
-        <strong>UNFORESEEN EVENTS:</strong> Strix Shop is not responsible for delivery failures or delays caused by events beyond our reasonable control, such as natural disasters, severe weather, global emergencies, internet outages, labor strikes, or supplier issues.</p>
+        <p>Strix Shop reserves the right to accept, adjust, or decline any order submitted through the Website for reasons such as suspected fraud, out-of-stock items, or shipping issues.</p>
+        <p>We also reserve the right to limit item quantities per customer to prevent bulk reselling or unfair stock hoarding.</p>
+        <p>If we need to adjust your order, we will contact you to compromise on a solution together. For cancellations, you will be informed, but there is no guarantee of a compromise being made.</p>
+        <p>System errors, database glitches, or pricing bugs that cause items to display incorrect prices (including $0.00) are not valid offers. Orders made under these incorrect prices will be canceled. Users who report these technical glitches may receive promotional store credit at our discretion.</p>
+        <p><b>UNFORESEEN EVENTS:</b> Strix Shop is not responsible for delivery failures or delays caused by events beyond our reasonable control, such as natural disasters, severe weather, global emergencies, internet outages, labor strikes, or supplier issues.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>9. Strict Return Policy and Defect Reviews</h2>
-        <p>Strix Shop has a strict "All Sales Final" policy. We generally do not offer general returns, exchanges, or cash refunds unless required by state or federal consumer laws.
-        <br><br>
-        The only exceptions are items with major structural defects or damage that occurred before delivery. To request a review, you must contact Strix Shop Support within forty-eight (48) hours of delivery and provide clear photos or videos showing the damage.
-        <br><br>
-        After reviewing your request, Strix Shop will decide whether to offer store credit, a replacement, or deny the claim. As noted in Section 6, minor cosmetic differences do not count as defects.
-        <br><br> Please refer to our <a href="r-r.html">Returns and Refunds</a> page for more details.</p>
+        <p>Strix Shop has a strict "All Sales Final" policy. We generally do not offer general returns, exchanges, or cash refunds unless required by state or federal consumer laws.</p>
+        <p>The only exceptions are items with major structural defects or damage that occurred before delivery. To request a review, you must contact Strix Shop Support within forty-eight (48) hours of delivery and provide clear photos or videos showing the damage.</p>
+        <p>After reviewing your request, Strix Shop will decide whether to offer store credit, a replacement, or deny the claim. As noted in Section 6, minor cosmetic differences do not count as defects.</p>
+        <p>Please refer to our <a href="r-r.html">Returns and Refunds</a> page for more details.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>10. Order Cancellations and Grace Period</h2>
-        <p>Customers have a two-hour (120-minute) grace period right after placing an order to request a cancellation. Cancellation requests sent within this timeframe will be honored without any fees.
-        <br><br>
-        After this two-hour window passes, the order goes into fulfillment and can no longer be canceled or refunded.
-        <br><br>
-        Strix Shop reserves the right to cancel an order at any time due to stock issues, defects, suspected fraud, or operational reasons. If Strix Shop cancels your order, you will receive a full refund. Users who frequently request cancellations may have their purchasing accounts restricted.</p>
+        <p>Customers have a two-hour (120-minute) grace period right after placing an order to request a cancellation. Cancellation requests sent within this timeframe will be honored without any fees.</p>
+        <p>After this two-hour window passes, the order goes into fulfillment and can no longer be canceled or refunded.</p>
+        <p>Strix Shop reserves the right to cancel an order at any time due to stock issues, defects, suspected fraud, or operational reasons. If Strix Shop cancels your order, you will receive a full refund. Users who frequently request cancellations may have their purchasing accounts restricted.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>11. Authorized Tender and Financial Settlements</h2>
-        <p>Orders must be fully paid using approved payment methods before ownership of the product is transferred. Accounts with unpaid balances over seven (7) business days may be temporarily suspended.
-        <br><br>
-        Currently accepted payment methods are strictly limited to:
-        <br> - United States Dollars (USD) Cash
-        <br> - Verified Strix Gift Cards (SSG)
-        <br> - Verified Strix Shop Vouchers (SSV)
-        <br> - Strix Shop Credits (SSC)
-        <br><br>
-        Strix Gift Cards (SSG) are single-use promotional cards issued in amounts between $5.00 and $25.00 USD. They cannot be exchanged for cash unless required by law.</p>
+        <p>Orders must be fully paid using approved payment methods before ownership of the product is transferred. Accounts with unpaid balances over seven (7) business days may be temporarily suspended.</p>
+        <p>Currently accepted payment methods are strictly limited to:</p>
+        <ul>
+            <li>United States Dollars (USD) Cash</li>
+            <li>Verified Strix Gift Cards (SSG)</li>
+            <li>Verified Strix Shop Vouchers (SSV)</li>
+            <li>Strix Shop Credits (SSC)</li>
+        </ul>
+        <p>Strix Gift Cards (SSG) are single-use promotional cards issued in amounts between $5.00 and $25.00 USD. They cannot be exchanged for cash unless required by law.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>12. Limitation of Liability and Indemnification</h2>
-        <p>TO THE MAXIMUM EXTENT ALLOWED BY LAW, STRIX SHOP, ITS FOUNDERS, MANAGERS, AND VOLUNTEERS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOSS OF DATA, PROFITS, OR USE ARISING FROM YOUR USE OF THE WEBSITE OR PRODUCTS.
-        <br><br>
-        Strix Shop is not liable for:
-        <br> - Delays or damages caused by third-party shipping carriers.
-        <br> - Personal injury or property damage caused by product misuse or improper handling.
-        <br> - Allergic reactions or sensitivities to materials used in our products.
-        <br><br>
-        In any case, Strix Shop's maximum total liability for any claim related to an order will not exceed 1.5 times the original purchase price paid for the specific product involved in the dispute.</p>
+        <p>TO THE MAXIMUM EXTENT ALLOWED BY LAW, STRIX SHOP, ITS FOUNDERS, MANAGERS, AND VOLUNTEERS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOSS OF DATA, PROFITS, OR USE ARISING FROM YOUR USE OF THE WEBSITE OR PRODUCTS.</p>
+        <p>Strix Shop is not liable for:</p>
+        <ul>
+            <li>Delays or damages caused by third-party shipping carriers.</li>
+            <li>Personal injury or property damage caused by product misuse or improper handling.</li>
+            <li>Allergic reactions or sensitivities to materials used in our products.</li>
+        </ul>
+        <p>In any case, Strix Shop's maximum total liability for any claim related to an order will not exceed 1.5 times the original purchase price paid for the specific product involved in the dispute.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>13. Governing Law, Venue, and Severability</h2>
-        <p>These Terms, and any disputes related to the Website or Services, are governed by the laws of the Commonwealth of Pennsylvania, without applying its conflict of law rules.
-        <br><br>
-        Both parties agree to attempt to resolve any disagreements informally and in good faith before taking any formal legal action.
-        <br><br>
-        <strong>Severability:</strong> If any part of these Terms is declared invalid or unenforceable by a court, that specific section will be removed. The remaining sections of the agreement will stay valid and fully enforceable.</p>
+        <p>These Terms, and any disputes related to the Website or Services, are governed by the laws of the Commonwealth of Pennsylvania, without applying its conflict of law rules.</p>
+        <p>Both parties agree to attempt to resolve any disagreements informally and in good faith before taking any formal legal action.</p>
+        <p><b>Severability:</b> If any part of these Terms is declared invalid or unenforceable by a court, that specific section will be removed. The remaining sections of the agreement will stay valid and fully enforceable.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>14. Nature of Enterprise and Third-Party Reliance</h2>
-        <p>The Customer acknowledges that Strix Shop operates as an independent, student-managed retailing enterprise focused on local e-commerce.
-        <br><br>
-        Strix Shop is not an accredited school or academic institution. Any informational, educational, or tutorial material shared on the Website is provided for general interest only and carries no official academic standing.
-        <br><br>
-        Because of our order fulfillment model, Strix Shop does not store, inspect, or make all items in-house. As a result, product availability, shipping times, and packaging rely heavily on third-party suppliers and manufacturers. Store policies and pricing are subject to change without advance notice.</p>
+        <p>The Customer acknowledges that Strix Shop operates as an independent, student-managed retailing enterprise focused on local e-commerce.</p>
+        <p>Strix Shop is not an accredited school or academic institution. Any informational, educational, or tutorial material shared on the Website is provided for general interest only and carries no official academic standing.</p>
+        <p>Because of our order fulfillment model, Strix Shop does not store, inspect, or make all items in-house. As a result, product availability, shipping times, and packaging rely heavily on third-party suppliers and manufacturers. Store policies and pricing are subject to change without advance notice.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>15. Prohibited Conduct and Acceptable Use Policy</h2>
-        <p>This Website is provided for lawful, fair customer use. Users are strictly prohibited from participating in any behavior that harms the site or its staff.
-        <br><br>
-        Prohibited actions include:
-        <br> - Using automated tools, bots, scraping scripts, or network attacks to collect data or overload server systems.
-        <br> - Exploiting code bugs or checkout errors to gain unauthorized store credits or unpaid items.
-        <br> - Sending threatening, harassing, or abusive messages to Strix Shop staff, support team members, or delivery couriers.
-        <br> - Unlawfully reselling or stealing Strix Shop intellectual property.
-        <br><br>
-        Violations will lead to immediate account termination and potential reporting to law enforcement.</p>
+        <p>This Website is provided for lawful, fair customer use. Users are strictly prohibited from participating in any behavior that harms the site or its staff.</p>
+        <p>Prohibited actions include:</p>
+        <ul>
+            <li>Using automated tools, bots, scraping scripts, or network attacks to collect data or overload server systems.</li>
+            <li>Exploiting code bugs or checkout errors to gain unauthorized store credits or unpaid items.</li>
+            <li>Sending threatening, harassing, or abusive messages to Strix Shop staff, support team members, or delivery couriers.</li>
+            <li>Unlawfully reselling or stealing Strix Shop intellectual property.</li>
+        </ul>
+        <p>Violations will lead to immediate account termination and potential reporting to law enforcement.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>16. Virtual Currency: Strix Shop Credits (SSC)</h2>
-                <p>
-                Strix Shop Credits (SSC) are non-transferable, promotional loyalty points granted at the sole discretion of Strix Shop.
-                <br><br>
-                SSC can be earned or granted for activities such as purchases, bug reporting, or as a courtesy for service issues. Every 1.00 SSC is valued at $0.01 USD for internal redemption purposes only.
-                <br><br>
-                SSC holds no real-world cash value; as such, SSC cannot be withdrawn, refunded, or exchanged for physical currency. These credits are a limited license for use within Strix Shop, tied strictly to the original recipient's account.
-                <br><br>
-                Strix Shop credits could be forfeited without compensation upon account termination or if obtained through fraudulent means or the exploitation of system glitches. Strix Shop reserves the right to modify, expire, or cancel the SSC system and its valuation at any time with prior notice.
-            </p>
+        <p>Strix Shop Credits (SSC) are non-transferable, promotional loyalty points granted at the sole discretion of Strix Shop.</p>
+        <p>SSC can be earned or granted for activities such as purchases, bug reporting, or as a courtesy for service issues. Every 1.00 SSC is valued at $0.01 USD for internal redemption purposes only.</p>
+        <p>SSC holds no real-world cash value; as such, SSC cannot be withdrawn, refunded, or exchanged for physical currency. These credits are a limited license for use within Strix Shop, tied strictly to the original recipient's account.</p>
+        <p>Strix Shop credits could be forfeited without compensation upon account termination or if obtained through fraudulent means or the exploitation of system glitches. Strix Shop reserves the right to modify, expire, or cancel the SSC system and its valuation at any time with prior notice.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>17. Portal Performance and Maintenance SLAs</h2>
-        <p>Access to the Strix Shop Website is provided on an "as available" basis. We do not guarantee that the site will always be uninterrupted, error-free, or free of delays.
-        <br><br>
-        Strix Shop reserves the right to temporarily pause access to the Website for updates, maintenance, or technical fixes without advance notice.
-        <br><br>
-        If you find a security bug or website glitch, please report it responsibly to support. You may be awarded with up to 1000 SSC. Deliberately exploiting bugs or attempting to overload the server is strictly forbidden. Strix Shop is not liable for data loss or connection issues caused by browser issues or internet service providers.</p>
+        <p>Access to the Strix Shop Website is provided on an "as available" basis. We do not guarantee that the site will always be uninterrupted, error-free, or free of delays.</p>
+        <p>Strix Shop reserves the right to temporarily pause access to the Website for updates, maintenance, or technical fixes without advance notice.</p>
+        <p>If you find a security bug or website glitch, please report it responsibly to support. You may be awarded with up to 1000 SSC. Deliberately exploiting bugs or attempting to overload the server is strictly forbidden. Strix Shop is not liable for data loss or connection issues caused by browser issues or internet service providers.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>18. Entirety of Agreement and Non-Waiver</h2>
-        <p>This document represents the complete and final agreement between the Customer and Strix Shop regarding the use of this site, replacing all previous written or spoken agreements.
-        <br><br>
-        Social media posts, verbal statements from staff, or advertisements do not change or override these official written Terms.
-        <br><br>
-        <strong>Non-Waiver:</strong> If Strix Shop chooses not to enforce a specific rule or right in these Terms at any time, it does not mean we give up our right to enforce that rule or right in the future.</p>
+        <p>This document represents the complete and final agreement between the Customer and Strix Shop regarding the use of this site, replacing all previous written or spoken agreements.</p>
+        <p>Social media posts, verbal statements from staff, or advertisements do not change or override these official written Terms.</p>
+        <p><b>Non-Waiver:</b> If Strix Shop chooses not to enforce a specific rule or right in these Terms at any time, it does not mean we give up our right to enforce that rule or right in the future.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>19. Compliance with Conestoga High School's Code of Conduct</h2>
         <p>All actions Strix Shop takes to manage delivery and collect sales will comply with <a href='https://resources.finalsite.net/images/v1788287598/tesdnet/tb4wbob3yvejoa3itees/CoCFINAL2026-2027.pdf' target="_blank">Conestoga High School's Code of Conduct 2026-2027</a>. It is required for all users (members and employees) to follow <a href='https://resources.finalsite.net/images/v1788287598/tesdnet/tb4wbob3yvejoa3itees/CoCFINAL2026-2027.pdf' target="_blank">Conestoga High School's Code of Conduct 2026-2027</a> at all times.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>Revisions</h2>
         <ul>
             <li><a href="revisions.html">Revisions</a></li>
@@ -452,6 +481,15 @@
 <footer>
     &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
 </footer>
+
+<script>
+    // Random Background Image Loader matching About theme
+    const n = Math.floor(Math.random() * 12) + 1;
+    const bgLayer = document.getElementById("bgLayer");
+    const img = new Image();
+    img.src = `bg${n}.png`;
+    img.onload = () => bgLayer.style.backgroundImage = `url('${img.src}')`;
+</script>
 
 </body>
 </html>

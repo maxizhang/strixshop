@@ -362,7 +362,7 @@
             <img src="pfpzisizhu.png" alt="Zisi Zhu" class="member-pfp" onerror="this.src='spfd.png'">
             <h2>Zisi Zhu</h2>
             <span class="member-meta">Products and Sales Manager</span>
-            <p>Manages all products, writes descriptions for products, organizes products, administrates gift cards and track sales.</p>
+            <p>Manages all products, writes descriptions for products, propose products, administrates gift cards and tracks sales.</p>
         </div>
 
         <div class="glass-card">
@@ -376,21 +376,14 @@
             <img src="pfpgeorgezhang.png" alt="George Zhang" class="member-pfp" onerror="this.src='spfd.png'">
             <h2>George Zhang</h2>
             <span class="member-meta">Financial Manager</span>
-            <p>Manages company budgets, reviews financial statements, and oversees fiscal health and financial strategy.</p>
-        </div>
-
-        <div class="glass-card">
-            <img src="pfpelanlevy.png" alt="Elan Levy" class="member-pfp" onerror="this.src='spfd.png'">
-            <h2>Elan Levy</h2>
-            <span class="member-meta">General Counsel</span>
-            <p>Reviews contracts, provides legal consultation, and represents the company in legal matters.</p>
+            <p>Manages company budgets, reviews financial statements, and oversees financial health and financial strategy.</p>
         </div>
 
         <div class="glass-card">
             <img src="pfpsujankalidoss.png" alt="Sujan Kalidoss" class="member-pfp" onerror="this.src='spfd.png'">
             <h2>Sujan Kalidoss</h2>
             <span class="member-meta">Attorney</span>
-            <p>Assists with legal review, contracts, and other legal operations. Represents Strix Shop in court and other formal occasions.</p>
+            <p>Assists with legal review, contracts, and other legal operations. Represents Strix Shop in legal matters.</p>
         </div>
     </div>
 
@@ -434,14 +427,6 @@
         appId: "1:300414445622:web:97465fa5309c27b9605097"
     };
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    onAuthStateChanged(auth, (user) => {
-        if (!user) {
-            window.location.href = "signin.html";
-        }
-    });
 </script>
 </body>
 </html>

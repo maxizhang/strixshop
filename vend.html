@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Vend</title>
+    <link rel="icon" type="image/png" href="spfd.png" onerror="this.href='https://via.placeholder.com/32'">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #555383;
+            --primary-hover: #5b5978;
+            --surface: rgba(255, 255, 255, 0.28);
+            --surface-hover: rgba(255, 255, 255, 0.38);
+            --text-main: #0f172a;
+            --text-dim: #475569;
+            --link-color: #555383;
+            --link-hover: #5b5978;
+            --border: rgba(255, 255, 255, 0.6);
+            --border-subtle: rgba(226, 232, 240, 0.6);
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --radius-main: 28px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            color: var(--text-main); 
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Layer with Random Image Support matching About/Cart style */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.65;
+            z-index: -2;
+            transition: all 1s ease-in-out;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(240, 244, 248, 0.75), rgba(224, 231, 255, 0.75));
+            z-index: -1;
+        }
+
+        /* Professional Navbar */
+        nav {
+            background: rgba(0, 0, 0, 0.75);
+            height: 60px;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-box img {
+            height: 28px;
+            cursor: pointer;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.04);
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.2s;
+            flex-shrink: 0;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+
+        /* Container & Layout */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+            width: 90%;
+            margin: 40px auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .header-section h1 {
+            font-size: 32px;
+            color: #1e1b4b;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header-section p {
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .partnership-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .partnership-card {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: var(--radius-main);
+            border: 1.5px solid var(--border);
+            padding: 32px;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .partnership-card:hover {
+            background: var(--surface-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .partnership-card h2 {
+            font-size: 20px;
+            color: #1e1b4b;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .partnership-card p {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.6;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .link-group {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .text-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            text-underline-offset: 3px;
+        }
+
+        .text-link:hover {
+            color: var(--primary-hover);
+            text-decoration: underline;
+        }
+
+        .form-section {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: var(--radius-main);
+            border: 1.5px solid var(--border);
+            padding: 36px;
+            box-shadow: var(--glass-shadow);
+            transition: background 0.3s ease;
+        }
+
+        .form-section:hover {
+            background: var(--surface-hover);
+        }
+
+        .form-header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .form-header h2 {
+            font-size: 22px;
+            color: #1e1b4b;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .form-header p {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .form-wrapper {
+            width: 100%;
+            min-height: 220px;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            scrollbar-width: none;
+        }
+
+        .form-wrapper iframe {
+            width: 100%;
+            height: 200px;
+            border: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .partnership-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Background Layer with Random Image Loader matching About/Cart pages -->
+<div class="bg-layer" id="bgLayer"></div>
+<div class="bg-overlay"></div>
+
+<nav>
+    <div class="nav-main">
+        <div class="logo-box" onclick="window.location.href='index.html'">
+            <img src="logoh.png" alt="STRIX">
+        </div>
+        <div class="nav-right-actions">
+            <a href="index.html" class="nav-link-item">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span>Home</span>
+            </a>
+            <div class="nav-divider"></div>
+            <span class="nav-badge-text">PARTNERSHIPS</span>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="header-section">
+        <h1>Partner With Strix Shop</h1>
+        <p>Collaborate with Strix Shop through product sales, sponsorships, and community initiatives.</p>
+    </div>
+
+    <div class="partnership-grid">
+        <div class="partnership-card">
+            <h2>Sell Your Products</h2>
+            <p>
+                Have a product you want to sell through Strix Shop? Submit a proposal using the application form below. Our team will review your product, discuss pricing, and contact you regarding approval and logistics.
+            </p>
+        </div>
+
+        <div class="partnership-card">
+            <h2>Other Partnership Opportunities</h2>
+            <p>
+                We are also open to sponsorships, marketing collaborations, fundraising events, and community projects that create a positive impact.
+            </p>
+            <div class="link-group">
+                <a href="collaborations.html" class="text-link">View Community Collaborations &rarr;</a>
+                <a href="cs.html" class="text-link">Contact Customer Support &rarr;</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <div class="form-header">
+            <h2>Vendor Submission Portal</h2>
+            <p>Complete the form below to apply for a partnership with Strix Shop.</p>
+        </div>
+        <div class="form-wrapper">
+            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSciZfGR3IH5j8yt5RYMao3eGmZZnkBiOmNJ7g5uIPpm0cZZhw/viewform?embedded=true">
+                Loading…
+            </iframe>
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+</footer>
+
+<script>
+    // Random Background Image Loader matching your About & Cart page styling
+    const n = Math.floor(Math.random() * 12) + 1;
+    const bgLayer = document.getElementById("bgLayer");
+    const img = new Image();
+    img.src = `bg${n}.png`;
+    img.onload = () => bgLayer.style.backgroundImage = `url('${img.src}')`;
+</script>
+
+</body>
+</html>

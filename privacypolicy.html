@@ -2,20 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="spfd.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Privacy Policy</title>
-    <link rel="icon" type="image/png" href="spfd.png">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --primary: #484976;
-            --primary-hover: #4f4c74;
-            --surface: rgba(255, 255, 255, 0.18);
+            --surface: rgba(255, 255, 255, 0.28);
+            --surface-hover: rgba(255, 255, 255, 0.38);
             --text-main: #0f172a;
             --text-dim: #475569;
-            --border: rgba(255, 255, 255, 0.55);
-            --nav-dark: #0a0c12;
+            --border: rgba(255, 255, 255, 0.6);
             --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --radius-main: 32px;
         }
 
         * {
@@ -28,55 +31,95 @@
             scroll-behavior: smooth;
         }
 
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
-            background-size: 400% 400%;
-            animation: fluidBackground 20s ease infinite;
-            color: var(--text-main);
-            min-height: 100vh;
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            color: var(--text-main); 
+            min-height: 100vh; 
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
             line-height: 1.7;
+            position: relative;
         }
 
-        @keyframes fluidBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Background Layer with Random Image Support */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.65;
+            z-index: -2;
+            transition: all 1s ease-in-out;
         }
 
-        /* Professional Navbar */
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(240, 244, 248, 0.75), rgba(224, 231, 255, 0.75));
+            z-index: -1;
+        }
+
+        /* Entrance Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+
+        /* Navigation Bar */
         nav {
-            background: var(--nav-dark);
+            background: rgba(0, 0, 0, 0.75);
+            height: 60px;
             width: 100%;
             position: sticky;
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
         }
 
         .nav-main {
             display: flex;
             align-items: center;
-            padding: 14px 5%;
+            padding: 0 5%;
             justify-content: space-between;
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .logo-box img {
-            height: 32px;
+            height: 28px;
             cursor: pointer;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.04);
         }
 
         .nav-right-actions {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
         }
 
         .nav-link-item {
@@ -87,12 +130,12 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 13px;
-            transition: color 0.2s;
+            transition: color 0.25s ease;
         }
 
         .nav-link-item svg {
             stroke: #cbd5e1;
-            transition: stroke 0.2s;
+            transition: stroke 0.25s ease;
         }
 
         .nav-link-item:hover {
@@ -114,115 +157,128 @@
             font-weight: 600;
             color: #94a3b8;
             letter-spacing: 0.5px;
-            font-family: 'Quicksand', monospace;
         }
 
-        /* Header Section */
-        .header {
-            text-align: center;
-            padding: 50px 20px 30px;
-            max-width: 900px;
-            margin: auto;
-        }
-
-        .header h1 {
-            font-size: 32px;
-            color: #1e1b4b;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        .header p {
-            color: var(--text-dim);
-            font-size: 13px;
-            font-family: 'Quicksand', monospace;
-            font-weight: 600;
-        }
-
-        /* Container & Sections */
+        /* Main Container & Header */
         .container {
-            max-width: 900px;
+            position: relative;
+            z-index: 10;
             width: 90%;
-            margin: 0 auto 60px;
+            max-width: 880px;
+            margin: 50px auto;
+            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 24px;
         }
 
-        .section {
+        .hero {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        h1 { 
+            font-size: 32px; 
+            font-weight: 700; 
+            margin: 0 0 10px; 
+            color: #1e1b4b; 
+            letter-spacing: -0.5px; 
+        }
+
+        .hero p {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dim);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .glass-card {
             background: var(--surface);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
-            border-radius: 28px;
             border: 1.5px solid var(--border);
-            padding: 32px;
+            border-radius: var(--radius-main);
+            padding: 35px;
             box-shadow: var(--glass-shadow);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .section:hover {
-            background: rgba(255, 255, 255, 0.28);
+        .glass-card:hover {
+            background: var(--surface-hover);
+            transform: translateY(-4px);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
-        .section h2 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: #1e1b4b;
-            font-weight: 700;
+        .glass-card h2 { 
+            font-size: 18px; 
+            font-weight: 700; 
+            margin: 0 0 15px 0; 
+            color: #1e1b4b; 
             text-transform: uppercase;
             letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
-        .section p, .section li {
-            color: var(--text-dim);
-            font-size: 14px;
-            margin-bottom: 12px;
+        .glass-card p, .glass-card li { 
+            color: var(--text-dim); 
+            line-height: 1.7; 
+            font-size: 14px; 
+            margin-bottom: 12px; 
             font-weight: 500;
         }
 
-        .section ul {
+        .glass-card ul {
             margin-left: 20px;
             margin-bottom: 15px;
         }
 
-        .section b, .section strong {
+        .glass-card b, .glass-card strong {
             color: var(--text-main);
             font-weight: 700;
         }
 
-        .section a {
+        .glass-card a {
             color: var(--primary);
             text-decoration: none;
             font-weight: 700;
             transition: color 0.2s;
         }
 
-        .section a:hover {
-            color: var(--primary-hover);
+        .glass-card a:hover {
+            color: #4338ca;
             text-decoration: underline;
         }
 
         footer {
             text-align: center;
             padding: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-dim);
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 1px;
-            background: rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .container { width: 95%; margin: 25px auto; }
+            .glass-card { padding: 25px; border-radius: 24px; }
+            .hero h1 { font-size: 26px; }
         }
     </style>
 </head>
 <body>
 
+<div class="bg-layer" id="bgLayer"></div>
+<div class="bg-overlay"></div>
+
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='index.html'">
+        <div class="logo-box" onclick="window.location.href='privacypolicy.html'">
             <img src="logoh.png" alt="STRIX">
         </div>
         <div class="nav-right-actions">
@@ -231,18 +287,18 @@
                 Home
             </a>
             <div class="nav-divider"></div>
-            <span class="nav-badge-text">PRIVACY POLICY</span>
+            <span class="nav-badge-text">Privacy Policy</span>
         </div>
     </div>
 </nav>
 
-<div class="header">
-    <h1>Privacy Policy</h1>
-    <p>Version 2 | Last Edited September 14th, 2026 | Effective September 15th, 2026</p>
-</div>
-
 <div class="container">
-    <div class="section">
+    <div class="hero animate-in delay-1">
+        <h1>Privacy Policy</h1>
+        <p>Version 2 | Last Edited September 14th, 2026 | Effective September 15th, 2026</p>
+    </div>
+
+    <div class="glass-card animate-in delay-2">
         <h2>1. Data Collection</h2>
         <p>Strix Shop collects personal information that you provide when creating an account, or when you are using our website. This includes:
             <br><br>
@@ -260,7 +316,7 @@
         </p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-2">
         <h2>2. Use of Information</h2>
         <p>We use your data strictly for the operation of Strix Shop. Specifically:
             <br><br>
@@ -276,7 +332,7 @@
         </p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-3">
         <h2>3. Data Storage & Firebase</h2>
         <p>Strix Shop utilizes <a href="https://firebase.google.com/" target="_blank">Google Firebase</a> for secure data storage and authentication. 
             <br><br>
@@ -284,7 +340,7 @@
         </p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-3">
         <h2>4. Third-Party Sharing</h2>
         <p><b>Strix Shop does not sell, trade, or rent student data to third parties.</b>
             <br><br>
@@ -295,7 +351,7 @@
         </p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>5. Minor Privacy (COPPA)</h2>
         <p>As per our Terms and in coordination with COPPA laws, users under 14 are prohibited from account creation. 
             <br><br>
@@ -303,7 +359,7 @@
         </p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>6. Cookies and Tracking</h2>
         <p>Our web portal may use local storage or "necessary cookies" to keep you logged in and remember your cart items. 
             <br>
@@ -317,7 +373,7 @@
         </p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>7. Data Retention & Deletion</h2>
         <p>We retain your information as long as your account is active. 
             <br><br>
@@ -327,7 +383,7 @@
         </p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>8. Changes to this Policy</h2>
         <p>Strix Shop reserves the right to modify this Privacy Policy at any time, with or without notice, with or without cause.
             <br><br>
@@ -335,12 +391,12 @@
         </p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>9. Contact Information</h2>
         <p>Any questions please contact <a href="cs.html">Customer Support</a>.</p>
     </div>
 
-    <div class="section">
+    <div class="glass-card animate-in delay-4">
         <h2>Revisions</h2>
         <ul>
             <li><a href="revisions.html">Revisions</a></li>
@@ -352,5 +408,28 @@
     &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
 </footer>
 
+<script>
+    // Random Background Image Loader matching About theme
+    const n = Math.floor(Math.random() * 12) + 1;
+    const bgLayer = document.getElementById("bgLayer");
+    const img = new Image();
+    img.src = `bg${n}.png`;
+    img.onload = () => bgLayer.style.backgroundImage = `url('${img.src}')`;
+</script>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
+        authDomain: "strix-shop.firebaseapp.com",
+        projectId: "strix-shop",
+        storageBucket: "strix-shop.firebasestorage.app",
+        messagingSenderId: "300414445622",
+        appId: "1:300414445622:web:97465fa5309c27b9605097"
+    };
+
+</script>
 </body>
 </html>
