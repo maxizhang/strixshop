@@ -1,35 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>503 | Strix Shop</title>
-    <link rel="icon" type="image/png" href="spfd.png">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="bg-layer" id="bgLayer"></div>
-    <div class="overlay"></div>
+<html lang = "en">
 
-    <div class="content-container">
-        <div class="top-section">
-            <h1 class="error-code">503</h1>
-            <p class="error-message">A 503 error means the server is currently unavailable (overloaded or down for maintenance).</p>
+<head>
+    <meta charset = "UTF-8">
+    <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
+    <title>Unavailable | Strix Shop</title>
+    <link rel = "icon" type = "image/png" href = "favicon.png">
+    <link href = "https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600&display=swap" rel = "stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel = "stylesheet" href = "styles.css">
+</head>
+
+<body>
+    <!--Background-->
+    <div class = "bg" id = "bg"></div>
+    <div class = "overlay"></div>
+
+    <!--Navbar-->
+    <nav class = "navbar">
+        <a href = "503.html" class = "logo">
+            <img src = "logoh.png" alt = "Strix Shop">
+        </a>
+
+        <div class = "navRight">
+            <a href = "index.html" class = "navHome">
+                <i class="fa-solid fa-home" aria-hidden = "true"></i>
+                Home
+            </a>
+            <span class = "navDivider"></span>
+            <span class = "navTitle"> 500 - Server Unavailable</span>
         </div>
-        
-        <div class="button-group">
-            <a href="index.html" class="btn-primary">Home</a>
-            <a href="cs.html" class="btn-secondary">Support</a>
+    </nav>
+
+    <!--Content-->
+    <main class = "content">
+        <p class = "explanation">A 503 error means the server is currently unavailable (overloaded or down for maintenance).</p>
+
+        <div class = "ctas">
+            <a href = "index.html" class = "cta" label = "Home">
+                <i class="fa-solid fa-home" aria-hidden = "true"></i>
+                <span class = "label">Home</span>    
+            </a>
+            <a href = "help.html" class = "cta" label = "Home">
+                <i class="fa-solid fa-circle-info aria-hidden = "true"></i>
+                <span class = "label">Help</span>    
+            </a>
         </div>
-    </div>
+    </main>
 
     <script>
-        const n = Math.floor(Math.random() * 12) + 1;
-        const l = document.getElementById("bgLayer");
-        const i = new Image();
-        i.src = `bg${n}.png`;
-        i.onload = () => l.style.backgroundImage = `url('${i.src}')`;
+        // random bg
+        const number = Math.floor(Math.random() * 12) + 1;
+        document.getElementById("bg").style.backgroundImage = "url('bg" + number + ".png')";
     </script>
+
 </body>
 </html>
