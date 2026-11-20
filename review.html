@@ -5,22 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Product Reviews</title>
     <link rel="icon" type="image/png" href="spfd.png">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
+
         :root {
             --primary: #484976;
-            --primary-hover: #646093;
-            --surface: rgba(255, 255, 255, 0.25);
-            --surface-hover: rgba(255, 255, 255, 0.35);
+            --surface: rgba(255, 255, 255, 0.28);
+            --surface-hover: rgba(255, 255, 255, 0.38);
             --text-main: #0f172a;
             --text-dim: #475569;
             --border: rgba(255, 255, 255, 0.6);
-            --glass-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.9), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
-            --error: #ef4444;
-            --success: #10b981;
-            --star-inactive: #cbd5e1;
-            --star-active: #f59e0b;
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --radius-main: 32px;
         }
 
         * {
@@ -29,64 +27,96 @@
             padding: 0;
         }
 
-        body {
-            font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
-            background-size: 400% 400%;
-            animation: fluidBackground 18s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-            color: var(--text-main);
-            min-height: 100vh;
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            color: var(--text-main); 
+            min-height: 100vh; 
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
             line-height: 1.6;
+            position: relative;
         }
 
-        @keyframes fluidBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Background Layer with Random Image Support */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.65;
+            z-index: -2;
+            transition: all 1s ease-in-out;
         }
 
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(240, 244, 248, 0.75), rgba(224, 231, 255, 0.75));
+            z-index: -1;
+        }
+
+        /* Entrance Animations */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
+        .animate-in {
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+
+        /* Navigation Bar */
         nav {
-            background: rgba(10, 12, 18, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(0, 0, 0, 0.75);
+            height: 60px;
             width: 100%;
             position: sticky;
             top: 0;
             z-index: 1000;
+
+
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
         }
 
         .nav-main {
             display: flex;
             align-items: center;
-            padding: 16px 5%;
+            padding: 0 5%;
             justify-content: space-between;
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .logo-box img {
-            height: 34px;
+            height: 28px;
             cursor: pointer;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
-            transition: transform 0.25s ease;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .logo-box img:hover { transform: scale(1.05); }
+        .logo-box img:hover {
+            transform: scale(1.04);
+        }
 
         .nav-right-actions {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
         }
 
         .nav-link-item {
@@ -100,7 +130,18 @@
             transition: color 0.25s ease;
         }
 
-        .nav-link-item:hover { color: #ffffff; }
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.25s ease;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
 
         .nav-divider {
             width: 1px;
@@ -110,72 +151,134 @@
 
         .nav-badge-text {
             font-size: 12px;
-            font-weight: 700;
-            color: #94a3b8;
-            letter-spacing: 1px;
-            font-family: 'Quicksand', monospace;
-        }
-
-        .container {
-            max-width: 750px;
-            width: 90%;
-            margin: 40px auto;
-            flex: 1;
-            opacity: 0;
-            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 32px;
-            color: #1e1b4b;
-            margin-bottom: 8px;
-            font-weight: 700;
-        }
-
-        .header p {
-            color: var(--text-dim);
-            font-size: 13px;
             font-weight: 600;
-            font-family: 'Quicksand', monospace;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
         }
 
-        .review-card {
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 880px;
+            margin: 50px auto;
+            flex: 1;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        h1 { 
+            font-size: 32px; 
+            font-weight: 700; 
+            margin: 0 0 10px; 
+            color: #1e1b4b; 
+            letter-spacing: -0.5px; 
+        }
+
+        .hero p {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dim);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .glass-card {
             background: var(--surface);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: 28px;
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
             border: 1.5px solid var(--border);
+            border-radius: var(--radius-main);
             padding: 35px;
             box-shadow: var(--glass-shadow);
-            margin-bottom: 50px;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .form-group {
-            margin-bottom: 22px;
+        .glass-card:hover {
+            background: var(--surface-hover);
+            transform: translateY(-4px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
-        label {
-            display: block;
+        .card-tag {
             font-family: 'Quicksand', monospace;
             font-size: 11px;
             letter-spacing: 1px;
             color: var(--primary);
-            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+            font-weight: 700;
+        }
+
+        .glass-card h2 { 
+            font-size: 18px; 
+            font-weight: 700; 
+            margin: 0 0 10px 0; 
+            color: #1e1b4b; 
+        }
+
+        .glass-card p { 
+            color: var(--text-dim); 
+            line-height: 1.6; 
+            font-size: 13px; 
+            margin: 0; 
+            font-weight: 600;
+        }
+
+        .wide-panel {
+            margin-bottom: 40px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .section { grid-template-columns: 1fr; }
+            .container { width: 95%; margin: 25px auto; }
+            .glass-card { padding: 25px; border-radius: 24px; }
+            .hero h1 { font-size: 26px; }
+        }
+
+
+        /* Review form components, styled to match the About page glass aesthetic */
+        .form-group { margin-bottom: 22px; }
+
+        label {
+            display: block;
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--primary);
             font-weight: 700;
             margin-bottom: 8px;
         }
 
         select, input, textarea {
             width: 100%;
-            background: #f8fafc;
-            border: 1.5px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1.5px solid rgba(148, 163, 184, 0.35);
             border-radius: 12px;
             padding: 12px 16px;
             color: var(--text-main);
@@ -189,40 +292,29 @@
         select:focus, input:focus, textarea:focus {
             border-color: var(--primary);
             background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+            box-shadow: 0 0 0 4px rgba(72, 73, 118, 0.12);
         }
 
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
+        textarea { resize: vertical; min-height: 110px; }
 
-        /* Star Rating Styles */
         .star-rating-box {
             display: flex;
             gap: 8px;
-            font-size: 28px;
+            font-size: 30px;
             cursor: pointer;
         }
 
-        .star {
-            color: var(--star-inactive);
-            transition: color 0.2s;
-        }
+        .star { color: #cbd5e1; transition: color 0.2s; }
+        .star.active { color: #f59e0b; }
 
-        .star.active {
-            color: var(--star-active);
-        }
-
-        /* Questions matrix block */
         .survey-grid {
             display: flex;
             flex-direction: column;
             gap: 18px;
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.30);
             padding: 20px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
             margin-bottom: 22px;
         }
 
@@ -231,13 +323,10 @@
             flex-direction: column;
             gap: 8px;
             padding-bottom: 14px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
         }
 
-        .survey-row:last-child {
-            border-bottom: none;
-            padding-bottom: 0;
-        }
+        .survey-row:last-child { border-bottom: none; padding-bottom: 0; }
 
         .survey-question {
             font-size: 13px;
@@ -245,7 +334,6 @@
             color: #1e1b4b;
         }
 
-        /* Evenly spaced layout for the 3 options */
         .radio-group-evenly {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -257,20 +345,19 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid #cbd5e1;
+            gap: 7px;
+            background: rgba(255, 255, 255, 0.58);
+            border: 1px solid rgba(148, 163, 184, 0.45);
             padding: 10px 12px;
-            border-radius: 10px;
+            border-radius: 11px;
             cursor: pointer;
-            text-transform: none;
             color: var(--text-main);
-            font-family: 'Quicksand', sans-serif;
             font-size: 12px;
             font-weight: 600;
             transition: all 0.2s ease;
             text-align: center;
             margin-bottom: 0;
+            letter-spacing: 0;
         }
 
         .radio-group-evenly label:hover {
@@ -281,6 +368,7 @@
         .radio-group-evenly input[type="radio"] {
             width: auto;
             margin: 0;
+            accent-color: var(--primary);
             cursor: pointer;
         }
 
@@ -292,171 +380,173 @@
             border-radius: 14px;
             font-weight: 700;
             font-size: 14px;
-            font-family: 'Quicksand', monospace;
+            font-family: 'Quicksand', sans-serif;
             border: none;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
-            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 6px 20px rgba(72, 73, 118, 0.22);
+            transition: background 0.2s, transform 0.2s, opacity 0.2s;
         }
 
-        .btn-submit:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
-        }
+        .btn-submit:hover { background: #646093; transform: translateY(-1px); }
+        .btn-submit:disabled { opacity: 0.6; cursor: wait; transform: none; }
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: var(--text-dim);
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 1.5px;
-            font-family: 'Quicksand', monospace;
-            border-top: 1px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.1);
+        .review-panel { padding: 35px; margin-bottom: 40px; }
+
+        @media (max-width: 768px) {
+            .container { width: 95%; margin: 25px auto; }
+            .review-panel { padding: 25px; border-radius: 24px; }
+            .hero h1 { font-size: 26px; }
         }
 
         @media (max-width: 600px) {
-            .review-card { padding: 20px; }
             .radio-group-evenly { grid-template-columns: 1fr; gap: 6px; }
             .radio-group-evenly label { justify-content: flex-start; padding: 10px 14px; }
         }
+
     </style>
 </head>
 <body>
+    <div class="bg-layer" id="bgLayer"></div>
+    <div class="bg-overlay"></div>
 
-<nav>
-    <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='index.html'">
-            <img src="logoh.png" alt="STRIX">
+    <nav>
+        <div class="nav-main">
+            <div class="logo-box" onclick="window.location.href='index.html'">
+                <img src="logoh.png" alt="STRIX">
+            </div>
+            <div class="nav-right-actions">
+                <a href="index.html" class="nav-link-item">
+                    <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                    Home
+                </a>
+                <div class="nav-divider"></div>
+                <span class="nav-badge-text">Product Reviews</span>
+            </div>
         </div>
-        <div class="nav-right-actions">
-            <a href="index.html" class="nav-link-item">Home</a>
-            <div class="nav-divider"></div>
-            <span class="nav-badge-text">PRODUCT REVIEWS</span>
+    </nav>
+
+    <main class="container">
+        <div class="hero animate-in delay-1">
+            <h1>Leave a Review</h1>
+            <p>Share your experience with your purchased items and help us improve.</p>
         </div>
-    </div>
-</nav>
 
-<div class="container">
-    <div class="header">
-        <h1>Leave a Review</h1>
-        <p>Share your experience with your purchased items</p>
-    </div>
+        <section class="glass-card review-panel animate-in delay-2">
+            <span class="card-tag">Customer Feedback</span>
+            <h2>Product Evaluation</h2>
+            <p style="margin-bottom: 26px;">Select a completed order, rate your product, and tell us about your experience.</p>
 
-    <div class="review-card">
-        <form id="review-form">
-            <!-- 1. Select Order ID -->
-            <div class="form-group">
-                <label>Select Order ID</label>
-                <select id="order-select" required>
-                    <option value="" disabled selected>Loading your completed orders...</option>
-                </select>
-            </div>
-
-            <!-- 2. Select Product from Order -->
-            <div class="form-group">
-                <label>Select Product to Review</label>
-                <select id="product-select" required disabled>
-                    <option value="" disabled selected>-- First select an order ID --</option>
-                </select>
-            </div>
-
-            <!-- 3. Overall Rating (1-5 stars) -->
-            <div class="form-group">
-                <label>Overall Star Rating</label>
-                <div class="star-rating-box" id="star-box">
-                    <span class="star" data-value="1">★</span>
-                    <span class="star" data-value="2">★</span>
-                    <span class="star" data-value="3">★</span>
-                    <span class="star" data-value="4">★</span>
-                    <span class="star" data-value="5">★</span>
+            <form id="review-form">
+                <div class="form-group">
+                    <label for="order-select">Select Order ID</label>
+                    <select id="order-select" required>
+                        <option value="" disabled selected>Loading your completed orders...</option>
+                    </select>
                 </div>
-                <input type="hidden" id="overall-rating" value="5" required>
-            </div>
 
-            <!-- 4-10. Survey Questions (7 evenly spaced options) -->
-            <label style="margin-bottom: 12px;">Detailed Evaluation Questions</label>
-            <div class="survey-grid">
-                <!-- Q1 -->
-                <div class="survey-row">
-                    <div class="survey-question">1. Did the product match its description online?</div>
-                    <div class="radio-group-evenly">
-                        <label><input type="radio" name="q1" value="Yes" required> Yes</label>
-                        <label><input type="radio" name="q1" value="Somewhat"> Somewhat</label>
-                        <label><input type="radio" name="q1" value="No"> No</label>
+                <div class="form-group">
+                    <label for="product-select">Select Product to Review</label>
+                    <select id="product-select" required disabled>
+                        <option value="" disabled selected>-- First select an order ID --</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Overall Star Rating</label>
+                    <div class="star-rating-box" id="star-box" aria-label="Overall star rating">
+                        <span class="star" data-value="1" role="button" tabindex="0" aria-label="1 star">★</span>
+                        <span class="star" data-value="2" role="button" tabindex="0" aria-label="2 stars">★</span>
+                        <span class="star" data-value="3" role="button" tabindex="0" aria-label="3 stars">★</span>
+                        <span class="star" data-value="4" role="button" tabindex="0" aria-label="4 stars">★</span>
+                        <span class="star" data-value="5" role="button" tabindex="0" aria-label="5 stars">★</span>
+                    </div>
+                    <input type="hidden" id="overall-rating" value="5" required>
+                </div>
+
+                <label style="margin-bottom: 12px;">Detailed Evaluation Questions</label>
+                <div class="survey-grid">
+                    <div class="survey-row">
+                        <div class="survey-question">1. Did the product match its description online?</div>
+                        <div class="radio-group-evenly">
+                            <label><input type="radio" name="q1" value="Yes" required> Yes</label>
+                            <label><input type="radio" name="q1" value="Somewhat"> Somewhat</label>
+                            <label><input type="radio" name="q1" value="No"> No</label>
+                        </div>
+                    </div>
+                    <div class="survey-row">
+                        <div class="survey-question">2. How would you rate the build quality / materials?</div>
+                        <div class="radio-group-evenly">
+                            <label><input type="radio" name="q2" value="Excellent" required> Excellent</label>
+                            <label><input type="radio" name="q2" value="Average"> Average</label>
+                            <label><input type="radio" name="q2" value="Poor"> Poor</label>
+                        </div>
+                    </div>
+                    <div class="survey-row">
+                        <div class="survey-question">3. Was the item packaged securely for shipping?</div>
+                        <div class="radio-group-evenly">
+                            <label><input type="radio" name="q3" value="Very Secure" required> Very Secure</label>
+                            <label><input type="radio" name="q3" value="Acceptable"> Acceptable</label>
+                            <label><input type="radio" name="q3" value="Damaged"> Damaged</label>
+                        </div>
+                    </div>
+                    <div class="survey-row">
+                        <div class="survey-question">4. How satisfied are you with the delivery speed?</div>
+                        <div class="radio-group-evenly">
+                            <label><input type="radio" name="q4" value="Fast" required> Fast</label>
+                            <label><input type="radio" name="q4" value="Average"> Average</label>
+                            <label><input type="radio" name="q4" value="Slow"> Slow</label>
+                        </div>
+                    </div>
+                    <div class="survey-row">
+                        <div class="survey-question">5. Is this product worth the price paid?</div>
+                        <div class="radio-group-evenly">
+                            <label><input type="radio" name="q5" value="Great Value" required> Great Value</label>
+                            <label><input type="radio" name="q5" value="Fair"> Fair</label>
+                            <label><input type="radio" name="q5" value="Overpriced"> Overpriced</label>
+                        </div>
+                    </div>
+                    <div class="survey-row">
+                        <div class="survey-question">6. Would you purchase this product again?</div>
+                        <div class="radio-group-evenly">
+                            <label><input type="radio" name="q6" value="Definitely" required> Definitely</label>
+                            <label><input type="radio" name="q6" value="Maybe"> Maybe</label>
+                            <label><input type="radio" name="q6" value="No"> No</label>
+                        </div>
+                    </div>
+                    <div class="survey-row">
+                        <div class="survey-question">7. Would you recommend Strix Shop to a friend?</div>
+                        <div class="radio-group-evenly">
+                            <label><input type="radio" name="q7" value="Yes" required> Yes</label>
+                            <label><input type="radio" name="q7" value="Maybe"> Maybe</label>
+                            <label><input type="radio" name="q7" value="No"> No</label>
+                        </div>
                     </div>
                 </div>
-                <!-- Q2 -->
-                <div class="survey-row">
-                    <div class="survey-question">2. How would you rate the build quality / materials?</div>
-                    <div class="radio-group-evenly">
-                        <label><input type="radio" name="q2" value="Excellent" required> Excellent</label>
-                        <label><input type="radio" name="q2" value="Average"> Average</label>
-                        <label><input type="radio" name="q2" value="Poor"> Poor</label>
-                    </div>
-                </div>
-                <!-- Q3 -->
-                <div class="survey-row">
-                    <div class="survey-question">3. Was the item packaged securely for shipping?</div>
-                    <div class="radio-group-evenly">
-                        <label><input type="radio" name="q3" value="Very Secure" required> Very Secure</label>
-                        <label><input type="radio" name="q3" value="Acceptable"> Acceptable</label>
-                        <label><input type="radio" name="q3" value="Damaged"> Damaged</label>
-                    </div>
-                </div>
-                <!-- Q4 -->
-                <div class="survey-row">
-                    <div class="survey-question">4. How satisfied are you with the delivery speed?</div>
-                    <div class="radio-group-evenly">
-                        <label><input type="radio" name="q4" value="Fast" required> Fast</label>
-                        <label><input type="radio" name="q4" value="Average"> Average</label>
-                        <label><input type="radio" name="q4" value="Slow"> Slow</label>
-                    </div>
-                </div>
-                <!-- Q5 -->
-                <div class="survey-row">
-                    <div class="survey-question">5. Is this product worth the price paid?</div>
-                    <div class="radio-group-evenly">
-                        <label><input type="radio" name="q5" value="Great Value" required> Great Value</label>
-                        <label><input type="radio" name="q5" value="Fair"> Fair</label>
-                        <label><input type="radio" name="q5" value="Overpriced"> Overpriced</label>
-                    </div>
-                </div>
-                <!-- Q6 -->
-                <div class="survey-row">
-                    <div class="survey-question">6. Would you purchase this product again?</div>
-                    <div class="radio-group-evenly">
-                        <label><input type="radio" name="q6" value="Definitely" required> Definitely</label>
-                        <label><input type="radio" name="q6" value="Maybe"> Maybe</label>
-                        <label><input type="radio" name="q6" value="No"> No</label>
-                    </div>
-                </div>
-                <!-- Q7 -->
-                <div class="survey-row">
-                    <div class="survey-question">7. Would you recommend Strix Shop to a friend?</div>
-                    <div class="radio-group-evenly">
-                        <label><input type="radio" name="q7" value="Yes" required> Yes</label>
-                        <label><input type="radio" name="q7" value="Maybe"> Maybe</label>
-                        <label><input type="radio" name="q7" value="No"> No</label>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Written Comment (Optional) -->
-            <div class="form-group">
-                <label>Additional Comments / Feedback (Optional)</label>
-                <textarea id="review-comment" placeholder="Tell us what you loved or what we can improve..."></textarea>
-            </div>
+                <div class="form-group">
+                    <label for="review-comment">Additional Comments / Feedback (Optional)</label>
+                    <textarea id="review-comment" placeholder="Tell us what you loved or what we can improve..."></textarea>
+                </div>
 
-            <button type="submit" id="submit-btn" class="btn-submit">Submit Product Review</button>
-        </form>
-    </div>
-</div>
+                <button type="submit" id="submit-btn" class="btn-submit">Submit Product Review</button>
+            </form>
+        </section>
+    </main>
 
-<footer>
-    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
-</footer>
+    <footer>
+        &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+    </footer>
+
+    <script>
+        // Match the About page's rotating background images.
+        const n = Math.floor(Math.random() * 12) + 1;
+        const bgLayer = document.getElementById("bgLayer");
+        const img = new Image();
+        img.src = `bg${n}.png`;
+        img.onload = () => bgLayer.style.backgroundImage = `url('${img.src}')`;
+    </script>
 
 <!-- Firebase SDK Compat -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -615,5 +705,6 @@
         }
     });
 </script>
+
 </body>
 </html>

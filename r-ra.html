@@ -2,109 +2,243 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="spfd.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strix Shop | Admin Returns Management</title>
-    <link rel="icon" type="image/png" href="spfd.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #484976;
             --primary-hover: #5d6c8d;
-            --surface: rgba(255, 255, 255, 0.4);
+            --surface: rgba(255, 255, 255, 0.28);
+            --surface-hover: rgba(255, 255, 255, 0.38);
             --text-main: #0f172a;
-            --text-dim: #64748b;
-            --border: rgba(255, 255, 255, 0.45);
+            --text-dim: #475569;
+            --border: rgba(255, 255, 255, 0.6);
             --border-subtle: rgba(226, 232, 240, 0.5);
-            --nav-dark: #0a0c12;
-            --glass-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --radius-main: 32px;
+            --green: #16a34a;
+            --red: #dc2626;
+            --yellow: #ca8a04;
         }
 
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            font-family: 'Quicksand', sans-serif; 
-            word-break: break-word; 
-            overflow-wrap: break-word; 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         body { 
-            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
-            background-size: 400% 400%;
-            animation: fluidBackground 20s ease infinite;
+            font-family: 'Quicksand', sans-serif; 
             color: var(--text-main); 
             min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
             overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
         }
 
-        @keyframes fluidBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Background Layer with Random Image Support */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.65;
+            z-index: -2;
+            transition: all 1s ease-in-out;
         }
 
-        nav { 
-            background: var(--nav-dark); 
-            width: 100%; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(240, 244, 248, 0.75), rgba(224, 231, 255, 0.75));
+            z-index: -1;
+        }
+
+        /* Entrance Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+
+        /* Navigation Bar */
+        nav {
+            background: rgba(0, 0, 0, 0.75);
+            height: 60px;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
         }
-        .nav-main { display: flex; align-items: center; padding: 14px 5%; justify-content: space-between; max-width: 1400px; margin: 0 auto; flex-wrap: wrap; gap: 10px; }
-        .logo-box img { height: 32px; cursor: pointer; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); }
-        .nav-right-actions { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
-        .nav-link-item { display: flex; align-items: center; gap: 8px; color: #cbd5e1; text-decoration: none; font-weight: 700; font-size: 13px; transition: color 0.2s; }
-        .nav-link-item:hover { color: #ffffff; }
-        .nav-divider { width: 1px; height: 20px; background: rgba(255, 255, 255, 0.15); }
-        .nav-badge-text { font-size: 12px; font-weight: 600; color: #94a3b8; letter-spacing: 0.5px; }
 
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo-box img {
+            height: 28px;
+            cursor: pointer;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.04);
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            font-family: 'Quicksand', sans-serif;
+            transition: color 0.25s ease;
+        }
+
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.25s ease;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        /* Main Container */
         .container {
-            max-width: 1200px;
+            position: relative;
+            z-index: 10;
             width: 90%;
-            margin: 40px auto;
+            max-width: 1100px;
+            margin: 50px auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
         }
 
         .header-box {
             background: var(--surface);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 3px solid var(--border);
-            padding: 30px 40px;
-            border-radius: 28px;
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-main);
+            padding: 30px 35px;
             box-shadow: var(--glass-shadow);
-            margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 15px;
+            gap: 20px;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .header-box h1 { font-size: 26px; color: #1e1b4b; font-weight: 700; }
-        .header-box p { font-size: 13px; color: var(--text-dim); font-weight: 600; margin-top: 4px; }
+        .header-box:hover {
+            background: var(--surface-hover);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        }
+
+        .header-box h1 { 
+            font-size: 26px; 
+            font-weight: 700; 
+            color: #1e1b4b; 
+            letter-spacing: -0.5px; 
+            margin-bottom: 4px;
+        }
+
+        .header-box p {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dim);
+        }
 
         .filter-tabs {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
+
         .filter-btn {
-            padding: 8px 16px;
-            border-radius: 10px;
+            padding: 10px 18px;
+            border-radius: 12px;
             border: 1px solid var(--border-subtle);
-            background: rgba(255,255,255,0.5);
+            background: rgba(255, 255, 255, 0.5);
             font-weight: 700;
             font-size: 12px;
             cursor: pointer;
             color: var(--text-dim);
-            transition: all 0.2s;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--text-main);
+        }
+
         .filter-btn.active {
             background: var(--primary);
             color: white;
             border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(72, 73, 118, 0.3);
         }
 
         .requests-grid {
@@ -115,172 +249,264 @@
 
         .request-card {
             background: var(--surface);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 2px solid var(--border);
-            border-radius: 24px;
-            padding: 25px 30px;
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-main);
+            padding: 30px;
             box-shadow: var(--glass-shadow);
             display: grid;
-            grid-template-columns: 1.5fr 2fr auto;
-            gap: 20px;
+            grid-template-columns: 1.2fr 1.8fr auto;
+            gap: 24px;
             align-items: center;
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .request-card:hover {
+            background: var(--surface-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
         @media(max-width: 992px) {
             .request-card { grid-template-columns: 1fr; }
         }
 
-        .req-info div { margin-bottom: 6px; font-size: 13px; color: var(--text-main); font-weight: 600; }
-        .req-info strong { color: #1e1b4b; }
+        .req-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .req-info div { 
+            font-size: 13px; 
+            color: var(--text-main); 
+            font-weight: 600; 
+        }
+
+        .req-info strong { 
+            color: #1e1b4b; 
+            font-weight: 700;
+        }
+
         .badge {
             display: inline-block;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
+            padding: 5px 12px;
+            border-radius: 999px;
+            font-size: 10px;
             font-weight: 800;
-            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-        .badge.pending { background: rgba(234, 179, 8, 0.15); color: #ca8a04; }
-        .badge.resolved { background: rgba(16, 185, 129, 0.15); color: #059669; }
+        .badge.pending { background: rgba(202, 138, 4, 0.15); color: var(--yellow); border: 1px solid rgba(202, 138, 4, 0.3); }
+        .badge.resolved { background: rgba(22, 163, 74, 0.15); color: var(--green); border: 1px solid rgba(22, 163, 74, 0.3); }
 
         .req-details-box {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 8px;
             width: 100%;
+        }
+
+        .req-details-label {
+            font-family: 'Quicksand', monospace;
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--primary);
+            font-weight: 700;
         }
 
         .req-details {
             font-size: 13px;
             color: var(--text-dim);
-            background: rgba(255,255,255,0.4);
-            padding: 12px;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 16px;
+            border-radius: 16px;
             border: 1px solid var(--border-subtle);
-            max-height: 140px;
+            max-height: 130px;
             overflow-y: auto;
-            width: 100%;
+            font-weight: 600;
+            line-height: 1.5;
         }
 
         .req-actions {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
-        }
-
-        @media(max-width: 992px) {
-            .req-actions { align-items: stretch; }
+            gap: 12px;
+            align-items: stretch;
+            min-width: 160px;
         }
 
         .btn-resolve {
-            background: #10b981;
+            background: var(--green);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 12px 20px;
+            border-radius: 12px;
             font-weight: 700;
             font-size: 13px;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-            transition: background 0.2s;
+            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
         }
-        .btn-resolve:hover { background: #059669; }
+        .btn-resolve:hover { 
+            background: #15803d; 
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(22, 163, 74, 0.4);
+        }
 
         .btn-view-imgs {
-            background: #f1f5f9;
-            color: #334155;
+            background: rgba(255, 255, 255, 0.7);
+            color: var(--text-main);
             border: 1px solid var(--border-subtle);
-            padding: 8px 16px;
-            border-radius: 10px;
+            padding: 10px 16px;
+            border-radius: 12px;
             font-weight: 700;
             font-size: 12px;
             cursor: pointer;
             text-align: center;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .btn-view-imgs:hover { background: #e2e8f0; }
+        .btn-view-imgs:hover { 
+            background: rgba(255, 255, 255, 0.95); 
+            border-color: var(--primary);
+            color: var(--primary);
+        }
 
         #no-requests {
             text-align: center;
             padding: 60px;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-dim);
             background: var(--surface);
-            border-radius: 24px;
-            border: 2px solid var(--border);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border-radius: var(--radius-main);
+            border: 1.5px solid var(--border);
+            box-shadow: var(--glass-shadow);
+            font-size: 15px;
         }
 
         /* Modal for Viewing Images */
         .modal {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(5px);
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
+
         .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            max-width: 700px;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid rgba(255, 255, 255, 0.8);
+            padding: 35px;
+            border-radius: var(--radius-main);
+            max-width: 750px;
             width: 100%;
             max-height: 85vh;
             overflow-y: auto;
             position: relative;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
         .modal-close {
             position: absolute;
-            top: 15px; right: 20px;
-            font-size: 20px;
+            top: 22px; 
+            right: 25px;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.05);
+            font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            color: var(--text-dim);
+            color: var(--text-main);
+            transition: background 0.2s;
         }
+        .modal-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
         .img-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
         }
+
         .img-grid img {
             width: 100%;
-            height: 120px;
+            height: 130px;
             object-fit: cover;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .img-grid img:hover {
-            transform: scale(1.03);
+            transform: scale(1.04);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .container { width: 95%; margin: 25px auto; }
+            .header-box { padding: 25px; border-radius: 24px; flex-direction: column; align-items: flex-start; }
+            .request-card { padding: 25px; border-radius: 24px; }
+            .modal-content { padding: 25px; border-radius: 24px; }
         }
     </style>
 </head>
 <body>
 
+<div class="bg-layer" id="bgLayer"></div>
+<div class="bg-overlay"></div>
+
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='index.html'">
+        <div class="logo-box" onclick="window.location.href='r-ra.html'">
             <img src="logoh.png" alt="STRIX">
         </div>
         <div class="nav-right-actions">
-            <a href="index.html" class="nav-link-item">Home</a>
+            <a href="index.html" class="nav-link-item">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Home
+            </a>
             <div class="nav-divider"></div>
-            <span class="nav-badge-text">REVIEW RETURNS AND REFUNDS</span>
+            <span class="nav-badge-text">AfterSales Management</span>
         </div>
     </div>
 </nav>
 
 <div class="container">
-    <div class="header-box">
+    <div class="header-box animate-in delay-1">
         <div>
-            <h1>Returns & Refunds</h1>
+            <h1>Returns & Refunds Management</h1>
+            <p>Review and resolve customer return requests and warranty claims.</p>
         </div>
         <div class="filter-tabs">
             <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
@@ -289,29 +515,42 @@
         </div>
     </div>
 
-    <div id="requests-list" class="requests-grid">
+    <div id="requests-list" class="requests-grid animate-in delay-2">
         <!-- Loaded dynamically -->
     </div>
     <div id="no-requests" style="display: none;">No return requests found.</div>
 </div>
 
+<footer>
+    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+</footer>
+
 <!-- Image Preview Modal -->
 <div class="modal" id="img-modal">
     <div class="modal-content">
         <span class="modal-close" onclick="closeModal()">&times;</span>
-        <h3 id="modal-title" style="margin-bottom: 10px; font-size: 16px; color: #1e1b4b;">Attached Proof Images</h3>
+        <h3 id="modal-title" style="margin-bottom: 12px; font-size: 18px; font-weight: 700; color: #1e1b4b;">Attached Proof Images</h3>
         
         <!-- Grid View of Images -->
         <div class="img-grid" id="modal-img-grid"></div>
 
-        <!-- Full Size View Container (Fixed Base64 / about:blank issue) -->
+        <!-- Full Size View Container -->
         <div id="full-img-container" style="display:none; text-align:center; margin-top:15px;">
-            <img id="full-preview-img" style="max-width:100%; max-height:60vh; border-radius:8px; border:1px solid #cbd5e1;" />
+            <img id="full-preview-img" style="max-width:100%; max-height:60vh; border-radius:16px; border:1px solid rgba(255,255,255,0.8); box-shadow: 0 10px 30px rgba(0,0,0,0.1);" />
             <br>
-            <button onclick="backToGrid()" style="margin-top:15px; padding:8px 18px; background:var(--primary); color:white; border:none; border-radius:8px; font-weight:700; cursor:pointer;">&larr; Back to All Images</button>
+            <button onclick="backToGrid()" style="margin-top:20px; padding:12px 24px; background:var(--primary); color:white; border:none; border-radius:12px; font-weight:700; font-size:13px; cursor:pointer; box-shadow: 0 4px 15px rgba(72, 73, 118, 0.3);">&larr; Back to All Images</button>
         </div>
     </div>
 </div>
+
+<script>
+    // Random Background Image Loader
+    const n = Math.floor(Math.random() * 12) + 1;
+    const bgLayer = document.getElementById("bgLayer");
+    const img = new Image();
+    img.src = `bg${n}.png`;
+    img.onload = () => bgLayer.style.backgroundImage = `url('${img.src}')`;
+</script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -321,7 +560,10 @@
     const firebaseConfig = { 
         apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU", 
         authDomain: "strix-shop.firebaseapp.com", 
-        projectId: "strix-shop" 
+        projectId: "strix-shop",
+        storageBucket: "strix-shop.firebasestorage.app",
+        messagingSenderId: "300414445622",
+        appId: "1:300414445622:web:97465fa5309c27b9605097"
     };
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
@@ -394,25 +636,29 @@
         filtered.forEach(req => {
             const dateStr = req.createdAt && req.createdAt.toDate ? req.createdAt.toDate().toLocaleString() : 'Just now';
             const isResolved = req.status === 'Resolved';
-            const hasImages = req.fileDataList && req.fileDataList.length > 0;
+            
+            // Support both fileUrls (Storage URLs) and legacy fileDataList (base64)
+            const images = req.fileUrls || req.fileDataList || [];
+            const hasImages = images.length > 0;
 
             const card = document.createElement('div');
             card.className = 'request-card';
             card.innerHTML = `
                 <div class="req-info">
-                    <div><strong>Customer:</strong> ${req.customerName} (${req.email})</div>
-                    <div><strong>Order ID:</strong> ${req.orderId}</div>
-                    <div><strong>Reason:</strong> <span style="color:var(--primary);">${req.reason}</span></div>
+                    <div><strong>Customer:</strong> ${req.customerName || 'N/A'}</div>
+                    <div><strong>Email:</strong> ${req.email || 'N/A'}</div>
+                    <div><strong>Order ID:</strong> ${req.orderId || 'N/A'}</div>
+                    <div><strong>Reason:</strong> <span style="color:var(--primary); font-weight:700;">${req.reason || 'N/A'}</span></div>
                     <div><strong>Submitted:</strong> ${dateStr}</div>
                     <div><strong>Status:</strong> <span class="badge ${isResolved ? 'resolved' : 'pending'}">${req.status || 'Pending Review'}</span></div>
                 </div>
                 <div class="req-details-box">
-                    <div style="font-size:11px; font-weight:700; color:var(--text-dim); text-transform:uppercase;">Details</div>
-                    <div class="req-details">${req.details}</div>
+                    <span class="req-details-label">Description & Evidence Notes</span>
+                    <div class="req-details">${req.details || 'No details provided.'}</div>
                 </div>
                 <div class="req-actions">
-                    ${hasImages ? `<button class="btn-view-imgs" onclick='openImages(${JSON.stringify(req.fileDataList)})'>View Proof (${req.fileDataList.length})</button>` : `<span style="font-size:11px; color:var(--text-dim);">No images attached</span>`}
-                    ${!isResolved ? `<button class="btn-resolve" onclick="resolveRequest('${req.id}')">Close & Resolve</button>` : `<span style="font-size:12px; font-weight:700; color:#059669;">Case Closed</span>`}
+                    ${hasImages ? `<button class="btn-view-imgs" onclick='openImages(${JSON.stringify(images)})'>View Proof (${images.length})</button>` : `<span style="font-size:12px; font-weight:600; color:var(--text-dim); text-align:center;">No images attached</span>`}
+                    ${!isResolved ? `<button class="btn-resolve" onclick="resolveRequest('${req.id}')">Close & Resolve</button>` : `<span style="font-size:13px; font-weight:700; color:var(--green); text-align:center; padding: 10px;">✓ Case Closed</span>`}
                 </div>
             `;
             listContainer.appendChild(card);
@@ -438,14 +684,15 @@
         modalTitle.innerText = "Attached Proof Images";
         grid.innerHTML = "";
 
-        fileList.forEach(base64 => {
+        fileList.forEach(url => {
             const img = document.createElement('img');
-            img.src = base64;
+            img.src = url;
+            img.alt = "Proof image";
             img.onclick = () => {
                 grid.style.display = 'none';
                 fullContainer.style.display = 'block';
                 modalTitle.innerText = "Full Size Preview";
-                document.getElementById('full-preview-img').src = base64;
+                document.getElementById('full-preview-img').src = url;
             };
             grid.appendChild(img);
         });

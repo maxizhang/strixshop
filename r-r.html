@@ -210,6 +210,7 @@
 
         .glass-card:hover {
             background: var(--surface-hover);
+            transform: translateY(-4px);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
@@ -218,7 +219,6 @@
             font-size: 11px;
             letter-spacing: 1px;
             color: var(--primary);
-            text-transform: uppercase;
             margin-bottom: 10px;
             display: block;
             font-weight: 700;
@@ -230,9 +230,6 @@
             margin: 0 0 10px 0; 
             color: #1e1b4b; 
             font-family: 'Quicksand', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .glass-card p, .glass-card li { 
@@ -268,7 +265,6 @@
             font-size: 11px;
             margin-bottom: 8px;
             color: var(--text-dim);
-            text-transform: uppercase;
             letter-spacing: 0.8px;
             font-family: 'Quicksand', sans-serif;
         }
@@ -460,7 +456,7 @@
 
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='index.html'">
+        <div class="logo-box" onclick="window.location.href='r-r.html'">
             <img src="logoh.png" alt="STRIX">
         </div>
         <div class="nav-right-actions">
@@ -469,14 +465,14 @@
                 Home
             </a>
             <div class="nav-divider"></div>
-            <span class="nav-badge-text">RETURNS & REFUNDS PORTAL</span>
+            <span class="nav-badge-text">Returns & Refunds</span>
         </div>
     </div>
 </nav>
 
 <div class="container">
     <div class="hero animate-in delay-1">
-        <h1>Returns & Refunds Request Form</h1>
+        <h1>Returns & Refunds Request</h1>
         <p>Please review our official <a href="returnpolicy.html">Return Policy</a> before submitting a request.</p>
     </div>
 
@@ -548,7 +544,7 @@
 </div>
 
 <footer>
-    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED. All transactions and returns are governed by Strix Shop policies.
+    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
 </footer>
 
 <script>
@@ -618,7 +614,6 @@
                   return;
               }
 
-              // Sort orders client-side by date if createdAt exists
               const orders = [];
               querySnapshot.forEach((doc) => {
                   orders.push({ id: doc.id, ...doc.data() });

@@ -2,75 +2,125 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strix Shop | Reports</title>
     <link rel="icon" type="image/png" href="spfd.png">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strix Shop | Admin Reports Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --primary: #484976;
             --primary-hover: #5d6c8d;
-            --surface: rgba(255, 255, 255, 0.18);
+            --surface: rgba(255, 255, 255, 0.28);
+            --surface-hover: rgba(255, 255, 255, 0.38);
             --text-main: #0f172a;
             --text-dim: #475569;
-            --border: rgba(255, 255, 255, 0.55);
-            --nav-dark: #0a0c12;
+            --border: rgba(255, 255, 255, 0.6);
+            --border-subtle: rgba(226, 232, 240, 0.5);
             --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --radius-main: 28px;
+            --green: #16a34a;
+            --red: #dc2626;
         }
 
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
-        body {
-            margin: 0;
-            font-family: 'Quicksand', sans-serif;
-            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
-            background-size: 400% 400%;
-            animation: fluidBackground 20s ease infinite;
-            color: var(--text-main);
-            height: 100vh;
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            color: var(--text-main); 
+            min-height: 100vh; 
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-        }
-
-        @keyframes fluidBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Professional Navbar */
-        nav {
-            background: var(--nav-dark);
-            width: 100%;
+            overflow-x: hidden;
+            line-height: 1.6;
             position: relative;
+        }
+
+        /* Background Layer with Random Image Support */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.65;
+            z-index: -2;
+            transition: all 1s ease-in-out;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(240, 244, 248, 0.75), rgba(224, 231, 255, 0.75));
+            z-index: -1;
+        }
+
+        /* Entrance Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+
+        /* Navigation Bar */
+        nav {
+            background: rgba(0, 0, 0, 0.75);
+            height: 60px;
+            width: 100%;
+            position: sticky;
+            top: 0;
             z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            flex-shrink: 0;
+            display: flex;
+            align-items: center;
         }
 
         .nav-main {
             display: flex;
             align-items: center;
-            padding: 14px 5%;
+            padding: 0 4%;
             justify-content: space-between;
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .logo-box img {
-            height: 32px;
+            height: 28px;
             cursor: pointer;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .logo-box img:hover {
+            transform: scale(1.04);
         }
 
         .nav-right-actions {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 16px;
         }
 
         .nav-link-item {
@@ -81,12 +131,12 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 13px;
-            transition: color 0.2s;
+            transition: color 0.25s ease;
         }
 
         .nav-link-item svg {
             stroke: #cbd5e1;
-            transition: stroke 0.2s;
+            transition: stroke 0.25s ease;
         }
 
         .nav-link-item:hover {
@@ -110,147 +160,467 @@
             letter-spacing: 0.5px;
         }
 
-        /* Feed Layout */
-        .feed-container {
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            padding: 7px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Main Container */
+        .container {
             position: relative;
             z-index: 10;
+            width: 92%;
+            max-width: 1350px;
+            margin: 30px auto;
             flex: 1;
-            overflow-y: auto;
-            padding: 40px 5%;
             display: flex;
             flex-direction: column;
-            gap: 25px;
-            scroll-behavior: smooth;
-            max-width: 900px;
-            margin: 0 auto;
-            width: 100%;
+            gap: 20px;
         }
 
-        /* Timeline vertical line */
-        .feed-container::before {
-            content: '';
-            position: absolute;
-            left: calc(5% + 20px);
-            top: 0; bottom: 0;
-            width: 2px;
-            background: linear-gradient(to bottom, transparent, rgba(79, 70, 229, 0.2), transparent);
+        /* Email App Layout */
+        .email-app {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 20px;
+            height: calc(100vh - 160px);
+            min-height: 550px;
         }
 
-        .report-packet {
-            position: relative;
-            margin-left: 50px;
+        /* Left Panel: Reports List */
+        .list-panel {
             background: var(--surface);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
             border: 1.5px solid var(--border);
-            border-radius: 28px;
-            padding: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            border-radius: var(--radius-main);
             box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        .report-packet:hover {
-            background: rgba(255, 255, 255, 0.28);
-            transform: translateY(-4px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+        .list-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .list-header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .list-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e1b4b;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 6px;
+        }
+
+        .filter-btn {
+            flex: 1;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            background: rgba(255, 255, 255, 0.4);
+            font-weight: 700;
+            font-size: 11px;
+            cursor: pointer;
+            color: var(--text-dim);
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
             border-color: var(--primary);
         }
 
-        /* Timeline Dot */
-        .packet-dot {
-            position: absolute;
-            left: -37px; top: 35px;
-            width: 12px; height: 12px;
-            background: var(--primary);
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(79, 70, 229, 0.4);
+        .reports-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
         }
 
-        .packet-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            padding-bottom: 12px;
+        .report-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: background 0.2s ease, border-left 0.2s ease;
+            border-left: 4px solid transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
-        .category-tag {
-            font-family: 'Quicksand', monospace;
-            font-size: 11px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--primary);
-            background: rgba(79, 70, 229, 0.1);
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid rgba(79, 70, 229, 0.15);
+        .report-item:hover {
+            background: var(--surface-hover);
+        }
+
+        .report-item.active {
+            background: rgba(255, 255, 255, 0.55);
+            border-left-color: var(--primary);
+        }
+
+        .item-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .item-name {
+            font-size: 13px;
             font-weight: 700;
+            color: #1e1b4b;
         }
 
-        .timestamp { 
-            font-size: 12px; 
-            color: var(--text-dim); 
-            font-family: 'Quicksand', monospace; 
+        .status-badge {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.pending {
+            background: rgba(220, 38, 38, 0.15);
+            color: var(--red);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+        }
+
+        .status-badge.resolved {
+            background: rgba(22, 163, 74, 0.15);
+            color: var(--green);
+            border: 1px solid rgba(22, 163, 74, 0.3);
+        }
+
+        .item-subject {
+            font-size: 12px;
             font-weight: 600;
-        }
-        
-        .subject { 
-            font-size: 18px; 
-            font-weight: 700; 
-            margin-bottom: 10px; 
-            color: #1e1b4b; 
+            color: var(--text-main);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        .details { 
-            font-size: 14px; 
-            line-height: 1.6; 
-            color: var(--text-dim); 
-            font-weight: 500;
-        }
-
-        .reporter-info {
-            margin-top: 15px;
-            font-size: 11px;
-            color: var(--text-dim);
-            font-family: 'Quicksand', monospace;
-            padding-top: 12px;
-            border-top: 1px solid rgba(0, 0, 0, 0.04);
-        }
-
-        .empty-state {
-            text-align: center; 
-            margin-top: 100px; 
-            color: var(--text-dim);
+        .item-category {
+            font-size: 10px;
             font-weight: 700;
-            font-family: 'Quicksand', monospace;
-            letter-spacing: 1px;
+            color: var(--primary);
+            letter-spacing: 0.5px;
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 10px; }
+        /* Right Panel: Detail Reading Pane */
+        .detail-panel {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-main);
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            padding: 30px 35px;
+        }
+
+        .detail-empty {
+            margin: auto;
+            text-align: center;
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .detail-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 20px;
+            gap: 15px;
+        }
+
+        .detail-subject {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e1b4b;
+            line-height: 1.3;
+        }
+
+        .detail-actions {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .action-btn {
+            padding: 9px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.25s ease;
+        }
+
+        .action-btn.primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(72, 73, 118, 0.3);
+        }
+
+        .action-btn.primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .action-btn.secondary {
+            background: rgba(255, 255, 255, 0.6);
+            color: var(--text-main);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .action-btn.status-toggle {
+            background: rgba(22, 163, 74, 0.15);
+            color: var(--green);
+            border: 1px solid rgba(22, 163, 74, 0.3);
+        }
+
+        .action-btn.status-toggle:hover {
+            background: var(--green);
+            color: white;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+            background: rgba(255, 255, 255, 0.45);
+            padding: 16px 20px;
+            border-radius: 18px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .meta-label {
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 0.8px;
+        }
+
+        .meta-val {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 24px;
+            flex: 1;
+            font-size: 14px;
+            line-height: 1.7;
+            font-weight: 600;
+            color: var(--text-main);
+            white-space: pre-wrap;
+            overflow-y: auto;
+        }
+
+        /* Toast Alert */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1e1b4b;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 13px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            z-index: 2000;
+            display: none;
+            animation: fadeInUp 0.3s ease forwards;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (max-width: 900px) {
+            .email-app { grid-template-columns: 1fr; height: auto; }
+            .list-panel { height: 350px; }
+            .detail-panel { min-height: 450px; }
+        }
     </style>
 </head>
 <body>
 
+<div class="bg-layer" id="bgLayer"></div>
+<div class="bg-overlay"></div>
+
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='index.html'">
+        <div class="logo-box" onclick="window.location.href='reporta.html'">
             <img src="logoh.png" alt="STRIX">
         </div>
         <div class="nav-right-actions">
+            <button class="nav-btn" onclick="copyLayout()">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                Copy Layout
+            </button>
             <a href="index.html" class="nav-link-item">
                 <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 Home
             </a>
             <div class="nav-divider"></div>
-            <span class="nav-badge-text" id="admin-id">REVIEW REPORTS</span>
+            <span class="nav-badge-text">REPORTS REVIEW PORTAL</span>
         </div>
     </div>
 </nav>
 
-<div class="feed-container" id="reports-feed">
-    <div class="empty-state">SYNCING DATA...</div>
+<div class="container animate-in delay-1">
+    <div class="email-app">
+        <!-- Left Panel: Reports Inbox List -->
+        <div class="list-panel">
+            <div class="list-header">
+                <div class="list-header-top">
+                    <h2>Reports Inbox</h2>
+                    <span id="report-count" style="font-size: 11px; font-weight: 700; color: var(--primary);">0 Total</span>
+                </div>
+                <div class="filter-tabs">
+                    <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+                    <button class="filter-btn" onclick="setFilter('pending', this)">Pending</button>
+                    <button class="filter-btn" onclick="setFilter('resolved', this)">Resolved</button>
+                </div>
+            </div>
+            <div class="reports-list" id="reports-list">
+                <!-- Loaded dynamically -->
+            </div>
+        </div>
+
+        <!-- Right Panel: Report Details -->
+        <div class="detail-panel" id="detail-panel">
+            <div class="detail-empty" id="detail-empty">
+                Select a report from the inbox to review details.
+            </div>
+            <div class="detail-content" id="detail-content" style="display: none;">
+                <div class="detail-header">
+                    <div>
+                        <span class="item-category" id="d-category">Category</span>
+                        <h1 class="detail-subject" id="d-subject">Subject Title</h1>
+                    </div>
+                    <div class="detail-actions">
+                        <button class="action-btn secondary" onclick="copyReporterEmail()" title="Copy email address">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            Reply
+                        </button>
+                        <button class="action-btn status-toggle" id="d-status-btn" onclick="toggleReportStatus()">
+                            Mark Resolved
+                        </button>
+                    </div>
+                </div>
+
+                <div class="meta-grid">
+                    <div class="meta-item">
+                        <span class="meta-label">Reporter Name</span>
+                        <span class="meta-val" id="d-name">--</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Email Address</span>
+                        <span class="meta-val" id="d-email">--</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Submitted On</span>
+                        <span class="meta-val" id="d-date">--</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Current Status</span>
+                        <span class="meta-val" id="d-status">--</span>
+                    </div>
+                </div>
+
+                <div class="message-box" id="d-details">
+                    Message body details...
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="toast" id="toast-msg">Copied to clipboard!</div>
+
+<footer>
+    &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
+</footer>
+
+<script>
+    // Random Background Image Loader
+    const n = Math.floor(Math.random() * 12) + 1;
+    const bgLayer = document.getElementById("bgLayer");
+    const img = new Image();
+    img.src = `bg${n}.png`;
+    img.onload = () => bgLayer.style.backgroundImage = `url('${img.src}')`;
+</script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -262,54 +632,232 @@
         authDomain: "strix-shop.firebaseapp.com", 
         projectId: "strix-shop" 
     };
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.firestore();
     const auth = firebase.auth();
 
+    let allReports = [];
+    let currentFilter = 'all';
+    let selectedReport = null;
+    let currentAdminDoc = null;
+
     auth.onAuthStateChanged(async (user) => {
-        if (!user) { window.location.href = "signin.html"; return; }
+        if (!user) { 
+            window.location.href = "signin.html"; 
+            return; 
+        }
 
-        const userDoc = await db.collection("users").doc(user.uid).get();
-        const isAdmin = user.uid === "PNssYZn1wNUGjmzeAq1eHz2QHKf1";
+        try {
+            const userDoc = await db.collection("users").doc(user.uid).get();
+            const isMaster = user.uid === "PNssYZn1wNUGjmzeAq1eHz2QHKf1";
+            
+            if (userDoc.exists) {
+                currentAdminDoc = userDoc.data();
+            }
 
-        if (userDoc.exists && (userDoc.data().acc === "admin" || isAdmin)) {
-            listenToReports();
-        } else {
-            alert("ACCESS DENIED");
-            window.location.href = "index.html";
+            const isAdmin = isMaster || (currentAdminDoc && ["admin", "agent"].includes(currentAdminDoc.acc));
+
+            if (isAdmin) {
+                listenToReports();
+            } else {
+                alert("Access Denied: Admin privileges required.");
+                window.location.href = "index.html";
+            }
+        } catch (e) {
+            console.error("Auth verify error:", e);
         }
     });
 
-    // 2. LIVE FEED LISTENER
     function listenToReports() {
         db.collection("reports").orderBy("timestamp", "desc").onSnapshot(snap => {
-            const feed = document.getElementById('reports-feed');
-            feed.innerHTML = '';
+            allReports = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            document.getElementById('report-count').innerText = `${allReports.length} Total`;
+            renderReportsList();
 
-            if (snap.empty) {
-                feed.innerHTML = '<div class="empty-state">NO CURRENT REPORTS IN DATABASE.</div>';
-                return;
+            // Maintain current open item selection if updating
+            if (selectedReport) {
+                const updated = allReports.find(r => r.id === selectedReport.id);
+                if (updated) {
+                    selectReport(updated);
+                }
             }
-
-            snap.forEach(doc => {
-                const data = doc.data();
-                const time = data.timestamp ? data.timestamp.toDate().toLocaleString() : 'Just now';
-                
-                const packet = document.createElement('div');
-                packet.className = 'report-packet';
-                packet.innerHTML = `
-                    <div class="packet-dot"></div>
-                    <div class="packet-header">
-                        <span class="category-tag">${data.category}</span>
-                        <span class="timestamp">${time}</span>
-                    </div>
-                    <div class="subject">${data.subject}</div>
-                    <div class="details">${data.details}</div>
-                    <div class="reporter-info">SOURCE: ${data.email} // ID: ${data.uid.substring(0,12)}</div>
-                `;
-                feed.appendChild(packet);
-            });
         });
+    }
+
+    function setFilter(filter, btn) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderReportsList();
+    }
+
+    function renderReportsList() {
+        const listContainer = document.getElementById('reports-list');
+        listContainer.innerHTML = '';
+
+        const filtered = allReports.filter(r => {
+            const status = (r.status || 'pending').toLowerCase();
+            if (currentFilter === 'all') return true;
+            return status === currentFilter;
+        });
+
+        if (filtered.length === 0) {
+            listContainer.innerHTML = '<div style="padding:30px; text-align:center; font-size:12px; font-weight:700; color:var(--text-dim);">No reports found.</div>';
+            return;
+        }
+
+        filtered.forEach(report => {
+            const isPending = (report.status || 'pending').toLowerCase() === 'pending';
+            const item = document.createElement('div');
+            item.className = `report-item ${selectedReport && selectedReport.id === report.id ? 'active' : ''}`;
+            item.onclick = () => selectReport(report);
+
+            item.innerHTML = `
+                <div class="item-top">
+                    <span class="item-name">${escapeHtml(report.name || 'Anonymous')}</span>
+                    <span class="status-badge ${isPending ? 'pending' : 'resolved'}">${isPending ? 'Unresolved' : 'Resolved'}</span>
+                </div>
+                <div class="item-subject">${escapeHtml(report.subject || 'No Subject')}</div>
+                <div class="item-category">${escapeHtml(report.category || 'General')}</div>
+            `;
+            listContainer.appendChild(item);
+        });
+    }
+
+    function selectReport(report) {
+        selectedReport = report;
+        renderReportsList();
+
+        document.getElementById('detail-empty').style.display = 'none';
+        document.getElementById('detail-content').style.display = 'flex';
+
+        const isPending = (report.status || 'pending').toLowerCase() === 'pending';
+
+        document.getElementById('d-subject').innerText = report.subject || 'No Subject';
+        document.getElementById('d-category').innerText = report.category || 'General';
+        document.getElementById('d-name').innerText = report.name || 'N/A';
+        document.getElementById('d-email').innerText = report.email || 'N/A';
+        document.getElementById('d-details').innerText = report.details || 'No detailed message provided.';
+        
+        const dateStr = report.timestamp && report.timestamp.toDate ? report.timestamp.toDate().toLocaleString() : 'Just now';
+        document.getElementById('d-date').innerText = dateStr;
+
+        const statusEl = document.getElementById('d-status');
+        statusEl.innerText = isPending ? 'Unresolved (Pending)' : 'Resolved';
+        statusEl.style.color = isPending ? 'var(--red)' : 'var(--green)';
+
+        const statusBtn = document.getElementById('d-status-btn');
+        statusBtn.innerText = isPending ? 'Mark as Resolved' : 'Reopen Case';
+        statusBtn.style.background = isPending ? 'rgba(22, 163, 74, 0.15)' : 'rgba(220, 38, 38, 0.15)';
+        statusBtn.style.color = isPending ? 'var(--green)' : 'var(--red)';
+        statusBtn.style.borderColor = isPending ? 'rgba(22, 163, 74, 0.3)' : 'rgba(220, 38, 38, 0.3)';
+    }
+
+    async function toggleReportStatus() {
+        if (!selectedReport) return;
+        const currentStatus = (selectedReport.status || 'pending').toLowerCase();
+        const newStatus = currentStatus === 'pending' ? 'Resolved' : 'pending';
+
+        try {
+            await db.collection("reports").doc(selectedReport.id).update({ status: newStatus });
+            showToast(`Report marked as ${newStatus === 'Resolved' ? 'Resolved' : 'Unresolved'}`);
+        } catch (e) {
+            alert("Error updating status: " + e.message);
+        }
+    }
+
+    function copyReporterEmail() {
+        if (!selectedReport || !selectedReport.email) {
+            alert("No email address available to copy.");
+            return;
+        }
+        navigator.clipboard.writeText(selectedReport.email).then(() => {
+            showToast(`Copied ${selectedReport.email} to clipboard!`);
+        });
+    }
+
+    function copyLayout() {
+        const user = auth.currentUser;
+        
+        // Parse Customer Name
+        let custFirstName = "Customer";
+        let custLastName = "";
+
+        if (selectedReport && selectedReport.name) {
+            const parts = selectedReport.name.trim().split(" ");
+            custFirstName = parts[0] || "Customer";
+            if (parts.length > 1) {
+                custLastName = parts.slice(1).join(" ");
+            }
+        }
+
+        const custFullNameStr = custLastName ? `${custFirstName} ${custLastName}` : custFirstName;
+
+        // Parse Admin Name
+        let adminFirstName = "Admin";
+        let adminLastName = "";
+
+        if (currentAdminDoc) {
+            adminFirstName = currentAdminDoc.firstName || currentAdminDoc.fname || "Admin";
+            adminLastName = currentAdminDoc.lastName || currentAdminDoc.lname || "";
+        } else if (user && user.displayName) {
+            const aParts = user.displayName.trim().split(" ");
+            adminFirstName = aParts[0] || "Admin";
+            if (aParts.length > 1) adminLastName = aParts.slice(1).join(" ");
+        }
+
+        const adminFullNameStr = adminLastName ? `${adminFirstName} ${adminLastName}` : adminFirstName;
+
+        // Fetch Title from Firestore document
+        let adminTitle = "Support Representative";
+        if (currentAdminDoc) {
+            if (currentAdminDoc.title) {
+                adminTitle = currentAdminDoc.title;
+            } else if (currentAdminDoc.acc) {
+                adminTitle = currentAdminDoc.acc.charAt(0).toUpperCase() + currentAdminDoc.acc.slice(1);
+            }
+        }
+
+        // Format Date: e.g. 28 November, 2011
+        const now = new Date();
+        const day = now.getDate();
+        const month = now.toLocaleString('en-US', { month: 'long' });
+        const year = now.getFullYear();
+        const dateStr = `${day} ${month}, ${year}`;
+
+        const template = `Dear ${custFullNameStr},
+
+I hope this message finds you well.
+
+This is ${adminFirstName} from Strix Shop and
+
+Best Regards,
+${adminFullNameStr}
+${adminTitle}
+strixshop28.com
+${dateStr}`;
+
+        navigator.clipboard.writeText(template).then(() => {
+            showToast("Email layout template copied to clipboard!");
+        }).catch(e => {
+            console.error("Clipboard error:", e);
+            alert("Could not copy automatically. Here is the template:\n\n" + template);
+        });
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast-msg');
+        toast.innerText = msg;
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 3000);
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 </script>
 </body>
