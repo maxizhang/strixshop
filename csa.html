@@ -7,43 +7,46 @@
     <link rel="icon" type="image/png" href="spfd.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #484976;
+            --primary-hover: #5d6c8d;
             --surface: rgba(255, 255, 255, 0.28);
             --surface-hover: rgba(255, 255, 255, 0.38);
-            --surface-card: rgba(255, 255, 255, 0.5);
             --text-main: #0f172a;
             --text-dim: #475569;
             --border: rgba(255, 255, 255, 0.6);
-            --glass-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-            --user-bubble: #484976;
-            --admin-bubble: rgba(255, 255, 255, 0.9);
+            --border-subtle: rgba(226, 232, 240, 0.5);
+            --glass-shadow: 0 15px 35px rgba(0, 0, 0, 0.06), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --radius-main: 24px;
+            --green: #16a34a;
+            --red: #dc2626;
             --star-gold: #fbbf24;
-            --error: #ef4444;
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: 'Quicksand', sans-serif; 
-        }
-
-        body {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             font-family: 'Quicksand', sans-serif;
-            color: var(--text-main);
-            height: 100vh;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        body { 
+            font-family: 'Quicksand', sans-serif; 
+            color: var(--text-main); 
+            height: 100vh; 
             display: none;
             flex-direction: column;
             overflow: hidden;
-            line-height: 1.45;
+            line-height: 1.5;
             position: relative;
         }
 
-        body.authorized { 
-            display: flex; 
+        body.authorized {
+            display: flex;
         }
 
         /* Background Layer */
@@ -64,12 +67,30 @@
             z-index: -1;
         }
 
-        /* Professional Navbar */
+        /* Entrance Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        /* Navigation Bar */
         nav {
             background: rgba(0, 0, 0, 0.75);
-            height: 50px;
+            height: 60px;
             width: 100%;
-            flex-shrink: 0;
+            position: sticky;
+            top: 0;
             z-index: 1000;
 
 
@@ -81,13 +102,15 @@
         .nav-main {
             display: flex;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 5%;
             justify-content: space-between;
             width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .logo-box img {
-            height: 24px;
+            height: 28px;
             cursor: pointer;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
             transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -100,17 +123,17 @@
         .nav-right-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 24px;
         }
 
         .nav-link-item {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
             color: #cbd5e1;
             text-decoration: none;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 13px;
             transition: color 0.25s ease;
         }
 
@@ -129,101 +152,103 @@
 
         .nav-divider {
             width: 1px;
-            height: 16px;
+            height: 20px;
             background: rgba(255, 255, 255, 0.15);
         }
 
         .nav-badge-text {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
             color: #94a3b8;
             letter-spacing: 0.5px;
         }
 
-        /* App Layout Grid (12 Columns) */
-        .app-layout {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            flex: 1;
-            width: 100%;
-            height: calc(100vh - 50px);
-            overflow: hidden;
+        /* Maximized Space Container */
+        .container {
             position: relative;
+            z-index: 10;
+            width: 100%;
+            height: calc(100vh - 60px);
+            padding: 12px 20px 16px 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Full-Height App Grid Layout */
+        .email-app {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 14px;
+            width: 100%;
+            height: 100%;
+            min-height: 0;
+        }
+
+        /* Left Panel: Customer List */
+        .list-panel {
             background: var(--surface);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
-        }
-
-        /* Sidebar Column (3 of 12) */
-        .sidebar {
-            grid-column: span 3;
-            background: rgba(255, 255, 255, 0.45);
-            border-right: 1px solid var(--border);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-main);
+            box-shadow: var(--glass-shadow);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
             height: 100%;
-            overflow-y: auto;
-            z-index: 20;
-            transition: transform 0.3s ease;
         }
 
-        .sidebar-header {
+        .list-header {
             padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-            text-align: center;
-            flex-shrink: 0;
+            border-bottom: 1px solid var(--border-subtle);
             background: rgba(255, 255, 255, 0.3);
-            position: sticky;
-            top: 0;
-
-            z-index: 5;
+            flex-shrink: 0;
         }
 
-        .nav-title {
-            font-weight: 700; 
-            font-size: 11px; 
-            color: var(--primary); 
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+        .list-header h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1e1b4b;
         }
 
-        .user-list { 
-            padding: 8px; 
+        .user-list {
+            flex: 1;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
+            padding: 8px;
             gap: 4px;
+            min-height: 0;
         }
 
         .user-item {
-            display: flex; 
-            align-items: center; 
-            gap: 10px;
-            padding: 8px 12px; 
-            border-radius: 10px; 
+            padding: 10px 12px;
+            border-radius: 12px;
             cursor: pointer;
-            transition: all 0.2s ease; 
-            border: 1px solid transparent; 
-            background: rgba(255, 255, 255, 0.4);
-            position: relative;
-            height: 48px;
+            transition: all 0.2s ease;
+            border-left: 3.5px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.35);
             flex-shrink: 0;
         }
 
-        .user-item:hover { 
-            background: rgba(255, 255, 255, 0.85);
-            border-color: rgba(72, 73, 118, 0.2);
+        .user-item:hover {
+            background: var(--surface-hover);
         }
 
         .user-item.active-chat {
-            border: 1px solid var(--primary);
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 4px 12px rgba(72, 73, 118, 0.1);
+            background: rgba(255, 255, 255, 0.75);
+            border-left-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(72, 73, 118, 0.08);
         }
 
         .user-pfp { 
-            width: 30px; 
-            height: 30px; 
-            border-radius: 8px; 
+            width: 32px; 
+            height: 32px; 
+            border-radius: 9px; 
             background-color: #1a202c; 
             background-size: cover; 
             background-position: center; 
@@ -238,105 +263,78 @@
 
         .user-info .name { 
             font-weight: 700; 
-            font-size: 12px; 
+            font-size: 12.5px; 
             display: flex;
             align-items: center;
-            color: var(--text-main);
+            color: #1e1b4b;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .admin-badge {
-            font-size: 9px;
+            font-size: 8.5px;
             background: var(--primary);
             color: #ffffff;
             padding: 1px 5px;
             border-radius: 4px;
             margin-left: 5px;
-            text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 800;
         }
 
         .notif-badge {
-            background: var(--error);
+            background: var(--red);
             color: white;
             font-size: 10px;
             font-weight: 800;
-            padding: 1px 6px;
+            padding: 2px 6px;
             border-radius: 10px;
-            min-width: 18px;
+            min-width: 16px;
             text-align: center;
-            box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+            box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
             flex-shrink: 0;
         }
 
-        /* Main Chat Column (9 of 12) */
-        .main-chat { 
-            grid-column: span 9;
-            display: flex; 
-            flex-direction: column; 
-            height: 100%;
+        /* Right Panel: Detail / Chat Area */
+        .detail-panel {
+            background: var(--surface);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-main);
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
-            z-index: 10; 
-            background: rgba(255, 255, 255, 0.15); 
+            height: 100%;
+            min-height: 0;
+            position: relative;
         }
 
-        .placeholder { 
-            flex: 1; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: var(--text-dim); 
-            letter-spacing: 0.5px; 
-            font-weight: 700;
-            font-size: 13px;
+        .detail-empty {
+            margin: auto;
             text-align: center;
-            padding: 0 20px;
+            color: var(--text-dim);
+            font-weight: 600;
+            font-size: 13.5px;
         }
 
         .chat-header {
-            padding: 10px 16px;
-            border-bottom: 1px solid var(--border);
-            display: none;
+            display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.4);
-
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+            background: rgba(255, 255, 255, 0.3);
             flex-shrink: 0;
-        }
-
-        /* Mobile Drawer Toggle Button */
-        .sidebar-toggle-btn {
-            display: none;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .sidebar-overlay {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 15;
+            gap: 12px;
         }
 
         .chat-header-info { 
             font-weight: 700; 
             font-size: 13px;
-            color: var(--text-main); 
-            letter-spacing: 0.3px;
+            color: #1e1b4b; 
             display: flex;
             align-items: baseline;
             gap: 8px;
@@ -344,46 +342,50 @@
         }
         
         .chat-header-email {
-            font-size: 11px;
+            font-size: 11.5px;
             font-weight: 600;
             color: var(--text-dim);
         }
 
-        .clear-btn {
-            background: transparent;
-            border: 1px solid var(--error);
-            color: var(--error);
-            padding: 4px 10px;
+        .action-btn {
+            padding: 6px 12px;
             border-radius: 8px;
-            font-size: 10px;
             font-weight: 700;
+            font-size: 11px;
             cursor: pointer;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
         }
 
-        .clear-btn:hover { 
-            background: var(--error); 
-            color: white; 
+        .action-btn.danger {
+            background: rgba(220, 38, 38, 0.12);
+            color: var(--red);
+            border: 1px solid rgba(220, 38, 38, 0.25);
+        }
+
+        .action-btn.danger:hover {
+            background: var(--red);
+            color: white;
         }
 
         #messages-container {
-            flex: 1; 
-            padding: 16px 20px; 
-            overflow-y: auto; 
-            display: none; 
-            flex-direction: column; 
+            flex: 1;
+            padding: 16px 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
             gap: 10px;
             min-height: 0;
-            position: relative;
         }
 
         .date-divider {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 12px 0;
+            margin: 8px 0;
             position: relative;
             width: 100%;
             flex-shrink: 0;
@@ -396,21 +398,19 @@
             right: 0; 
             top: 50%;
             height: 1px;
-            background: var(--border);
+            background: var(--border-subtle);
             z-index: 1;
         }
 
         .date-divider span {
             position: relative;
             z-index: 2;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid var(--border-subtle);
             color: var(--text-dim);
-            font-size: 10px;
-            font-family: 'Quicksand', sans-serif;
+            font-size: 9.5px;
             padding: 2px 10px;
-            border-radius: 12px;
-            text-transform: uppercase;
+            border-radius: 10px;
             letter-spacing: 0.5px;
             font-weight: 700;
         }
@@ -419,8 +419,8 @@
             display: flex; 
             gap: 8px; 
             align-items: flex-start;
-            margin-bottom: 4px; 
-            max-width: 70%; 
+            margin-bottom: 2px; 
+            max-width: 72%; 
             flex-shrink: 0;
         }
 
@@ -451,7 +451,7 @@
         .msg-user .bubble-wrap { align-items: flex-start; }
 
         .sender-name-tag { 
-            font-size: 10px; 
+            font-size: 9.5px; 
             font-weight: 700; 
             color: var(--text-dim); 
             margin-bottom: 2px; 
@@ -461,24 +461,25 @@
         .bubble { 
             padding: 10px 14px; 
             border-radius: 14px; 
-            font-size: 13px; 
-            line-height: 1.4; 
+            font-size: 12.5px; 
+            line-height: 1.45; 
             font-weight: 600;
+            border: 1px solid var(--border-subtle);
         }
 
         .msg-admin .bubble { 
-            background: var(--user-bubble); 
+            background: var(--primary); 
             color: #ffffff; 
             border-top-right-radius: 4px; 
+            border-color: transparent;
             box-shadow: 0 4px 12px rgba(72, 73, 118, 0.15);
         }
 
         .msg-user .bubble { 
-            background: var(--admin-bubble); 
+            background: rgba(255, 255, 255, 0.7); 
             color: var(--text-main); 
-            border: 1px solid var(--border); 
             border-top-left-radius: 4px; 
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            backdrop-filter: blur(10px);
         }
 
         .bubble img {
@@ -489,54 +490,58 @@
             cursor: pointer;
             margin-top: 6px;
             object-fit: cover;
-            border: none;
+            border: 1px solid var(--border-subtle);
         }
 
         .chat-product-box {
             display: flex;
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid var(--border-subtle);
             border-radius: 10px;
             padding: 8px;
             margin-bottom: 6px;
             align-items: center;
             gap: 10px;
             width: 100%;
-            min-width: 220px;
+            min-width: 200px;
         }
+
         .chat-product-img {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             object-fit: cover;
             border-radius: 6px;
             background: #fff;
-            border: 1px solid var(--border);
+            border: 1px solid var(--border-subtle);
             flex-shrink: 0;
         }
+
         .chat-product-info {
             display: flex;
             flex-direction: column;
             gap: 1px;
             min-width: 0;
         }
+
         .chat-product-tag {
-            font-size: 8px;
+            font-size: 8.5px;
             font-weight: 800;
-            text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: var(--text-dim);
+            color: var(--primary);
         }
+
         .chat-product-name {
-            font-size: 11px;
-            font-weight: 800;
+            font-size: 11.5px;
+            font-weight: 700;
             color: var(--text-main);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         .chat-product-meta {
-            font-size: 10px;
-            font-weight: 700;
+            font-size: 10.5px;
+            font-weight: 600;
             color: var(--text-dim);
             display: flex;
             gap: 8px;
@@ -548,44 +553,155 @@
             gap: 3px;
             background: rgba(72, 73, 118, 0.1);
             color: var(--primary);
-            padding: 1px 6px;
-            border-radius: 4px;
-            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 5px;
+            font-size: 11.5px;
             font-weight: 700;
             cursor: pointer;
-            border: 1px solid rgba(72, 73, 118, 0.2);
+            border: 1px solid rgba(72, 73, 118, 0.18);
             text-decoration: none;
-            margin: 0 1px;
         }
+
         .chat-order-link:hover {
             background: var(--primary);
             color: #ffffff;
         }
 
-        /* System Automatic Reply Banner Style (Inline Flow) */
+        /* System Reply Banner */
         .system-msg-banner {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 8px auto;
+            margin: 6px auto;
             width: 100%;
             padding: 0 10px;
             flex-shrink: 0;
         }
 
         .system-msg-content {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(72, 73, 118, 0.3);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1.5px dashed rgba(72, 73, 118, 0.3);
             color: var(--primary);
-            font-size: 12px;
-            padding: 12px 18px;
-            border-radius: 14px;
+            font-size: 11.5px;
+            padding: 8px 14px;
+            border-radius: 12px;
             text-align: center;
             font-weight: 700;
             max-width: 480px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            line-height: 1.5;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            line-height: 1.4;
         }
+
+        .rating-card {
+            background: rgba(255, 255, 255, 0.75);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 10px 14px;
+            text-align: center;
+        }
+
+        .rating-stars { 
+            display: flex; 
+            justify-content: center; 
+            gap: 4px; 
+            margin-top: 3px; 
+            font-size: 1.1rem; 
+            color: var(--star-gold); 
+        }
+
+        .time { 
+            font-size: 9.5px; 
+            color: var(--text-dim); 
+            margin-top: 3px; 
+            font-weight: 700;
+        }
+
+        /* Quick Replies Bar */
+        .quick-replies-bar {
+            display: flex;
+            flex-direction: column;
+            padding: 8px 16px;
+            gap: 6px;
+            border-top: 1px solid var(--border-subtle);
+            background: rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
+        }
+
+        .quick-row {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+            align-items: center;
+            padding-bottom: 2px;
+        }
+
+        .quick-btn {
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid var(--border-subtle);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 10.5px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .quick-btn:hover { 
+            background: var(--primary); 
+            color: #ffffff; 
+            border-color: var(--primary);
+        }
+
+        .quick-btn.rating-btn { 
+            border-color: rgba(251, 191, 36, 0.5); 
+            color: #92400e;
+            background: rgba(251, 191, 36, 0.2);
+        }
+
+        .input-area {
+            display: flex; 
+            padding: 10px 16px; 
+            gap: 10px;
+            align-items: center;
+            border-top: 1px solid var(--border-subtle); 
+            background: rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        #msg-input {
+            flex: 1; 
+            padding: 9px 16px; 
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle); 
+            background: rgba(255, 255, 255, 0.75);
+            color: var(--text-main); 
+            outline: none;
+            font-size: 12.5px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        #msg-input::placeholder { color: var(--text-dim); }
+        #msg-input:focus { border-color: var(--primary); background: #ffffff; box-shadow: 0 0 0 3px rgba(72, 73, 118, 0.1); }
+
+        .send-btn {
+            background: var(--primary); 
+            color: #ffffff; 
+            border: none;
+            padding: 0 18px; 
+            height: 38px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-size: 11.5px;
+            font-weight: 700; 
+            box-shadow: 0 3px 12px rgba(72, 73, 118, 0.2);
+            transition: all 0.2s;
+        }
+
+        .send-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
 
         /* Modals */
         .image-modal, .order-popup-modal {
@@ -597,19 +713,23 @@
             width: 100%;
             height: 100%;
             background-color: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
             align-items: center;
             justify-content: center;
         }
+
         .image-modal.active, .order-popup-modal.active {
             display: flex;
         }
+
         .image-modal img {
             max-width: 90%;
             max-height: 90%;
-            border-radius: 12px;
+            border-radius: 14px;
             object-fit: contain;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
         }
+
         .image-modal-close {
             position: absolute;
             top: 20px;
@@ -619,198 +739,76 @@
             font-weight: bold;
             cursor: pointer;
         }
-        .image-modal-close:hover { color: var(--error); }
 
         .order-popup-content {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
             width: 100%;
-            max-width: 540px;
+            max-width: 520px;
             max-height: 85vh;
-            border-radius: 16px;
-            border: 1px solid var(--border);
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
             display: flex;
             flex-direction: column;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: var(--glass-shadow);
             overflow: hidden;
         }
+
         .order-popup-header {
-            padding: 16px 20px;
-            border-bottom: 1px solid #e2e8f0;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border-subtle);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #f8fafc;
+            background: rgba(255, 255, 255, 0.5);
         }
+
         .order-popup-body {
             padding: 20px;
             overflow-y: auto;
             flex: 1;
-            font-size: 13px;
+            font-size: 12.5px;
         }
+
         .order-popup-footer {
             padding: 12px 20px;
-            border-top: 1px solid #e2e8f0;
+            border-top: 1px solid var(--border-subtle);
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
-            background: #f8fafc;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.5);
         }
+
         .popup-close-x {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             color: var(--text-dim);
             cursor: pointer;
             background: none;
             border: none;
         }
+
         .popup-action-btn {
             background: var(--primary);
             color: white;
             border: none;
             padding: 8px 16px;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11.5px;
             cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .rating-card {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px 14px;
-            text-align: center;
-        }
-        .rating-stars { 
-            display: flex; 
-            justify-content: center; 
-            gap: 4px; 
-            margin-top: 4px; 
-            font-size: 1.1rem; 
-            color: var(--star-gold); 
+        .popup-action-btn:hover {
+            background: var(--primary-hover);
         }
 
-        .time { 
-            font-size: 9px; 
-            color: var(--text-dim); 
-            margin-top: 3px; 
-            font-family: 'Quicksand', sans-serif; 
-            display: block; 
-            font-weight: 700;
-        }
-
-        .quick-replies-bar {
-            display: none;
-            flex-direction: column;
-            padding: 8px 16px;
-            gap: 6px;
-            border-top: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.3);
-            flex-shrink: 0;
-        }
-        .quick-row {
-            display: flex;
-            gap: 6px;
-            overflow-x: auto;
-            align-items: center;
-            padding-bottom: 2px;
-        }
-        .quick-btn {
-            background: rgba(255, 255, 255, 0.6);
-            border: 1px solid var(--border);
-            color: var(--primary);
-            padding: 4px 10px;
-            border-radius: 14px;
-            font-size: 11px;
-            font-weight: 700;
-            max-height: 26px;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-        .quick-btn:hover { 
-            background: var(--primary); 
-            color: #ffffff; 
-            border-color: var(--primary);
-        }
-        .quick-btn.rating-btn { 
-            border-color: var(--star-gold); 
-            color: #92400e;
-            background: rgba(251, 191, 36, 0.2);
-        }
-
-        .input-area {
-            display: none; 
-            padding: 10px 20px; 
-            gap: 10px;
-            align-items: center;
-            border-top: 1px solid var(--border); 
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(20px);
-            flex-shrink: 0;
-        }
-        #msg-input {
-            flex: 1; 
-            padding: 9px 16px; 
-            border-radius: 24px;
-            border: 1px solid var(--border); 
-            background: rgba(255, 255, 255, 0.6);
-            color: var(--text-main); 
-            outline: none;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        #msg-input::placeholder { color: var(--text-dim); }
-        #msg-input:focus { border-color: var(--primary); background: rgba(255, 255, 255, 0.9); }
-
-        .send-btn {
-            background: var(--primary); 
-            color: #ffffff; 
-            border: none;
-            padding: 0 18px; 
-            height: 38px; 
-            border-radius: 24px; 
-            cursor: pointer; 
-            font-size: 12px;
-            font-weight: 700; 
-            box-shadow: 0 2px 8px rgba(72, 73, 118, 0.25);
-        }
-        .send-btn:hover { opacity: 0.9; }
-
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.15); border-radius: 8px; }
-
-        /* Mobile Responsive Rules */
         @media (max-width: 900px) {
-            .app-layout {
-                display: flex;
-                flex-direction: column;
-            }
-            .sidebar {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 260px;
-                height: 100%;
-                transform: translateX(-100%);
-                box-shadow: 4px 0 20px rgba(0,0,0,0.15);
-                z-index: 100;
-            }
-            .sidebar.mobile-open {
-                transform: translateX(0);
-            }
-            .sidebar-overlay.active {
-                display: block;
-            }
-            .sidebar-toggle-btn {
-                display: inline-flex;
-            }
-            .main-chat {
-                width: 100%;
-                flex: 1;
-            }
+            .email-app { grid-template-columns: 1fr; }
+            .list-panel { height: 260px; flex-shrink: 0; }
+            body { height: auto; overflow: auto; }
+            .container { height: auto; overflow: visible; }
         }
     </style>
 </head>
@@ -821,75 +819,75 @@
 
 <nav>
     <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='index.html'"><img src="logoh.png" alt="STRIX"></div>
+        <div class="logo-box" onclick="window.location.href='index.html'">
+            <img src="logoh.png" alt="STRIX">
+        </div>
         <div class="nav-right-actions">
             <a href="index.html" class="nav-link-item">
-                <svg width="14" height="14" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                 Home
             </a>
             <div class="nav-divider"></div>
-            <span class="nav-badge-text">ADMIN SUPPORT</span>
+            <span class="nav-badge-text">Admin Support</span>
         </div>
     </div>
 </nav>
 
-<div class="app-layout">
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    
-    <!-- Sidebar Column (3 of 12) -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <div class="nav-title">Customer Support</div>
+<div class="container animate-in">
+    <div class="email-app">
+        <!-- Left Panel: Customer List -->
+        <div class="list-panel">
+            <div class="list-header">
+                <h2>Conversations</h2>
+            </div>
+            <div class="user-list" id="user-list">
+                <!-- User items rendered dynamically -->
+            </div>
         </div>
-        <div class="user-list" id="user-list"></div>
-    </div>
 
-    <!-- Main Chat Column (9 of 12) -->
-    <div class="main-chat">
-        <div class="placeholder" id="placeholder">Select a Customer or Admin to start...</div>
-        
-        <div class="chat-header" id="chat-header">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <button class="sidebar-toggle-btn" id="sidebarToggleBtn">
-                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-                    Chats
-                </button>
+        <!-- Right Panel: Main Support Desk -->
+        <div class="detail-panel" id="detail-panel">
+            <div class="detail-empty" id="placeholder">
+                Select a customer conversation from the list to start assisting.
+            </div>
+            
+            <div class="chat-header" id="chat-header" style="display: none;">
                 <div class="chat-header-info">
-                    <span>Chatting with: <span id="chat-name">User</span></span>
+                    <span>Assisting: <span id="chat-name">User</span></span>
                     <span class="chat-header-email" id="chat-email"></span>
                 </div>
+                <button class="action-btn danger" id="clear-chat-trigger">Delete Records</button>
             </div>
-            <button class="clear-btn" id="clear-chat-trigger">Delete Records</button>
+
+            <div id="messages-container" style="display: none;"></div>
+
+            <div class="quick-replies-bar" id="quick-replies" style="display: none;">
+                <div class="quick-row">
+                    <button class="quick-btn" data-msg="Hello! Welcome to Strix Shop's Customer Support. How may I assist you today?">Greeting</button>
+                    <button class="quick-btn" data-msg="Could you please describe your situation in detail, please?">Describe Issue</button>
+                    <button class="quick-btn" data-msg="What questions do you have about this product?">Inquire Product?</button>
+                    <button class="quick-btn" data-msg="What questions do you have about this order? Would you like a printed receipt?">Inquire Order?</button>
+                    <button class="quick-btn" data-msg="To verify your identity, would you please provide your first and last name, along with your grade level, please?">Verify Account</button>
+                    <button class="quick-btn" data-msg="A confirmation email should've been sent to your email address after your order was placed. Could you please provide the Order ID Number in that email? It is also available in the myorders page. Thank you.">Ask Order#</button>
+                    <button class="quick-btn" data-msg="Thank you. Please wait one moment while I verify the information and/or check your order.">Checking</button>
+                    <button class="quick-btn" data-msg="Thank you for reaching out! Your issue is currently being processed. We will send you an email once your situation is resolved, or you can check back here later too.">Processing</button>
+                </div>
+                <div class="quick-row">
+                    <button class="quick-btn" data-msg="We sincerely apologize for the inconvenience this may have caused you.">Apologize</button>
+                    <button class="quick-btn" data-msg="Would you like a free 10% off voucher?">10% Off</button>
+                    <button class="quick-btn" data-msg="Unfortunately, I am unable to solve your problem. Let me ask another agent to assist you.">Escalate Agent</button>
+                    <button class="quick-btn" data-msg="Is there anything else I can help you with today?">Follow Up</button>
+                    <button class="quick-btn" data-msg="I’m really sorry your experience didn't meet your expectations. We'd love to know how we can improve, or if you prefer, you can submit a formal report so we can make things right.">Low Rating Reply</button>
+                    <button class="quick-btn" data-msg="Thank you for choosing Strix Shop. I hoped you enjoyed your experience. If you have any questions, feel free to contact us. Have a great day!">Closing</button>
+                    <button class="quick-btn rating-btn" id="send-rating-request">Send Rating Prompt</button>
+                </div>
+            </div>
+
+            <form class="input-area" id="chat-form" style="display: none;">
+                <input id="msg-input" placeholder="Type here..." autocomplete="off">
+                <button type="submit" class="send-btn">SEND</button>
+            </form>
         </div>
-
-        <div id="messages-container"></div>
-
-        <div class="quick-replies-bar" id="quick-replies">
-            <div class="quick-row">
-                <button class="quick-btn" data-msg="Hello! Welcome to Strix Shop's Customer Support. How may I assist you today?">Greeting</button>
-                <button class="quick-btn" data-msg="Could you please describe your situation in detail, please?">Describe Issue</button>
-                <button class="quick-btn" data-msg="What questions do you have about this product?">Inquire Product?</button>
-                <button class="quick-btn" data-msg="What questions do you have about this order? Would you like a printed receipt?">Inquire Order?</button>
-                <button class="quick-btn" data-msg="To verify your identity, would you please provide your first and last name, along with your grade level, please?">Verify Account</button>
-                <button class="quick-btn" data-msg="A confirmation email should've been sent to your email address after your order was placed. Could you please provide the Order ID Number in that email? It is also available in the myorders page. Thank you.">Ask Order#</button>
-                <button class="quick-btn" data-msg="Thank you. Please wait one moment while I verify the information and/or check your order.">Checking</button>
-                <button class="quick-btn" data-msg="Thank you for reaching out! Your issue is currently being processed. We will send you an email once your situation is resolved, or you can check back here later too.">Processing</button>
-            </div>
-            <div class="quick-row">
-                <button class="quick-btn" data-msg="We sincerely apologize for the inconvenience this may have caused you.">Apologize</button>
-                <button class="quick-btn" data-msg="Would you like a free 10% off voucher?">10% Off</button>
-                <button class="quick-btn" data-msg="Unfortunately, I am unable to solve your problem. Let me ask another agent to assist you.">Escalate Agent</button>
-                <button class="quick-btn" data-msg="Is there anything  else I can help you with today?">Follow Up</button>
-                <button class="quick-btn" data-msg="I’m really sorry your experience didn't meet your expectations. We'd love to know how we can improve, or if you prefer, you can submit a formal report so we can make things right.">Low Rating Reply</button>
-                <button class="quick-btn" data-msg="Thank you for choosing Strix Shop. I hoped you enjoyed your experience. If you have any questions, feel free to contact us. Have a great day!">Closing</button>
-                <button class="quick-btn rating-btn" id="send-rating-request">Send Rating Prompt</button>
-            </div>
-        </div>
-
-        <form class="input-area" id="chat-form">
-            <input id="msg-input" placeholder="Type transmission..." autocomplete="off">
-            <button type="submit" class="send-btn">SEND</button>
-        </form>
     </div>
 </div>
 
@@ -903,7 +901,7 @@
 <div class="order-popup-modal" id="orderPopupModal">
     <div class="order-popup-content">
         <div class="order-popup-header">
-            <h3 style="font-size: 0.9rem; color: #1e1b4b; font-weight: 700;">Order Details Preview</h3>
+            <h3 style="font-size: 14px; color: #1e1b4b; font-weight: 700;">Order Details Preview</h3>
             <button class="popup-close-x" id="orderModalClose">&times;</button>
         </div>
         <div class="order-popup-body" id="orderPopupBody">
@@ -957,24 +955,6 @@
     const goToTrackerBtn = document.getElementById('goToTrackerBtn');
     let selectedPopupOrderId = null;
 
-    // Mobile Sidebar Drawer Elements
-    const sidebar = document.getElementById('sidebar');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-
-    function toggleSidebar(forceClose = false) {
-        if (forceClose) {
-            sidebar.classList.remove('mobile-open');
-            sidebarOverlay.classList.remove('active');
-        } else {
-            sidebar.classList.toggle('mobile-open');
-            sidebarOverlay.classList.toggle('active');
-        }
-    }
-
-    sidebarToggleBtn.onclick = () => toggleSidebar();
-    sidebarOverlay.onclick = () => toggleSidebar(true);
-
     function openLightbox(imgSrc) {
         modalImage.src = imgSrc;
         imageModal.classList.add('active');
@@ -991,7 +971,7 @@
         try {
             const orderDoc = await db.collection("orders").doc(orderId).get();
             if (!orderDoc.exists) {
-                orderPopupBody.innerHTML = `<div style="text-align:center; padding:15px; color:var(--error); font-weight:700;">Order ID not found in database.</div>`;
+                orderPopupBody.innerHTML = `<div style="text-align:center; padding:15px; color:var(--red); font-weight:700;">Order ID not found in database.</div>`;
                 return;
             }
 
@@ -1004,7 +984,7 @@
                     const itemTotal = parseFloat(i.price || 0) * (i.qty || 1);
                     calculatedSubtotal += itemTotal;
                     return `
-                        <div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #f1f5f9; font-size:12px;">
+                        <div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid rgba(226, 232, 240, 0.7); font-size:12px;">
                             <div><b>${i.name}</b> (Qty: ${i.qty || 1})</div>
                             <div>$${itemTotal.toFixed(2)}</div>
                         </div>
@@ -1027,14 +1007,14 @@
                 }).join('');
 
                 discountHtml = `
-                    <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:8px 10px; border-radius:8px; margin-bottom:10px;">
+                    <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:8px 10px; border-radius:10px; margin-bottom:10px;">
                         <div style="font-weight:700; color:#166534; text-transform:uppercase; font-size:10px; letter-spacing:0.5px; margin-bottom:2px;">Discounts Applied</div>
                         ${discountItems}
                     </div>
                 `;
             } else {
                 discountHtml = `
-                    <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:8px 10px; border-radius:8px; margin-bottom:10px; font-size:12px; color:var(--text-dim);">
+                    <div style="background:rgba(255, 255, 255, 0.5); border:1px solid var(--border-subtle); padding:8px 10px; border-radius:10px; margin-bottom:10px; font-size:12px; color:var(--text-dim);">
                         <b>Discounts:</b> None
                     </div>
                 `;
@@ -1044,23 +1024,23 @@
 
             orderPopupBody.innerHTML = `
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px; font-size:12px;">
-                    <div style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;"><b>Order ID:</b><br><span style="font-size:11px;">${orderId}</span></div>
-                    <div style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;"><b>Status:</b><br>${data.status || 'Placed'}</div>
-                    <div style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;"><b>Customer:</b><br>${data.customer || '---'}</div>
-                    <div style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;"><b>Email:</b><br>${data.email || '---'}</div>
-                    <div style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;"><b>Grade / Room:</b><br>${data.grade || '---'} / ${data.homeroom || '---'}</div>
-                    <div style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;">
+                    <div style="background:rgba(255, 255, 255, 0.5); padding:8px 10px; border-radius:10px; border:1px solid var(--border-subtle);"><b>Order ID:</b><br><span style="font-size:11px;">${orderId}</span></div>
+                    <div style="background:rgba(255, 255, 255, 0.5); padding:8px 10px; border-radius:10px; border:1px solid var(--border-subtle);"><b>Status:</b><br>${data.status || 'Placed'}</div>
+                    <div style="background:rgba(255, 255, 255, 0.5); padding:8px 10px; border-radius:10px; border:1px solid var(--border-subtle);"><b>Customer:</b><br>${data.customer || '---'}</div>
+                    <div style="background:rgba(255, 255, 255, 0.5); padding:8px 10px; border-radius:10px; border:1px solid var(--border-subtle);"><b>Email:</b><br>${data.email || '---'}</div>
+                    <div style="background:rgba(255, 255, 255, 0.5); padding:8px 10px; border-radius:10px; border:1px solid var(--border-subtle);"><b>Grade / Room:</b><br>${data.grade || '---'} / ${data.homeroom || '---'}</div>
+                    <div style="background:rgba(255, 255, 255, 0.5); padding:8px 10px; border-radius:10px; border:1px solid var(--border-subtle);">
                         <b>Subtotal:</b> $${calculatedSubtotal.toFixed(2)}<br>
                         <b>Total:</b> <span style="color:var(--primary); font-weight:700;">$${finalCalculatedTotal.toFixed(2)}</span>
                     </div>
                 </div>
                 ${discountHtml}
                 <div style="font-weight:700; margin-bottom:4px; color:#1e1b4b; text-transform:uppercase; font-size:10px; letter-spacing:0.5px;">Ordered Items</div>
-                <div style="background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;">${itemsHtml || 'No items listed.'}</div>
+                <div style="background:rgba(255, 255, 255, 0.5); padding:8px 10px; border-radius:10px; border:1px solid var(--border-subtle);">${itemsHtml || 'No items listed.'}</div>
             `;
         } catch (err) {
             console.error(err);
-            orderPopupBody.innerHTML = `<div style="text-align:center; padding:15px; color:var(--error); font-weight:700;">Failed to load order info.</div>`;
+            orderPopupBody.innerHTML = `<div style="text-align:center; padding:15px; color:var(--red); font-weight:700;">Failed to load order info.</div>`;
         }
     }
 
@@ -1200,10 +1180,6 @@
                         activeUserElement = div;
 
                         openChat(u.id, u.name, u.email);
-
-                        if (window.innerWidth <= 900) {
-                            toggleSidebar(true);
-                        }
                     };
 
                     list.appendChild(div);
@@ -1368,9 +1344,9 @@
 
                     contentHTML = `
                         <div class="rating-card">
-                            <div style="font-size:11px; font-weight:700;">${formattedText}</div>
+                            <div style="font-size:11.5px; font-weight:700;">${formattedText}</div>
                             <div class="rating-stars">${starsHTML}</div>
-                            ${rating > 0 ? `<div style="font-size:10px; color:var(--text-dim); margin-top:2px;">Rated: ${rating}/5</div>` : `<div style="font-size:10px; color:var(--text-dim); margin-top:2px;">Awaiting Rating</div>`}
+                            ${rating > 0 ? `<div style="font-size:10.5px; color:var(--text-dim); margin-top:2px;">Rated: ${rating}/5</div>` : `<div style="font-size:10.5px; color:var(--text-dim); margin-top:2px;">Awaiting Rating</div>`}
                         </div>
                     `;
                 }
