@@ -118,7 +118,7 @@
             z-index: -1;
         }
 
-        /* Navigation Bar matching About theme */
+        /* Navigation Bar matching About theme (relayout to match exact specifications of About page) */
         nav {
             background: rgba(0, 0, 0, 0.75);
             height: 60px;
@@ -139,16 +139,74 @@
             width: 100%;
             max-width: 1400px;
             margin: 0 auto;
-            gap: 16px;
         }
 
         .logo-box img {
             height: 28px;
             cursor: pointer;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .logo-box img:hover {
             transform: scale(1.04);
+        }
+
+        .nav-right-actions {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .nav-link-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            transition: color 0.25s ease;
+        }
+
+        .nav-link-item svg {
+            stroke: #cbd5e1;
+            transition: stroke 0.25s ease;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+        }
+
+        .nav-link-item:hover svg {
+            stroke: #ffffff;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .nav-badge-text {
+            font-size: 12px;
+            font-weight: 600;
+            color: #94a3b8;
+            letter-spacing: 0.5px;
+        }
+
+        /* Inventory Extra Toolbar Row (Search, Sort, and Add Product Controls) */
+        .inventory-toolbar {
+            max-width: 1400px;
+            margin: 20px auto 0 auto;
+            padding: 0 5%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            position: relative;
+            z-index: 10;
         }
 
         .search-engine { 
@@ -157,7 +215,7 @@
             background: rgba(255, 255, 255, 0.85);
             border-radius: 12px; 
             border: 1px solid rgba(255, 255, 255, 0.6); 
-            max-width: 350px; 
+            max-width: 400px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
         
@@ -173,7 +231,7 @@
         }
         .search-engine input::placeholder { color: var(--text-dim); }
 
-        .nav-controls {
+        .toolbar-controls {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -212,6 +270,7 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border); 
+            border-top: 1px solid var(--border);
             padding: 12px 5%; 
             display: flex; 
             align-items: center;
@@ -220,6 +279,7 @@
             scrollbar-width: none; 
             position: relative;
             z-index: 10;
+            margin-top: 20px;
         }
         
         /* Mobile Dedicated Select Dropdown Container */
@@ -229,9 +289,11 @@
             background: rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
+            border-top: 1px solid var(--border);
             gap: 10px;
             z-index: 10;
             position: relative;
+            margin-top: 15px;
         }
 
         .mobile-dropdown-select {
@@ -253,16 +315,15 @@
             border: 1px solid var(--border); 
             padding: 8px 16px; 
             border-radius: 50px; 
-            font-size: 0.65rem; 
-            font-weight: 800; 
+            font-size: 0.5rem; 
+            font-weight: 600; 
             cursor: pointer; 
             color: var(--text-dim); 
-            text-transform: uppercase; 
             white-space: nowrap; 
             box-shadow: 0 2px 6px rgba(0,0,0,0.02);
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
         .pill:hover { background: rgba(255, 255, 255, 0.8); color: var(--primary); }
         .pill.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25); }
@@ -316,7 +377,6 @@
             font-weight: 800;
             padding: 3px 8px;
             border-radius: 20px;
-            text-transform: uppercase;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             letter-spacing: 0.5px;
         }
@@ -327,7 +387,6 @@
             letter-spacing: 1px;
             font-weight: 700; 
             color: var(--primary); 
-            text-transform: uppercase; 
             margin-bottom: 6px; 
             background: rgba(79, 70, 229, 0.1);
             padding: 3px 8px;
@@ -451,11 +510,11 @@
         .mobile-search-row {
             display: none;
             padding: 10px 5%;
-            background: rgba(0, 0, 0, 0.85);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: sticky;
-            top: 60px;
-            z-index: 999;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            border-top: 1px solid var(--border);
+            margin-top: 15px;
         }
 
         footer {
@@ -480,9 +539,14 @@
         }
 
         @media (max-width: 768px) {
-            .nav-main .search-engine,
-            .nav-main .nav-sort-select {
-                display: none;
+            .inventory-toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .inventory-toolbar .search-engine,
+            .inventory-toolbar .nav-sort-select {
+                max-width: 100%;
+                width: 100%;
             }
             .mobile-search-row {
                 display: flex;
@@ -523,34 +587,46 @@
 <div class="overlay" id="overlay" onclick="closeEditor()"></div>
 <div id="sys-log">STRIX SHOP PRODUCTS MANAGEMENT</div>
 
+<!-- Relayout Navigation Bar to match About page standards exactly -->
 <nav>
     <div class="nav-main">
-        <a href="index.html" class="logo-box" target="_self">
+        <div class="logo-box" onclick="window.location.href='index.html'">
             <img src="logoh.png" alt="STRIX">
-        </a>
-        <div class="search-engine">
-            <input type="text" id="M-search" placeholder="Filter inventory..." oninput="renderGrid()">
         </div>
-        
-        <div class="nav-controls">
-            <select class="nav-sort-select" id="sort-filter" onchange="renderGrid()">
-                <option value="default">Sort: Default</option>
-                <option value="featured-first">Sort: Featured First</option>
-                <option value="featured-only">Filter: Featured Only</option>
-                <option value="alpha-asc">Sort: Name (A to Z)</option>
-                <option value="alpha-desc">Sort: Name (Z to A)</option>
-                <option value="price-asc">Sort: Price (Low to High)</option>
-                <option value="price-desc">Sort: Price (High to Low)</option>
-                <option value="in-stock">Filter: In Stock</option>
-                <option value="out-of-stock">Filter: Out of Stock</option>
-                <option value="instock-first">Sort: In Stock First</option>
-                <option value="outofstock-first">Sort: Out of Stock First</option>
-            </select>
+        <div class="nav-right-actions">
+            <a href="index.html" class="nav-link-item">
+                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Home
+            </a>
+            <div class="nav-divider"></div>
+            <span class="nav-badge-text">Project Management</span>
         </div>
-
-        <button class="btn-new" onclick="openNewEditor()">+ ADD NEW PRODUCT</button>
     </div>
 </nav>
+
+<!-- Inventory Search and Management Toolbar -->
+<div class="inventory-toolbar">
+    <div class="search-engine">
+        <input type="text" id="M-search" placeholder="Search..." oninput="renderGrid()">
+    </div>
+    
+    <div class="toolbar-controls">
+        <select class="nav-sort-select" id="sort-filter" onchange="renderGrid()">
+            <option value="default">Sort: Default</option>
+            <option value="featured-first">Sort: Featured First</option>
+            <option value="featured-only">Filter: Featured Only</option>
+            <option value="alpha-asc">Sort: Name (A to Z)</option>
+            <option value="alpha-desc">Sort: Name (Z to A)</option>
+            <option value="price-asc">Sort: Price (Low to High)</option>
+            <option value="price-desc">Sort: Price (High to Low)</option>
+            <option value="in-stock">Filter: In Stock</option>
+            <option value="out-of-stock">Filter: Out of Stock</option>
+            <option value="instock-first">Sort: In Stock First</option>
+            <option value="outofstock-first">Sort: Out of Stock First</option>
+        </select>
+        <button class="btn-new" onclick="openNewEditor()">+ ADD NEW PRODUCT</button>
+    </div>
+</div>
 
 <div class="mobile-search-row">
     <div class="search-engine">
@@ -729,7 +805,6 @@
 
     function setMobileCategory(cat) {
         currentFilter = cat;
-        // Keep desktop pill sync if visible
         document.querySelectorAll('.filter-bar .pill').forEach(p => {
             const textSpan = p.querySelector('.pill-text');
             if (textSpan) {
@@ -837,14 +912,13 @@
         document.querySelectorAll('.filter-bar .pill').forEach(p => p.classList.remove('active'));
         if (el) el.classList.add('active');
         
-        // Sync mobile dropdown selection
         const mobCatSelect = document.getElementById('mobile-cat-select');
         if (mobCatSelect) mobCatSelect.value = cat;
 
         renderGrid();
     }
 
-function getProductRatingStats(productName) {
+    function getProductRatingStats(productName) {
         const data = reviewsData[(productName || "").trim()];
         if (!data || data.count === 0) {
             return { stars: "0.0 ☆☆☆☆☆", revs: 0, numericStars: 0 };
@@ -852,11 +926,9 @@ function getProductRatingStats(productName) {
         const numericAvg = data.totalScore / data.count;
         const avg = numericAvg.toFixed(1);
         
-        // Calculate rounded whole number of filled stars (from 0 to 5)
         const filledCount = Math.round(numericAvg);
         const emptyCount = 5 - filledCount;
         
-        // Generate dynamic star string
         const starString = "★".repeat(filledCount) + "☆".repeat(emptyCount);
         
         return { 
@@ -978,7 +1050,7 @@ function getProductRatingStats(productName) {
         event.stopPropagation();
         const isAdmin = currentUserData && (currentUserData.acc === "admin" || currentUserData.adminStatus === true);
         if (!isAdmin) {
-            alert("ACCESS DENIED");
+            alert("Access Denied");
             return;
         }
         const item = items.find(x => x.uid === uid);

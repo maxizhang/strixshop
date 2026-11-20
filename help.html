@@ -157,24 +157,11 @@
             letter-spacing: 0.5px;
         }
 
-        /* Hero Section */
+        /* Hero Section (No box around H1) */
         .help-hero {
-            background: var(--surface);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-main);
-            padding: 40px;
-            box-shadow: var(--glass-shadow);
             text-align: center;
-            margin-bottom: 30px;
-            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .help-hero:hover {
-            background: var(--surface-hover);
-            transform: translateY(-4px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
+            margin-bottom: 16px;
+            padding: 0 20px;
         }
 
         .help-hero h1 {
@@ -253,7 +240,6 @@
             font-size: 11px;
             letter-spacing: 1px;
             color: var(--primary);
-            text-transform: uppercase;
             font-weight: 700;
             margin-bottom: 6px;
             display: block;
@@ -377,7 +363,7 @@
                 grid-template-columns: 1fr;
             }
             .container { width: 95%; margin: 25px auto; }
-            .help-card, .support-panel, .help-hero { padding: 25px; border-radius: 24px; }
+            .help-card, .support-panel { padding: 25px; border-radius: 24px; }
             .help-hero h1 { font-size: 26px; }
         }
     </style>
