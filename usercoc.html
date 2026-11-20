@@ -10,39 +10,53 @@
         :root {
             --primary: #484976;
             --primary-hover: #5d6c8d;
-            --surface: rgba(255, 255, 255, 0.18);
+            --surface: rgba(255, 255, 255, 0.28);
+            --surface-hover: rgba(255, 255, 255, 0.38);
             --text-main: #0f172a;
             --text-dim: #475569;
-            --border: rgba(255, 255, 255, 0.55);
-            --border-subtle: rgba(226, 232, 240, 0.3);
-            --nav-dark: #0a0c12;
+            --border: rgba(255, 255, 255, 0.6);
+            --border-subtle: rgba(226, 232, 240, 0.5);
             --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.8), inset 0 -1px 2px rgba(0, 0, 0, 0.05);
+            --radius-main: 32px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            font-family: 'Quicksand', sans-serif;
         }
 
         body { 
             font-family: 'Quicksand', sans-serif; 
-            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
-            background-size: 400% 400%;
-            animation: fluidBackground 18s cubic-bezier(0.4, 0, 0.2, 1) infinite;
             color: var(--text-main); 
             min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
             overflow-x: hidden;
             line-height: 1.6;
+            position: relative;
         }
 
-        @keyframes fluidBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Background Layer with Random Image Support */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.65;
+            z-index: -2;
+            transition: all 1s ease-in-out;
         }
 
-        /* Gradual Appearance Animations */
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(240, 244, 248, 0.75), rgba(224, 231, 255, 0.75));
+            z-index: -1;
+        }
+
+        /* Entrance Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -54,19 +68,14 @@
             }
         }
 
-        .header-section {
+        .animate-in {
             animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
         }
 
-        .conduct-layout {
-            opacity: 0;
-            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
-        }
-
-        .final-banner {
-            opacity: 0;
-            animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
-        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
 
         a {
             text-decoration: none;
@@ -79,29 +88,33 @@
             color: #334155;
         }
 
-        nav { 
-            background: var(--nav-dark); 
-            width: 100%; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
+        /* Navigation Bar matching About Page */
+        nav {
+            background: rgba(0, 0, 0, 0.75);
+            height: 60px;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
         }
 
-        .nav-main { 
-            display: flex; 
-            align-items: center; 
-            padding: 14px 5%; 
-            justify-content: space-between; 
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            justify-content: space-between;
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        .logo-box img { 
-            height: 32px; 
-            cursor: pointer; 
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); 
+        .logo-box img {
+            height: 28px;
+            cursor: pointer;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
             transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -123,12 +136,12 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 13px;
-            transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: color 0.25s ease;
         }
 
         .nav-link-item svg {
             stroke: #cbd5e1;
-            transition: stroke 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: stroke 0.25s ease;
         }
 
         .nav-link-item:hover {
@@ -158,11 +171,12 @@
             width: 90%;
             max-width: 960px;
             margin: 50px auto;
+            flex: 1;
         }
 
         .header-section {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         h1 { 
@@ -193,30 +207,30 @@
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
             border: 1.5px solid var(--border);
-            border-radius: 32px;
+            border-radius: var(--radius-main);
             padding: 35px;
             box-shadow: var(--glass-shadow);
             transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1), background 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .glass-card:hover {
-            background: rgba(255, 255, 255, 0.28);
+            background: var(--surface-hover);
             transform: translateY(-4px);
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12), inset 0 1px 3px rgba(255, 255, 255, 0.9);
         }
 
         .card-number {
+            font-family: 'Quicksand', monospace;
             font-size: 11px;
             letter-spacing: 1px;
             color: var(--primary);
-            text-transform: uppercase;
             margin-bottom: 10px;
             display: block;
             font-weight: 700;
         }
 
         .glass-card h2 { 
-            font-size: 20px; 
+            font-size: 18px; 
             font-weight: 700; 
             margin: 0 0 12px 0; 
             color: #1e1b4b; 
@@ -242,19 +256,20 @@
         }
 
         .final-banner {
-            margin-top: 40px;
+            margin-top: 30px;
             background: var(--surface);
             backdrop-filter: blur(40px);
             -webkit-backdrop-filter: blur(40px);
             border: 1.5px solid var(--border);
-            border-radius: 32px;
+            border-radius: var(--radius-main);
             padding: 45px;
             text-align: center;
             box-shadow: var(--glass-shadow);
+            grid-column: span 2;
         }
 
         .final-banner h2 {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             margin: 0 0 12px 0;
             color: #1e1b4b;
@@ -272,12 +287,12 @@
         footer {
             text-align: center;
             padding: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-dim);
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 1px;
-            background: rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
             position: relative;
             z-index: 10;
         }
@@ -286,10 +301,18 @@
             .conduct-layout { 
                 grid-template-columns: 1fr; 
             }
+            .final-banner {
+                grid-column: span 1;
+            }
+            .container { width: 95%; margin: 25px auto; }
+            .glass-card { padding: 25px; border-radius: 24px; }
         }
     </style>
 </head>
 <body>
+
+<div class="bg-layer" id="bgLayer"></div>
+<div class="bg-overlay"></div>
 
 <nav>
     <div class="nav-main">
@@ -309,12 +332,12 @@
 
 <div class="container">
 
-    <div class="header-section">
+    <div class="header-section animate-in delay-1">
         <h1>User Conduct & Expectations</h1>
         <p>The operational standards, behavioral expectations, and legal compliance frameworks required for all participants in Strix Shop.</p>
     </div>
 
-    <div class="conduct-layout">
+    <div class="conduct-layout animate-in delay-2">
 
         <div class="glass-card">
             <span class="card-number">SECTION 01</span>
@@ -364,7 +387,7 @@
         <div class="glass-card">
             <span class="card-number">SECTION 08</span>
             <h2>Respect for School Property</h2>
-            <p>Operating within an educational institution means all actions must comply with local school board regulations, facility guidelines, and institutional codes of conduct, such as <a href="https://resources.finalsite.net/images/v1788287598/tesdnet/tb4wbob3yvejoa3itees/CoCFINAL2026-2027.pdf" target="_blank">Conestoga High School's Code of Conduct 2026-2027</a>.</p>
+            <p>Operating within an educational institution means all actions must comply with local school board regulations, facility guidelines, and institutional codes of conduct, such as <a href="https://resources.finalsite.net/images/v1788287598/tesdnet/tb4wbob3yvejoa3itees/CoCFINAL2026-2027.pdf" target="_blank">Conestoga High School's Code of Conduct 2026-2027</a>[cite: 10].</p>
         </div>
 
         <div class="glass-card">
@@ -379,13 +402,13 @@
             <p>Infractions of this Code—including mandates concerning minor protection under the <b>Children's Online Privacy Protection Act (COPPA, 15 U.S.C. §§ 6501-6506)</b>—will lead to immediate account termination and legal or administrative escalation.</p>
         </div>
 
-    </div>
+        <div class="final-banner">
+            <h2>Community Standards Matter</h2>
+            <p>Strix Shop relies on mutual trust, legal compliance, and accountability. These standards protect a fair, secure, and orderly system for every member of the community.</p>
+            <br>
+            <a href="revisions.html">View Revisions</a>
+        </div>
 
-    <div class="final-banner">
-        <h2>Community Standards Matter</h2>
-        <p>Strix Shop relies on mutual trust, legal compliance, and accountability. These standards protect a fair, secure, and orderly system for every member of the community.</p>
-<br><br>
-            <a href="revisions.html">Revisions</a>
     </div>
 
 </div>
@@ -393,6 +416,15 @@
 <footer>
     &copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.
 </footer>
+
+<script>
+    // Random Background Image Loader matching other pages
+    const n = Math.floor(Math.random() * 12) + 1;
+    const bgLayer = document.getElementById("bgLayer");
+    const img = new Image();
+    img.src = `bg${n}.png`;
+    img.onload = () => bgLayer.style.backgroundImage = `url('${img.src}')`;
+</script>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";

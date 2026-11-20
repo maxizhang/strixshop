@@ -1,87 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strix Shop | Personnel Database</title>
-    <link rel="icon" type="image/png" href="spfd.png">
-    <!-- Rounded Font: Quicksand -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="spfd.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strix Shop | User Files</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#484976;--primary-hover:#5d6c8d;--surface:rgba(255,255,255,.28);--surface-hover:rgba(255,255,255,.38);--text-main:#0f172a;--text-dim:#475569;--border:rgba(255,255,255,.6);--line:rgba(203,213,225,.5);--error:#ef4444;--glass-shadow:0 20px 40px rgba(0,0,0,.08),inset 0 1px 2px rgba(255,255,255,.8),inset 0 -1px 2px rgba(0,0,0,.05);--radius-main:32px}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{font-family:'Quicksand',sans-serif;color:var(--text-main);min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;line-height:1.6;position:relative}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.bg-layer{position:fixed;inset:0;background-size:cover;background-position:center;opacity:.65;z-index:-2;transition:all 1s ease-in-out}
+.bg-overlay{position:fixed;inset:0;background:linear-gradient(135deg,rgba(240,244,248,.75),rgba(224,231,255,.75));z-index:-1}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.animate-in{animation:fadeInUp .7s cubic-bezier(.16,1,.3,1) forwards;opacity:0}
+.delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
 
-    <style>
-        :root {
-            --primary: #484976;
-            --primary-hover: #5d6c8d;
-            --surface: rgba(255, 255, 255, 0.75);
-            --surface-card: rgba(255, 255, 255, 0.6);
-            --text-main: #0f172a;
-            --text-dim: #475569;
-            --border: rgba(255, 255, 255, 0.9);
-            --border-subtle: rgba(203, 213, 225, 0.4);
-            --nav-dark: #0a0c12;
-            --error: #ef4444;
-            --glass-shadow: 0 20px 40px rgba(79, 70, 229, 0.06), inset 0 1px 2px rgba(255, 255, 255, 0.9);
-        }
-
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: 'Quicksand', sans-serif; 
-        }
-
-        body { 
-            background: linear-gradient(-45deg, #e0e7ff, #f0fdf4, #e0f2fe, #f3e8ff);
-            background-size: 400% 400%;
-            animation: fluidBackground 20s ease infinite;
-            color: var(--text-main); 
-            min-height: 100vh; 
-            overflow-x: hidden;
-        }
-
-        @keyframes fluidBackground {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        a {
-            text-decoration: none;
-            font-weight: 700;
-            color: #64748b;
-            transition: color 0.2s;
-        }
-        a:hover {
-            color: #334155;
-        }
-
-        nav { 
-            background: var(--nav-dark); 
-            width: 100%; 
-            position: sticky; 
-            top: 0; 
-            z-index: 1000; 
+        nav {
+            background: rgba(0, 0, 0, 0.75);
+            height: 60px;
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
         }
-        .nav-main { 
-            display: flex; 
-            align-items: center; 
-            padding: 14px 5%; 
-            justify-content: space-between; 
+
+        .nav-main {
+            display: flex;
+            align-items: center;
+            padding: 0 5%;
+            justify-content: space-between;
+            width: 100%;
             max-width: 1400px;
             margin: 0 auto;
         }
-        .logo-box img { 
-            height: 32px; 
-            cursor: pointer; 
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6)); 
+
+        .logo-box img {
+            height: 28px;
+            cursor: pointer;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        .logo-box img:hover {
+            transform: scale(1.04);
+        }
+
         .nav-right-actions {
             display: flex;
             align-items: center;
             gap: 24px;
         }
+
         .nav-link-item {
             display: flex;
             align-items: center;
@@ -90,692 +68,364 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 13px;
-            transition: color 0.2s;
+            transition: color 0.25s ease;
         }
+
         .nav-link-item svg {
             stroke: #cbd5e1;
-            transition: stroke 0.2s;
+            transition: stroke 0.25s ease;
         }
+
         .nav-link-item:hover {
             color: #ffffff;
         }
+
         .nav-link-item:hover svg {
             stroke: #ffffff;
         }
+
         .nav-divider {
             width: 1px;
             height: 20px;
             background: rgba(255, 255, 255, 0.15);
         }
+
         .nav-badge-text {
             font-size: 12px;
             font-weight: 600;
             color: #94a3b8;
             letter-spacing: 0.5px;
         }
+        
+.container{position:relative;z-index:10;width:92%;max-width:1180px;margin:40px auto;flex:1}
+.hero{text-align:center;margin-bottom:32px;padding:0 20px}
+h1{font-size:32px;font-weight:700;margin-bottom:10px;color:#1e1b4b;letter-spacing:-.5px}
+.hero p{font-size:14px;font-weight:600;color:var(--text-dim);max-width:600px;margin:0 auto}
+.glass{background:var(--surface);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border:1.5px solid var(--border);border-radius:var(--radius-main);padding:35px;box-shadow:var(--glass-shadow);transition:background .35s}
+.glass:hover{background:var(--surface-hover)}
 
-        .container {
-            position: relative;
-            z-index: 10;
-            width: 90%;
-            max-width: 1200px;
-            margin: 40px auto;
-            background: var(--surface);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1.5px solid var(--border);
-            border-radius: 28px;
-            padding: 35px;
-            box-shadow: var(--glass-shadow);
-        }
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:22px}
+.tb-left{display:flex;align-items:center;gap:14px}
+.tb-title{font-size:20px;font-weight:700;color:#1e1b4b}
+.pill{font-size:11px;font-weight:700;letter-spacing:.5px;color:var(--primary);background:rgba(72,73,118,.1);border:1px solid rgba(72,73,118,.2);padding:5px 14px;border-radius:20px;white-space:nowrap}
+.tb-right{display:flex;gap:12px;align-items:center;flex:1;justify-content:flex-end;flex-wrap:wrap}
+.search{position:relative;flex:1;max-width:340px;min-width:200px}
+.search input{width:100%;padding:12px 18px 12px 42px;background:rgba(255,255,255,.5);border:1.5px solid var(--border);border-radius:16px;font:600 13px 'Quicksand',sans-serif;color:var(--text-main);outline:none;transition:.3s}
+.search input:focus{background:rgba(255,255,255,.9);border-color:var(--primary);box-shadow:0 0 0 4px rgba(72,73,118,.12)}
+.search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;stroke:var(--text-dim);fill:none;stroke-width:2;pointer-events:none}
+.btn{padding:12px 20px;border:none;border-radius:16px;font:700 12px 'Quicksand',sans-serif;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:all .3s cubic-bezier(.4,0,.2,1)}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 6px 20px rgba(72,73,118,.3)}
+.btn-primary:hover{background:var(--primary-hover);transform:translateY(-2px);box-shadow:0 8px 25px rgba(72,73,118,.4)}
+.btn-danger{background:transparent;border:1.5px solid var(--error);color:var(--error)}
+.btn-danger:hover{background:rgba(239,68,68,.08);transform:translateY(-2px)}
 
-        .table-header-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:separate;border-spacing:0;min-width:640px}
+th{text-align:left;font-size:11px;color:var(--primary);padding:12px 16px;text-transform:uppercase;letter-spacing:1.2px;border-bottom:1.5px solid var(--line);font-weight:700}
+td{padding:14px 16px;border-bottom:1px solid var(--line);font-size:13px;font-weight:600;transition:background .2s}
+tr.row{cursor:pointer}tr.row:hover td{background:rgba(255,255,255,.45)}
+.sub{font-size:11px;color:var(--text-dim)}.ts{font-size:10px;color:var(--text-dim);margin-left:6px}
+.empty-row{text-align:center;color:var(--text-dim);padding:30px}
+.pfp{width:38px;height:38px;border-radius:50%;object-fit:cover;display:block;background:#e2e8f0;border:1.5px solid var(--border);box-shadow:0 4px 10px rgba(0,0,0,.05)}
+.pfp.lg{width:84px;height:84px;border-width:2px;flex-shrink:0;box-shadow:0 10px 25px rgba(0,0,0,.1)}
 
-        .table-title-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+.badge{padding:4px 10px;border-radius:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;display:inline-block;white-space:nowrap}
+.badge.customer{background:rgba(100,116,139,.12);color:#475569;border:1px solid rgba(100,116,139,.2)}
+.badge.pro{background:rgba(14,165,233,.12);color:#0284c7;border:1px solid rgba(14,165,233,.2)}
+.badge.premium{background:rgba(168,85,247,.12);color:#9333ea;border:1px solid rgba(168,85,247,.2)}
+.badge.admin{background:rgba(239,68,68,.12);color:#dc2626;border:1px solid rgba(239,68,68,.2)}
+.badge.ok{background:rgba(22,163,74,.12);color:#16a34a;border:1px solid rgba(22,163,74,.2)}
 
-        .table-title {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1e1b4b;
-        }
+.scrim{position:fixed;inset:0;background:rgba(15,23,42,.25);backdrop-filter:blur(3px);opacity:0;pointer-events:none;transition:opacity .3s;z-index:1500}
+.scrim.open{opacity:1;pointer-events:auto}
+.sidebar{position:fixed;top:0;right:0;width:580px;max-width:100%;height:100vh;background:rgba(255,255,255,.7);backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border-left:1.5px solid var(--border);z-index:2000;display:flex;flex-direction:column;box-shadow:-20px 0 50px rgba(0,0,0,.12);transform:translateX(105%);visibility:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1),visibility .4s}
+.sidebar.open{transform:none;visibility:visible}
+.dossier{padding:32px 30px;display:flex;align-items:center;gap:20px;border-bottom:1.5px solid var(--line);position:relative}
+.dossier h2{font-size:22px;font-weight:700;color:#1e1b4b;line-height:1.3;margin-bottom:2px;padding-right:40px}
+.uid{font-size:11px;color:var(--text-dim);font-weight:600;word-break:break-all;margin-bottom:8px}
+.close{position:absolute;right:22px;top:20px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.6);border:1px solid var(--line);font:700 20px 'Quicksand',sans-serif;color:var(--text-dim);cursor:pointer;transition:all .25s}
+.close:hover{background:#fff;color:var(--text-main);transform:scale(1.05)}
+.side-body{flex:1;overflow-y:auto;padding:24px 30px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{background:rgba(255,255,255,.45);padding:12px 16px;border-radius:18px;border:1.5px solid var(--border);transition:all .25s}
+.field:focus-within{background:rgba(255,255,255,.9);border-color:var(--primary);box-shadow:0 0 0 3px rgba(72,73,118,.1)}
+.wide{grid-column:span 2}
+.label{font-size:10px;color:var(--primary);font-weight:700;margin-bottom:4px;letter-spacing:1px;text-transform:uppercase}
+.value{display:block;outline:none;font-size:13px;font-weight:600;word-break:break-word;min-height:20px}
+.value[contenteditable]:hover{background:rgba(72,73,118,.05);border-radius:6px}
+select.value{width:100%;background:transparent;border:none;cursor:pointer;color:var(--text-main);font-family:inherit}
+.locked .value{color:var(--text-dim)}
+.admin-field{background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.3)}.admin-field .label{color:#dc2626}
 
-        /* Search Bar Styling */
-        .search-box {
-            position: relative;
-            flex: 1;
-            max-width: 320px;
-        }
-        .search-box input {
-            width: 100%;
-            padding: 10px 16px 10px 38px;
-            background: rgba(255, 255, 255, 0.8);
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-main);
-            outline: none;
-            transition: all 0.2s;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-        }
-        .search-box input:focus {
-            background: #ffffff;
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
-        }
-        .search-box svg {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 16px;
-            height: 16px;
-            stroke: var(--text-dim);
-            pointer-events: none;
-        }
+.drop{margin-top:16px;background:rgba(255,255,255,.4);border:1.5px solid var(--border);border-radius:20px;overflow:hidden}
+.drop>summary,.order>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px}
+summary::-webkit-details-marker{display:none}
+.drop>summary{padding:14px 18px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--primary)}
+.drop>summary .pill{margin-left:auto;padding:2px 10px}
+.chev{flex-shrink:0;transition:transform .25s}
+details[open]>summary .chev{transform:rotate(180deg)}
+.drop-body{padding:0 14px 14px;display:flex;flex-direction:column;gap:10px}
+.empty{font-size:12px;font-weight:600;color:var(--text-dim);padding:4px}.err{color:var(--error)}
+.order,.rec{background:rgba(255,255,255,.75);border:1px solid var(--line);border-radius:14px}
+.order{overflow:hidden}
+.order>summary{padding:11px 14px;transition:background .2s}.order>summary:hover{background:#fff}
+.o-main{flex:1;min-width:0}
+.o-id{display:block;font:700 12px ui-monospace,Menlo,Consolas,monospace;color:var(--primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.o-meta{font-size:11px;color:var(--text-dim);font-weight:600}
+.o-total{font-size:13px;font-weight:700}
+.o-body{padding:4px 14px 14px;border-top:1px solid var(--line)}
+.o-hint{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:#16a34a;margin:10px 0 8px}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:6px 12px;font-size:12px}
+.kv dt{font-weight:700;color:var(--primary);text-transform:capitalize}
+.kv dd{font-weight:600;white-space:pre-line;word-break:break-word}
+.rec{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;font-size:12px;font-weight:600}
+.rec small{display:block;font-size:10px;color:var(--text-dim)}.rec .t{text-align:right}
 
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-        }
-        th { 
-            text-align: left; 
-            font-size: 11px; 
-            color: var(--primary); 
-            padding: 12px 15px; 
-            text-transform: uppercase; 
-            letter-spacing: 1.5px; 
-            border-bottom: 1.5px solid var(--border-subtle);
-            font-weight: 700;
-        }
-        td { 
-            padding: 14px 15px; 
-            border-bottom: 1px solid var(--border-subtle); 
-            font-size: 13px; 
-            font-weight: 600;
-            color: var(--text-main);
-        }
-        tr:hover td { 
-            background: rgba(79, 70, 229, 0.04); 
-            cursor: pointer; 
-        }
-
-        .pfp-mini { 
-            width: 34px; 
-            height: 34px; 
-            border-radius: 50%; 
-            background-size: cover; 
-            background-position: center;
-            border: 1px solid var(--primary); 
-        }
-
-        /* Status Badges */
-        .badge {
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: inline-block;
-        }
-        .badge-customer { background: rgba(100, 116, 139, 0.12); color: #475569; }
-        .badge-pro { background: rgba(14, 165, 233, 0.12); color: #0284c7; }
-        .badge-premium { background: rgba(168, 85, 247, 0.12); color: #9333ea; }
-        .badge-admin { background: rgba(239, 68, 68, 0.12); color: #dc2626; }
-        .badge-status { background: rgba(16, 185, 129, 0.12); color: #059669; }
-
-        .sidebar {
-            position: fixed; 
-            top: 0; 
-            right: -550px;
-            width: 550px; 
-            height: 100vh;
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-left: 1.5px solid var(--border);
-            z-index: 2000;
-            display: flex; 
-            flex-direction: column;
-            box-shadow: -20px 0 40px rgba(0, 0, 0, 0.08);
-            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-        .sidebar.open { 
-            transform: translateX(-550px); 
-        }
-
-        .dossier-top {
-            padding: 30px;
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            border-bottom: 1.5px solid var(--border-subtle);
-        }
-        .pfp-large {
-            width: 100px; height: 100px;
-            border-radius: 50%;
-            background-size: cover; background-position: center;
-            border: 2px solid var(--primary);
-            flex-shrink: 0;
-            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.2);
-        }
-        .top-info { flex: 1; }
-        .top-info h2 { font-size: 22px; font-weight: 700; margin-bottom: 5px; color: #1e1b4b; }
-        .uid-tag { font-family: 'Quicksand', monospace; font-size: 11px; color: var(--text-dim); }
-
-        .sidebar-content { flex: 1; overflow-y: auto; padding: 25px 30px; }
-        .close-trigger { 
-            position: absolute; 
-            right: 25px; 
-            top: 20px; 
-            font-size: 26px; 
-            cursor: pointer; 
-            color: var(--text-dim); 
-            font-weight: 700;
-            transition: color 0.2s; 
-        }
-        .close-trigger:hover { color: var(--text-main); }
-
-        .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .field { 
-            background: var(--surface-card); 
-            padding: 12px 16px; 
-            border-radius: 16px; 
-            border: 1.5px solid var(--border);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-        }
-        .full-width { grid-column: span 2; }
-        .label { font-size: 10px; color: var(--primary); font-weight: 700; margin-bottom: 4px; letter-spacing: 1px; }
-        .value { outline: none; font-size: 13px; color: var(--text-main); font-weight: 600; display: block; word-break: break-all; min-height: 18px; }
-        .value[contenteditable="true"]:hover {
-            background: rgba(79, 70, 229, 0.05);
-            border-radius: 4px;
-            padding: 2px 4px;
-            margin: -2px -4px;
-        }
-
-        .history-section {
-            margin-top: 20px;
-            background: var(--surface-card);
-            border: 1.5px solid var(--border);
-            border-radius: 16px;
-            padding: 16px;
-        }
-        .history-title {
-            font-size: 10px;
-            color: var(--primary);
-            font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        .history-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .history-item {
-            background: rgba(255, 255, 255, 0.7);
-            padding: 8px 12px;
-            border-radius: 10px;
-            border: 1px solid var(--border-subtle);
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .sidebar-footer { 
-            padding: 20px 30px; 
-            border-top: 1.5px solid var(--border-subtle);
-            display: flex; 
-            gap: 12px;
-            background: rgba(255, 255, 255, 0.5);
-        }
-        .btn {
-            flex: 1; padding: 12px; border: none; border-radius: 14px;
-            font-weight: 700; font-size: 12px; cursor: pointer; transition: all 0.2s;
-            text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .save-btn { background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
-        .save-btn:hover { background: var(--primary-hover); transform: translateY(-1px); }
-        .delete-btn { background: transparent; border: 1.5px solid var(--error); color: var(--error); }
-        .delete-btn:hover { background: rgba(239, 68, 68, 0.08); transform: translateY(-1px); }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 3px; }
-
-        @media (max-width: 768px) {
-            .sidebar { width: 100%; right: -100%; }
-            .sidebar.open { transform: translateX(-100%); }
-            .field-grid { grid-template-columns: 1fr; }
-            .full-width { grid-column: span 1; }
-            .table-header-bar { flex-direction: column; align-items: stretch; }
-            .search-box { max-width: 100%; }
-        }
-    </style>
+.side-foot{padding:18px 30px;border-top:1.5px solid var(--line);display:flex;gap:14px;background:rgba(255,255,255,.6)}
+.side-foot .btn{flex:1;padding:14px}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:rgba(0,0,0,.82);color:#fff;font-size:13px;font-weight:700;padding:12px 22px;border-radius:16px;opacity:0;pointer-events:none;transition:all .3s;z-index:3000}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:10px}
+footer{text-align:center;padding:30px;color:var(--text-dim);font-size:12px;font-weight:700;letter-spacing:1px;border-top:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.15);position:relative;z-index:10}
+@media(max-width:768px){.container{width:95%;margin:25px auto}.glass{padding:22px;border-radius:24px}h1{font-size:26px}.tb-right{justify-content:stretch}.search{max-width:none}.grid{grid-template-columns:1fr}.wide{grid-column:span 1}.dossier,.side-body,.side-foot{padding-left:20px;padding-right:20px}.kv{grid-template-columns:100px 1fr}}
+</style>
 </head>
 <body>
+<div class="bg-layer" id="bgLayer"></div>
+<div class="bg-overlay"></div>
 
 <nav>
-    <div class="nav-main">
-        <div class="logo-box" onclick="window.location.href='index.html'"><img src="logoh.png" alt="STRIX"></div>
-        <div class="nav-right-actions">
-<button class="btn" style="flex: 0 0 auto; padding: 10px 14px; background: var(--primary); color: #fff; border-radius: 12px; font-size: 12px; cursor: pointer; white-space: nowrap;" onclick="copyAllEmails()">Copy All Emails</button>            <a href="index.html" class="nav-link-item">
-                <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-                Home
-            </a>
-            <div class="nav-divider"></div>
-            <span class="nav-badge-text">Personnel Database</span>
-        </div>
+  <div class="nav-main">
+    <div class="logo-box" onclick="location.href='index.html'"><img src="logoh.png" alt="STRIX"></div>
+    <div class="nav-right-actions">
+      <a href="index.html" class="nav-link-item">
+        <svg width="15" height="15" fill="none" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Home
+      </a>
+      <div class="nav-divider"></div>
+      <span class="nav-badge-text">USER FILES</span>
     </div>
+  </div>
 </nav>
 
 <div class="container">
-    <div class="table-header-bar">
-        <div class="table-title-wrapper">
-            <div class="table-title">Personnel Records</div>
-            <div id="count" style="font-family:'Quicksand', monospace; font-size:11px; color:var(--primary); font-weight:700;">TOTAL USERS: 0</div>
+  <div class="hero animate-in delay-1">
+    <h1>User Files</h1>
+    <p>Review accounts, orders and sign-in activity, and manage every personnel record in one place.</p>
+  </div>
+  <div class="glass animate-in delay-2">
+    <div class="toolbar">
+      <div class="tb-left"><div class="tb-title">Personnel Records</div><div class="pill" id="count">0 users</div></div>
+      <div class="tb-right">
+        <div class="search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="q" placeholder="Search by name, email, ID..." oninput="render()">
         </div>
-        <!-- Search Bar Input -->
-        <div class="search-box">
-            <svg fill="none" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="M21 21l-4.35-4.35"></path></svg>
-            <input type="text" id="searchInput" placeholder="Search by name, email, ID..." oninput="filterTable()">
-        </div>
+        <button class="btn btn-primary" onclick="copyAllEmails()">Copy All Emails</button>
+      </div>
     </div>
-    <table>
-        <thead>
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Latest Sign-In Activity</th>
-            </tr>
-        </thead>
-        <tbody id="body"></tbody>
-    </table>
+    <div class="tbl">
+      <table>
+        <thead><tr><th></th><th>Name</th><th>Email</th><th>Classification</th><th>Latest Sign-In Activity</th></tr></thead>
+        <tbody id="body"><tr><td colspan="5" class="empty-row">Loading users...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
-<div class="sidebar" id="sidebar">
-    <div class="close-trigger" onclick="closeSidebar()">×</div>
-    
-    <div class="dossier-top">
-        <div class="pfp-large" id="side-pfp"></div>
-        <div class="top-info">
-            <h2 id="side-name">Name</h2>
-            <div class="uid-tag" id="side-uid">UID: ---</div>
-            <div id="side-acc-tag" style="margin-top:8px;"></div>
-        </div>
-    </div>
+<footer>&copy; 2026 STRIX SHOP. ALL RIGHTS RESERVED.</footer>
 
-    <div class="sidebar-content">
-        <div class="field-grid" id="fields-container"></div>
-        
-        <div class="history-section">
-            <div class="history-title">Entry/Exit Records</div>
-            <div class="history-list" id="side-history-list">
-                <div style="font-size: 12px; color: var(--text-dim);">Loading records...</div>
-            </div>
-        </div>
+<div class="scrim" id="scrim" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar" aria-label="User record">
+  <div class="dossier">
+    <button class="close" onclick="closeSidebar()" aria-label="Close">&times;</button>
+    <img class="pfp lg" id="s-pfp" src="default.png" alt="">
+    <div>
+      <h2 id="s-name">Name</h2>
+      <div class="uid" id="s-uid">ID: ---</div>
+      <span class="badge customer" id="s-tag">CUSTOMER</span>
     </div>
-
-    <div class="sidebar-footer">
-        <button class="btn delete-btn" onclick="deleteAccount()">Delete User</button>
-        <button class="btn save-btn" onclick="save()">Publish Changes</button>
-    </div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  </div>
+  <div class="side-body">
+    <div class="grid" id="fields"></div>
+    <details class="drop">
+      <summary>Orders <span class="pill" id="ordCount">0</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></summary>
+      <div class="drop-body" id="ordList"></div>
+    </details>
+    <details class="drop">
+      <summary>Entry / Exit Records <span class="pill" id="recCount">0</span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg></summary>
+      <div class="drop-body" id="recList"></div>
+    </details>
+  </div>
+  <div class="side-foot">
+    <button class="btn btn-danger" onclick="deleteAccount()">Delete User</button>
+    <button class="btn btn-primary" onclick="save()">Publish Changes</button>
+  </div>
+</aside>
+<div class="toast" id="toast" role="status"></div>
 
 <script>
-firebase.initializeApp({
-    apiKey: "AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",
-    authDomain: "strix-shop.firebaseapp.com",
-    projectId: "strix-shop"
+const n=Math.floor(Math.random()*12)+1,bgLayer=document.getElementById("bgLayer"),img=new Image();
+img.src=`bg${n}.png`;img.onload=()=>bgLayer.style.backgroundImage=`url('${img.src}')`;
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+firebase.initializeApp({apiKey:"AIzaSyDKed-yuAcwqKqcL6fn2WnBhRPcq-PbDtU",authDomain:"strix-shop.firebaseapp.com",projectId:"strix-shop",storageBucket:"strix-shop.firebasestorage.app",messagingSenderId:"300414445622",appId:"1:300414445622:web:97465fa5309c27b9605097"});
+const auth=firebase.auth(),db=firebase.firestore();
+const $=id=>document.getElementById(id);
+const DEFAULT_PFP="default.png";
+// Fields on an order document that point back to the user. Fields containing "mail" are matched
+// against the user's email, all others against the user ID. Edit this list to fit your orders schema.
+const ORDER_USER_FIELDS=["uid","userId","userEmail","email"];
+const FIELDS=[["First Name","firstName",1],["Last Name","lastName",1],["Email","email",0,1],["Classification","acc"],["Grade","grade"],["School","school"],["Age","age"],["DOB","dob"],["Gender","gender"],["Pronouns","pronouns"],["SSC Balance","ssc",1],["Recovery Email","recoveryEmail"],["Created At","createdAt",1,1],["Profile URL","pfp",0,1],["Sec Question","securityQuestion",0,1],["Sec Answer","securityAnswer"]];
+const CHEV='<svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg>';
+let me=null,currentId=null,users=[],entries={};
+
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt=v=>v==null||v===""?"—":v.toDate?v.toDate().toLocaleString():Array.isArray(v)?v.map(fmt).join("\n"):typeof v==="object"?Object.entries(v).map(([k,x])=>k+": "+fmt(x)).join(", "):String(v);
+const show=v=>v==null?"":fmt(v);
+const numKeys=r=>Object.keys(r||{}).filter(k=>!isNaN(k)).sort((a,b)=>b-a);
+const ms=v=>v?v.toDate?v.toDate().getTime():typeof v==="number"?v:Date.parse(v)||0:0;
+const odate=o=>o.createdAt||o.timestamp||o.placedAt||o.date;
+const lab=k=>k.replace(/([A-Z])/g," $1").replace(/[_-]/g," ");
+const badgeFor=a=>{a=(a||"customer").toLowerCase();return a.includes("admin")?"admin":a.includes("premium")?"premium":a.includes("pro")?"pro":"customer"};
+const orderBadge=s=>/cancel|refund|reject|declin/i.test(s)?"admin":/deliver|complete|done|picked/i.test(s)?"ok":/place|pend|process|ready|ship/i.test(s)?"pro":"customer";
+
+let tt;
+function toast(m,bad){const t=$("toast");t.textContent=m;t.style.background=bad?"rgba(185,28,28,.92)":"";t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),2400)}
+function copy(text){
+  const fb=()=>{const a=document.createElement("textarea");a.value=text;a.style.cssText="position:fixed;opacity:0";document.body.appendChild(a);a.select();let ok=false;try{ok=document.execCommand("copy")}catch(e){}a.remove();return ok};
+  return navigator.clipboard?navigator.clipboard.writeText(text).then(()=>true).catch(fb):Promise.resolve(fb());
+}
+// Any profile image that fails to load falls back to default.png
+document.addEventListener("error",e=>{const t=e.target;if(t.matches&&t.matches("img.pfp")&&!t.src.includes(DEFAULT_PFP))t.src=DEFAULT_PFP},true);
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSidebar()});
+$("fields").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.isContentEditable)e.preventDefault()});
+
+auth.onAuthStateChanged(async u=>{
+  if(!u){location.href="signin.html";return}
+  const s=await db.collection("users").doc(u.uid).get();
+  if(!s.exists||s.data().acc!=="admin"){location.href="index.html";return}
+  me=s.data();
+  db.collection("users").onSnapshot(snap=>{users=snap.docs;render();loadEntries()});
 });
 
-const db = firebase.firestore();
-let currentId = null;
-let currentUserData = null;
-let allUsersCache = []; // Cache snapshot docs for fast searching
-
-firebase.auth().onAuthStateChanged(async u => {
-    if (!u) {
-        window.location.href = "signin.html";
-        return;
-    }
-
-    const me = await db.collection("users").doc(u.uid).get();
-
-    if (!me.exists) {
-        window.location.href = "index.html";
-        return;
-    }
-
-    currentUserData = me.data();
-
-    const canView = currentUserData.acc === "admin";
-    const canModify = currentUserData.acc === "admin";
-
-    if (!canView) {
-        window.location.href = "index.html";
-        return;
-    }
-
-    load();
-
-    if (!canModify) {
-        const saveBtn = document.querySelector(".save-btn");
-        const deleteBtn = document.querySelector(".delete-btn");
-
-        saveBtn.style.opacity = "0.5";
-        deleteBtn.style.opacity = "0.5";
-
-        saveBtn.style.cursor = "not-allowed";
-        deleteBtn.style.cursor = "not-allowed";
-    }
-});
-
-function copyAllEmails() {
-    if (!allUsersCache || allUsersCache.length === 0) {
-        alert("No users loaded yet.");
-        return;
-    }
-
-    // Extract emails, filter out empty/undefined ones, and join them with commas
-    const emails = allUsersCache
-        .map(doc => doc.data().email)
-        .filter(email => email && email.trim() !== "");
-
-    const formattedEmails = emails.join(", ");
-
-    if (formattedEmails.length === 0) {
-        alert("No email addresses found.");
-        return;
-    }
-
-    // Copy to clipboard
-    navigator.clipboard.writeText(formattedEmails).then(() => {
-        alert("All emails copied to clipboard:\n\n" + formattedEmails);
-    }).catch(err => {
-        console.error("Failed to copy emails: ", err);
-        prompt("Copy the emails below:", formattedEmails);
-    });
+async function loadEntries(){
+  await Promise.all(users.map(async d=>{
+    try{const s=await db.collection("entryexit").doc(d.id).get();entries[d.id]=s.exists?(s.data().records||{}):{}}
+    catch(e){console.error("entryexit",d.id,e);entries[d.id]={}}
+  }));
+  render();
 }
 
-function getBadgeClass(acc) {
-    const val = (acc || "customer").toLowerCase();
-    if (val.includes("pro")) return "badge badge-pro";
-    if (val.includes("premium")) return "badge badge-premium";
-    if (val.includes("admin")) return "badge badge-admin";
-    return "badge badge-customer";
+function render(){
+  const q=$("q").value.toLowerCase().trim();
+  const rows=users.filter(d=>{const u=d.data();return !q||((u.firstName||"")+" "+(u.lastName||"")+" "+(u.email||"")+" "+d.id).toLowerCase().includes(q)});
+  $("count").textContent=(rows.length===users.length?users.length:rows.length+" of "+users.length)+" users";
+  const body=$("body");
+  if(!rows.length){body.innerHTML='<tr><td colspan="5" class="empty-row">No matching users.</td></tr>';return}
+  body.innerHTML="";
+  rows.forEach(d=>{
+    const u=d.data(),r=entries[d.id],k=numKeys(r),l=k.length?r[k[0]]:null;
+    const act=l?`<span class="badge ok">${esc(l.eventAction||"Active")}</span><span class="ts">${esc(((l.date||"")+" "+(l.time||"")).trim())}</span>`:`<span class="badge customer">${r?"No activity":"..."}</span>`;
+    const tr=document.createElement("tr");tr.className="row";
+    tr.innerHTML=`<td><img class="pfp" src="${esc(u.pfp||DEFAULT_PFP)}" alt=""></td><td style="font-weight:700">${esc(((u.firstName||"")+" "+(u.lastName||"")).trim())}</td><td class="sub">${esc(u.email||"")}</td><td><span class="badge ${badgeFor(u.acc)}">${esc(u.acc||"customer")}</span></td><td>${act}</td>`;
+    tr.onclick=()=>openSidebar(d.id,u);
+    body.appendChild(tr);
+  });
 }
 
-function load(){
-    db.collection("users").onSnapshot(async snap => {
-        allUsersCache = snap.docs; // Cache documents
-        document.getElementById("count").innerText = "TOTAL USERS: " + snap.size;
-        renderTable(allUsersCache);
-    });
+function copyAllEmails(){
+  const e=users.map(d=>(d.data().email||"").trim()).filter(Boolean);
+  if(!e.length)return toast("No email addresses found",1);
+  copy(e.join(", ")).then(ok=>toast(ok?e.length+" emails copied":"Copy failed",!ok));
 }
 
-async function renderTable(docs) {
-    const body = document.getElementById("body");
-    body.innerHTML = "";
+function setTag(a){const t=$("s-tag");t.className="badge "+badgeFor(a);t.textContent=(a||"customer").toUpperCase()}
 
-    const searchQuery = document.getElementById("searchInput").value.toLowerCase().trim();
-
-    for (const doc of docs) {
-        const u = doc.data();
-        const userId = doc.id;
-        
-        const fullName = `${u.firstName || ""} ${u.lastName || ""}`.toLowerCase();
-        const email = (u.email || "").toLowerCase();
-        const firstName = (u.firstName || "").toLowerCase();
-        const uid = userId.toLowerCase();
-
-        // Filter condition check
-        if (searchQuery && !fullName.includes(searchQuery) && !email.includes(searchQuery) && !firstName.includes(searchQuery) && !uid.includes(searchQuery)) {
-            continue;
-        }
-
-        const statusBadge = `<span class="${getBadgeClass(u.acc)}">${u.acc || "customer"}</span>`;
-        
-        let signinoutStatus = "No Activity";
-        let latestTimestamp = "";
-        let badgeClass = "badge badge-customer"; 
-        
-        try {
-            const entryDoc = await db.collection("entryexit").doc(userId).get();
-            if (entryDoc.exists) {
-                const data = entryDoc.data();
-                const recordsMap = data.records || {};
-                const keys = Object.keys(recordsMap).filter(k => !isNaN(k));
-                
-                if (keys.length > 0) {
-                    keys.sort((a, b) => Number(b) - Number(a));
-                    const latestRecord = recordsMap[keys[0]];
-                    
-                    signinoutStatus = latestRecord.eventAction || "Active";
-                    latestTimestamp = (latestRecord.date || "") + " " + (latestRecord.time || "");
-                    badgeClass = "badge badge-status"; 
-                }
-            }
-        } catch (e) {
-            console.error("Error fetching entryexit for", userId, e);
-        }
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-            <td><div class="pfp-mini" style="background-image:url('${u.pfp || ''}')"></div></td>
-            <td style="font-weight:700;">${u.firstName || ""} ${u.lastName || ""}</td>
-            <td style="color:var(--text-dim); font-size:11px;">${u.email || ""}</td>
-            <td>${statusBadge}</td>
-            <td><span class="${badgeClass}">${signinoutStatus}</span> <span style="font-size:10px; color:var(--text-dim); margin-left:4px;">${latestTimestamp}</span></td>
-        `;
-        tr.onclick = () => openSidebar(userId, u);
-        body.appendChild(tr);
-    }
+function buildFields(u){
+  const acc=(u.acc||"customer").toLowerCase();
+  const opts=[["customer","Customer"],["pro membership","Pro Membership"],["premium membership","Premium Membership"],["admin","Admin"]];
+  if(!opts.some(o=>o[0]===acc))opts.push([acc,acc]);
+  $("fields").innerHTML=FIELDS.map(([label,key,lock,wide])=>{
+    const inner=key==="acc"
+      ?`<select class="value" id="accSel">${opts.map(([v,t])=>`<option value="${esc(v)}"${v===acc?" selected":""}>${esc(t)}</option>`).join("")}</select>`
+      :`<div class="value"${lock?"":' contenteditable="true"'}>${esc(show(u[key]))}</div>`;
+    return `<div class="field${wide?" wide":""}${lock?" locked":""}" data-key="${key}"${lock?' data-lock="1"':""}><div class="label">${label}</div>${inner}</div>`;
+  }).join("")+`<div class="field wide admin-field" id="adminField" data-key="title"${acc==="admin"?"":" hidden"}><div class="label">Admin Position</div><div class="value" contenteditable="true">${esc(show(u.title))}</div></div>`;
+  $("accSel").onchange=e=>{setTag(e.target.value);$("adminField").hidden=e.target.value!=="admin"};
 }
 
-function filterTable() {
-    renderTable(allUsersCache);
+function openSidebar(id,u){
+  currentId=id;
+  $("s-pfp").src=u.pfp||DEFAULT_PFP;
+  $("s-name").textContent=((u.firstName||"")+" "+(u.lastName||"")).trim()||"Unnamed user";
+  $("s-uid").textContent="ID: "+id.toUpperCase();
+  setTag(u.acc);buildFields(u);
+  document.querySelectorAll(".drop").forEach(d=>d.open=false);
+  $("sidebar").classList.add("open");$("scrim").classList.add("open");
+  loadOrders(id,u);loadRecords(id);
+}
+function closeSidebar(){$("sidebar").classList.remove("open");$("scrim").classList.remove("open")}
+
+function orderHTML(oid,o){
+  const d=ms(odate(o)),t=o.total??o.totalPrice??o.amount;
+  const rows=[["Order ID",oid],...Object.entries(o).map(([k,v])=>[lab(k),v])];
+  return `<details class="order" data-id="${esc(oid)}"><summary><div class="o-main"><span class="o-id">${esc(oid)}</span><span class="o-meta">${d?esc(new Date(d).toLocaleString()):"No date"}</span></div>${o.status?`<span class="badge ${orderBadge(o.status)}">${esc(o.status)}</span>`:""}${t!=null?`<span class="o-total">${esc(t)}</span>`:""}${CHEV}</summary><div class="o-body"><div class="o-hint">Order ID copied &middot; tables.html opened in a new tab</div><dl class="kv">${rows.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(fmt(v))}</dd>`).join("")}</dl></div></details>`;
 }
 
-async function openSidebar(id, u){
-    currentId = id;
-    document.getElementById("sidebar").classList.add("open");
-    document.getElementById("side-pfp").style.backgroundImage = `url('${u.pfp || ''}')`;
-    document.getElementById("side-name").innerText = (u.firstName || "") + " " + (u.lastName || "");
-    document.getElementById("side-uid").innerText = "ID: " + id.toUpperCase();
-    
-    const tagEl = document.getElementById("side-acc-tag");
-    tagEl.className = getBadgeClass(u.acc);
-    tagEl.innerText = (u.acc || "customer").toUpperCase();
-
-    const container = document.getElementById("fields-container");
-    container.innerHTML = "";
-
-    const dataMap = {
-        "First Name": u.firstName,
-        "Last Name": u.lastName,
-        "Email": u.email,
-        "Username": u.firstName,
-        "Classification": u.acc || "customer",
-        "Grade": u.grade,
-        "School": u.school,
-        "Age": u.age,
-        "DOB": u.dob,
-        "Gender": u.gender,
-        "Pronouns": u.pronouns,
-        "SSC Balance": u.ssc,
-        "Recovery Email": u.recoveryEmail,
-        "Created At": u.createdAt,
-        "Profile URL": u.pfp,
-        "Sec Question": u.securityQuestion,
-        "Sec Answer": u.securityAnswer
-    };
-
-    Object.keys(dataMap).forEach((k) => {
-        const div = document.createElement("div");
-        const isLong = k === "Email" || k === "Profile URL" || k === "Created At" || k === "Sec Question";
-        div.className = isLong ? "field full-width" : "field";
-
-        if (k === "Classification") {
-            div.innerHTML = `
-                <div class="label">${k.toUpperCase()}</div>
-                <select class="value" style="width: 100%; background: transparent; border: none; outline: none; font-size: 13px; color: var(--text-main); font-weight: 600; cursor: pointer;">
-                    <option value="customer" ${dataMap[k] === 'customer' ? 'selected' : ''}>Customer</option>
-                    <option value="pro membership" ${dataMap[k] === 'pro membership' ? 'selected' : ''}>Pro Membership</option>
-                    <option value="premium membership" ${dataMap[k] === 'premium membership' ? 'selected' : ''}>Premium Membership</option>
-                    <option value="admin" ${dataMap[k] === 'admin' ? 'selected' : ''}>Admin</option>
-                </select>
-            `;
-        } else {
-            const isLocked = k === "First Name" || k === "Last Name" || k === "SSC Balance" || k === "Created At";
-            const editableAttr = isLocked ? "" : 'contenteditable="true"';
-            const valContent = dataMap[k] !== undefined && dataMap[k] !== null ? dataMap[k] : "";
-
-            div.innerHTML = `
-                <div class="label">${k.toUpperCase()}</div>
-                <div class="value" ${editableAttr}>${valContent}</div>
-            `;
-        }
-        container.appendChild(div);
-    });
-
-    const historyListEl = document.getElementById("side-history-list");
-    historyListEl.innerHTML = `<div style="font-size: 12px; color: var(--text-dim);">Loading records...</div>`;
-
-    try {
-        const entryDoc = await db.collection("entryexit").doc(id).get();
-        if (entryDoc.exists) {
-            const data = entryDoc.data();
-            const recordsMap = data.records || {};
-            const keys = Object.keys(recordsMap).filter(k => !isNaN(k));
-
-            if (keys.length > 0) {
-                keys.sort((a, b) => Number(b) - Number(a));
-                
-                historyListEl.innerHTML = "";
-                keys.forEach(key => {
-                    const rec = recordsMap[key];
-                    const item = document.createElement("div");
-                    item.className = "history-item";
-                    item.innerHTML = `
-                        <div>
-                            <span style="font-weight: 700; color: var(--primary);">${rec.eventAction || ''}</span>
-                            <div style="font-size: 10px; color: var(--text-dim);">IP: ${rec.ipAddress || ''}</div>
-                        </div>
-                        <div style="text-align: right; font-family: 'Quicksand', monospace; font-size: 11px;">
-                            <div>${rec.date || ''}</div>
-                            <div style="color: var(--text-dim);">${rec.time || ''}</div>
-                        </div>
-                    `;
-                    historyListEl.appendChild(item);
-                });
-            } else {
-                historyListEl.innerHTML = `<div style="font-size: 12px; color: var(--text-dim);">No entry/exit logs found.</div>`;
-            }
-        } else {
-            historyListEl.innerHTML = `<div style="font-size: 12px; color: var(--text-dim);">No entry/exit document found for user.</div>`;
-        }
-    } catch (err) {
-        console.error("Error loading records list:", err);
-        historyListEl.innerHTML = `<div style="font-size: 12px; color: var(--error);">Failed to load history.</div>`;
-    }
+async function loadOrders(id,u){
+  const list=$("ordList"),cnt=$("ordCount");
+  list.innerHTML='<div class="empty">Loading orders...</div>';cnt.textContent="...";
+  const found=new Map();
+  await Promise.all(ORDER_USER_FIELDS.map(async f=>{
+    const v=/mail/i.test(f)?u.email:id;if(!v)return;
+    try{(await db.collection("orders").where(f,"==",v).get()).forEach(d=>found.set(d.id,d.data()))}
+    catch(e){console.warn("orders query failed for field",f,e)}
+  }));
+  if(currentId!==id)return;
+  const orders=[...found].sort((a,b)=>ms(odate(b[1]))-ms(odate(a[1])));
+  cnt.textContent=orders.length;
+  list.innerHTML=orders.length?orders.map(([oid,o])=>orderHTML(oid,o)).join(""):'<div class="empty">This user has not placed any orders.</div>';
+  // Expanding an order copies its ID and opens tables.html in a new tab, so this panel stays open
+  list.querySelectorAll(".order>summary").forEach(s=>s.addEventListener("click",()=>{
+    const d=s.parentElement;if(d.open)return;
+    copy(d.dataset.id).then(ok=>toast(ok?"Order ID copied":"Could not copy order ID",!ok));
+    window.open("tables.html","_blank");
+  }));
 }
 
-function closeSidebar(){ 
-    document.getElementById("sidebar").classList.remove("open"); 
+async function loadRecords(id){
+  const list=$("recList"),cnt=$("recCount");
+  list.innerHTML='<div class="empty">Loading records...</div>';cnt.textContent="...";
+  try{
+    const s=await db.collection("entryexit").doc(id).get();
+    if(currentId!==id)return;
+    const r=s.exists?(s.data().records||{}):{};entries[id]=r;
+    const k=numKeys(r);cnt.textContent=k.length;
+    list.innerHTML=k.length?k.map(x=>{const e=r[x];return `<div class="rec"><div><b>${esc(e.eventAction||"")}</b><small>IP: ${esc(e.ipAddress||"—")}</small></div><div class="t"><div>${esc(e.date||"")}</div><small>${esc(e.time||"")}</small></div></div>`}).join(""):'<div class="empty">No entry/exit logs found.</div>';
+  }catch(e){console.error(e);if(currentId===id){cnt.textContent="!";list.innerHTML='<div class="empty err">Failed to load history.</div>'}}
 }
 
 async function save(){
-    if (!currentUserData || currentUserData.acc !== "admin") {
-        alert("ACCESS DENIED");
-        return;
-    }
-
-    const fields = document.querySelectorAll(".field");
-    const update = {};
-
-    const keyMap = {
-        "FIRST NAME":"firstName",
-        "LAST NAME":"lastName",
-        "CLASSIFICATION":"acc",
-        "EMAIL":"email",
-        "firstName":"firstName",
-        "GRADE":"grade",
-        "SCHOOL":"school",
-        "AGE":"age",
-        "GENDER":"gender",
-        "PRONOUNS":"pronouns",
-        "DOB":"dob",
-        "SSC BALANCE":"ssc",
-        "RECOVERY EMAIL":"recoveryEmail",
-        "PROFILE URL":"pfp",
-        "SEC QUESTION":"securityQuestion",
-        "SEC ANSWER":"securityAnswer"
-    };
-
-    fields.forEach(f => {
-        const label = f.querySelector(".label")?.innerText;
-        const valElement = f.querySelector(".value");
-        if (!valElement || !label) return;
-
-        const val = valElement.tagName === "SELECT" ? valElement.value : valElement.innerText;
-
-        if (keyMap[label]) {
-            let finalVal = val;
-            if (label === "SSC BALANCE") {
-                finalVal = Number(finalVal) || 0;
-            }
-            update[keyMap[label]] = finalVal;
-        }
-    });
-
-    try {
-        await db.collection("users").doc(currentId).update(update);
-        alert("RECORD UPDATED");
-        closeSidebar();
-    } catch (err) {
-        console.error(err);
-        alert("UPDATE FAILED");
-    }
+  if(!me||me.acc!=="admin")return toast("Access denied",1);
+  const up={};
+  document.querySelectorAll("#fields .field").forEach(f=>{
+    if(f.dataset.lock||f.hidden)return;
+    const el=f.querySelector(".value");
+    up[f.dataset.key]=el.tagName==="SELECT"?el.value:el.innerText.trim();
+  });
+  try{await db.collection("users").doc(currentId).update(up);toast("Changes published");closeSidebar()}
+  catch(e){console.error(e);toast("Update failed",1)}
 }
 
 async function deleteAccount(){
-    if (!currentUserData || currentUserData.acc !== "admin") {
-        alert("ACCESS DENIED");
-        return;
-    }
-
-    const confirmDelete = confirm("Permanently delete this record from files?");
-    if (!confirmDelete) return;
-
-    try {
-        await db.collection("users").doc(currentId).delete();
-        alert("RECORD DELETED");
-        closeSidebar();
-    } catch (err) {
-        console.error(err);
-        alert("DELETION FAILED");
-    }
+  if(!me||me.acc!=="admin")return toast("Access denied",1);
+  if(!confirm("Permanently delete this record from files?"))return;
+  try{await db.collection("users").doc(currentId).delete();toast("Record deleted");closeSidebar()}
+  catch(e){console.error(e);toast("Deletion failed",1)}
 }
 </script>
 </body>
